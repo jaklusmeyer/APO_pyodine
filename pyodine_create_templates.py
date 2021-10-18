@@ -33,30 +33,36 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
     high-S/N, oversampled stellar template for later observation modelling of
     the same star.
     
-    Args:
-        utilities (library): The utilities module for the instrument used in this
-            analysis.
-        Pars (:class:'Template_Parameters'): The parameter input object to use.
-        ostar_files (str or list): A pathname to a text-file with pathnames of
-            hot star observations for the modelling, or, alternatively, a
-            list with the pathnames.
-        temp_files (str or list): A pathname to a text-file with pathnames of
-            stellar template observations to use, or, alternatively, a
-            list with the pathnames.
-        temp_outname (str): The pathname where to save the deconvolved stellar
-            template. If the directory structure does not exist yet, it will be
-            created in the process.
-        plot_dir (Optional[str]): The directory name where to save plots and 
-            modelling results. If the directory structure does not exist yet, 
-            it will be created in the process. If None is given, no results/
-            plots will be saved (default).
-        res_files (Optional[str or list]): A pathname to a text-file with 
-            pathnames under which to save the results file(s), or, 
-            alternatively, a list with the pathname(s). If you want to save 
-            results from multiple runs, you should supply pathnames for each 
-            run. If the directory structure does not exist yet, it will be 
-            created in the process. If None is given, no results will be saved 
-            (default).
+    :param utilities: The utilities module for the instrument used in this 
+        analysis.
+    :type utilities: library
+    :param Pars: The parameter input object to use.
+    :type Pars: :class:`Template_Parameters`
+    :param ostar_files: A pathname to a text-file with pathnames of hot star 
+        observations for the modelling, or, alternatively, a list with the 
+        pathnames.
+    :type ostar_files: str or list 
+    :param temp_files: A pathname to a text-file with pathnames of stellar 
+        template observations to use, or, alternatively, a list with the 
+        pathnames.
+    :type temp_files: str or list 
+    :param temp_outname: The pathname where to save the deconvolved stellar 
+        template. If the directory structure does not exist yet, it will be 
+        created in the process.
+    :type temp_outname: str
+    :param plot_dir: The directory name where to save plots and modelling 
+        results. If the directory structure does not exist yet, it will be 
+        created in the process. If None is given, no results/plots will be 
+        saved (default).
+    :type plot_dir: str or None
+    :param res_files: A pathname to a text-file with pathnames under which to 
+        save the results file(s), or, alternatively, a list with the 
+        pathname(s). If you want to save results from multiple runs, you should 
+        supply pathnames for each run. If the directory structure does not 
+        exist yet, it will be created in the process. If None is given, no 
+        results will be saved (default).
+    :type res_files: str or list or None
+    
     """
     
     # Start timer
