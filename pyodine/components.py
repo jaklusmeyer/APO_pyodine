@@ -3,16 +3,14 @@ from astropy.time import TimeDelta
 
 
 class NoDataError(BaseException):
-    """
-        Use this Exception class to indicate missing data.
+    """Use this Exception class to indicate missing data
     """
     pass  # FIXME: Is this it?
 
 
 class DataMismatchError(BaseException):
-    """
-        Use this Exception class to indicate that the data is incompatible
-        (e.g. trying to add a non-iodine spectrum with an iodine spectrum)
+    """Use this Exception class to indicate that the data is incompatible
+    (e.g. trying to add a non-iodine spectrum with an iodine spectrum)
     """
     pass  # FIXME: Is this it?
 
@@ -23,10 +21,13 @@ class Spectrum:
     
     This class serves as most basic parent class to all spectrum objects.
     
-    Args:
-        flux (ndarray[npix]): Flux values of the spectrum.
-        wave (Optional[ndarray[npix]]): Wavelength values of the spectrum.
-        cont (Optional[ndarray[npix]]): Continuum values of the spectrum.
+    :param flux: Flux values of the spectrum.
+    :type flux: ndarray[nr_pix]
+    :param wave: Wavelength values of the spectrum.
+    :type wave: ndarray[nr_pix], or None
+    :param cont: Continuum values of the spectrum.
+    :type cont: ndarray[nr_pix], or None
+    
     """
     def __init__(self, flux, wave=None, cont=None):#, weight=None):
         if not any(flux):
@@ -48,20 +49,20 @@ class Spectrum:
     def __len__(self):
         """The dedicated length-method
         
-        Returns:
-            int: Length of the flux vector.
+        :return: Length of the flux vector.
+        :rtype: int
         """
         return len(self.flux)
 
     def __getitem__(self, pixels):
         """The dedicated get-method
         
-        Args:
-            pixels (int, list, ndarray, slice): The pixel indices to return from
-                the spectrum.
+        :param pixels: The pixel indices to return from the spectrum.
+        :type pixels: int, list, ndarray, slice
         
-        Returns:
-            :class:'Spectrum': A spectrum of the desired pixel indices.
+        :return: A spectrum of the desired pixel indices.
+        :rtype: :class:`Spectrum`
+            
         """
         flux = self.flux[pixels]
         wave = self.wave[pixels] if self.wave is not None else None
@@ -73,13 +74,15 @@ class Spectrum:
         """Check the fraction of wavelength range as supplied by the input
         arguments covered by the data.
         
-        Args:
-            wave_start (float): Starting wavelength.
-            wave_stop (float): Stopping wavelength.
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
         
-        Returns:
-            float: A value between 0.0 and 1.0, telling how big a fraction of 
-                the wavelength range [wave_start:wave_stop] is covered by data
+        :return: A value between 0.0 and 1.0, telling how big a fraction of 
+            the wavelength range [wave_start:wave_stop] is covered by data.
+        :rtype: float
+        
         """
         # Check that wavelength data is present
         if self.wave is None:
@@ -104,14 +107,17 @@ class Spectrum:
         and wave_stop. If require='full' ensure that the full interval is
         covered (one pixel outside in each end).
         
-        Args:
-            wave_start (float): Starting wavelength.
-            wave_stop (float): Stopping wavelength.
-            require (Optional[str]): If set to 'full', make sure that the
-                whole wavelength range is covered by the data (error otherwise).
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
+        :param require: If set to 'full', make sure that the whole wavelength 
+            range is covered by the data (error otherwise).
+        :type require: str, or None
         
-        Return:
-            :class:'Spectrum': The spectrum in the wavelength range.
+        :return: The spectrum in the wavelength range.
+        :rtype: :class:`Spectrum`
+        
         """
         # Measure the overlap between requested range and data range
         # (and throw error if no wavelength data present)
@@ -137,8 +143,9 @@ class Spectrum:
     def __str__(self):
         """The dedicated string-method
         
-        Return:
-            str: A string with information about the data.
+        :return: A string with information about the data.
+        :rtype: str
+        
         """
         if self.wave is not None:
             return '<Spectrum ({} pixels, {:.4f}-{:.4f} Å>'.format(
@@ -151,13 +158,14 @@ class Spectrum:
     def compute_weight(self, weight_type='flat'):
         """Compute and return pixel weights for the spectrum
         
-        Args:
-            weight_type (Optional[str]): The type of weights to compute. Either
-                'flat' for flat weights (all ones, default), or 'lick' for 
-                weighted by flux (as in dop code, D. Fisher).
+        :param weight_type: The type of weights to compute. Either 'flat' for 
+            flat weights (all ones, default), or 'lick' for weighted by flux 
+            (as in dop code, D. Fisher).
+        :type weight_type: str
         
-        Returns:
-            ndarray[npix]: The computed weights array.
+        :return: The computed weights array.
+        :rtype: ndarray[nr_pix]
+        
         """
         if weight_type == 'flat':
             return np.ones(self.flux.shape)
@@ -199,12 +207,17 @@ class MultiOrderSpectrum:
         NoDataError. Otherwise return the
         order index and coverage as a tuple.
         
-        Args:
-            wave_start (float): Starting wavelength.
-            wave_stop (float): Stopping wavelength.
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
         
-        Returns:
-            (int, float): The order index and coverage.
+        :return: The index of the order best covering the wavelength range.
+        :rtype: int
+        :return: A value between 0.0 and 1.0, telling how big a fraction of 
+            the wavelength range [wave_start:wave_stop] is covered by data.
+        :rtype: float
+        
         """
         selected_order = None
         best_coverage = 0.
@@ -233,14 +246,17 @@ class MultiOrderSpectrum:
         covered (one pixel outside in each end).
         If multiple results, return the one with best coverage.
         
-        Args:
-            wave_start (float): Starting wavelength.
-            wave_stop (float): Stopping wavelength.
-            require (Optional[str]): If set to 'full', make sure that the
-                whole wavelength range is covered by the data (error otherwise).
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
+        :param require: If set to 'full', make sure that the whole wavelength 
+            range is covered by the data (error otherwise).
+        :type require: str, or None
         
-        Return:
-            :class:'Spectrum': The spectrum in the wavelength range.
+        :return: The spectrum in the wavelength range.
+        :rtype: :class:`Spectrum`
+        
         """
         selected_order, best_coverage = \
             self.check_wavelength_range(wave_start, wave_stop)
@@ -302,11 +318,14 @@ class Observation(MultiOrderSpectrum):
 class Instrument:
     """A generic class to represent an instrument
     
-    Args:
-        name (str): The name of the instrument.
-        longitude (Optional[float]): Longitude in degrees.
-        latitude (Optional[float]): Latitude in degrees.
-        altitude (Optional[float]): Altitude in meters.
+    :param name: The name of the instrument.
+    :type name: str
+    :param longitude: Longitude in degrees.
+    :type longitude: float, or None
+    :param latitude: Latitude in degrees.
+    :type latitude: float, or None
+    :param altitude: Altitude in mete
+    
     """
     def __init__(self, name, longitude=None, latitude=None, altitude=None):
         self.name = name
@@ -318,12 +337,13 @@ class Instrument:
 class Star:
     """Generic representation of a stellar target
     
-    Args:
-        name (str): The name of the star.
-        coordinates (Optional[:class:'SkyCoord']): The sky coordinates of the 
-            star.
-        proper_motion (Optional[tuple(float,float)]): Proper motion in 
-            (RA, DEC) in degrees/year.
+    :param name: The name of the star.
+    :type name: str
+    :param coordinates: The sky coordinates of the star.
+    :type coordinates: :class:`SkyCoord`, or None
+    :param proper_motion: Proper motion in (RA, DEC) in degrees/year.
+    :type proper_motion: tuple(float,float), or None
+    
     """
     def __init__(self, name, coordinates=None, proper_motion=(None, None)):
         self.name = name  # Name of the target (e.g. `Sigma Draconis`)
@@ -482,13 +502,16 @@ class Chunk(Spectrum):
     
     This data object will be used in the fitting procedure.
     
-    Args:
-        observation (:class:'Observation'): The observation from which the chunk
-            created.
-        order (int): The order that the chunk sits in.
-        pixels (ndarray[chunk_size]): The pixels covered by the chunk.
-        padding (Optional[int]): The number of pixels used to extend the chunk
-            with property 'chunk.padded' (necessary in deconvolution etc.).
+    :param observation: The observation from which the chunk created.
+    :type observation: :class:`Observation`
+    :param order: The order that the chunk sits in.
+    :type order: int
+    :param pixels: The pixels covered by the chunk.
+    :type pixels: ndarray[chunk_size]
+    :param padding: The number of pixels used to extend the chunk with 
+        property 'chunk.padded' (necessary in deconvolution etc.).
+    :type padding: int
+    
     """
 
     def __init__(self, observation, order, pixels, padding=0):
@@ -502,8 +525,10 @@ class Chunk(Spectrum):
     @property
     def pix(self):
         """A pixel vector for the chunk, centered around zero
-        Return:
-            ndarray[chunk_size]: The pixel vector.
+        
+        :return: The pixel vector.
+        :rtype: ndarray[chunk_size]
+        
         """
         n = len(self)
         return np.arange(-(n // 2), n - n // 2)
@@ -512,8 +537,9 @@ class Chunk(Spectrum):
     def padded(self):
         """The chunk spectrum with padding on either side included
         
-        Returns:
-            :class:'Chunk': Chunk including padding.
+        :return: Chunk including padding.
+        :rtype: :class:`Chunk`
+        
         """
         if self.padding == 0:
             return self
@@ -525,8 +551,9 @@ class Chunk(Spectrum):
     def __str__(self):
         """The dedicated string-method
         
-        Return:
-            str: Information about the chunk.
+        :return: Information about the chunk.
+        :rtype: str
+        
         """
         return '<Chunk (order:{} ; pixels:{}-{})>'.format(self.order, *self.abspix[[0, -1]])
 
@@ -545,28 +572,32 @@ class ChunkArray(list):
     @property
     def orders(self):
         """Return the order numbers contained in the chunk array as ndarray
+        
+        :return: The unique order numbers.
+        :rtype: ndarray
         """
         return np.unique([chunk.order for chunk in self])
 
     def get_order(self, order) -> list:
         """Return chunks within order
         
-        Args:
-            order (int): The order to use.
+        :param order: The order to use.
+        :type order: int
         
-        Return:
-            list: The list of chunks.
+        :return: The list of chunks within the supplied order.
+        :rtype: list[:class:`Chunk`]
+        
         """
         return [chunk for chunk in self if chunk.order == order]
 
     def get_order_indices(self, order) -> list:
         """Return indices of chunks within order
         
-        Args:
-            order (int): The order to use.
+        :param order: The order to use.
+        :type order: int
         
-        Return:
-            list: The list of chunk indices.
+        :return: The list of chunk indices within the supplied order.
+        :rtype: list[int] 
         """
         return [i for i in range(len(self)) if self[i].order == order]
 
@@ -574,22 +605,30 @@ class ChunkArray(list):
 class TemplateChunk(Spectrum):
     """A chunk of a deconvolved template
     
-    This is used in the :class:'StellarTemplate_Chunked'.
-        Keyword `padding` defines the number of pixels used to extend the chunk
-        with property `chunk.padded` (necessary in deconvolution etc.).
+    This is used in the :class:`StellarTemplate_Chunked`. Keyword 'padding' 
+    defines the number of pixels used to extend the chunk with property 
+    `chunk.padded` (necessary in deconvolution etc.).
     
-    Args:
-        flux (ndarray[nr_pix]): The flux values of the template.
-        wave (ndarray[nr_pix]): The wavelength values of the template.
-        pixel (ndarray[nr_pix]): The pixel vector centered around 0.
-        w0 (float): The zero point of the wavelength solution used to create
-            this template chunk.
-        w1 (float): The dispersion of the wavelength solution used to create
-            this template chunk.
-        order (int): The order of the chunk.
-        pix0 (int): The starting pixel of the chunk within the original
-            template observation order.
-        weight (float): The weight of the chunk.
+    :param flux: The flux values of the template.
+    :type flux: ndarray[nr_pix]
+    :param wave: The wavelength values of the template.
+    :type wave: ndarray[nr_pix]
+    :param pixel:  The pixel vector centered around 0.
+    :type pixel: ndarray[nr_pix]
+    :param w0: The zero point of the wavelength solution used to create
+        this template chunk.
+    :type w0: float
+    :param w1: The dispersion of the wavelength solution used to create this 
+        template chunk.
+    :type w1: float
+    :param order: The order of the chunk.
+    :type order: int
+    :param pix0: The starting pixel of the chunk within the original template 
+        observation order.
+    :type pix0: int
+    :param weight: The weight of the chunk.
+    :type weight: float
+    
     """
 
     def __init__(self, flux, wave, pixel, w0, w1, order, pix0, weight):
@@ -604,8 +643,10 @@ class TemplateChunk(Spectrum):
     @property
     def pix(self):
         """A pixel vector for the chunk, centered around zero
-        Return:
-            ndarray[nr_pix]: The pixel vector.
+        
+        :return: The pixel vector.
+        :rtype: ndarray[nr_pix]
+        
         """
         n = len(self)
         return np.arange(-(n // 2), n - n // 2)

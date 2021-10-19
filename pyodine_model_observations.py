@@ -40,32 +40,35 @@ def model_single_observation(Pars, obs_file, template,
     performed in multiple runs, in order to allow a better determination of the
     fit parameters. The results and analysis plots can be saved to file.
     
-    Args:
-        utilities (library): The utilities module for the instrument used in 
-            this analysis.
-        Pars (:class:'Parameters'): The parameter input object to use.
-        obs_file (str): The pathname of the stellar observation to model.
-        template (:class:'StellarTemplate_Chunked'): The stellar template
-            to use in the modelling.
-        iod (Optional[:class:'IodineTemplate']): The I2 template to use in the
-            modelling. If None, it is loaded as specified in the parameter 
-            input object.
-        orders (Optional[list, ndarray]): The orders of the observation to
-            work on. If None, they are defined as specified by the template
-            and the parameter input object.
-        normalizer (Optional[:class:'SimpleNormalizer']): The normalizer to 
-            use. If None, it is created as specified in the parameter input
-            object.
-        tellurics (Optional[:class:'SimpleTellurics']): The tellurics to use.
-            If None, it is created as specified in the parameter input object.
-        plot_dir (Optional[str]): The directory name where to save plots. If 
-            the directory structure does not exist yet, it will be created in 
-            the process. If None is given, no plots will be saved (default).
-        res_names (Optional[str, list]): The pathname under which to save the 
-            results file. If you want to save results from multiple runs,
-            you should supply a list with pathnames for each run. If the 
-            directory structure does not exist yet, it will be created in the 
-            process. If None is given, no results will be saved (default).
+    :param Pars: The parameter input object to use.
+    :type Pars: :class:`Parameters`
+    :param obs_file: The pathname of the stellar observation to model.
+    :type obs_file: str
+    :param template: The stellar template to use in the modelling.
+    :type template: :class:`StellarTemplate_Chunked`
+    :param iod: The I2 template to use in the modelling. If None, it is loaded 
+        as specified in the parameter input object.
+    :type iod: :class:`IodineTemplate`, or None
+    :param orders: The orders of the observation to work on. If None, they are 
+        defined as specified by the template and the parameter input object.
+    :type orders: list, ndarray, or None
+    :param normalizer: The normalizer to use. If None, it is created as 
+        specified in the parameter input object.
+    :type normalizer: :class:`SimpleNormalizer`, or None
+    :param tellurics: The tellurics to use. If None, it is created as specified 
+        in the parameter input object.
+    :type tellurics: :class:`SimpleTellurics`, or None
+    :param plot_dir: The directory name where to save plots. If the directory 
+        structure does not exist yet, it will be created in the process. If 
+        None is given, no plots will be saved (default).
+    :type plot_dir: str, or None
+    :param res_names: The pathname under which to save the results file. If you 
+        want to save results from multiple runs, you should supply a list with 
+        pathnames for each run. If the directory structure does not exist yet, 
+        it will be created in the process. If None is given, no results will be 
+        saved (default).
+    :type res_names: str, list, or None
+    
     """
     
     # I put everything in try - except, so that when it runs in parallel 
@@ -458,39 +461,43 @@ def model_single_observation(Pars, obs_file, template,
         
 
 
-def model_multi_observations(utilities, Pars, obs_files, temp_file, 
-                             plot_dir=None, res_files=None, comb_results_files=None):
+def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None, 
+                             res_files=None, comb_results_files=None):
     """Model multiple observations of a single star
     
-    Args:
-        utilities (library): The utilities module for the instrument used in this
-            analysis.
-        Pars (:class:'Parameters'): The parameter input object to use.
-        obs_files (str or list): A pathname to a text-file with pathnames of
-            stellar observations for the modelling, or, alternatively, a
-            list with the pathnames.
-        temp_file (str): A pathname of the stellar template observations to use.
-        plot_dir (Optional[str or list]): A pathname to a text-file with
-            directory names for each observation where to save plots and
-            modelling results, or, alternatively, a list with the directory
-            names. If the directory structure does not exist yet, it will be 
-            created in the process. If None is given, no results/plots will be 
-            saved (default).
-        res_files (Optional[str or list]): A pathname to a text-file with 
-            pathnames under which to save the results file(s), or, 
-            alternatively, a list with the pathname(s). If you want to save 
-            results from multiple runs, you should supply pathnames for each 
-            run. If the directory structure does not exist yet, it will be 
-            created in the process. If None is given, no results will be saved 
-            (default).
-        comb_results_files (Optional[str or list]): A pathname to a text-file 
-            with pathnames under which to save the CombinedResults file(s), or, 
-            alternatively, a list with the pathname(s). If individual results 
-            from multiple runs were saved but only one pathname is provided
-            here, only the last run results of each observation are saved. If 
-            the directory structure does not exist yet, it will be created in 
-            the process. If None is given, no CombinedResults will be saved 
-            (default).
+    This function can parallelize the modelling of multiple observations,
+    taking advantage of Python's :class:`multiprocessing.Pool` capabilities.
+    
+    :param Pars: The parameter input object to use.
+    :type Pars: :class:`Parameters`
+    :param obs_files: A pathname to a text-file with pathnames of stellar 
+        observations for the modelling, or, alternatively, a list with the 
+        pathnames.
+    :type obs_files: str or list
+    :param temp_file: A pathname of the stellar template observations to use.
+    :type temp_file: str
+    :param plot_dir: A pathname to a text-file with directory names for each 
+        observation where to save plots, or, alternatively, a list with the 
+        directory names. If the directory structure does not exist yet, it will 
+        be created in the process. If None is given, no results/plots will be 
+        saved (default).
+    :type plot_dir: str, list, or None
+    :param res_files: A pathname to a text-file with pathnames under which to 
+        save the results file(s), or, alternatively, a list with the 
+        pathname(s). If you want to save results from multiple runs, you should 
+        supply pathnames for each run. If the directory structure does not 
+        exist yet, it will be created in the process. If None is given, no 
+        results will be saved (default).
+    :type res_files: str, list, or None
+    :param comb_results_files: A pathname to a text-file with pathnames under 
+        which to save the CombinedResults file(s), or, alternatively, a list 
+        with the pathname(s). If individual results from multiple runs were 
+        saved but only one pathname is provided here, only the last run results 
+        of each observation are saved. If the directory structure does not 
+        exist yet, it will be created in the process. If None is given, no 
+        CombinedResults will be saved (default).
+    :type comb_results_files: str, list, or None
+    
     """
     
     ###########################################################################

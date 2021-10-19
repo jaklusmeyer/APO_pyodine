@@ -9,24 +9,27 @@ from ..components import MultiOrderSpectrum, Spectrum, Observation, NoDataError,
 class StellarTemplate(MultiOrderSpectrum):
     """A deconvolved stellar template, with chunks stitched together
     
-    A :class:'StellarTemplate' is always represented as a 
-    :class:'MultiOrderSpectrum', even if there is only one order.
-    To be subclassed together with either :class:'Spectrum' or 
-    :class:'MultiOrderSpectrum'.
+    A :class:`StellarTemplate` is always represented as a 
+    :class:`MultiOrderSpectrum`, even if there is only one order.
+    To be subclassed together with either :class:`Spectrum` or 
+    :class:`MultiOrderSpectrum`.
     
-    Args:
-        observation (:class:'Observation' or str): Hand a :class:'Observation' 
-            object upon template creation. Otherwise, if a pathname is given, 
-            the :class:'StellarTemplate' is loaded from there.
-        velocity_offset (Optional[float]): Upon template creation, hand the 
-            velocity-offset between the observation and reference spectrum.
-            Leave as None when loading from file (default).
-        bary_vel_corr (Optional[float]): Upon template creation, hand the 
-            barycentric velocity of the observation. Leave as None when loading 
-            from file (default).
-        osample (Optional[int]): Upon template creation, hand the oversampling
-            factor used in the template creation. Leave as None when loading 
-            from file (default).
+    :param observation: Hand a :class:`Observation` object upon template 
+        creation. Otherwise, if a pathname is given, the 
+        :class:`StellarTemplate` is loaded from there.
+    :type observation: :class:`Observation`, or str
+    :param velocity_offset: Upon template creation, hand the velocity-offset 
+        between the observation and reference spectrum. Leave as None when 
+        loading from file (default).
+    :type velocity_offset: float, or None
+    :param bary_vel_corr: Upon template creation, hand the barycentric velocity 
+        of the observation. Leave as None when loading from file (default).
+    :type bary_vel_corr: float, or None
+    :param osample: Upon template creation, hand the oversampling factor used 
+        in the template creation. Leave as None when loading from file 
+        (default).
+    :type osample: int, or None
+    
     """
 
     def __init__(self, observation, velocity_offset=None, bary_vel_corr=None, 
@@ -82,9 +85,10 @@ class StellarTemplate(MultiOrderSpectrum):
     def save(self, filename):
         """Save as HDF5 file (.h5)
         
-        Args:
-            filename (str): The pathname of the directory where to save the
-                file, or the filename itself.
+        :param filename: The pathname of the directory where to save the
+            file, or the filename itself.
+        :type filename: str
+        
         """
         # TODO: Add other formats
         if os.path.isdir(filename):
@@ -127,25 +131,28 @@ class StellarTemplate(MultiOrderSpectrum):
 class StellarTemplate_Chunked:
     """A deconvolved stellar template, with chunks remaining separated
     
-    The :class:'StellarTemplate_Chunked' is represented as a list of individual
-    :class:'TemplateChunks', with additional parameters and methods.
+    The :class:`StellarTemplate_Chunked` is represented as a list of individual
+    :class:`TemplateChunks`, with additional parameters and methods.
     Used for I2 reduction similar as in Lick dop code, where observation
     chunks are defined over the same wavelengths as the template chunks
     (shifted by relative barycentric velocity).
     
-    Args:
-        observation (:class:'Observation' or str): Hand a :class:'Observation' 
-            object upon template creation. Otherwise, if a pathname is given, 
-            the :class:'StellarTemplate' is loaded from there.
-        velocity_offset (Optional[float]): Upon template creation, hand the 
-            velocity-offset between the observation and reference spectrum.
-            Leave as None when loading from file (default).
-        bary_vel_corr (Optional[float]): Upon template creation, hand the 
-            barycentric velocity of the observation. Leave as None when loading 
-            from file (default).
-        osample (Optional[int]): Upon template creation, hand the oversampling
-            factor used in the template creation. Leave as None when loading 
-            from file (default).
+    :param observation: Hand a :class:`Observation` object upon template 
+        creation. Otherwise, if a pathname is given, the 
+        :class:`StellarTemplate_Chunked` is loaded from there.
+    :type observation: :class:`Observation` or str
+    :param velocity_offset: Upon template creation, hand the velocity-offset 
+        between the observation and reference spectrum. Leave as None when 
+        loading from file (default).
+    :type velocity_offset: float, or None
+    :param bary_vel_corr: Upon template creation, hand the barycentric velocity 
+        of the observation. Leave as None when loading from file (default).
+    :type bary_vel_corr: float, or None
+    :param osample: Upon template creation, hand the oversampling factor used 
+        in the template creation. Leave as None when loading from file 
+        (default).
+    :type osample: int, or None
+    
     """
 
     def __init__(self, observation, velocity_offset=None, bary_vel_corr=None, 
@@ -205,52 +212,77 @@ class StellarTemplate_Chunked:
     def append(self, templatechunk):
         """Append chunks to the list
         
-        Args:
-            templatechunk (:class:'TemplateChunk'): The chunk to append.
+        :param templatechunk: The chunk to append.
+        :type: :class:`TemplateChunk`
+        
         """
         self.chunks.append(templatechunk)
     
     @property
     def orders(self):
-        """A ndarray containing the order number of each :class:'TemplateChunk'
+        """A ndarray containing the order number of each :class:`TemplateChunk`
+        
+        :return: The order numbers.
+        :rtype: ndarray[nr_chunks]
         """
         return np.array([chunk.order for chunk in self.chunks], dtype='int')
     
     @property
     def orders_unique(self):
         """A ndarray containing the orders covered by the template
+        
+        :return: The unique order numbers.
+        :rtype: ndarray[nr_orders]
         """
         return np.sort(np.unique(self.orders))
     
     @property
     def pix0(self):
         """A ndarray containing the first pixel index of each
-        :class:'TemplateChunk'
+        :class:`TemplateChunk`
+        
+        :return: The pixel 0 values.
+        :rtype: ndarray[nr_chunks]
         """
         return np.array([chunk.pix0 for chunk in self.chunks])
     
     @property
     def weight(self):
-        """A ndarray containing the weight of each :class:'TemplateChunk'
+        """A ndarray containing the weight of each :class:`TemplateChunk`
+        
+        :return: The weights of the chunks.
+        :rtype: ndarray[nr_chunks]
         """
         return np.array([chunk.weight for chunk in self.chunks])
     
     @property
     def w0(self):
         """A ndarray containing the wavelength intercepts of each
-        :class:'TemplateChunk'
+        :class:`TemplateChunk`
+        
+        :return: The wavelength intercepts of the chunks.
+        :rtype: ndarray[nr_chunks]
         """
         return np.array([chunk.w0 for chunk in self.chunks])
     
     @property
     def w1(self):
         """A ndarray containing the wavelength slopes of each 
-        :class:'TemplateChunk'
+        :class:`TemplateChunk`
+        
+        :return: The wavelength slopes of the chunks.
+        :rtype: ndarray[nr_chunks]
         """
         return np.array([chunk.w1 for chunk in self.chunks])
     
     def get_order_indices(self, order) -> list:
         """Return a list of indices of the chunks within a given order
+        
+        :param order: The order of interest.
+        :type order: int
+        
+        :return: The chunk indices within the order.
+        :rtype: list
         """
         return [i for i in range(len(self)) if self.chunks[i].order == order]
     
@@ -260,13 +292,18 @@ class StellarTemplate_Chunked:
         If no such chunk is found, raise a NoDataError. Otherwise return the
         chunk index and coverage as a tuple.
         
-        Args:
-            wave_start (float): The starting wavelength.
-            wave_stop (float): The stopping wavelength.
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
         
-        Return:
-            tuple(int, float): The chunk which best covers the wavelength
-                range, and the coverage (as a value between 0. and 1.).
+        :return: The index of the chunk which best covers the wavelength
+            range.
+        :rtype: int
+        :return: A value between 0.0 and 1.0, telling how big a fraction of 
+            the wavelength range [wave_start:wave_stop] is covered by data.
+        :rtype: float
+        
         """
         selected_chunk = None
         best_coverage = 0.
@@ -293,15 +330,17 @@ class StellarTemplate_Chunked:
         wave_start and wave_stop. If multiple results, return the one with best 
         coverage.
         
-        Args:
-            wave_start (float): The starting wavelength.
-            wave_stop (float): The stopping wavelength.
-            require (Optional[str]): If require='full', ensure that the full 
-                interval is covered (one pixel outside in each end).
+        :param wave_start: Starting wavelength.
+        :type wave_start: float
+        :param wave_stop: Stopping wavelength.
+        :type wave_stop: float
+        :param require: If require='full', ensure that the full interval is 
+            covered (one pixel outside in each end).
+        :type require: str, or None
         
-        Return:
-            :class:'TemplateChunk': The chunk which best covers the selected
-                wavelength range.
+        :return: The chunk which best covers the selected wavelength range.
+        :rtype: :class:`TemplateChunk`
+        
         """
         selected_chunk, best_coverage = \
             self.check_wavelength_range(wave_start, wave_stop)
@@ -312,9 +351,10 @@ class StellarTemplate_Chunked:
     def save(self, filename):
         """Save as HDF5 file (.h5)
         
-        Args:
-            filename (str): The pathname of the directory where to save the
-                file, or the filename itself.
+        :param filename: The pathname of the directory where to save the
+            file, or the filename itself.
+        :type filename: str
+        
         """
         # TODO: Add other formats
         if os.path.isdir(filename):
