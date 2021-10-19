@@ -8,15 +8,27 @@ Welcome to pyodine's documentation!
 
 The **pyodine** package helps you to determine precise *radial velocities* from stellar spectra, using the iodine (I2) cell method developed by `Butler et al. (1996) <https://ui.adsabs.harvard.edu/abs/1996PASP..108..500B/abstract/>`_.
 
-Check out the :doc:`usage` section for further information, including how to :ref:`install <installation>` the project.
+Check out the :doc:`overview` section for further information, including how to :ref:`install <installation>` the project.
 
 .. note::
    This project is under active development.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Quick start
 
+   installation
+   overview
+   api
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorial
+
+   tutorial/preparation
+   tutorial/template
+   tutorial/observation
+   tutorial/velocities
 
 
 Indices and tables
@@ -25,11 +37,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Contents
---------
-
-.. toctree::
-   
-   usage
-   api
