@@ -28,13 +28,14 @@ class SimpleDeconvolver():#Deconvolver):
     manually with lsf_fixed), stitches the deconvolved chunks together and thus
     produces a 2D template (orders and pixels).
     
-    Args:
-        ostar_chunks (:class:'ChunkArray'): Chunks of the modelled O-star
-            observation.
-        ostar_model (:class:'SimpleModel'): The employed model for the fitting
-            of the O-star observation.
-        ostar_params (list): The :class:'ParameterSet' objects for each O-star
-            chunk containing the best-fit results.
+    :param ostar_chunks: Chunks of the modelled O-star observation.
+    :type ostar_chunks: :class:`ChunkArray`
+    :param ostar_model: The employed model for the fitting of the O-star 
+        observation.
+    :type ostar_model: :class:`SimpleModel`
+    :param ostar_params: The :class:`ParameterSet` objects for each O-star
+        chunk containing the best-fit results.
+    :type ostar_params: list[:class:`ParameterSet`]
     """
     def __init__(self, ostar_chunks, ostar_model, ostar_params):
         self.ostar_chunks = ostar_chunks
@@ -44,23 +45,27 @@ class SimpleDeconvolver():#Deconvolver):
     def deconvolve_obs(self, normalized_observation, velocity_offset, bary_v,
                        lsf_fixed=None, deconv_pars=None):
         """Deconvolve all orders in 'normalized_observation' and return a
-        :class:'StellarTemplate' object
+        :class:`StellarTemplate` object
         
-        Args:
-            normalized_observation (:class:'NormalizedObservation'): The 
-                normalized stellar observation spectrum (without I2).
-            velocity_offset (float): The velocity-offset of the stellar 
-                template to the reference spectrum.
-            bary_v (float): The barycentric velocity of the stellar template.
-            lsf_fixed (Optional[ndarray[nr_chunks,nr_pix_lsf]]): If an array 
-                with a pre-defined lsf (e.g. smoothed lsf) is given, this one
-                is used in the deconvolution. Defaults to None.
-            deconv_pars (Optional[dict]): A set of deconvolution parameters. If
-                None is given, a hardcoded set is used (Default).
+        :param normalized_observation: The normalized stellar observation 
+            spectrum (without I2).
+        :type normalized_observation: :class:`NormalizedObservation`
+        :param velocity_offset: The velocity-offset of the stellar template to 
+            the reference spectrum.
+        :type velocity_offset: float
+        :param bary_v: The barycentric velocity of the stellar template.
+        :type bary_v: float
+        :param lsf_fixed: If an array with a pre-defined lsf (e.g. smoothed 
+            lsf) is given, this one is used in the deconvolution. Defaults to 
+            None.
+        :type lsf_fixed: ndarray[nr_chunks,nr_pix_lsf], or None
+        :param deconv_pars: A set of deconvolution parameters. If None is 
+            given, a hardcoded set is used (Default).
+        :type deconv_pars: dict, or None
         
-        Return:
-            :class:'StellarTemplate': The deconvolved stellar template with
-                chunks within an order stitched together.
+        :return: The deconvolved stellar template with chunks within an order 
+            stitched together.
+        :rtype: :class:`StellarTemplate`
         """
         
         if deconv_pars == None:
@@ -79,25 +84,30 @@ class SimpleDeconvolver():#Deconvolver):
         for i in normalized_observation.orders:
             print('Deconvolve order ', i)
             sys.stdout.flush()  # TODO: Logging
-            template[i] = self.deconvolve_single(normalized_observation[i], i, lsf_fixed, deconv_pars)
+            template[i] = self.deconvolve_single(normalized_observation[i], i, 
+                    deconv_pars, lsf_fixed)
         return template
 
-    def deconvolve_single(self, normalized_spectrum, order, lsf_fixed, deconv_pars):
+    def deconvolve_single(self, normalized_spectrum, order, deconv_pars, 
+                          lsf_fixed=None):
         """Deconvolve a single order using LSFs from fitted O-star chunks and
         return a new :class:'Spectrum' object
         
-        Args:
-            normalized_spectrum (:class:'Spectrum'): An order of the
-                normalized stellar observation.
-            order (int): The order number to work on.
-            lsf_fixed (ndarray[nr_chunks,nr_pix_lsf]): If an array 
-                with a pre-defined lsf (e.g. smoothed lsf) is given, this one
-                is used in the deconvolution. If None, the lsfs are constructed
-                from the best-fit parameters from the O-star modelling.
-            deconv_pars (dict): A set of deconvolution parameters.
+        :param normalized_spectrum: An order of the normalized stellar 
+            observation.
+        :type normalized_spectrum: :class:`Spectrum`
+        :param order: The order number to work on.
+        :type order: int
+        :param deconv_pars: A set of deconvolution parameters.
+        :type deconv_pars: dict
+        :param lsf_fixed: If an array with a pre-defined lsf (e.g. smoothed 
+            lsf) is given, this one is used in the deconvolution. If None, the 
+            lsfs are constructed from the best-fit parameters from the O-star 
+            modelling.
+        :type lsf_fixed: ndarray[nr_chunks,nr_pix_lsf], list, or None
         
-        Return:
-            :class:'Spectrum': The deconvolved order.
+        :return: The deconvolved order.
+        :rtype: :class:`Spectrum`
         """
 
         osample = deconv_pars['osample_temp'] #10.0    # Oversampling factor in Jansson deconvolution
@@ -140,7 +150,7 @@ class SimpleDeconvolver():#Deconvolver):
 
             # Get and evaluate the LSF model
             lsf_params = self.ostar_params[i].filter(prefix='lsf')
-            if lsf_fixed is None:
+            if not isinstance(lsf_fixed, (list,np.ndarray)):
                 lsf = self.ostar_model.lsf_model.eval(pix_lsf, lsf_params)  # TODO: Maybe better to use the same x-vector as in the fit?
             else:
                 lsf = lsf_fixed[i]
@@ -208,15 +218,16 @@ class ChunkedDeconvolver():#Deconvolver):
     A deconvolver, that deconvolves all chunks of a stellar spectrum
     with the help of a LSF (either directly from the O-star model, or handed in 
     manually with lsf_fixed), but does not stitch them together. Rather it 
-    returns a :class:'StellarTemplate_Chunked' object.
+    returns a :class:`StellarTemplate_Chunked` object.
     
-    Args:
-        ostar_chunks (:class:'ChunkArray'): Chunks of the modelled O-star
-            observation.
-        ostar_model (:class:'SimpleModel'): The employed model for the fitting
-            of the O-star observation.
-        ostar_params (list): The :class:'ParameterSet' objects for each O-star
-            chunk containing the best-fit results.
+    :param ostar_chunks: Chunks of the modelled O-star observation.
+    :type ostar_chunks: :class:`ChunkArray`
+    :param ostar_model: The employed model for the fitting of the O-star 
+        observation.
+    :type ostar_model: :class:`SimpleModel`
+    :param ostar_params: The :class:`ParameterSet` objects for each O-star
+        chunk containing the best-fit results.
+    :type ostar_params: list[:class:`ParameterSet`]
     """
     def __init__(self, ostar_chunks, ostar_model, ostar_params):
         self.ostar_chunks = ostar_chunks
@@ -226,26 +237,30 @@ class ChunkedDeconvolver():#Deconvolver):
     def deconvolve_obs(self, normalized_observation, velocity_offset, bary_v, 
                        weights=None, lsf_fixed=None, deconv_pars=None):
         """Deconvolve all orders in 'normalized_observation' and return a
-        :class:'StellarTemplate_Chunked' object
+        :class:`StellarTemplate_Chunked` object
         
-        Args:
-            normalized_observation (:class:'NormalizedObservation'): The 
-                normalized stellar observation spectrum (without I2).
-            velocity_offset (float): The velocity-offset of the stellar 
-                template to the reference spectrum.
-            bary_v (float): The barycentric velocity of the stellar template.
-            weights (Optional[ndarray[nr_chunks]]): If an array with chunk
-                weights is supplied, these are passed into the
-                :class:'StellarTemplate_Chunked' object. If None, weights are
-                calculated analytically (default).
-            lsf_fixed (Optional[ndarray[nr_chunks,nr_pix_lsf]]): If an array 
-                with a pre-defined lsf (e.g. smoothed lsf) is given, this one
-                is used in the deconvolution. Defaults to None.
-            deconv_pars (Optional[dict]): A set of deconvolution parameters. If
-                None is given, a hardcoded set is used (Default).
+        :param normalized_observation: The normalized stellar observation 
+            spectrum (without I2).
+        :type normalized_observation: :class:`NormalizedObservation`
+        :param velocity_offset: The velocity-offset of the stellar template to 
+            the reference spectrum.
+        :type velocity_offset: float
+        :param bary_v: The barycentric velocity of the stellar template.
+        :type bary_v: float
+        :param weights: If an array with chunk weights is supplied, these are 
+            passed into the :class:`StellarTemplate_Chunked` object. If None, 
+            weights are calculated analytically (default).
+        :type weights: ndarray[nr_chunks], or None
+        :param lsf_fixed: If an array with a pre-defined lsf (e.g. smoothed 
+            lsf) is given, this one is used in the deconvolution. Defaults to 
+            None.
+        :type lsf_fixed: ndarray[nr_chunks,nr_pix_lsf], or None
+        :param deconv_pars: A set of deconvolution parameters. If None is 
+            given, a hardcoded set is used (Default).
+        :type deconv_pars: dict, or None
         
-        Return:
-            :class:'StellarTemplate_Chunked': The deconvolved stellar template.
+        :return: The deconvolved stellar template.
+        :rtype: :class:`StellarTemplate_Chunked`
         """
         
         if deconv_pars == None:
@@ -269,31 +284,36 @@ class ChunkedDeconvolver():#Deconvolver):
                 #print('Deconvolve chunk ', i)
                 sys.stdout.flush()  # TODO: Logging
                 temp_chunk = self.deconvolve_single_chunk(normalized_observation, i, deconv_pars, 
-                                                          weights, lsf_fixed)
+                                                          weights=weights, lsf_fixed=lsf_fixed)
                 template.append(temp_chunk)
                 bar.update(i+1)
         
         return template
 
-    def deconvolve_single_chunk(self, normalized_observation, i, deconv_pars, weights, lsf_fixed):
+    def deconvolve_single_chunk(self, normalized_observation, i, deconv_pars, 
+                                weights=None, lsf_fixed=None):
         """Deconvolve a single chunk using the lsf from the fitted O-star chunks 
-        (or the fixed lsf if given) and return it as a :class:'TemplateChunk'
+        (or the fixed lsf if given) and return it as a :class:`TemplateChunk`
         object
         
-        Args:
-            normalized_observation (:class:'NormalizedObservation'): The 
-                normalized stellar observation spectrum (without I2).
-            i (int): The chunk number to work on.
-            deconv_pars (dict): A set of deconvolution parameters.
-            weights (ndarray[nr_chunks]): An array with chunk weights. If None, 
-                weights are calculated analytically.
-            lsf_fixed (ndarray[nr_chunks,nr_pix_lsf]): If an array 
-                with a pre-defined lsf (e.g. smoothed lsf) is given, this one
-                is used in the deconvolution. If None, the lsfs are constructed
-                from the best-fit parameters from the O-star modelling.
+        :param normalized_observation: The normalized stellar observation 
+            spectrum (without I2).
+        :type normalized_observation: :class:`NormalizedObservation`
+        :param i: The chunk number to work on.
+        :type i: int
+        :param deconv_pars: A set of deconvolution parameters.
+        :type deconv_pars: dict
+        :param weights: An array with chunk weights. If None, weights are 
+            calculated analytically.
+        :type weights: ndarray[nr_chunks], list, or None
+        :param lsf_fixed: If an array with a pre-defined lsf (e.g. smoothed 
+            lsf) is given, this one is used in the deconvolution. If None, the 
+            lsfs are constructed from the best-fit parameters from the O-star 
+            modelling.
+        :type lsf_fixed: ndarray[nr_chunks,nr_pix_lsf], list, or None
         
-        Return:
-            :class:'TemplateChunk': The deconvolved chunk spectrum.            
+        :return: The deconvolved chunk spectrum.
+        :rtype: :class:`TemplateChunk`          
         """
 
         osample = deconv_pars['osample_temp'] #10.0    # Oversampling factor in Jansson deconvolution
@@ -333,7 +353,7 @@ class ChunkedDeconvolver():#Deconvolver):
 
         # Get and evaluate the LSF model
         lsf_params = self.ostar_params[i].filter(prefix='lsf')
-        if lsf_fixed is None:
+        if not isinstance(lsf_fixed, (list,np.ndarray)):
             lsf = self.ostar_model.lsf_model.eval(pix_lsf, lsf_params)  # TODO: Maybe better to use the same x-vector as in the fit?
         else:
             lsf = lsf_fixed[i]
@@ -346,7 +366,7 @@ class ChunkedDeconvolver():#Deconvolver):
         order = ochunk.order
         pix0 = ochunk.abspix[0]
         
-        if weights is None:
+        if not isinstance(weights, (list,np.ndarray)):
             # Analytic chunk weights - need to reduce dispersion by template oversampling factor
             chunk_weight = misc.analytic_chunk_weights(flux_deconv, w0, w1/osample)
         else:
@@ -363,21 +383,27 @@ def jansson(observed, lsf, niter, a=0.0, b=1.0, delta=0.1, chi_change=1e-8):
     
     P. Heeren: Added chi_change (from Lick dop code)
     
-    Args:
-        observed (ndarray[nr_pix]): The flux values of the observed spectrum.
-        lsf (ndarray[nr_pix_lsf]): The Line Spread Function for the 
-            deconvolution (assumed normalized to sum(lsf)=1.0).
-        niter (int): Maximum number of iterations for the algorithm.
-        a (Optional[float]): Zero-level of the deconvolved spectrum. Defaults
-            to 0.0 (to enforce positivity).
-        b (Optional[float]): Continuum level of the deconvolved spectrum.
-            Defaults to 1.0 (to enforce the continuum).
-        delta (Optional[float]): Convergence parameter. Defaults to 0.1.
-        chi_change (Optional[float]): Minimum change of red. Chi**2 in Jansson 
-            deconvolution before iterations are stopped.
+    :param observed: The flux values of the observed spectrum.
+    :type observed: ndarray[nr_pix]
+    :param lsf: The Line Spread Function for the deconvolution (assumed 
+        normalized to sum(lsf)=1.0).
+    :type lsf: ndarray[nr_pix_lsf]
+    :param niter: Maximum number of iterations for the algorithm.
+    :type niter: int
+    :param a: Zero-level of the deconvolved spectrum. Defaults to 0.0 (to 
+        enforce positivity).
+    :type a: float
+    :param b: Continuum level of the deconvolved spectrum. Defaults to 1.0 (to 
+        enforce the continuum).
+    :type b: float
+    :param delta: Convergence parameter. Defaults to 0.1.
+    :type delta: float
+    :param chi_change: Minimum change of red. Chi**2 in Jansson deconvolution 
+        before iterations are stopped. Defaults to 1e-8.
+    :type chi_change: float
     
-    Return:
-        ndarray[nr_pix]: The deconvolved spectrum.
+    :return: The deconvolved spectrum.
+    :rtype: ndarray[nr_pix]
     """
     
     old = observed
@@ -404,32 +430,5 @@ def jansson(observed, lsf, niter, a=0.0, b=1.0, delta=0.1, chi_change=1e-8):
         if abs((old_chi/chi)-1.) < chi_change:
             #print(k, (old_chi/chi))
             k = niter + 1
-    """
-    # This is how it is done in Lick dop code
-    spec = observed
-    dsp = spec
-    inpr = lsf
-    fake_sp = np.convolve(dsp, inpr, 'same')
-    diff = dsp - fake_sp
     
-    chi = 1.
-    k = -1
-    while k <= niter:
-        k += 1
-        old_chi = chi
-        # Smoothing
-        diff = signal.wiener(diff, mysize=15, noise=None)
-        # Relaxation function
-        rcor = delta * (1.0 - np.abs(dsp - (a + b) / 2.0) * 2.0 / (b - a))
-        dsp = dsp + rcor * diff
-        fake_sp = np.convolve(dsp, inpr, 'same')
-        old = dsp
-        
-        diff = spec - fake_sp
-        
-        chi = np.std(diff**2)
-        if ((old_chi/chi)-1.) < chi_change:
-            print(k)
-            k = niter + 1
-    """
-    return old  # TODO: Return only the valid range?
+    return old

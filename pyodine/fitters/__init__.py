@@ -12,18 +12,20 @@ _result_keys = ['observation', 'chunks', 'params', 'errors', 'reports',
 def save_results(filename, fit_results, filetype='h5py'):
     """Preliminary function to save a set of results
     
-    Second argument is a list of :class:'LmfitResult' objects.
+    Second argument is a list of :class:`LmfitResult` objects.
     If 'filename' exists, it will be overwritten.
     
-    Args:
-        filename (str): Output path for the results file.
-        fit_results (list): A list of :class:'LmfitWrapper.LmfitResult' objects.
-        filetype (Optional[str]): In which format should the results be written?
-            Default is 'h5py', which saves the most important data in a
-            dictionary format to a compact hdf5-file. If 'dill' is specified
-            instead, the full object structure is saved and can be recovered
-            later for in-depth analysis. Note that this requires a lot more 
-            memory!
+    :param filename: Output path for the results file.
+    :type filename: str
+    :param fit_results: The list of :class:`LmfitWrapper.LmfitResult` objects 
+        to save.
+    :type fit_results: list[:class:`LmfitWrapper.LmfitResult`]
+    :param filetype: In which format should the results be written? Default is 
+        'h5py', which saves the most important data in a dictionary format to a 
+        compact hdf5-file. If 'dill' is specified instead, the full object 
+        structure is saved and can be recovered later for in-depth analysis. 
+        Note that this requires a lot more memory!
+    :type filetype: str
     """
     
     # If savetype is dill, save the whole object structure
@@ -118,15 +120,16 @@ def load_results(filename, filetype='h5py'):
     Returns them either as dictionary, if the filetype is 'h5py', or as the
     original object structure if filetype is 'dill'.
     
-    Args:
-        filename (str): Path to the file.
-        filetype (Optional[str]): If 'h5py', the results are returned as
-            dictionary (default). If 'dill', the original object structure
-            is recovered. Note: Obviously the filetype must match the actual
-            type of the file to be loaded!
+    :param filename: Path to the file.
+    :type filename: str
+    :param filetype: If 'h5py', the results are returned as dictionary 
+        (default). If 'dill', the original object structure is recovered. 
+        Note: Obviously the filetype must match the actual type of the file to 
+        be loaded!
+    :type filetype: str
     
-    Return:
-        dict or list: The fit results.
+    :return: The fit results.
+    :rtype: dict or list[:class:`LmfitResult`]
     """
     
     if filetype == dill:
