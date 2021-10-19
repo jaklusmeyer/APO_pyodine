@@ -21,24 +21,32 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
     shade the regions affected by them. If savename is given,
     the plot is saved.
     
-    Args:
-        fit_results (list): A list containing instances of :class:'LmfitResult'
-            for each chunk.
-        chunk_array (:class:'ChunkArray'): The chunks of the observation.
-        chunk_nr (int): The index of the chunk to plot.
-        template (Optional[bool]): True if the template should be plotted,
-            False if not (e.g. in O-star models). Defaults to True.
-        tellurics (Optional[:class:'SimpleTellurics']): An instance of tellurics.
-            If None, they are not included (default).
-        weight (Optional[ndarray]): An array of pixel weights, to display which
-            pixels were excluded in the modelling. Defaults to None.
-        title (Optional[str]): A title for the plot. If None, a default title
-            is used.
-        savename (Optional[str]): If a pathname is given, the plot is saved
-            there. Defaults to None.
-        dpi (Optional[int]): DPI of the saved plot. Defaults to 300.
-        show_plot (Optional[bool]): If True, the plot is showed during execution.
-            Defaults to False.
+    :param fit_results: A list containing instances of :class:`LmfitResult`
+        for each chunk.
+    :type fit_results: list[:class:`LmfitResult`]
+    :param chunk_array: The chunks of the observation.
+    :type chunk_array: :class:`ChunkArray`
+    :param chunk_nr: The index of the chunk to plot.
+    :type chunk_nr: int
+    :param template: True if the template should be plotted, False if not 
+        (e.g. in O-star models). Defaults to True.
+    :type template: bool
+    :param tellurics: An instance of tellurics. If None, they are not included 
+        (default).
+    :type tellurics: :class:`SimpleTellurics` or None
+    :param weight:An array of pixel weights, to display which pixels were 
+        excluded in the modelling. Defaults to None.
+    :type weight: ndarray or None
+    :param title: A title for the plot. If None, a default title is used.
+    :type title: str or None
+    :param savename: If a pathname is given, the plot is saved there. Defaults 
+        to None.
+    :type savename: str or None
+    :param dpi: DPI of the saved plot. Defaults to 300.
+    :type dpi: int
+    :param show_plot: If True, the plot is showed during execution. Defaults 
+        to False.
+    :type show_plot: bool
     """
     # Evaluate model
     try:
@@ -152,27 +160,30 @@ def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, title='',
     If tellurics are given, both the complete residuals and those outside of 
     the telluric regions are plotted. 
     
-    Args:
-        fit_results (list): A list containing instances of :class:'LmfitResult'
-            for each chunk.
-        residual_arr (Optional[tuple, list, ndarray]): If supplied, just use 
-            this data for the plot (if tuple: all residuals and sub residuals, 
-            otherwise just one array of residuals). If left free, calculate 
-            the data from fit_results.
-        tellurics (Optional[:class:'SimpleTellurics']): An instance of 
-            tellurics, to disregard affected pixels in the computation of 
-            the sub residuals array. Defaults to None.
-        title (Optional[str]): A title for the plot. If None, a default title
-            is used.
-        savename (Optional[str]): If a pathname is given, the plot is saved
-            there. If None, then no saving.
-        dpi (Optional[int]): DPI of the saved plot. Defaults to 300.
-        show_plot (Optional[bool]): If True, the plot is shown during execution.
-            Defaults to False.
-       
-       Return:
-           tuple or ndarray: The calculated residuals (either both all and sub,
-                or only all).
+    :param fit_results: A list containing instances of :class:`LmfitResult`
+        for each chunk.
+    :type fit_results: list[:class:`LmfitResult`]
+    :param residual_arr: If supplied, just use this data for the plot (if 
+        tuple: all residuals and sub residuals, otherwise just one array of 
+        residuals). If left free, calculate the data from fit_results.
+    :type residual_arr: tuple, list, ndarray, or None
+    :param tellurics: An instance of tellurics. If None, they are not included 
+        (default).
+    :type tellurics: :class:`SimpleTellurics` or None
+    :param title: A title for the plot. If None, a default title is used.
+    :type title: str or None
+    :param savename: If a pathname is given, the plot is saved there. Defaults 
+        to None.
+    :type savename: str or None
+    :param dpi: DPI of the saved plot. Defaults to 300.
+    :type dpi: int
+    :param show_plot: If True, the plot is showed during execution. Defaults 
+        to False.
+    :type show_plot: bool
+    
+    :return: The calculated residuals (either both all and sub, or only all).
+    :rtype: tuple or ndarray
+    
     """
     if residual_arr is None:
         all_res = np.array([robust_std(r.residuals/r.fitted_spectrum.flux*1e2) for r in fit_results \
@@ -244,66 +255,84 @@ def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1.,
     
     Plot any data for all chunks via 'scatter' and/or 'curve'.
     
-    Args:
-        scatter (Optional[list, ndarray, tuple]): Data that should be plotted
-            as scatter. Can be 2D, that is multiple datasets for all chunks.
-            All other scatter keywords only come in place if this is provided.
-        scatter_fmt (Optional[str]): The format of the scatter points. Defaults
-            to 'o'.
-        scatter_alpha (Optional[float]): The alpha-value of the scatter points 
-            (should be between 0. and 1.). Defaults to 1.
-        scatter_label (Optional[list, ndarray, tuple, str]): Provide labels for
-            the scatter data. Can be a list with labels for each scatter
-            dataset, if multiple are given.
-        curve (Optional[list, ndarray, tuple]): Data that should be plotted
-            as curve. Can be 2D, that is multiple datasets for all chunks.
-            All other curve keywords only come in place if this is provided.
-        curve_fmt (Optional[str]): The linestyle format. Defaults to '-'.
-        curve_alpha (Optional[float]): The alpha-value of the curves 
-            (should be between 0. and 1.). Defaults to 1.
-        curve_label (Optional[list, ndarray, tuple, str]): Provide labels for
-            the curve data. Can be a list with labels for each curve
-            dataset, if multiple are given.
-        errorbar (Optional[list, ndarray, tuple]): Data that should be plotted
-            as errorbars. Can be 2D, that is multiple datasets for all chunks.
-            All other errorbar keywords only come in place if this is provided.
-        errorbar_yerr (Optional[list, ndarray, tuple]): The y-errors of the
-            errorbar data. Make sure the format works! If None, no errorbars
-            are plotted.
-        errorbar_fmt (Optional[str]): The linestyle format. Defaults to '.'.
-        errorbar_alpha (Optional[float]): The alpha-value of the errorbars 
-            (should be between 0. and 1.). Defaults to 1.
-        errorbar_label (Optional[list, ndarray, tuple, str]): Provide labels 
-            for the errorbar data. Can be a list with labels for each errorbar
-            dataset, if multiple are given.
-        hlines (Optional[int, float, list, ndarray, tuple]): Data that should 
-            be plotted as horizontal line. If not a single number, then 
-            multiple lines are plotted. All other hlines keywords only come in 
-            place if this is provided.
-        hlines_fmt (Optional[str]): The linestyle format. Defaults to '.'.
-        hlines_alpha (Optional[float]): The alpha-value of the hlines 
-            (should be between 0. and 1.). Defaults to 1.
-        hlines_label (Optional[list, ndarray, tuple, str]): Provide labels 
-            for the hlines. Can be a list with labels for each hlines
-            dataset, if multiple are given.
-        hlines_color (Optional[list, ndarray, tuple, str, int, float]): The
-            color(s) of the line(s).
-        ylabel (Optional[str]): The label of the y-axis. Defaults to None.
-        ylog (Optional[bool]): If True, logscale y-axis. Defaults to False.
-        yrange(Optional[list,tuple]): The range of the y-axis. Defaults to 
-            None.
-        grid (Optional[bool]): Whether or not to plot a grid. Defaults to True.
-        nr_chunks_order (Optional[int]): Number of chunks per order. If this
-            and nr_orders is given, the order borders are plotted.
-        nr_orders (Optional[int]): Number of orders. If this and 
-            nr_chunks_orders is given, the order borders are plotted.
-        title (Optional[str]): A title for the plot. If None, a default title
-            is used.
-        savename (Optional[str]): If a pathname is given, the plot is saved
-            there. If None, then no saving.
-        dpi (Optional[int]): DPI of the saved plot. Defaults to 300.
-        show_plot (Optional[bool]): If True, the plot is shown during execution.
-            Defaults to False.
+    :param scatter: Data that should be plotted as scatter. Can be 2D, that is 
+        multiple datasets for all chunks. All other scatter keywords only come 
+        in place if this is provided.
+    :type scatter: list, ndarray, tuple, or None
+    :param scatter_fmt: The format of the scatter points. Defaults to 'o'.
+    :type scatter_fmt: str
+    :param scatter_alpha: The alpha-value of the scatter points (should be 
+        between 0. and 1.). Defaults to 1.
+    :type scatter_alpha: float
+    :param scatter_label: Provide labels for the scatter data. Can be a list 
+        with labels for each scatter dataset, if multiple are given.
+    :type scatter_label: list, ndarray, tuple, str, or None
+    :param curve: Data that should be plotted as curve. Can be 2D, that is 
+        multiple datasets for all chunks. All other curve keywords only come in 
+        place if this is provided.
+    :type curve: list, ndarray, tuple, or None
+    :param curve_fmt: The linestyle format. Defaults to '-'.
+    :type curve_fmt: str
+    :param curve_alpha: The alpha-value of the curves (should be between 0. 
+        and 1.). Defaults to 1.
+    :type curve_alpha: float
+    :param curve_label: Provide labels for the curve data. Can be a list with 
+        labels for each curve dataset, if multiple are given.
+    :type curve_label: list, ndarray, tuple, str, or None
+    :param errorbar: Data that should be plotted as errorbars. Can be 2D, that 
+        is multiple datasets for all chunks. All other errorbar keywords only 
+        come in place if this is provided.
+    :type errorbar: list, ndarray, tuple, or None
+    :param errorbar_yerr: The y-errors of the errorbar data. Make sure the 
+        format works! If None, no errorbars are plotted.
+    :type errorbar_yerr: list, ndarray, tuple, or None
+    :param errorbar_fmt: The linestyle format. Defaults to '.'.
+    :type errorbar_fmt: str
+    :param errorbar_alpha: The alpha-value of the errorbars (should be between 
+        0. and 1.). Defaults to 1.
+    :type errorbar_alpha: float
+    :param errorbar_label: Provide labels for the errorbar data. Can be a list 
+        with labels for each errorbar dataset, if multiple are given.
+    :type errorbar_label: list, ndarray, tuple, str, or None
+    :param hlines: Data that should be plotted as horizontal line. If not a 
+        single number, then multiple lines are plotted. All other hlines 
+        keywords only come in place if this is provided.
+    :type hlines: int, float, list, ndarray, tuple, or None
+    :param hlines_fmt: The linestyle format. Defaults to '-'.
+    :type hlines_fmt: str
+    :param hlines_alpha: The alpha-value of the hlines (should be between 0. 
+        and 1.). Defaults to 1.
+    :type hlines_alpha: float
+    :param hlines_label: Provide labels for the hlines. Can be a list with 
+        labels for each hlines dataset, if multiple are given.
+    :type hlines_label: list, ndarray, tuple, str, or None
+    :param hlines_color: The color(s) of the line(s).
+    :type hlines_color: list, ndarray, tuple, str, int, float, or None
+    :param ylabel: The label of the y-axis. Defaults to None.
+    :type ylabel: str, or None
+    :param ylog: If True, logscale y-axis. Defaults to False.
+    :type ylog: bool
+    :param yrange: The range of the y-axis. Defaults to None.
+    :type yrange: list,tuple, or None
+    :param grid: Whether or not to plot a grid. Defaults to True.
+    :type grid: bool
+    :param nr_chunks_order: Number of chunks per order. If this and nr_orders 
+        is given, the order borders are plotted.
+    :type nr_chunks_order: int, or None
+    :param nr_orders: Number of orders. If this and nr_chunks_orders is given, 
+        the order borders are plotted.
+    :type nr_orders: int, or None
+    :param title: A title for the plot. If None, a default title is used.
+    :type title: str or None
+    :param savename: If a pathname is given, the plot is saved there. Defaults 
+        to None.
+    :type savename: str or None
+    :param dpi: DPI of the saved plot. Defaults to 300.
+    :type dpi: int
+    :param show_plot: If True, the plot is showed during execution. Defaults 
+        to False.
+    :type show_plot: bool
+    
     """
     # Make sure that if some input data was wrong, the whole program does not
     # crash
@@ -421,25 +450,34 @@ def plot_lsfs_grid(lsf_array, chunks, x_nr=3, y_nr=3, alpha=1.0, xlim=None,
     
     A grid of 'x_nr x y_nr' LSFs is plotted.
     
-    Args:
-        lsf_array (ndarray[nr_chunks, nr_pix]): An array of evaluated LSFs for
-            all chunks of an observation.
-        chunks (:class:'ChunkArray'): A list of chunks of an observation.
-        x_nr (Optional[int]): Number of LSFs to plot in x-direction
-            (along the orders, dispersion direction). Defaults to 3.
-        x_nr (Optional[int]): Number of LSFs to plot in y-direction
-            (across the orders, cross-dispersion direction). Defaults to 3.
-        alpha (Optional[float]): The alpha-value of the curves (should be 
-              between 0. and 1.). Defaults to 1.
-        xlim (Optional[tuple, list, ndarray]): The x-limits in LSF pixels of 
-            each subplot (left and right). If None, the whole evaluated LSF is
-            plotted.
-        grid (Optional[bool]): Whether or not to plot a grid. Defaults to True.
-        savename (Optional[str]): If a pathname is given, the plot is saved
-            there. If None, then no saving.
-        dpi (Optional[int]): DPI of the saved plot. Defaults to 300.
-        show_plot (Optional[bool]): If True, the plot is shown during execution.
-            Defaults to False.
+    :param lsf_array: An array of evaluated LSFs for all chunks of an 
+        observation.
+    :type lsf_array: ndarray[nr_chunks, nr_pix]
+    :param chunks: A list of chunks of an observation.
+    :type chunks: :class:`ChunkArray`
+    :param x_nr: Number of LSFs to plot in x-direction (along the orders, 
+        dispersion direction). Defaults to 3.
+    :type x_nr: int
+    :param y_nr: Number of LSFs to plot in y-direction (across the orders, 
+        cross-dispersion direction). Defaults to 3.
+    :type y_nr: int
+    :param alpha: The alpha-value of the curves (should be between 0. and 1.). 
+        Defaults to 1.
+    :type alpha: float
+    :param xlim: The x-limits in LSF pixels of each subplot (left and right). 
+        If None, the whole evaluated LSF is plotted.
+    :type xlim: tuple, list, ndarray, or None
+    :param grid: Whether or not to plot a grid. Defaults to True.
+    :type grid: bool
+    :param savename: If a pathname is given, the plot is saved there. Defaults 
+        to None.
+    :type savename: str or None
+    :param dpi: DPI of the saved plot. Defaults to 300.
+    :type dpi: int
+    :param show_plot: If True, the plot is showed during execution. Defaults 
+        to False.
+    :type show_plot: bool
+    
     """    
     
     nr_chunks_order = len(chunks[chunks[0].order])

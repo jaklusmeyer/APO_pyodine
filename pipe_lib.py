@@ -19,29 +19,39 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
                      use_progressbar=True):
     """Loop over all chunks and model them
     
-    Args:
-        chunks (:class:'ChunkArray'): The chunks of the observation to model.
-        chunk_weight (ndarray[nr_chunks,nr_pix]): The weights array for the
-            chunks.
-        fitter (:class:'LmfitWrapper'): The fitter instance to use.
-        lmfit_params (list): A list of :class:'lmfit.Parameters' objects for
-            the chunks.
-        tellurics (Optional[:class:'SimpleTellurics']): The tellurics to use.
-            If None, they are not used.
-        use_chauvenet (Optional[bool]): Whether to use Chauvenet criterion in
-            the modelling. Defaults to True.
-        compute_redchi2 (Optional[bool]): Whether to manually compute 
-            red. Chi**2 values for the chunks. If True, an array with the 
-            values is returned (default).
-        use_progressbar (Optional[bool]): Whether to show a progressbar during
-            the modelling. Defaults to True.
+    :params chunks: The chunks of the observation to model.
+    :type chunks: :class:`ChunkArray`
+    :param chunk_weight: The weights array for the chunks.
+    :type chunk_weight: ndarray[nr_chunks,nr_pix]
+    :param fitter: The fitter instance to use.
+    :type fitter: :class:`LmfitWrapper`
+    :param lmfit_params: A list of :class:`lmfit.Parameters` objects for the 
+        chunks.
+    :type lmfit_params: list[:class:`lmfit.Parameters`]
+    :param tellurics: The tellurics to use. If None, they are not used.
+    :type tellurics: :class:`SimpleTellurics`, or None
+    :param use_chauvenet: Whether to use Chauvenet criterion in the modelling. 
+        Defaults to True.
+    :type use_chauvenet: bool
+    :param compute_redchi2: Whether to manually compute red. Chi**2 values for 
+        the chunks. Defaults to True.
+    :type compute_redchi2: bool
+    :param use_progressbar: Whether to show a progressbar during the modelling. 
+        Defaults to True.
+    :type use_progressbar: bool
     
-    Return:
-        list: A list of :class:'LmfitResult' objects for the chunks.
-        ndarray[nr_chunks,nr_pix]: An array with updated chunk weights.
-        list: A list of chunk indices where the fitting failed.
-        list: A list of chunk indices where the Chauvenet criterion took effect.
-        ndarray: An array of manually computed red. Chi**2 values.
+    :return: The best-fit results of the modelled chunks.
+    :rtype: list[:class:`LmfitResult`]
+    :return: An array with updated chunk weights.
+    :rtype: ndarray[nr_chunks,nr_pix]
+    :return: A list of chunk indices where the fitting failed.
+    :rtype: list
+    :return: A list of chunk indices where the Chauvenet criterion took effect.
+    :rtype: list
+    :return: An array of manually computed red. Chi**2 values (or zeros if 
+        keyword **compute_redchi2** == False).
+    :rtype: ndarray[nr_chunks]
+    
     """
     
     chauvenet_outliers = []
@@ -125,40 +135,53 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                           lsf_array=None):
     """Create analysis plots for a modelling run
     
-    Args:
-        fit_results (list): A list of :class:'LmfitResult' objects of the chunks.
-        save_dir (str): The directory name where to save plots.
-        run_id (Optional[int]): The run ID (to include in plot titles and 
-               savenames, if supplied).
-        tellurics (Optional[:class:'SimpleTellurics']): The tellurics to use.
-            If None, they are not used.
-        red_chi_sq (Optional[ndarray]): An array of red. Chi**2 values to plot
-            along with the fit-results values. If None, they are not plotted.
-        nr_chunks_order (Optional[int]): The number of chunks per order, to
-            plot order borders. Defaults to None.
-        nr_orders (Optional[int]): The number of orders, to plot order borders. 
-            Defaults to None.
-        chunk_weight (Optional[ndarray[nr_chunks,nr_pix]]): The weights array 
-            for the chunks. If None, they are not included (default).
-        plot_chunks (Optional[int,list,tuple,ndarray]): Which chunks should be
-            plotted. Defaults to None.
-        chunks (Optional[:class:'ChunkArray']): The chunks of the observation.
-        wave_intercept_fit (Optional[ndarray]): Fitted wave intercepts for each
-            chunk. If None, the corresponding plots are not created.
-        wave_slope_fit (Optional[ndarray]): Fitted wave slopes for each
-            chunk. If None, the corresponding plot is not created.
-        plot_lsf_pars (Optional[bool]): Whether to plot the LSF parameters.
-            Defaults to False.
-        uncertainties_failed (Optional[list,tuple,ndarray]): Chunk indices
-            where the uncertainties were not computed. If None, no fit
-            success plot is created.
-        nan_rchi_fit (Optional[list,tuple,ndarray]): Chunk indices where the 
-            fitting failed. If None, no fit success plot is created.
-        chauvenet_outliers (Optional[list,tuple,ndarray]): Chunk indices
-            where the Chauvernet criterion took effect. If None, no fit
-            success plot is created.
-        lsf_array (Optional[ndarray]): An array of evaluated LSFs to plot
-            some exemplary ones. Defaults to None.
+    :param fit_results: A list containing instances of :class:`LmfitResult`
+        for each chunk.
+    :type fit_results: list[:class:`LmfitResult`]
+    :param save_dir: The directory name where to save plots.
+    :type save_dir: str
+    :param run_id: The run ID (to include in plot titles and savenames, 
+        if supplied).
+    :type run_id: int, or None
+    :param tellurics: An instance of tellurics. If None, they are not included 
+        (default).
+    :type tellurics: :class:`SimpleTellurics` or None
+    :param red_chi_sq: An array of red. Chi**2 values to plot along with the 
+        fit-results values. If None, they are not plotted.
+    :type red_chi_sq: ndarray[nr_chunks], or None
+    :param nr_chunks_order: Number of chunks per order. If this and nr_orders 
+        is given, the order borders are plotted.
+    :type nr_chunks_order: int, or None
+    :param nr_orders: Number of orders. If this and nr_chunks_orders is given, 
+        the order borders are plotted.
+    :type nr_orders: int, or None
+    :param chunk_weight: The weights array for the chunks.
+    :type chunk_weight: ndarray[nr_chunks,nr_pix]
+    :param plot_chunks: Which chunks should be plotted. Defaults to None.
+    :type plot_chunks: int, list, tuple, ndarray, or None
+    :param chunks: The chunks of the observation to model.
+    :type chunks: :class:`ChunkArray`
+    :param wave_intercept_fit: Fitted wave intercepts for each chunk. If None, 
+        the corresponding plots are not created.
+    :type wave_intercept_fit: ndarray[nr_chunks], or None
+    :param wave_slope_fit: Fitted wave slopes for each chunk. If None, the 
+        corresponding plot is not created.
+    :type wave_slope_fit: ndarray[nr_chunks], or None
+    :param plot_lsf_pars: Whether to plot the LSF parameters. Defaults to False.
+    :type plot_lsf_pars: bool
+    :param uncertainties_failed: Chunk indices where the uncertainties were not 
+        computed. If None, no fit success plot is created.
+    :type uncertainties_failed: list, tuple, ndarray, or None
+    :param nan_rchi_fit: Chunk indices where the fitting failed. If None, no 
+        fit success plot is created.
+    :type nan_rchi_fit: list, tuple, ndarray, or None
+    :param chauvenet_outliers: Chunk indices where the Chauvernet criterion 
+        took effect. If None, no fit success plot is created.
+    :type chauvenet_outliers: list, tuple, ndarray, or None
+    :param lsf_array: An array of evaluated LSFs to plot some exemplary ones. 
+        Defaults to None.
+    :type lsf_array: ndarray[nr_chunks, nr_pix], or None
+    
     """
     
     # I put everything in try - except, so that it does not destroy 
@@ -311,12 +334,21 @@ def velocity_results_analysis(fit_results, save_dir, nr_chunks_order,
                               nr_orders, obs_filename):
     """Perform a short analysis of velocity results
     
-    Args:
-        fit_results (list): A list of :class:'LmfitResult' objects of the chunks.
-        save_dir (str): The directory name where to save plots.
-        nr_chunks_order (int): The number of chunks per order.
-        nr_orders (int): The number of orders.
-        obs_filename (str): The filename of the modelled observation.
+    :param fit_results: A list containing instances of :class:`LmfitResult`
+        for each chunk.
+    :type fit_results: list[:class:`LmfitResult`]
+    :param save_dir: The directory name where to save plots.
+    :type save_dir: str
+    :param nr_chunks_order: Number of chunks per order. If this and nr_orders 
+        is given, the order borders are plotted.
+    :type nr_chunks_order: int, or None
+    :param nr_orders: Number of orders. If this and nr_chunks_orders is given, 
+        the order borders are plotted.
+    :type nr_orders: int, or None
+    :param obs_filename: The filename of the modelled observation (to use in
+        the plots' savenames.)
+    :type obs_filename: str
+    
     """
     
     # I put everything in try - except, so that it does not destroy 
