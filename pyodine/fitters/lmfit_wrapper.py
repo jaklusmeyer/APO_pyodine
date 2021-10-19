@@ -9,10 +9,9 @@ from ..components import NoDataError
 class LmfitWrapper(Fitter):
     """A wrapper for the LM-fitting of the chunks
     
-    Args:
-        model (:class:'SimpleModel'): A :class:'SimpleModel',
-            which contains all the required submodels that are used in the
-            fitting procedure.
+    :param model: A :class:`SimpleModel`, which contains all the required 
+        submodels that are used in the fitting procedure.
+    :type model: :class:`SimpleModel`
     """
     
     def __init__(self, model):
@@ -21,16 +20,17 @@ class LmfitWrapper(Fitter):
     @staticmethod
     def convert_params(params, to_lmfit=False, from_lmfit=False):
         """
-        Convert between :class:'ParameterSet' and :class:'lmfit.Parameters'
+        Convert between :class:`ParameterSet` and :class:`lmfit.Parameters`
         
-        Args:
-            params (:class:'ParameterSet' or :class:'lmfit.Parameters'): 
-                An object containing fitting parameters.
-            to_lmfit (Optional[bool]): Convert input to :class:lmfit.Parameters'.
-            from_lmfit (Optional[bool]): Convert input to :class:'ParameterSet'.
+        :param params: An object containing fitting parameters.
+        :type params: :class:`ParameterSet` or :class:`lmfit.Parameters`
+        :param to_lmfit: Convert input to :class:`lmfit.Parameters`.
+        :type to_lmfit: bool
+        :param from_lmfit: Convert input to :class:`ParameterSet`.
+        :type from_lmfit: bool
         
-        Returns:
-            object: The converted parameter object.
+        :return: The converted parameter object.
+        :rtype: :class:`ParameterSet` or :class:`lmfit.Parameters`
         """
         if to_lmfit:
             lmfit_params = lmfit.Parameters()
@@ -62,17 +62,20 @@ class LmfitWrapper(Fitter):
     def fit(self, chunk, lmfit_params, weight=None, chunk_ind=None, **kwargs):
         """Fit the chunk and return the best-fit result
         
-        Args:
-            chunk (:class:'Chunk'): The chunk to be modelled.
-            lmfit_params (:class:'lmfit.Parameters'): The parameter object,
-                defining starting values, limits, etc.
-            weight (Optional[ndarray[npix]]): Pixel weights to use in the
-                model evaluation.
-            chunk_ind (Optional[int]): Index of the chunk, to grab the
-                respective chunk from the template.
+        :param chunk: The chunk to be modelled.
+        :type chunk: :class:`Chunk`
+        :param lmfit_params: The parameter object, defining starting values, 
+            limits, etc.
+        :type lmfit_params: :class:`lmfit.Parameters`
+        :param weight: Pixel weights to use in the model evaluation. Defaults
+            to None.
+        :type weight: ndarray[nr_pix], or None
+        :param chunk_ind: Index of the chunk, to grab the respective chunk 
+            from the template. Defaults to None.
+        :type chunk_ind: int, or None
         
-        Returns:
-            :class:'LmfitResult': The best-fit result.
+        :return: The best-fit result.
+        :rtype: :class:`LmfitResult`
         """
         
         # Add-on: pixel weights in the fitting function, as used in dop code
@@ -106,13 +109,15 @@ class LmfitWrapper(Fitter):
     class LmfitResult(FitResult):
         """Results from LmfitWrapper
         
-        Args:
-            chunk (:class:'Chunk'): The chunk which was modelled.
-            model (:class:'SimpleModel'): The :class:'SimpleModel' object used 
-                in the fitting procedure.
-            lmfit_result (:class:'lmfit.MinimizerResult'): The best-fit results
-                from the modelling. None if it failed.
-            chunk_ind (Optional[int]): The index of the modelled chunk.
+        :param chunk: The chunk which was modelled.
+        :type chunk: :class:`Chunk`
+        :param model: The model instance used in the fitting procedure.
+        :type model: :class:`SimpleModel`
+        :param lmfit_result: The best-fit results from the modelling. None if 
+            it failed.
+        :type lmfit_result: :class:'lmfit.MinimizerResult'
+        :param chunk_ind: The index of the modelled chunk. Defaults to None.
+        :type chunk_ind: int, or None
         """
         def __init__(self, chunk, model, lmfit_result, chunk_ind=None):
             self.chunk = chunk
@@ -189,13 +194,13 @@ class LmfitWrapper(Fitter):
         """Fit the lsf model of this initialized fitter object to another
         lsf, defined by the input arguments.
         
-        Args:
-            lsf_model (:class:'LSFModel'): The LSF model to fit to.
-            params (:class:'ParameterSet'): The LSF parameters to evaluate the
-                supplied LSF model.
+        :param lsf_model: The LSF model to fit to.
+        :type lsf_model: :class:`LSFModel`
+        :param params: The LSF parameters to evaluate the supplied LSF model.
+        :type params: :class:`ParameterSet`
         
-        Returns:
-            :class:'ParameterSet': The best-fit parameters of the fit.
+        :return: The best-fit parameters of the fit.
+        :rtype: :class:`ParameterSet`
         """
         
         def fit_func(lmpars, x):

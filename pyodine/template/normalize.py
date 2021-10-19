@@ -23,10 +23,11 @@ class Normalizer:
 class SimpleNormalizer(Normalizer):
     """A simple Normalizer
     
-    Args:
-        velocity (Optional[float]): ?
-        reference (Optional[str]): The reference star, used to locate the
-            continuum. Options are 'arcturus' or 'sun' (default).
+    :param velocity: ?
+    :type velocity: float, or None
+    :param reference: The reference star, used to locate the continuum. 
+        Options are 'arcturus' or 'sun' (default).
+    :type reference: str
     """
     # This path should point to the location of ardata.fits from
     # ftp://ftp.noao.edu/catalogs/arcturusatlas/visual/
@@ -38,16 +39,17 @@ class SimpleNormalizer(Normalizer):
     def normalize_obs(self, observation, velocity, orders=None):
         """Normalize an Observation (multiorder) or a list of orders within
         
-        Args:
-            observation (:class:'Observation'): This observation will be
-                normalized.
-            velocity (float): Velocity between the observation and reference
-                spectrum.
-            orders (Optional[list]): Which orders of the observation to
-                normalize. Default is None, which means all.
+        :param observation: This observation will be normalized.
+        :type observation: :class:`Observation`
+        :param velocity: Velocity between the observation and reference
+            spectrum.
+        :type velocity: float
+        :param orders: Which orders of the observation to normalize. Default 
+            is None, which means all.
+        :type orders: list, or None
         
-        Return:
-            :class:'NormalizedObservation': The normalized observation.
+        :return: The normalized observation.
+        :rtype: :class:`NormalizedObservation`
         """
         norm_obs = NormalizedObservation(observation)
         if orders is None:
@@ -65,18 +67,19 @@ class SimpleNormalizer(Normalizer):
         possible. Fallback to envelope fitting.
         
         Returns either a new spectrum (default) or just the flux value, if
-        keyword return_type="flux".
+        keyword return_type='flux'.
         
-        Args:
-            spectrum (:class:'Spectrum'): The input spectrum to normalize.
-            velocity (float): Velocity between the observation and reference
-                spectrum.
-            return_type (Optional[str]): Whether to return as a :class:'Spectrum'
-                ('spectrum', default), or a ndarray with the flux values
-                ('flux').
+        :param spectrum: The input spectrum to normalize.
+        :type spectrum: :class:`Spectrum`
+        :param velocity: Velocity between the observation and reference
+            spectrum.
+        :type velocity: float
+        :param return_type: Whether to return as a :class:`Spectrum` 
+            ('spectrum', default), or a `ndarray` with the flux values ('flux').
+        :type return_type: str
         
-        Return:
-            ndarray or :class:'Spectrum': The normalized spectrum.
+        :return: The normalized spectrum.
+        :rtype: :class:`Spectrum` or ndarray
         """
         # Divide by extracted blaze function
         if spectrum.cont is not None:
@@ -99,16 +102,19 @@ class SimpleNormalizer(Normalizer):
         """Compare a spectrum to the normalized reference spectrum and fit the 
         continuum
         
-        Args:
-            wave (ndarray): The wavelength vector of the spectrum.
-            flux (ndarray): The flux vector of the spectrum.
-            velocity (float): Velocity between the observation and reference
-                spectrum.
-            threshold (Optional[float]): Only pixels this close to the
-                continuum are used.
+        :param wave: The wavelength vector of the spectrum.
+        :type wave: ndarray
+        :param flux: The flux vector of the spectrum.
+        :type flux: ndarray
+        :param velocity: Velocity between the observation and reference
+            spectrum.
+        :type velocity: float
+        :param threshold: Only pixels this close to the continuum are used. 
+            Defaults to 0.01.
+        :type threshold: float
         
-        Return:
-            ndarray: The fitted continuum flux.
+        :return: The fitted continuum flux.
+        :rtype: ndarray
         """
         pix = np.arange(len(wave), dtype='float')
 
@@ -136,16 +142,16 @@ class SimpleNormalizer(Normalizer):
         median of the individual velocities.
         By default, the input spectrum is normalized by dividing with the
         supplied blaze or a fit to the upper envelope of the spectrum.
-        This can
-        be disabled using keyword `normalize=False`.
+        This can be disabled using keyword 'normalize=False'.
         
-        Args:
-            spec (:class:'Observation' or :class:'Spectrum'): The input spectrum.
-            normalize (Optional[bool]): Whether the input spectrum should be
-                normalized. Default is True.
+        :param spec: The input spectrum.
+        :type spec: :class:`Observation` or :class:`Spectrum`
+        :param normalize: Whether the input spectrum should be normalized. 
+            Default is True.
+        :type normalize: bool
         
-        Return:
-            float: The velocity offset.
+        :return: The velocity offset.
+        :rtype: float
         """
         return get_velocity_offset(spec, self.reference, normalize)
 
@@ -158,16 +164,19 @@ def top(flux, deg=2, max_iter=40, eps=0.001) -> np.ndarray:
 
     Inspired by IDL function TOP from REDUCE, Piskunov & Valenti (2002)
     
-    Args:
-        flux (ndarray): A flux vector.
-        deg (Optional[int]): The polynomial degree. Defaults to 2.
-        max_iter (Optional[int]): The maximum number of iterations for the loop.
-            Defaults to 40.
-        eps (Optional[float]): If the step-to-step changes become smaller than
-            this, stop the loop. Defaults to 0.001.
+    :param flux: A flux vector.
+    :type flux: ndarray
+    :param deg: The polynomial degree. Defaults to 2.
+    :type deg: int
+    :param max_iter: The maximum number of iterations for the loop. Defaults 
+        to 40.
+    :type max_iter: int
+    :param eps: If the step-to-step changes become smaller than this, stop the 
+        loop. Defaults to 0.001.
+    :type eps: float
     
-    Return:
-        ndarray: The fitted continuum.
+    :return: The fitted continuum.
+    :rtype: ndarray
     """
     n = len(flux)
 
@@ -217,20 +226,20 @@ def get_velocity_offset(spectrum, reference, normalize=True):
     
     If spectrum is an observation or a list of spectra, return value will
     be a median of the individual velocities.
-    Keyword `normalize` determines whether to normalize `spectrum`.
+    Keyword 'normalize' determines whether to normalize 'spectrum'.
     Reference is assumed to be normalized.
 
     Sign convention: spectrum = reference * (1 + v/c)
     
-    Args:
-        spectrum (:class:'Spectrum' or :class:'MultiOrderSpectrum'): The input
-            spectrum.
-        reference (:class:'Spectrum'): The reference spectrum.
-        normalize (Optional[bool]): Whether to normalize the input spectrum.
-            Defaults to True.
+    :param spectrum: The input spectrum.
+    :type spectrum: :class:`Spectrum` or :class:`MultiOrderSpectrum`
+    :param reference: The reference spectrum.
+    :type reference: :class:`Spectrum`
+    :param normalize: Whether to normalize the input spectrum. Defaults to True.
+    :type normalize: bool
     
-    Return:
-        float: The velocity offset.
+    :return: The velocity offset.
+    :rtype: float
     """
 
     # Settings  # TODO: Add keywords for these

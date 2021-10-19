@@ -1,6 +1,6 @@
 from os.path import splitext, abspath
 
-from numpy import arange
+import numpy as np
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.io import fits as pyfits
@@ -11,20 +11,36 @@ from pyodine import components
 from utilities_lick import conf
 
 
-class IodineAtlas(components.IodineAtlas):
+class IodineTemplate(components.IodineAtlas):
+    """The iodine template class to be used in the modelling
+    
+    :param iodine_cell_id: The iodine cell ID to identify the I2 template
+        spectrum by in the :module:`conf`.
+    :type iodine_cell_id: int
+    """
     def __init__(self, iodine_cell_id):
         if iodine_cell_id in conf.my_iodine_atlases.keys():
             with h5py.File(conf.my_iodine_atlases[iodine_cell_id], 'r') as h:
                 flux = h['flux_normalized'][()]
-                #wave = h['wavelength_air'].value
                 wave = h['wavelength_air'][()]    # originally: wavelength_air
-            super().__init__(flux, wave)
             self.orig_filename = conf.my_iodine_atlases[iodine_cell_id]
+            super().__init__(flux, wave)
         else:
             raise ValueError('Unknown iodine_cell_id')
 
 
 class ObservationWrapper(components.Observation):
+    """A wrapper for the representation of Lick observation spectra
+    
+    :param filename: The filename of the observation to load.
+    :type filename: str
+    :param instrument: The instrument used to obtain the observation. If None,
+        the information is drawn from the Fits-header (default).
+    :type instrument: :class:`Instrument`
+    :param star: The star of the observation. If None, the information is 
+        drawn from the Fits-header (default).
+    :type star: :class:`Star`
+    """
 
     # Custom properties
     _spec = None    # Internal storage of spectral flux
@@ -76,7 +92,14 @@ class ObservationWrapper(components.Observation):
         # TODO: Re-calculate BVC
 
     def __getitem__(self, order) -> components.Spectrum:
-        """Return one or more spectral orders"""
+        """Return one or more spectral orders
+        
+        :param order: The order(s) of the spectrum to return.
+        :type order: int, list, ndarray, slice
+        
+        :return: The desired order(s).
+        :rtype: :class:`Spectrum` or list[:class:`Spectrum`]
+        """
         # Return one order
         if type(order) is int or hasattr(order, '__int__'):
             flux = self._flux[order]
@@ -84,15 +107,29 @@ class ObservationWrapper(components.Observation):
             cont = self._cont[order]
             #weight = self._weight[order]
             return components.Spectrum(flux, wave=wave, cont=cont)#, weight=weight)
-        elif type(order) is list:
+        elif isinstance(order, (list, np.ndarray)):
             return [self.__getitem__(int(i)) for i in order]  # Return MultiOrderSpectrum instead?
         elif type(order) is slice:
-            return self.__getitem__([int(i) for i in arange(self.nord)[order]])
+            return self.__getitem__([int(i) for i in np.arange(self.nord)[order]])
         else:
             raise IndexError(type(order))
 
 
 def load_file(filename) -> components.Observation:
+    """A convenience function to load observation data from file
+    
+    :param filename: The filename of the observation to load.
+    :type filename: str
+    
+    :return: The flux of the observation spectrum.
+    :rtype: ndarray
+    :return: The wavelengths of the observation spectrum.
+    :rtype: ndarray
+    :return: The continuum flux of the observation spectrum.
+    :rtype: ndarray
+    :return: The Fits-header.
+    :rtype: :class:`fits.Header`
+    """
     try:
         ext = splitext(filename)[1]
         if ext == '.fits':
@@ -122,8 +159,13 @@ def load_file(filename) -> components.Observation:
 
 
 def get_star(header) -> components.Star:
-    """
-        Create a star object based on header data
+    """Create a star object based on header data
+    
+    :param header: The Fits-header.
+    :type header: :class:`fits.Header`
+    
+    :return: The star object.
+    :rtype: :class:`Star`
     """
     # TODO: Load stars from some kind of catalog based on name instead?
 
@@ -147,8 +189,13 @@ def get_star(header) -> components.Star:
 
 
 def get_instrument(header) -> components.Instrument:
-    """
-        Determine the instrument from the header and return Instrument object
+    """Determine the instrument from the header and return Instrument object
+    
+    :param header: The Fits-header.
+    :type header: :class:`fits.Header`
+    
+    :return: The instrument object.
+    :rtype: :class:`Instrument`
     """
     if 'TELESCOP' in header:
         if 'Node 1' in header['TELESCOP'] and 'Spectrograph' in header['INSTRUM']:
@@ -166,6 +213,16 @@ def get_instrument(header) -> components.Instrument:
 
 
 def check_iodine_cell(header):
+    """Check the position and state of the I2 cell during the observation
+    
+    :param header: The Fits-header.
+    :type header: :class:`fits.Header`
+    
+    :return: Whether or not the I2 cell was in the light path.
+    :rtype: bool
+    :return: The ID of the used I2 cell.
+    :rtype: int, or None
+    """
     # If the IODID keyword is set, we should be safe
     if 'IODID' in header.keys() and header['I2POS'] != 2:
         iodine_in_spectrum = True
@@ -188,6 +245,20 @@ def check_iodine_cell(header):
 
 
 def or_none(header, key, fallback_value=None):
+    """A convenience function to prevent non-existent Fits-header cards from
+    throwing up errors
+    
+    :param header: The Fits-header.
+    :type header: :class:`fits.Header`
+    :param key: The keyword of the header card of interest.
+    :type key: str
+    :param fallback_value: What to return if the header card does not exist
+        (default: None).
+    :type fallback_value: str, int, float, or None
+    
+    :return: The header card or the 'fallback_value'.
+    :rtype: str, int, float, or None
+    """
     try:
         return header[key]
     except KeyError:
@@ -196,9 +267,9 @@ def or_none(header, key, fallback_value=None):
 
 
 def get_exposuretime(header, instrument):
-    """
-        Get the exposure time from the fits header
-        (this extra function is neccessary to make old Lick spectra work smoothly)
+    """Get the exposure time from the fits header (this extra function is 
+    neccessary to make old Lick spectra work smoothly)
+    
     """
     if 'SONG' in instrument.name:
         return or_none(header, 'EXPOSURE')
@@ -215,9 +286,9 @@ def get_exposuretime(header, instrument):
 
 
 def get_barytime(header, instrument):
-    """
-        Get the date and time of the weighted midpoint from the fits header
-        (this extra function is neccessary to make old Lick spectra work smoothly)
+    """Get the date and time of the weighted midpoint from the fits header
+    (this extra function is neccessary to make old Lick spectra work smoothly)\
+    
     """
     if 'SONG' in instrument.name:
         return or_none(header, 'BJD-MID')
