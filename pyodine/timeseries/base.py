@@ -14,10 +14,10 @@ class CombinedResults():
     weighting to receive RVs. If that has already been performed, it can 
     additionally store the results from the weighting algorithm and RVs.
     
-    Args:
-        filename (Optional[str, list, tuple]): Either a string to the path from
-            which to load a :class:'CombinedResults' object, or a list or tuple
-            of pathnames to individual fit results to load.
+    :param filename: Either a string to the path from which to load an 
+        existing :class:`CombinedResults` object, or a list or tuple of 
+        pathnames to individual fit results to load.
+    :type filename: str, list, tuple, or None
     """
     
     def __init__(self, filename=None):
@@ -33,27 +33,39 @@ class CombinedResults():
     def load_individual_results(self, filenames):
         """Load individual fit results
         
-        Args:
-            filenames (list or tuple): The pathnames of the files.
+        :param filenames: The pathnames of the files.
+        :type filenames: list or tuple 
         """
         self.nr_files = len(filenames)
         self.res_filenames = [os.path.abspath(f) for f in filenames]
         
-        # Get param names and general info from first file
-        res_dict = fitters.load_results(filenames[0])
-        self.param_names = [k for k in res_dict['params'].keys()]
-        self.chunk_names = [k for k in res_dict['chunks'].keys()]
-        self.info = {
-                'star_name': res_dict['observation']['star_name'].decode(),
-                'instrument_name': res_dict['observation']['instrument_name'].decode()
-                }
-        if 'model' in res_dict.keys() and res_dict['model'] != None:
-            self.info['lsf_model'] = res_dict['model']['lsf_model'].decode()
-            self.info['stellar_template'] = res_dict['model']['stellar_template'].decode()
-            self.info['iodine_file'] = res_dict['model']['iodine_file'].decode()
-            self.info['osample_factor'] = res_dict['model']['osample_factor']
+        # Check whether the results are saved as 'dill' or 'h5py'. 
+        # We assume that all files are of same type,
+        # so we should be able to tell from the first one
         
-        self.nr_chunks = len(res_dict['chunks'][self.chunk_names[0]])
+        
+        # Get param names and general info from first file. It can be either
+        # 'h5py' or 'dill', so take care of that.
+        filetype = fitters.filetype_from_ext(filenames[0])
+        result = fitters.load_results(filenames[0], filetype=filetype)
+        # If it was a 'dill' file, transform the recovered object structure
+        # to a dictionary
+        if not isinstance(result, dict):
+            result = fitters.create_results_dict(result)
+        
+        self.param_names = [k for k in result['params'].keys()]
+        self.chunk_names = [k for k in result['chunks'].keys()]
+        self.info = {
+                'star_name': result['observation']['star_name'].decode(),
+                'instrument_name': result['observation']['instrument_name'].decode()
+                }
+        if 'model' in result.keys() and result['model'] != None:
+            self.info['lsf_model'] = result['model']['lsf_model'].decode()
+            self.info['stellar_template'] = result['model']['stellar_template'].decode()
+            self.info['iodine_file'] = result['model']['iodine_file'].decode()
+            self.info['osample_factor'] = result['model']['osample_factor']
+        
+        self.nr_chunks = len(result['chunks'][self.chunk_names[0]])
         
         # Allocate arrays
         self.observation = {
@@ -66,33 +78,47 @@ class CombinedResults():
         self.errors = {k: np.zeros((self.nr_files, self.nr_chunks)) for k in self.param_names}
         self.chunks = {k: np.zeros((self.nr_files, self.nr_chunks)) for k in self.chunk_names}
         self.redchi2 = np.zeros((self.nr_files, self.nr_chunks))
+        self.residuals = np.zeros((self.nr_files, self.nr_chunks))
         self.medcnts = np.zeros((self.nr_files, self.nr_chunks))
         
-        # Load the results from all files
+        # Now load the results from all files and fill up the object properties,
+        # again making sure about the file formats
         for i, file in enumerate(filenames):
-            res_dict = fitters.load_results(file)
+            filetype = fitters.filetype_from_ext(file)
+            result = fitters.load_results(file, filetype=filetype)
+            # If it was a 'dill' file, transform the recovered object structure
+            # to a dictionary
+            if not isinstance(result, dict):
+                result = fitters.create_results_dict(result)
             
             for k in self.observation.keys():
-                self.observation[k][i] = res_dict['observation'][str(k)]
+                self.observation[k][i] = result['observation'][str(k)]
             for k in self.param_names:
-                self.params[k][i] = res_dict['params'][k]
-                self.errors[k][i] = res_dict['errors'][k]
+                self.params[k][i] = result['params'][k]
+                self.errors[k][i] = result['errors'][k]
             for k in self.chunk_names:
-                self.chunks[k][i] = res_dict['chunks'][k]
-            self.redchi2[i] = res_dict['redchi2']
-            self.medcnts[i] = res_dict['medcounts']
+                self.chunks[k][i] = result['chunks'][k]
+            self.redchi2[i] = result['redchi2']
+            self.residuals[i] = result['residuals']
+            self.medcnts[i] = result['medcounts']
         
-        # Initiate an empty tseries property
+        # Initiate an empty timeseries property
         self.tseries = {}
+    
         
     def save_combined(self, filename):
         """Save the combined fit results to file
         
-        Args:
-            filename (str): The filename.
+        :param filename: Save under this filename.
+        :type filename: str
         """
         
-        with h5py.File(filename, 'w') as h:
+        # Make sure that the file extension matches the h5py format, and
+        # correct if this is not the case
+        match, new_filename = fitters.check_filename_format(
+                filename, 'h5py', correct=True)
+        
+        with h5py.File(new_filename, 'w') as h:
             h5quick.dict_to_group(self.observation, h, 'observation')
             h5quick.dict_to_group(self.params, h, 'params')
             h5quick.dict_to_group(self.errors, h, 'errors')
@@ -100,10 +126,17 @@ class CombinedResults():
             h5quick.dict_to_group(self.info, h, 'info')
             h5quick.dict_to_group(self.tseries, h, 'tseries')
             h['redchi2'] = self.redchi2
+            h['residuals'] = self.residuals
             h['medcounts'] = self.medcnts
             h['res_filenames'] = [f.encode('utf8', 'replace') for f in self.res_filenames]
     
+    
     def load_combined(self, filename):
+        """Load a combined fit results object from file
+        
+        :param filename: The pathname of the file.
+        :type filename: str
+        """
         with h5py.File(filename, 'r') as h:
             self.observation = h5quick.h5data(h['observation'])
             self.params = h5quick.h5data(h['params'])
@@ -115,6 +148,7 @@ class CombinedResults():
             except:
                 self.tseries = {}
             self.redchi2 = h5quick.h5data(h['redchi2'])
+            self.residuals = h5quick.h5data(h['residuals'])
             self.medcnts = h5quick.h5data(h['medcounts'])
             self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
             

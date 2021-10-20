@@ -15,18 +15,26 @@ class IodineTemplate(components.IodineAtlas):
     """The iodine template class to be used in the modelling
     
     :param iodine_cell_id: The iodine cell ID to identify the I2 template
-        spectrum by in the :module:`conf`.
-    :type iodine_cell_id: int
+        spectrum by in the :module:`conf`, or the direct pathname to the I2
+        template spectrum.
+    :type iodine_cell_id: int or str
     """
-    def __init__(self, iodine_cell_id):
-        if iodine_cell_id in conf.my_iodine_atlases.keys():
-            with h5py.File(conf.my_iodine_atlases[iodine_cell_id], 'r') as h:
-                flux = h['flux_normalized'][()]
-                wave = h['wavelength_air'][()]    # originally: wavelength_air
-            self.orig_filename = conf.my_iodine_atlases[iodine_cell_id]
-            super().__init__(flux, wave)
-        else:
-            raise ValueError('Unknown iodine_cell_id')
+    def __init__(self, iodine_cell):
+        if not isinstance(iodine_cell, (int,str)):
+            raise KeyError('Argument "iodine_cell" must be either int or string!')
+        elif isinstance(iodine_cell, int):
+            if iodine_cell in conf.my_iodine_atlases.keys():
+                self.orig_filename = conf.my_iodine_atlases[iodine_cell]
+            else:
+                raise ValueError('Unknown iodine_cell ID!')
+        elif isinstance(iodine_cell, str):
+            self.orig_filename = iodine_cell
+        
+        with h5py.File(self.orig_filename, 'r') as h:
+            flux = h['flux_normalized'][()]
+            wave = h['wavelength_air'][()]    # originally: wavelength_air
+        super().__init__(flux, wave)
+        
 
 
 class ObservationWrapper(components.Observation):

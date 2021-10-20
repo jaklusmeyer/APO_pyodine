@@ -4,6 +4,7 @@ import lmfit
 from .base import Fitter, FitResult
 from ..models.base import ParameterSet
 from ..components import NoDataError
+from ..timeseries.misc import robust_std
 
 
 class LmfitWrapper(Fitter):
@@ -45,18 +46,27 @@ class LmfitWrapper(Fitter):
             raise ValueError('Either `to_lmfit` or `from_lmfit` must be true!')
     
     
-    def fit_ostar(self, chunk, weight=None):
+    def fit_ostar(self, chunk, weight=None, chunk_ind=None):
         """Convenience function for fitting with fixed velocity and no template
         
+        :param chunk: The chunk to be modelled.
+        :type chunk: :class:`Chunk`
+        :param weight: Pixel weights to use in the model evaluation. Defaults
+            to None.
+        :type weight: ndarray[nr_pix], or None
+        :param chunk_ind: Index of the chunk, to grab the respective chunk 
+            from the template. Defaults to None.
+        :type chunk_ind: int, or None
+        
+        :return: The best-fit result.
+        :rtype: :class:`LmfitResult`
         """
         params = self.model.guess_params(chunk)
         lmfit_params = self.convert_params(params, to_lmfit=True)
         # Fix parameters
-        # TODO: Let the model supply a list of parameters to fix for o-stars
         lmfit_params['velocity'].vary = False
         lmfit_params['tem_depth'].vary = False
-        lmfit_params['iod_depth'].set(min=0.1)
-        return self.fit(chunk, lmfit_params, weight=weight)
+        return self.fit(chunk, lmfit_params, weight=weight, chunk_ind=chunk_ind)
     
 
     def fit(self, chunk, lmfit_params, weight=None, chunk_ind=None, **kwargs):
@@ -124,6 +134,22 @@ class LmfitWrapper(Fitter):
             self.model = model
             self.lmfit_result = lmfit_result
             self.chunk_ind = chunk_ind
+        
+        def rel_residuals_rms(self, robust=True):
+            """Compute the mean relative residuals of the chunk
+            
+            :param robust: If True, return the robust mean (default). Otherwise
+                the normal mean.
+            :type robust: bool
+            
+            :return: The (robust) mean of the relative residuals between data
+                and model.
+            :rtype: float
+            """
+            if robust:
+                return robust_std(self.residuals/self.fitted_spectrum.flux)
+            else:
+                return np.nanstd(self.residuals/self.fitted_spectrum.flux)
 
         @property
         def params(self):
