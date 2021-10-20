@@ -124,15 +124,15 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
             
             if len(ind3[0]) > 0:
                 ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)
-                plt.legend(['rms={:.3f}%'.format((robust_std(fit_results[chunk_nr].residuals/sp.flux)*1e2)),
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2),
                             'Weights = 0',
                             'rms_c={:.3f}%'.format(
                                     (robust_std(fit_results[chunk_nr].residuals[ind2]/ \
                                                sp.flux[ind2])*1e2))])
             else:
-                plt.legend(['rms={:.3f}%'.format((robust_std(fit_results[chunk_nr].residuals/sp.flux)*1e2))])
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
         else:
-            plt.legend(['rms={:.3f}%'.format((robust_std(fit_results[chunk_nr].residuals/sp.flux)*1e2))])
+            plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
         
         fig.subplots_adjust(hspace=0)
         ax[-1].set_xlabel('Wavelength [$\AA$]')
@@ -153,8 +153,8 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         print(e)
 
 
-def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, title='', 
-                    savename=None, dpi=300, show_plot=False):
+def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=True, 
+                       title='', savename=None, dpi=300, show_plot=False):
     """Create a histogram of all chunk residuals (in percent)
     
     If tellurics are given, both the complete residuals and those outside of 
@@ -170,6 +170,9 @@ def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, title='',
     :param tellurics: An instance of tellurics. If None, they are not included 
         (default).
     :type tellurics: :class:`SimpleTellurics` or None
+    :param robust: Whether to use the robust estimator for the residuals. 
+        Defaults to True.
+    :type robust: bool
     :param title: A title for the plot. If None, a default title is used.
     :type title: str or None
     :param savename: If a pathname is given, the plot is saved there. Defaults 
@@ -186,7 +189,7 @@ def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, title='',
     
     """
     if residual_arr is None:
-        all_res = np.array([robust_std(r.residuals/r.fitted_spectrum.flux*1e2) for r in fit_results \
+        all_res = np.array([r.rel_residuals_rms(robust=robust)*1e2 for r in fit_results \
                             if r.lmfit_result is not None])
         if tellurics is not None:
             sub_res = []
