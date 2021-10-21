@@ -34,7 +34,25 @@
           <div class="body" role="main">
             
   <div class="section" id="prepare-the-environment">
-<h1>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">¶</a></h1>
+<span id="tutorial-prepare-environment"></span><h1>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">¶</a></h1>
+<p>In the following tutorial, we will use <strong>pyodine</strong> to compute RVs from SONG spectra for the star !!!!XYZ!!!! This includes three basic steps:</p>
+<ul class="simple">
+<li><p>using I2-free observations of the star, plus B-star spectra <em>with</em> the I2 cell, to <a class="reference internal" href="template.html#tutorial-template-creation"><span class="std std-ref">create a deconvolved stellar template</span></a>;</p></li>
+<li><p>with that template, <a class="reference internal" href="observation.html#tutorial-model-observations"><span class="std std-ref">modelling the I2 observations</span></a> of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);</p></li>
+<li><p><a class="reference internal" href="velocities.html#tutorial-combine-velocities"><span class="std std-ref">weighting and combining the chunk velocities</span></a> to compute the RV timeseries of the observations.</p></li>
+</ul>
+<p>In each of these steps, we will present how to use built-in methods of <strong>pyodine</strong> to visualize and analyze the results.</p>
+<p>But, first of all, we need to prepare everything.</p>
+<div class="section" id="the-i2-atlas">
+<h2>The I2 atlas<a class="headerlink" href="#the-i2-atlas" title="Permalink to this headline">¶</a></h2>
+<p>-&gt; if you have your own, bring it into the correct hdf5-format</p>
+<p>-&gt; here, we just use the one by SONG</p>
+</div>
+<div class="section" id="the-utilities-module">
+<h2>The utilities module<a class="headerlink" href="#the-utilities-module" title="Permalink to this headline">¶</a></h2>
+<p>-&gt; prepare all instrument-specific code, such as I/O of spectra, modelling parameters etc.</p>
+<p>-&gt; again, we just use the existing <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> module</p>
+</div>
 </div>
 
 
