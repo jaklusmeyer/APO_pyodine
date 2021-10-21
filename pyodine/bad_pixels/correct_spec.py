@@ -14,14 +14,15 @@ def correct_spectrum(spec, weights, orders):
     Used to correct regions of spectra with weights=0 due to bad pixels etc.
     These regions are simply linearly interpolated from their boundaries.
     
-    Args:
-        spec (:class:'Observation'): The spectrum to correct.
-        weights (ndarray[nr_ord,nr_pix]): The mask which marks the bad pixels
-            (being 0 there).
-        orders (ndarray[nr_ord_correct]): This array indicates which orders
-            to correct.
-    Return:
-        :class:'Observation': The corrected spectrum.
+    :param spec: The spectrum to correct.
+    :type spec: :class:`Observation`
+    :param weights: The mask which marks the bad pixels (being 0 there).
+    :type weights: ndarray[nr_ord,nr_pix]
+    :param orders: This array indicates which orders to correct.
+    :type orders: ndarray[nr_ord_correct]
+    
+    :return: The corrected spectrum.
+    :rtype: :class:`Observation`
     """
     for i, o in enumerate(orders):
         spec_order = spec[o]
