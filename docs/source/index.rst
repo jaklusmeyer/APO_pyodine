@@ -6,7 +6,9 @@
 Welcome to pyodine's documentation!
 ===================================
 
-The **pyodine** package helps you to determine precise *radial velocities* from stellar spectra, using the iodine (I2) cell method developed by `Butler et al. (1996) <https://ui.adsabs.harvard.edu/abs/1996PASP..108..500B/abstract/>`_.
+The **pyodine** package helps you to determine precise Radial Velocities (RVs) from stellar spectra, using the iodine (I2) cell method developed by `Butler et al. (1996) <https://ui.adsabs.harvard.edu/abs/1996PASP..108..500B/abstract/>`_. We aimed to build it in a flexible, modular and well-structured way, so as to make it (comparably) comprehensible and allow an easy and quick adaptation to different instruments.
+
+Thus far, we have successfully tested **pyodine** on spectra from two different instruments, the Hamilton spectrograph at Lick observatory and the SONG spectrograph site on Tenerife.
 
 Check out the :doc:`overview` section for further information, including how to :ref:`install <installation>` the project.
 

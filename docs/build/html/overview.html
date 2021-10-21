@@ -83,7 +83,7 @@ results will be saved (default).</p></li>
 <p>After you have created a deconvolved stellar template, you can use it to model an observation of the same star, obtained <strong>WITH</strong> the I2 cell in the light path. This is done with the function <code class="docutils literal notranslate"><span class="pre">pyodine_model_observations.model_single_observation()</span></code>:</p>
 <dl class="py function">
 <dt id="pyodine_model_observations.model_single_observation">
-<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_single_observation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_file</span></em>, <em class="sig-param"><span class="n">template</span></em>, <em class="sig-param"><span class="n">iod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orders</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalizer</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tellurics</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_names</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_single_observation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_single_observation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_file</span></em>, <em class="sig-param"><span class="n">temp_file</span></em>, <em class="sig-param"><span class="n">iod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orders</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalizer</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tellurics</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_names</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_single_observation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model a single observation</p>
 <p>This routine models a stellar observation spectrum with I2, using a stellar
 template spectrum, I2 template and LSF model. The modelling can be
@@ -94,7 +94,8 @@ fit parameters. The results and analysis plots can be saved to file.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Pars</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Parameters</span></code>) – The parameter input object to use.</p></li>
 <li><p><strong>obs_file</strong> (<em>str</em>) – The pathname of the stellar observation to model.</p></li>
-<li><p><strong>template</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">StellarTemplate_Chunked</span></code>) – The stellar template to use in the modelling.</p></li>
+<li><p><strong>temp_file</strong> (<em>str</em>) – The pathname of the deconvolved stellar template to use 
+in the modelling.</p></li>
 <li><p><strong>iod</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">IodineTemplate</span></code>, or None) – The I2 template to use in the modelling. If None, it is loaded 
 as specified in the parameter input object.</p></li>
 <li><p><strong>orders</strong> (<em>list</em><em>, </em><em>ndarray</em><em>, or </em><em>None</em>) – The orders of the observation to work on. If None, they are 
@@ -122,19 +123,22 @@ saved (default).</p></li>
 <p>In many cases you will have more than one single observation of the same star that you want to model. Then you can take advantage of Python’s parallelizing capabilities and use the function <code class="docutils literal notranslate"><span class="pre">pyodine_model_observations.model_multi_observations()</span></code> to model the observations on several cores at the same time:</p>
 <dl class="py function">
 <dt id="pyodine_model_observations.model_multi_observations">
-<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_multi_observations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_files</span></em>, <em class="sig-param"><span class="n">temp_file</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">comb_results_files</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_multi_observations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Model multiple observations of a single star</p>
+<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_multi_observations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">plot_dirs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_multi_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model multiple observations at the same time</p>
 <p>This function can parallelize the modelling of multiple observations,
-taking advantage of Python’s <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> capabilities.</p>
+taking advantage of Python’s <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> capabilities.
+The number of parallel processes is defined in the parameter input object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Pars</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Parameters</span></code>) – The parameter input object to use.</p></li>
+<li><p><strong>Pars</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Parameters</span></code>) – The parameter input object for the used instrument.</p></li>
 <li><p><strong>obs_files</strong> (<em>str</em><em> or </em><em>list</em>) – A pathname to a text-file with pathnames of stellar 
 observations for the modelling, or, alternatively, a list with the 
 pathnames.</p></li>
-<li><p><strong>temp_file</strong> (<em>str</em>) – A pathname of the stellar template observations to use.</p></li>
-<li><p><strong>plot_dir</strong> (<em>str</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – A pathname to a text-file with directory names for each 
+<li><p><strong>temp_files</strong> (<em>str</em><em> or </em><em>list</em>) – A pathname to a text-file with pathnames of the 
+deconvolved stellar templates to use for each of the observations, or, 
+alternatively, a list with the pathnames.</p></li>
+<li><p><strong>plot_dirs</strong> (<em>str</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – A pathname to a text-file with directory names for each 
 observation where to save plots, or, alternatively, a list with the 
 directory names. If the directory structure does not exist yet, it will 
 be created in the process. If None is given, no results/plots will be 
@@ -145,13 +149,6 @@ pathname(s). If you want to save results from multiple runs, you should
 supply pathnames for each run. If the directory structure does not 
 exist yet, it will be created in the process. If None is given, no 
 results will be saved (default).</p></li>
-<li><p><strong>comb_results_files</strong> (<em>str</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – A pathname to a text-file with pathnames under 
-which to save the CombinedResults file(s), or, alternatively, a list 
-with the pathname(s). If individual results from multiple runs were 
-saved but only one pathname is provided here, only the last run results 
-of each observation are saved. If the directory structure does not 
-exist yet, it will be created in the process. If None is given, no 
-CombinedResults will be saved (default).</p></li>
 </ul>
 </dd>
 </dl>
