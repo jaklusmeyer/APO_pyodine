@@ -6,10 +6,11 @@ import h5py
 def h5print(h, level=0):
     """Recursively print the structure of a HDF5 file or group
     
-    Args:
-        h (h5py file or group): The h5py object.
-        level (Optional[int]): The level within the structure at which to start
-            (needed to print the whole structure recursively).
+    :param h: The h5py object.
+    :type h: h5py file or group
+    :param level: The level within the structure at which to start (needed to 
+        print the whole structure recursively).
+    :type level: int
     """
     if level == 0:
         print(h.name)
@@ -24,12 +25,12 @@ def h5data(h):
     
     If the handle is a group, return value is a dict of datasets (recursive).
     
-    Args:
-        h (h5py dataset or group): The h5py to return.
+    :param h: The h5py to return.
+    :type h: h5py dataset or group
     
-    Return:
-        dict or dataset: The data packed into a dictionary resembling the
-            structure of the h5py object.
+    :return: The data packed into a dictionary resembling the structure of the 
+        h5py object.
+    :rtype: dict or dataset
     """
     if isinstance(h, h5py.Dataset):
         return h[()]
@@ -42,12 +43,13 @@ def h5get(filename, item):
     
     If the item is a group, return value is a dict of datasets (recursive).
     
-    Args:
-        filename (str): The path to the HDF5 file.
-        item (str): A key to the dataset or group of interest.
+    :param filename: The path to the HDF5 file.
+    :type filename: str
+    :param item: A key to the dataset or group of interest.
+    :type item: str
     
-    Return:
-        dict or dataset: The data, either as dictionary or a dataset.
+    :return: The data, either as dictionary or a dataset.
+    :rtype: dict or dataset
     """
     with h5py.File(filename, 'r') as h:
         return h5data(h[item])
@@ -61,10 +63,12 @@ def dict_to_group(my_dict, base_group, new_group_name):
     group handle `base_group` (could be the root) and fill in
     named datasets from `my_dict`
     
-    Args:
-        my_dict (dict): The data to pack.
-        base_group (h5py group): The group handle to pack the data into.
-        new_group_name (str): The name of the group.
+    :param my_dict: The data to pack.
+    :type my_dict: dict
+    :param base_group: The group handle to pack the data into.
+    :type base_group: h5py group
+    :param new_group_name: The name of the group.
+    :type new_group_name: str
     """
     group = base_group.create_group(new_group_name)
     for k in my_dict:

@@ -19,12 +19,13 @@ from . import correct_spec
 class BadPixelMask:
     """A class of a bad pixel mask
     
-    Args:
-        spec (:class:'Observation'): The spectrum for which to compute the mask.
-        cutoff (Optional[float]): Flux changes larger than the cutoff might be
-            due to a bad pixel.
-        plotting (Optional[bool]): If True, show diagnostic plots (default:
-            False).
+    :param spec: The spectrum for which to compute the mask.
+    :type spec: :class:`Observation`
+    :param cutoff: Flux changes larger than the cutoff might be due to a 
+        bad pixel (default: 0.18).
+    :type cutoff: float
+    :param plotting: If True, show diagnostic plots (default: False).
+    :type plotting: bool
     """
     def __init__(self, spec, cutoff=0.18, plotting=False):
         self.cutoff = cutoff
@@ -48,9 +49,8 @@ class BadPixelMask:
         sensitive to little wobbles in the spectrum, and with values higher 
         than 0.2 it may fail to identify real spikes).
         
-        Args:
-            spec (:class:'Observation'): The spectrum for which to compute the 
-                mask.
+        :param spec: The spectrum for which to compute the mask.
+        :type spec: :class:`Observation`
         """
         self.mask = np.zeros((self.nord,self.npix))
         for no in range(self.nord):
@@ -102,7 +102,7 @@ class BadPixelMask:
     def __len__(self):
         """The dedicated length-method
         
-        Return:
-            int: The number of bad pixels in the mask.
+        :return: The number of bad pixels in the mask.
+        :rtype: int
         """
         return len(self.bad_pixels[0])
