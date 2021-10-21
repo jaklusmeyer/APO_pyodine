@@ -5,7 +5,7 @@ from scipy.special import erfinv
 _c = 299792458  # m/s
 
 
-def printLog(filename, *args):
+def printLog(filename=None, *args):
     """Function to print to the terminal and at the same time to a specified file
     
     Args:
@@ -13,9 +13,12 @@ def printLog(filename, *args):
         *args (str): String argument(s) to print.
     """
     print(*args)
-    if filename != '':
-        with open(filename, 'a') as f:
-            print(*args, file=f)
+    if isinstance(filename, str) and filename != '':
+        try:
+            with open(filename, 'a') as f:
+                print(*args, file=f)
+        except Exception as e:
+            print(e)
 
 
 def findwave(multiorder, wavelength):

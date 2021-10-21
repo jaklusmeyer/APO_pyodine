@@ -16,23 +16,34 @@ class Combiner():
     
     def __init__(self, results):
         self.results = results
-        
     
-    def create_timeseries(self):
-        pass
+    def create_timeseries(self, weighting_pars=None, diag_file=None):
         
+        velocities = self.results.params['velocity']
+        bvc = self.results.observation['bary_vel_corr']
+        rv_dict = combine_chunk_velocities(velocities, bvc, diag_file=diag_file, 
+                                           pars=weighting_pars)
+        
+        self.rvs, self.rv_errs, self.rvs_bc, self.medvels, self.c2c_scatters, self.wws = \
+            rv_dict['rvs'], rv_dict['rv_errs'], rv_dict['rvs_bc'], rv_dict['medvels'], \
+            rv_dict['c2c_scatters'], rv_dict['wws']
         
         
 
-def combine_chunk_velocities(velocities, bvc, diag_file):
-    
-    """
-    Here the actual velocity weighting starts.
+def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
+    """Here the actual velocity weighting starts.
     """
     
-    alpha = 1.8
-    beta = 8.0
-    sigma = 2.0
+    if not isinstance(pars, dict):
+        pars = {
+                'reweight_alpha': 1.8,
+                'reweight_beta': 8.0,
+                'reweight_sigma': 2.0,
+                'weight_correct': 0.01,
+                'sig_limits': (4., 1000.),
+                'sig_correct': 1000.,
+                'good_chunks': (150, 350)
+                    }
     
     # How many observations and chunks?
     (nr_obs, nr_chunks) = velocities.shape
@@ -44,7 +55,8 @@ def combine_chunk_velocities(velocities, bvc, diag_file):
     # subtracting the robust mean of that observation
     vel_offset_corrected = np.zeros((nr_obs, nr_chunks))
     for i in range(nr_obs):
-        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(velocities[i,150:350])
+        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(
+                velocities[i,pars['good_chunks'][0]:pars['good_chunks'][1]])
     
     # Calculate the mean offset of each individual chunk timeseries from
     # the observation means by taking the robust mean along the 
@@ -82,8 +94,8 @@ def combine_chunk_velocities(velocities, bvc, diag_file):
         dev[i,:] = dev[i,:] - robust_mean(dev[i,:])
     
     # Finally, set very low and very high sigmas to a pre-defined value
-    ind = np.where(np.logical_or(sig<=4., sig>=1000.))
-    sig[ind] = 1000.
+    ind = np.where(np.logical_or(sig<=pars['sig_limits'][0], sig>=pars['sig_limits'][1]))
+    sig[ind] = pars['sig_correct']
     
     # Print to file
     printLog(diag_file, '')
@@ -91,13 +103,16 @@ def combine_chunk_velocities(velocities, bvc, diag_file):
     printLog(diag_file, 'Median: {:.2f} +- {:.2f}'.format(
             np.nanmedian(sig), np.nanstd(sig)))
     
-    # Prepare the final results arrays
-    rv = np.zeros(nr_obs)               # Weighted RV timeseries
-    rv_bc = np.zeros(nr_obs)            # Weighted RV timeseries, BV-corrected
-    c2c_scatter = np.zeros(nr_obs)      # The chunk-to-chunk velocity scatter in each observation
-    ww = np.zeros((nr_obs,nr_chunks))   # 
-    mdvel = np.zeros(nr_obs)            # The simple observation median after correcting for chunk timeseries offsets
-    errvel = np.zeros(nr_obs)           # The theoretical measurement uncertainty
+    # Prepare the output dict
+    rv_dict = {
+            'rvs': np.zeros(nr_obs),               # Weighted RV timeseries
+            'rvs_bc': np.zeros(nr_obs),            # Weighted RV timeseries, BV-corrected
+            'c2c_scatters': np.zeros(nr_obs),      # The chunk-to-chunk velocity scatter in each observation
+            'wws': np.zeros((nr_obs,nr_chunks)),   # 
+            'mdvels': np.zeros(nr_obs),            # The simple observation median after correcting for chunk timeseries offsets
+            'rv_errs': np.zeros(nr_obs),           # The theoretical measurement uncertainty
+            }
+    
     
     # The weights for the chunks based on the scatter in their time-series.
     wt0 = 1./sig**2.   # The weight from the 'sigmas' for each chunk.
@@ -109,11 +124,12 @@ def combine_chunk_velocities(velocities, bvc, diag_file):
         # [From iSONG:]
         # We use the reweight function on the 'dev' for the chunks. This
         # will give the chunks with small deviations higher weight.        
-        wd = reweight(dev[i,:], alpha, beta, sigma)
+        wd = reweight(dev[i,:], pars['reweight_alpha'], 
+                      pars['reweight_beta'], pars['reweight_sigma'])
         
         # Check for NaNs and zeros and correct to 0.01 (why 0.01?!)
         ind = np.where(np.logical_or(wd == 0., np.isnan(wd)))
-        wd[ind] = 0.01
+        wd[ind] = pars['weight_correct']
         
         # Now correct the sigma accordingly. The chunk weights are then
         # simply the inverse of the square of the sigmas.
@@ -127,23 +143,24 @@ def combine_chunk_velocities(velocities, bvc, diag_file):
         
         # A simple, unweighted estimate of the RV timeseries is just a
         # median of these corrected chunk velocities
-        mdvel[i] = np.nanmedian(chunk_vels_corr)
+        rv_dict['mdvels'][i] = np.nanmedian(chunk_vels_corr)
         
         # The weighted RV timeseries takes the chunk weights into account
-        rv[i] = np.nansum(chunk_vels_corr * weight_corr) / np.nansum(weight_corr)
+        rv_dict['rvs'][i] = np.nansum(chunk_vels_corr * weight_corr) / np.nansum(weight_corr)
         
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
-        errvel[i] = 1. / np.sqrt(np.nansum(weight_corr))
+        rv_dict['rv_errs'][i] = 1. / np.sqrt(np.nansum(weight_corr))
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
-        c2c_scatter[i] = robust_std(chunk_vels_corr)
+        rv_dict['c2c_scatters'][i] = robust_std(chunk_vels_corr)
         
+        # BV-correction instead through actual z and barycorrpy?!
+        rv_dict['rvs_bc'][i] = rv_dict['rvs'][i] + bvc[i]
         
-        rv_bc[i] = rv[i] + bvc[i]
+        rv_dict['wws'][i,:] = weight_corr / np.nansum(weight_corr)
         
-        ww[i,:] = weight_corr / np.nansum(weight_corr)
-        
-        
+    
+    return rv_dict
         
