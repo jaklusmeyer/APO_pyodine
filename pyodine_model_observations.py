@@ -30,7 +30,7 @@ import importlib
 
 
 #def model_single_observation(utilities, Pars, obs_file, template, 
-def model_single_observation(Pars, obs_file, template, 
+def model_single_observation(Pars, obs_file, temp_file, 
                              iod=None, orders=None, normalizer=None, 
                              tellurics=None, plot_dir=None, res_names=None):
     """Model a single observation
@@ -44,8 +44,9 @@ def model_single_observation(Pars, obs_file, template,
     :type Pars: :class:`Parameters`
     :param obs_file: The pathname of the stellar observation to model.
     :type obs_file: str
-    :param template: The stellar template to use in the modelling.
-    :type template: :class:`StellarTemplate_Chunked`
+    :param temp_file: The pathname of the deconvolved stellar template to use 
+        in the modelling.
+    :type temp_file: str
     :param iod: The I2 template to use in the modelling. If None, it is loaded 
         as specified in the parameter input object.
     :type iod: :class:`IodineTemplate`, or None
@@ -88,6 +89,9 @@ def model_single_observation(Pars, obs_file, template,
         # Load observation
         #sun = pyodine.components.Star('sun')   # added for solar analysis
         obs = utilities.load_pyodine.ObservationWrapper(obs_file)#, star=sun)    # added for solar analysis
+        
+        # Load the deconvolved stellar template
+        template = pyodine.template.base.StellarTemplate_Chunked(temp_file)
         
         # If the I2 template is not given, load it
         if not iod:
@@ -461,27 +465,30 @@ def model_single_observation(Pars, obs_file, template,
         
 
 
-def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None, 
-                             res_files=None, comb_results_files=None):
-    """Model multiple observations of a single star
+def model_multi_observations(Pars, obs_files, temp_files, plot_dirs=None, 
+                             res_files=None):
+    """Model multiple observations at the same time
     
     This function can parallelize the modelling of multiple observations,
     taking advantage of Python's :class:`multiprocessing.Pool` capabilities.
+    The number of parallel processes is defined in the parameter input object.
     
-    :param Pars: The parameter input object to use.
+    :param Pars: The parameter input object for the used instrument.
     :type Pars: :class:`Parameters`
     :param obs_files: A pathname to a text-file with pathnames of stellar 
         observations for the modelling, or, alternatively, a list with the 
         pathnames.
     :type obs_files: str or list
-    :param temp_file: A pathname of the stellar template observations to use.
-    :type temp_file: str
-    :param plot_dir: A pathname to a text-file with directory names for each 
+    :param temp_files: A pathname to a text-file with pathnames of the 
+        deconvolved stellar templates to use for each of the observations, or, 
+        alternatively, a list with the pathnames.
+    :type temp_files: str or list
+    :param plot_dirs: A pathname to a text-file with directory names for each 
         observation where to save plots, or, alternatively, a list with the 
         directory names. If the directory structure does not exist yet, it will 
         be created in the process. If None is given, no results/plots will be 
         saved (default).
-    :type plot_dir: str, list, or None
+    :type plot_dirs: str, list, or None
     :param res_files: A pathname to a text-file with pathnames under which to 
         save the results file(s), or, alternatively, a list with the 
         pathname(s). If you want to save results from multiple runs, you should 
@@ -489,15 +496,6 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
         exist yet, it will be created in the process. If None is given, no 
         results will be saved (default).
     :type res_files: str, list, or None
-    :param comb_results_files: A pathname to a text-file with pathnames under 
-        which to save the CombinedResults file(s), or, alternatively, a list 
-        with the pathname(s). If individual results from multiple runs were 
-        saved but only one pathname is provided here, only the last run results 
-        of each observation are saved. If the directory structure does not 
-        exist yet, it will be created in the process. If None is given, no 
-        CombinedResults will be saved (default).
-    :type comb_results_files: str, list, or None
-    
     """
     
     ###########################################################################
@@ -522,12 +520,18 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
         with open(obs_files, 'r') as f:
             obs_names = [l.strip() for l in f.readlines()]
     
-    # Load the stellar template spectrum
-    template = pyodine.template.base.StellarTemplate_Chunked(temp_file)
+    # Load the pathnames of the deconvolved stellar templates
+    if isinstance(temp_files, list):
+        temp_names = obs_files
+    elif isinstance(temp_files, str):
+        with open(obs_files, 'r') as f:
+            temp_names = [l.strip() for l in f.readlines()]
+    #template = pyodine.template.base.StellarTemplate_Chunked(temp_file)
     
     # Load the iodine atlas from file
     iod = utilities.load_pyodine.IodineTemplate(Pars.i2_to_use)
     
+    """This does not make sense if the template is not loaded here yet.
     # Possibly restrict orders if they are different from the orders
     # contained in the stellar template
     orders = template.orders_unique
@@ -535,6 +539,7 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
     if isinstance(Pars.order_range, (list, tuple)) and Pars.order_range[0] is not None:
         orders = orders[Pars.order_range[0]:Pars.order_range[1]+1]
     print('Observation orders to model: ', orders)
+    """
     
     # Initialize Normalizer with reference spectrum
     normalizer = pyodine.template.normalize.SimpleNormalizer(reference=Pars.ref_spectrum)
@@ -547,10 +552,10 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
         tellurics = None
     
     # Load the plot directory names for each observation
-    if isinstance(plot_dir, list) and isinstance(plot_dir[0], str):
-        plot_dir_names = plot_dir
-    elif isinstance(plot_dir, str):
-        with open(plot_dir, 'r') as f:
+    if isinstance(plot_dirs, list) and isinstance(plot_dirs[0], str):
+        plot_dir_names = plot_dirs
+    elif isinstance(plot_dirs, str):
+        with open(plot_dirs, 'r') as f:
             plot_dir_names = [l.strip() for l in f.readlines()]
     else:
         plot_dir_names = [None] * len(obs_names)
@@ -577,13 +582,25 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
     ## Changed this (similar to https://www.py4u.net/discuss/237878)
     ###########################################################################
     
-    with Pool(Pars.number_cores) as p:
-        jobs = [p.apply_async(model_single_observation,
-                              #args=(utilities, Pars, obs_name, template),
-                              args=(Pars, obs_name, template),
-                              kwds={'iod': iod, 'orders': orders, 'normalizer': normalizer, 
-                                    'tellurics': tellurics, 'plot_dir': plot_dir_name, 'res_names': res_name}
-                              ) for obs_name, plot_dir_name, res_name in zip(obs_names, plot_dir_names, res_names)]
+    # Prepare the input arguments list for all the jobs (corresponding
+    # to the arguments of the function model_single_observation)
+    input_arguments = [
+            (Pars, obs_name, temp_name
+             ) for obs_name, temp_name in zip(obs_names, temp_names)]
+    # Prepare the keyword arguments list for all the jobs (corresponding
+    # to the keywords of the function model_single_observation)
+    input_keywords  = [
+            {'iod': iod, 'normalizer': normalizer, #'orders': orders, 
+             'tellurics': tellurics, 'plot_dir': plot_dir_name, 'res_names': res_name
+             } for plot_dir_name, res_name in zip(plot_dir_names, res_names)]
+    
+    # Setup the Pool object, distribute the arguments and start the jobs
+    with Pool(Pars.number_cores) as p:        
+        jobs = [
+            p.apply_async(model_single_observation,
+                          args=input_arg, kwds=input_kwd
+                          ) for input_arg, input_kwd in zip(input_arguments, input_keywords)
+            ]
     
         for job in jobs:
             # Wait for the modelling in all workers to finish
@@ -597,6 +614,9 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
     ###########################################################################
     ## Collect all individual results and store them in one 
     ## CombinedResults object
+    ##
+    ## NOTE: I THINK IT DOES NOT MAKE SENSE TO DO THAT HERE, RATHER LATER
+    ## IN THE VELOCITY WEIGHTING ALGORITHM!!!!!!!!!!!!!!!!!!!
     ###########################################################################
     """
     # Load the CombinedResults names
@@ -607,6 +627,7 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
             comb_results_names = [l.strip() for l in f.readlines()]
     else:
         comb_results_names = None
+    """
     """
     comb_results_names = [comb_results_files]
     
@@ -636,36 +657,30 @@ def model_multi_observations(Pars, obs_files, temp_file, plot_dir=None,
             Res_comb = pyodine.timeseries.base.CombinedResults(files)
             Res_comb.save_combined(comb_results_names[0])
             print('Combined results file created:\n', comb_results_names[0])
-    
+    """
     # And done
     
     full_modelling_time = time.time() - fulltime_start
     print('\nDone, full working time: ', full_modelling_time)
     
-    """
-    with open(time_file, 'a') as f:
-        f.write('\n')
-        f.write(str(full_modelling_time))
-    """
-
 
 
 if __name__ == '__main__':
     
     # Set up the parser for input arguments
     parser = argparse.ArgumentParser(
-            description='Model a number of observations of a star')
+            description='Model a number of observations')
     
     # Required input arguments:
     # utilities_dir, obs_files, temp_file, (res_dir=None, par_file=None)
     parser.add_argument('utilities_dir', type=str, help='The pathname to the utilities directory for this instrument.')
     parser.add_argument('obs_files', type=str, help='A pathname to a text-file with pathnames of stellar observations for the modelling.')
-    parser.add_argument('temp_file', type=str, help='The pathname of the deconvolved stellar template to use.')
+    parser.add_argument('temp_files', type=str, help='A pathname to a text-file with pathnames of deconvolved stellar templates to use.')
     parser.add_argument('--plot_dir', type=str, help='A pathname to a text-file with directory names for each observation where to save analysis plots.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with pathnames under which to save modelling results.')
     parser.add_argument('--par_file', type=str, help='The pathname of the parameter input file to use.')
     # This still needs thinking!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    parser.add_argument('--comb_res', type=str, help='The pathname of the combined results file.')
+    #parser.add_argument('--comb_res', type=str, help='The pathname of the combined results file.')
     
     # Parse the input arguments
     args = parser.parse_args()
@@ -676,7 +691,7 @@ if __name__ == '__main__':
     plot_dir = args.plot_dir
     res_files = args.res_files
     par_file = args.par_file
-    comb_res = args.comb_res
+    #comb_res = args.comb_res
     
     # Import and load the utilities
     sys.path.append(os.path.abspath(utilities_dir))
@@ -693,9 +708,9 @@ if __name__ == '__main__':
         pyodine_parameters = importlib.import_module(par_file)
         Pars = pyodine_parameters.Parameters()
     
-    comb_results_files = comb_res
+    #comb_results_files = comb_res
     
     # And run the multiprocessing observation modelling routine
-    model_multi_observations(utilities, Pars, obs_files, temp_file, 
-                             plot_dir=plot_dir, res_files=res_files,
-                             comb_results_files=comb_results_files)
+    model_multi_observations(utilities, Pars, obs_files, temp_files, 
+                             plot_dir=plot_dir, res_files=res_files)
+    #                         comb_results_files=comb_results_files)
