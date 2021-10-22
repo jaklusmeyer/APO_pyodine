@@ -120,12 +120,13 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
     
     # Prepare the output dict
     rv_dict = {
-            'rvs': np.zeros(nr_obs),               # Weighted RV timeseries
-            'rvs_bc': np.zeros(nr_obs),            # Weighted RV timeseries, BV-corrected
-            'c2c_scatters': np.zeros(nr_obs),      # The chunk-to-chunk velocity scatter in each observation
-            'wws': np.zeros((nr_obs,nr_chunks)),   # 
-            'mdvels': np.zeros(nr_obs),            # The simple observation median after correcting for chunk timeseries offsets
-            'rv_errs': np.zeros(nr_obs),           # The theoretical measurement uncertainty
+            'rvs': np.zeros(nr_obs),            # Weighted RV timeseries
+            'rvs_bc': np.zeros(nr_obs),         # Weighted RV timeseries, BV-corrected
+            'mdvels': np.zeros(nr_obs),         # The simple observation median (after correcting 
+                                                # for chunk timeseries offsets)
+            'rv_errs': np.zeros(nr_obs),        # The theoretical measurement uncertainty
+            'c2c_scatters': np.zeros(nr_obs),   # The chunk-to-chunk velocity scatter in each observation
+            'crx': np.zeros(nr_obs),            # The chromatic index in each observation
             }
     
     
@@ -173,8 +174,6 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
         
         # BV-correction instead through actual z and barycorrpy?!
         rv_dict['rvs_bc'][i] = rv_dict['rvs'][i] + bvc[i]
-        
-        rv_dict['wws'][i,:] = weight_corr / np.nansum(weight_corr)
         
     # Some metrics of the quality of the RV timeseries
     rv_quality1 = np.sqrt(1./np.nansum(wt0))
