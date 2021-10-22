@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 from .. import fitters
 from ..lib import h5quick
+from .combine_vels import combine_chunk_velocities
 
 
 
@@ -14,20 +15,37 @@ class CombinedResults():
     weighting to receive RVs. If that has already been performed, it can 
     additionally store the results from the weighting algorithm and RVs.
     
-    :param filename: Either a string to the path from which to load an 
-        existing :class:`CombinedResults` object, or a list or tuple of 
-        pathnames to individual fit results to load.
-    :type filename: str, list, tuple, or None
+    :param filename: A string to the path from which to load an 
+        existing :class:`CombinedResults` object. If None, then the object is
+        initialized without data.
+    :type filename: str, or None
     """
     
     def __init__(self, filename=None):
-        # Check whether one combined result should be loaded,
-        # or a list or tuple of individual results
+        # Check whether one combined result should be loaded
         if isinstance(filename, str):
-            self.load_combined(filename)
-        elif isinstance(filename, (list,tuple)):
-            self.load_individual_results(filename)
+            try:
+                self.filename = filename
+                self.load_combined(self.filename)
+            except Exception as e:
+                print('Problem loading combined results:')
+                print(e)
+    
+    
+    def create_timeseries(self, weighting_pars=None, diag_file=None):
         
+        velocities = self.params['velocity']
+        bvc = self.observation['bary_vel_corr']
+        self._tseries, self.weighting_pars = combine_chunk_velocities(
+                velocities, bvc, diag_file=diag_file, pars=weighting_pars)
+        
+        self.fill_tseries_attributes()
+    
+    
+    def fill_tseries_attributes(self):
+        
+        for key, value in self._tseries.items():
+            setattr(self, key, value)
     
     
     def load_individual_results(self, filenames):
@@ -102,8 +120,9 @@ class CombinedResults():
             self.residuals[i] = result['residuals']
             self.medcnts[i] = result['medcounts']
         
-        # Initiate an empty timeseries property
-        self.tseries = {}
+        # Initiate an empty timeseries and empty weighting pars attribute
+        self._tseries = {}
+        self.weighting_pars = {}
     
         
     def save_combined(self, filename):
@@ -124,7 +143,8 @@ class CombinedResults():
             h5quick.dict_to_group(self.errors, h, 'errors')
             h5quick.dict_to_group(self.chunks, h, 'chunks')
             h5quick.dict_to_group(self.info, h, 'info')
-            h5quick.dict_to_group(self.tseries, h, 'tseries')
+            h5quick.dict_to_group(self._tseries, h, 'tseries')
+            h5quick.dict_to_group(self.weighting_pars, h, 'weighting_pars')
             h['redchi2'] = self.redchi2
             h['residuals'] = self.residuals
             h['medcounts'] = self.medcnts
@@ -144,9 +164,14 @@ class CombinedResults():
             self.chunks = h5quick.h5data(h['chunks'])
             self.info = h5quick.h5data(h['info'])
             try:
-                self.tseries = h5quick.h5data(h['tseries'])
+                self._tseries = h5quick.h5data(h['tseries'])
+                self.fill_tseries_attributes()
             except:
-                self.tseries = {}
+                self._tseries = {}
+            try:
+                self.weighting_pars = h5quick.h5data(h['weighting_pars'])
+            except:
+                self.weighting_pars = {}
             self.redchi2 = h5quick.h5data(h['redchi2'])
             self.residuals = h5quick.h5data(h['residuals'])
             self.medcnts = h5quick.h5data(h['medcounts'])

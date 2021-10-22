@@ -11,25 +11,6 @@ from .misc import robust_mean, robust_std, reweight
 from ..lib.misc import printLog
 
 
-class Combiner():
-    
-    
-    def __init__(self, results):
-        self.results = results
-    
-    def create_timeseries(self, weighting_pars=None, diag_file=None):
-        
-        velocities = self.results.params['velocity']
-        bvc = self.results.observation['bary_vel_corr']
-        rv_dict = combine_chunk_velocities(velocities, bvc, diag_file=diag_file, 
-                                           pars=weighting_pars)
-        
-        self.rvs, self.rv_errs, self.rvs_bc, self.medvels, self.c2c_scatters, self.wws = \
-            rv_dict['rvs'], rv_dict['rv_errs'], rv_dict['rvs_bc'], rv_dict['medvels'], \
-            rv_dict['c2c_scatters'], rv_dict['wws']
-        
-        
-
 def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
     """Here the actual velocity weighting starts.
     """
@@ -43,10 +24,46 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
                 'sig_limits': (4., 1000.),
                 'sig_correct': 1000.,
                 'good_chunks': (150, 350)
-                    }
+                }
+    
+    printLog(diag_file, '--------------------------------------------------')
+    printLog(diag_file, '- Pyodine chunk combination (based on SONG code) -')
+    printLog(diag_file, '--------------------------------------------------')
+    printLog(diag_file, '')
+    
+    printLog(diag_file, 'Weighting parameters used:')
+    for key, value in pars.items():
+        if isinstance(value, (list,tuple)):
+            print_str = '\t{}\t'.format(key)
+            for i in range(len(value)):
+                print_str += str(value[i]) + '\t'
+        else:
+            print_str = '\t{}\t{}'.format(key, value)
+        printLog(diag_file, print_str)
+    printLog(diag_file, '')
     
     # How many observations and chunks?
     (nr_obs, nr_chunks) = velocities.shape
+    printLog(diag_file, 'Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
+    
+    # Where are chunk velocities or barycentric velocities nan?
+    ind_nan = np.where(np.isnan(velocities))
+    ind_nan_bvc = np.where(np.isnan(bvc))
+    if len(ind_nan[0]) > 0:
+        printLog(diag_file, '')
+        printLog(diag_file, 'Nan velocities (obs,chunk):')
+        outstring = ''
+        for i in range(len(ind_nan[0])):
+            outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
+        printLog(diag_file, outstring)
+    if len(ind_nan_bvc[0]) > 0:
+        printLog(diag_file, '')
+        printLog(diag_file, 'Nan barycentric velocities (obs):')
+        outstring = ''
+        for i in range(len(ind_nan[0])):
+            outstring += '({})\t'.format(ind_nan_bvc[0][i])
+        printLog(diag_file, outstring)
+    printLog(diag_file, '')
     
     # Set up the barycentric corrected chunk velocities
     vel_bc = np.transpose(np.transpose(velocities) + bvc)
@@ -69,9 +86,8 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
     offsets_chunk -= robust_mean(vel_offset_corrected)
     
     # Print to file
-    printLog(diag_file, '')
     printLog(diag_file, 'Chunk-to-chunk offsets from observation mean:')
-    printLog(diag_file, 'Median: {:.2f} +- {:.2f}'.format(
+    printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
             np.nanmedian(offsets_chunk), np.nanstd(offsets_chunk)))
     
     # Set up the sigma and deviation arrays
@@ -98,9 +114,8 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
     sig[ind] = pars['sig_correct']
     
     # Print to file
-    printLog(diag_file, '')
     printLog(diag_file, 'Chunk sigmas:')
-    printLog(diag_file, 'Median: {:.2f} +- {:.2f}'.format(
+    printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
             np.nanmedian(sig), np.nanstd(sig)))
     
     # Prepare the output dict
@@ -161,6 +176,12 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
         
         rv_dict['wws'][i,:] = weight_corr / np.nansum(weight_corr)
         
+    # Some metrics of the quality of the RV timeseries
+    rv_quality1 = np.sqrt(1./np.nansum(wt0))
+    rv_quality2 = np.sqrt(1./np.nansum(np.nanmedian(wt1, axis=0)))
+    
+    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(sig**-2)) ): {} m/s'.format(rv_quality1))
+    printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(rv_quality2))
     
     return rv_dict
         
