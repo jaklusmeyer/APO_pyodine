@@ -37,7 +37,8 @@ class CombinedResults():
         velocities = self.params['velocity']
         bvc = self.observation['bary_vel_corr']
         self._tseries, self.weighting_pars = combine_chunk_velocities(
-                velocities, bvc, diag_file=diag_file, pars=weighting_pars)
+                velocities, self.nr_chunks_order, bvc=bvc, 
+                diag_file=diag_file, weighting_pars=weighting_pars)
         
         self.fill_tseries_attributes()
     
@@ -84,6 +85,9 @@ class CombinedResults():
             self.info['osample_factor'] = result['model']['osample_factor']
         
         self.nr_chunks = len(result['chunks'][self.chunk_names[0]])
+        self.orders = np.unique(result['chunks']['order'])
+        self.nr_orders = len(self.orders)
+        self.nr_chunks_order = self.nr_chunks / self.nr_orders
         
         # Allocate arrays
         self.observation = {
@@ -177,7 +181,11 @@ class CombinedResults():
             self.medcnts = h5quick.h5data(h['medcounts'])
             self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
             
-        self.nr_chunks = self.redchi2.shape[1]
+        self.nr_chunks = self.chunks['order'].shape[0]
+        self.orders = np.unique(self.chunks['order'][0])
+        self.nr_orders = len(self.orders)
+        self.nr_chunks_order = self.nr_chunks / self.nr_orders
+        
         self.nr_files = len(self.res_filenames)
         self.param_names = [k for k in self.params.keys()]
         self.chunk_names = [k for k in self.chunks.keys()]

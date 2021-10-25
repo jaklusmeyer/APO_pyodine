@@ -353,7 +353,8 @@ def smooth_parameters_over_orders(parameters, par_name, chunks,
         ch_pix = np.array([chunks[i].abspix[0] + (len(chunks[i]) // 2) \
                            for i in range(o*nr_chunks_order,(o+1)*nr_chunks_order)])
         
-        pfits.append(fit_polynomial(ch_pix, par_data, deg=deg))
+        # fit_polynomial returns fitted y-values and coefficients - only use the first
+        pfits.append(fit_polynomial(ch_pix, par_data, deg=deg)[0])
         
     return np.array(pfits).flatten()
 
@@ -383,7 +384,8 @@ def smooth_fitresult_over_orders(fit_result, par_name, deg=2):
         par_result_o = np.array(par_result_o)
         ch_pix_o = np.array(ch_pix_o)
         
-        pfits.append(fit_polynomial(ch_pix_o, par_result_o, deg=deg))
+        # fit_polynomial returns fitted y-values and coefficients - only use the first
+        pfits.append(fit_polynomial(ch_pix_o, par_result_o, deg=deg)[0])
     
     return np.array(pfits).flatten()
 
@@ -414,11 +416,11 @@ def fit_polynomial(x_data, y_data, deg=2):
         
         pfit, stats = np.polynomial.Polynomial.fit(
                 x_data[idx], y_data[idx], deg, full=True, window=(0, n), domain=(0, n))
-        return pfit(x_data)
+        return pfit(x_data), pfit.coef
     except Exception as e:
         print(e)
         print('Falling back to input values.')
-        return y_data
+        return y_data, None
 
 
 # Weights/error calculation
