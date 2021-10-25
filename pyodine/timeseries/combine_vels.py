@@ -8,23 +8,70 @@ Created on Thu Oct 21 15:45:44 2021
 
 import numpy as np
 from .misc import robust_mean, robust_std, reweight
-from ..lib.misc import printLog
+from ..lib.misc import printLog, fit_polynomial
+import lmfit
+
+"""The default _weighting_pars array contains a combination of values for the 
+weighting parameters that have proven to work well for the computation of RVs
+from SONG spectra. Particularly the 'good_chunks' and 'good_orders' will have 
+to be changed when using a different instrument!
+"""
+_weighting_pars = {
+        'reweight_alpha': 1.8,
+        'reweight_beta': 8.0,
+        'reweight_sigma': 2.0,
+        'weight_correct': 0.01,
+        'sig_limits': (4., 1000.),
+        'sig_correct': 1000.,
+        'good_chunks': (3, 15), #(150, 350)
+        'good_orders': (6,14)
+        }
 
 
-def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
-    """Here the actual velocity weighting starts.
+def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None, 
+                             wavelengths=None, diag_file=None, 
+                             weighting_pars=None):
+    """Weight and combine the chunk velocities of a modelled timeseries
+    
+    This routine follows the algorithm used in the original iSONG pipeline 
+    code, developed by Frank Grundahl.
+    ToDo: Check the plausibility of the final RV uncertainties!
+    Added here: The chromatic index (slope of the modelled velocities with
+    wavelength) is computed if an array of wavelength zero points for each
+    chunk in each observation is supplied.
+    
+    :param velocities: The modelled velocities for each chunk in each 
+        observation of the timeseries.
+    :type velocities: ndarray[nr_obs,nr_chunks]
+    :param nr_chunks_order: Number of chunks per order.
+    :type nr_chunks_order: int
+    :param bvc: If barycentric velocity corrections are supplied for all 
+        observations, the output also contains bvc-corrected RVs.
+    :type bvc: list, ndarray[nr_obs], or None
+    :param wavelengths: If an array of wavelength zeropoints for each chunk
+        in each observation is supplied, the chromatic indices (crx) of the 
+        observations are modelled.
+    :type wavelength: ndarray[nr_obs,nr_chunks], or None
+    :param diag_file: If the pathname to a text-file is supplied, diagnosis
+        output is printed there in addition to terminal output.
+    :type diag_file: str, or None
+    :param weighting_pars: A dictionary of parameters used in the weighting 
+        algorithm. If None is supplied, a dictionary of default values is used.
+    :type weighting_pars: dict, or None
+    
+    :return: A dictionary of results: RVs ('rvs'), BVC-corrected RVs 
+        ('rvs_bc', optionally), simple median velocity timeseries ('mdvels'),
+        RV uncertainties ('rv_errs'), chunk-to-chunk scatter within each
+        observation ('c2c_scatters'), the chromatic index of each observation 
+        ('crxs', optional), the uncertainty of the chromatic indices 
+        ('crx_errs', optional).
+    :rtype: dict
     """
     
-    if not isinstance(pars, dict):
-        pars = {
-                'reweight_alpha': 1.8,
-                'reweight_beta': 8.0,
-                'reweight_sigma': 2.0,
-                'weight_correct': 0.01,
-                'sig_limits': (4., 1000.),
-                'sig_correct': 1000.,
-                'good_chunks': (150, 350)
-                }
+    if not isinstance(weighting_pars, dict):
+        pars = _weighting_pars
+    else:
+        pars = weighting_pars
     
     printLog(diag_file, '--------------------------------------------------')
     printLog(diag_file, '- Pyodine chunk combination (based on SONG code) -')
@@ -46,9 +93,8 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
     (nr_obs, nr_chunks) = velocities.shape
     printLog(diag_file, 'Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
     
-    # Where are chunk velocities or barycentric velocities nan?
+    # Where are chunk velocities nan?
     ind_nan = np.where(np.isnan(velocities))
-    ind_nan_bvc = np.where(np.isnan(bvc))
     if len(ind_nan[0]) > 0:
         printLog(diag_file, '')
         printLog(diag_file, 'Nan velocities (obs,chunk):')
@@ -56,24 +102,19 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
         for i in range(len(ind_nan[0])):
             outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
         printLog(diag_file, outstring)
-    if len(ind_nan_bvc[0]) > 0:
-        printLog(diag_file, '')
-        printLog(diag_file, 'Nan barycentric velocities (obs):')
-        outstring = ''
-        for i in range(len(ind_nan[0])):
-            outstring += '({})\t'.format(ind_nan_bvc[0][i])
-        printLog(diag_file, outstring)
     printLog(diag_file, '')
-    
-    # Set up the barycentric corrected chunk velocities
-    vel_bc = np.transpose(np.transpose(velocities) + bvc)
     
     # For each observation, center the chunk velocities around 0 by
     # subtracting the robust mean of that observation
+    # For the robust mean: Only use the best chunk velocities
+    # (parameters 'good_chunks' & 'good_orders'):
+    good_ind = []
+    for o in range(pars['good_orders'][0], pars['good_orders'][1]+1):
+        good_ind += [(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][1]+1)]
+    
     vel_offset_corrected = np.zeros((nr_obs, nr_chunks))
     for i in range(nr_obs):
-        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(
-                velocities[i,pars['good_chunks'][0]:pars['good_chunks'][1]])
+        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(velocities[i,good_ind]) #pars['good_chunks'][0]:pars['good_chunks'][1]])
     
     # Calculate the mean offset of each individual chunk timeseries from
     # the observation means by taking the robust mean along the 
@@ -126,13 +167,15 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
                                                 # for chunk timeseries offsets)
             'rv_errs': np.zeros(nr_obs),        # The theoretical measurement uncertainty
             'c2c_scatters': np.zeros(nr_obs),   # The chunk-to-chunk velocity scatter in each observation
-            'crx': np.zeros(nr_obs),            # The chromatic index in each observation
+            'crxs': np.zeros(nr_obs),           # The chromatic index in each observation
+            'crx_errs': np.zeros(nr_obs)        # The fit errors of the chromatic indices
             }
     
     
-    # The weights for the chunks based on the scatter in their time-series.
-    wt0 = 1./sig**2.   # The weight from the 'sigmas' for each chunk.
-    wt1 = np.zeros(vel_bc.shape)
+    # The weights for the chunks based on the scatter in their time-series
+    wt0 = 1./sig**2.                            # The weight from the 'sigmas' for each chunk timeseries
+    wt1 = np.zeros((nr_obs,nr_chunks))          # The corrected weights for each individual chunk 
+                                                # (after the reweight function)
     
     # Now loop over the observations to compute the final results
     for i in range(nr_obs):
@@ -173,14 +216,103 @@ def combine_chunk_velocities(velocities, bvc, diag_file=None, pars=None):
         rv_dict['c2c_scatters'][i] = robust_std(chunk_vels_corr)
         
         # BV-correction instead through actual z and barycorrpy?!
-        rv_dict['rvs_bc'][i] = rv_dict['rvs'][i] + bvc[i]
+        if isinstance(bvc, (list,np.ndarray)):
+            rv_dict['rvs_bc'][i] = rv_dict['rvs'][i] + bvc[i]
+        
+        # Compute the chromatic index in the observation, which is the slope
+        # of the chunk velocities over chunk wavelengths
+        # ToDo: Use the corrected chunk velocities or the raw ones?!
+        # ToDo: Use weights?!
+        if isinstance(wavelengths, (list,tuple,np.ndarray)):
+            crx, crx_err, redchi = chromatic_index_observation(
+                    chunk_vels_corr, wavelengths[i])
         
     # Some metrics of the quality of the RV timeseries
     rv_quality1 = np.sqrt(1./np.nansum(wt0))
     rv_quality2 = np.sqrt(1./np.nansum(np.nanmedian(wt1, axis=0)))
     
-    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(sig**-2)) ): {} m/s'.format(rv_quality1))
+    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(rv_quality1))
     printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(rv_quality2))
     
     return rv_dict
+
+
+def chromatic_index(log_wave, RV_zero, crx):
+    """The function to evaluate chunk velocities, given certain crx parameters
+    
+    :param log_wave: Logarithm of the wavelengths.
+    :type log_wave: ndarray[nr_chunks]
+    :param RV_zero: RV zeropoint of the observation.
+    :type RV_zero: float
+    :param crx: The chromatic index of the observation.
+    :type crx: float
+    
+    :return: The evaluated chunk velocities from the crx model.
+    :rtype: ndarray[nr_chunks]
+    """
+    return RV_zero + crx * log_wave
+    
+
+
+def chromatic_index_observation(velocities, wavelengths, weights=None):
+    """Model the chromatic index (crx) of an observation
+    
+    This follows the idea as implemented e.g. in SERVAL (Zechmeister et al., 2018)?!!!
+    
+    :param velocities: The modelled velocities of all chunk.
+    :type velocities: ndarray[nr_chunks]
+    :param wavelengths: The modelled wavelength intercepts (zeropoints) of all
+        chunks.
+    :type wavelengths: ndarray[nr_chunks]
+    :param weights: An optional array of chunk weights to use in the modelling
+        of the crx (e.g. to downweight chunks which are inherently bad). If 
+        None, no weights are used in the fitting.
+    :type weights: ndarray[nr_chunks], or None
+    
+    :return: The modelled chromatic index of the observation.
+    :rtype: float
+    :return: The model uncertainty of the chromatic index.
+    :rtype: float
+    :return: The red. Chi**2 of the crx model.
+    :rtype: float
+    """
+    
+    def func(lmfit_params, log_wave, velocities, weights):
+        """The objective function for the crx model
         
+        :param lmfit_params: The crx parameters.
+        :type lmfit_params: :class:`lmfit.Parameters`
+        :param log_wave: The logarithm of the wavelengths.
+        :type log_wave: ndarray[nr_chunks]
+        :param velocities: The chunk velocities.
+        :type velocities: ndarray[nr_chunks]
+        :param weights: The weights of the chunks.
+        :type weights: ndarray[nr_chunks] (or None)
+        
+        :return: The (optionally weighted) residuals between the crx model
+            and the velocities.
+        :rtype: ndarray[nr_chunks]
+        """
+        
+        velocities_fit = chromatic_index(log_wave, lmfit_params['RV_zero'], lmfit_params['crx'])
+        if isinstance(weights, (list,np.ndarray)):
+            return (velocities_fit - velocities) * np.sqrt(np.abs(weights))
+        else:
+            return velocities_fit - velocities
+    
+    # The chromatic index is evaluated over the log of the wavelengths
+    log_wave = np.log10(wavelengths)
+    
+    # First a simple polynomial fit to get a first estimate
+    velocities_fit, coeffs = fit_polynomial(log_wave, velocities, deg=1)
+    
+    # Set up the the lmfit parameters
+    lmfit_params = lmfit.Parameters()
+    lmfit_params.add(('RV_zero', coeffs[0]))
+    lmfit_params.add(('crx', coeffs[1]))
+    
+    # And fit
+    lmfit_result = lmfit.minimize(func, lmfit_params, args=[log_wave, velocities, weights])
+    
+    
+    return lmfit_result.params['crx'], lmfit_result.params['crx'].stderr, lmfit_result.redchi
