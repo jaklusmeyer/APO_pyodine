@@ -15,8 +15,8 @@ class CombinedResults():
     weighting to receive RVs. If that has already been performed, it can 
     additionally store the results from the weighting algorithm and RVs.
     
-    :param filename: A string to the path from which to load an 
-        existing :class:`CombinedResults` object. If None, then the object is
+    :param filename: A string to the path from which to load an existing 
+        :class:`CombinedResults` object. If None, then the object is
         initialized without data.
     :type filename: str, or None
     """
@@ -33,6 +33,19 @@ class CombinedResults():
     
     
     def create_timeseries(self, weighting_pars=None, diag_file=None):
+        """Create the timeseries data (weighted and unweighted RVs with 
+        uncertainties, chunk-to-chunk scatter, RV precision measures, and
+        optionally chromatic indices with uncertainties)
+        
+        :param weighting_pars: A dictionary of weighting parameter values 
+            needed in the weighting algorithm. If None, a dictionary of 
+            default values is used there.
+        :type weighting_pars: dict, or None
+        :param diag_file: A pathname of a text-file to write diagnostic 
+            information about the weighting process into. If None, the info
+            is just printed to the terminal.
+        :type diag_file: str, or None
+        """
         
         velocities = self.params['velocity']
         bvc = self.observation['bary_vel_corr']
@@ -44,7 +57,9 @@ class CombinedResults():
     
     
     def fill_tseries_attributes(self):
-        
+        """Create an object attribute for each entry in the the self._tseries 
+        dictionary (to make the results easier accessible).
+        """
         for key, value in self._tseries.items():
             setattr(self, key, value)
     
@@ -52,7 +67,8 @@ class CombinedResults():
     def load_individual_results(self, filenames):
         """Load individual fit results
         
-        :param filenames: The pathnames of the files.
+        :param filenames: The pathnames of the files to the individually saved
+            results to load.
         :type filenames: list or tuple 
         """
         self.nr_files = len(filenames)

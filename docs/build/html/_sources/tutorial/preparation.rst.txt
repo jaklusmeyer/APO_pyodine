@@ -5,9 +5,9 @@ Prepare the environment
 
 In the following tutorial, we will use **pyodine** to compute RVs from SONG spectra for the star !!!!XYZ!!!! This includes three basic steps:
 
-- using I2-free observations of the star, plus B-star spectra *with* the I2 cell, to :ref:`create a deconvolved stellar template <tutorial_template_creation>`;
+- using I2-free observations of the star, plus B-star spectra *with* the I2 cell, to :doc:`create a deconvolved stellar template <template>`;
 
-- with that template, :ref:`modelling the I2 observations <tutorial_model_observations>` of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);
+- with that template, :doc:`modelling the I2 observations <observation>` of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);
 
 - :ref:`weighting and combining the chunk velocities <tutorial_combine_velocities>` to compute the RV timeseries of the observations.
 

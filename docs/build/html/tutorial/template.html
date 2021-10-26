@@ -6,120 +6,318 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create a deconvolved stellar template &#8212; pyodine</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Model the stellar I2 observations" href="observation.html" />
     <link rel="prev" title="Prepare the environment" href="preparation.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
-  </head><body>
-  
+    
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">pyodine</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Quick start
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../installation.html">
+   Installation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code_structure.html">
+   Code structure
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../api.html">
+   API
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Tutorial
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="preparation.html">
+   Prepare the environment
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Create a deconvolved stellar template
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="observation.html">
+   Model the stellar I2 observations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="velocities.html">
+   Weight and combine the chunk velocities
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
           
 
-          <div class="body" role="main">
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-  <div class="section" id="create-a-deconvolved-stellar-template">
-<span id="tutorial-template-creation"></span><h1>Create a deconvolved stellar template<a class="headerlink" href="#create-a-deconvolved-stellar-template" title="Permalink to this headline">¶</a></h1>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/tutorial/template.ipynb.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="create-a-deconvolved-stellar-template">
+<h1>Create a deconvolved stellar template<a class="headerlink" href="#create-a-deconvolved-stellar-template" title="Permalink to this headline">¶</a></h1>
 <p>Before modelling observations of the star to extract RVs, we need to create a high-S/N stellar template</p>
 <p>What you need:</p>
 <ul class="simple">
 <li><p>observation spectra of hot stars, which do not show any spectral features in the I2 wavelength range between ~ 5000 – 6000 Å, obtained <em>with</em> the I2 cell in the light path; the recorded spectra then basically only consist of the I2 features, and can be used to determine the LSF of the instrument.</p></li>
 <li><p>observation spectra of the star of interest <em>without</em> any I2 absorption features;</p></li>
 </ul>
+<p>First, we need to set up the path and import the required pyodine modules:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pyodine</span>
+<span class="kn">import</span> <span class="nn">pyodine_create_templates</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. Upon import we call it just <code class="docutils literal notranslate"><span class="pre">utilities</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Additionally, a parameter input object of type <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> is needed. By default, there should be a module called <code class="docutils literal notranslate"><span class="pre">pyodine_parameters</span></code> within each <code class="docutils literal notranslate"><span class="pre">utilities</span></code>, but you could also create a different one and import it if you wish you experiment with changing parameters. However, we will stick with the well-tested default parameters here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Pars</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">pyodine_parameters</span><span class="o">.</span><span class="n">Template_Parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Load the pathnames to the observations of the O-star with I2, and to the observations of the star without I2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># O-star observations to use for the modelling</span>
+<span class="n">ostar_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Stellar observations to use for the deconvolution</span>
+<span class="n">temp_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Output pathname for the template</span>
+<span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/templates/blub.h5&#39;</span>
+
+<span class="c1"># Output directory for plots and pathnames for modelling results</span>
+<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And now, we can kick off the template creation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_create_templates</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">ostar_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> <span class="n">temp_outname</span><span class="p">,</span> 
+                    <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Open the saved results file and inspect it</p>
 </div>
 
 
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">pyodine</a></h1>
+              </div>
+              
+        
+            
 
 
 
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Quick start</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_structure.html">Code structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="preparation.html">Prepare the environment</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Create a deconvolved stellar template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="observation.html">Model the stellar I2 observations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="velocities.html">Weight and combine the chunk velocities</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="preparation.html" title="previous chapter">Prepare the environment</a></li>
-      <li>Next: <a href="observation.html" title="next chapter">Model the stellar I2 observations</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Heeren, Tronsgaard Rasmussen, Grundahl.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/tutorial/template.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
+<div class='prev-next-bottom'>
     
+    <div id="prev">
+        <a class="left-prev" href="preparation.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Prepare the environment</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="observation.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Model the stellar I2 observations</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
 
-    
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Heeren, Tronsgaard Rasmussen, Grundahl<br/>
+        
+            &copy; Copyright 2021, Heeren, Tronsgaard Rasmussen, Grundahl.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
   </body>
 </html>
