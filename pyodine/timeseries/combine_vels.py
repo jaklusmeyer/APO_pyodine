@@ -248,33 +248,38 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     return rv_dict
 
 
-def chromatic_index(log_wave, RV_zero, crx):
+def velocity_from_chromatic_index(wavelengths, RV, RV_wave, crx):
     """The function to evaluate chunk velocities, given certain crx parameters
     
-    :param log_wave: Logarithm of the wavelengths.
-    :type log_wave: ndarray[nr_chunks]
-    :param RV_zero: RV zeropoint of the observation.
+    :param wavelengths: Input wavelengths at which to evaluate the velocities.
+    :type wavelengths: ndarray[nr_chunks]
+    :param RV: The weighted RV of the observation.
     :type RV_zero: float
+    :param RV_wave: The effective wavelength at the weighted observation RV.
+    :type RV_wave: float
     :param crx: The chromatic index of the observation.
     :type crx: float
     
     :return: The evaluated chunk velocities from the crx model.
     :rtype: ndarray[nr_chunks]
     """
-    return RV_zero + crx * log_wave
+    return RV + crx * np.log(wavelengths / RV_wave)
     
 
 
-def chromatic_index_observation(velocities, wavelengths, weights=None):
+def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
     """Model the chromatic index (crx) of an observation
     
-    This follows the idea as implemented e.g. in SERVAL (Zechmeister et al., 2018)?!!!
+    This follows the idea as implemented in SERVAL (Zechmeister et al., 2018; 
+    see Section 3.1 and Equation 21).
     
     :param velocities: The modelled velocities of all chunk.
     :type velocities: ndarray[nr_chunks]
     :param wavelengths: The modelled wavelength intercepts (zeropoints) of all
         chunks.
     :type wavelengths: ndarray[nr_chunks]
+    :param RV: The weighted RV of the observation.
+    :type RV: float
     :param weights: An optional array of chunk weights to use in the modelling
         of the crx (e.g. to downweight chunks which are inherently bad). If 
         None, no weights are used in the fitting.
@@ -284,17 +289,21 @@ def chromatic_index_observation(velocities, wavelengths, weights=None):
     :rtype: float
     :return: The model uncertainty of the chromatic index.
     :rtype: float
+    :return: The modelled effective wavelength at the weighted observation RV.
+    :rtype: float
+    :return: The model uncertainty of the effective wavelength.
+    :rtype: float
     :return: The red. Chi**2 of the crx model.
     :rtype: float
     """
     
-    def func(lmfit_params, log_wave, velocities, weights):
+    def func(lmfit_params, ln_wave, velocities, weights):
         """The objective function for the crx model
         
         :param lmfit_params: The crx parameters.
         :type lmfit_params: :class:`lmfit.Parameters`
-        :param log_wave: The logarithm of the wavelengths.
-        :type log_wave: ndarray[nr_chunks]
+        :param ln_wave: The natural logarithm of the wavelengths.
+        :type ln_wave: ndarray[nr_chunks]
         :param velocities: The chunk velocities.
         :type velocities: ndarray[nr_chunks]
         :param weights: The weights of the chunks.
@@ -305,17 +314,17 @@ def chromatic_index_observation(velocities, wavelengths, weights=None):
         :rtype: ndarray[nr_chunks]
         """
         
-        velocities_fit = chromatic_index(log_wave, lmfit_params['RV_zero'], lmfit_params['crx'])
+        velocities_fit = chromatic_index(ln_wave, lmfit_params['RV_zero'], lmfit_params['crx'])
         if isinstance(weights, (list,np.ndarray)):
             return (velocities_fit - velocities) * np.sqrt(np.abs(weights))
         else:
             return velocities_fit - velocities
     
     # The chromatic index is evaluated over the log of the wavelengths
-    log_wave = np.log10(wavelengths)
+    ln_wave = np.log(wavelengths)
     
     # First a simple polynomial fit to get a first estimate
-    velocities_fit, coeffs = fit_polynomial(log_wave, velocities, deg=1)
+    velocities_fit, coeffs = fit_polynomial(ln_wave, velocities, deg=1)
     
     # Set up the the lmfit parameters
     lmfit_params = lmfit.Parameters()
@@ -323,7 +332,7 @@ def chromatic_index_observation(velocities, wavelengths, weights=None):
     lmfit_params.add(('crx', coeffs[1]))
     
     # And fit
-    lmfit_result = lmfit.minimize(func, lmfit_params, args=[log_wave, velocities, weights])
+    lmfit_result = lmfit.minimize(func, lmfit_params, args=[ln_wave, velocities, weights])
     
     
     return lmfit_result.params['crx'], lmfit_result.params['crx'].stderr, lmfit_result.redchi
