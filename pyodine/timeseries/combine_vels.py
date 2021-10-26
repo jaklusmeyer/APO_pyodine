@@ -23,8 +23,8 @@ _weighting_pars = {
         'weight_correct': 0.01,
         'sig_limits': (4., 1000.),
         'sig_correct': 1000.,
-        'good_chunks': (3, 15), #(150, 350)
-        'good_orders': (6,14)
+        'good_chunks': None, #(3, 15), #(150, 350)
+        'good_orders': None #(6,14)
         }
 
 
@@ -64,7 +64,8 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         RV uncertainties ('rv_errs'), chunk-to-chunk scatter within each
         observation ('c2c_scatters'), the chromatic index of each observation 
         ('crxs', optional), the uncertainty of the chromatic indices 
-        ('crx_errs', optional).
+        ('crx_errs', optional), and measures of the achieved RV precision of 
+        the timeseries ('RV_precision1', 'RV_precision2').
     :rtype: dict
     """
     
@@ -107,10 +108,15 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     # For each observation, center the chunk velocities around 0 by
     # subtracting the robust mean of that observation
     # For the robust mean: Only use the best chunk velocities
-    # (parameters 'good_chunks' & 'good_orders'):
-    good_ind = []
-    for o in range(pars['good_orders'][0], pars['good_orders'][1]+1):
-        good_ind += [(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][1]+1)]
+    # (parameters 'good_chunks' & 'good_orders', if available):
+    if isinstance(pars['good_orders'], (list,tuple,np.ndarray)) and \
+    isinstance(pars['good_chunks'], (list,tuple,np.ndarray)) and \
+    len(pars['good_orders']) == 2 and len(pars['good_chunks']) == 2:
+        good_ind = []
+        for o in range(pars['good_orders'][0], pars['good_orders'][1]+1):
+            good_ind += [(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][1]+1)]
+    else:
+        good_ind = [i for i in range(len(velocities))]
     
     vel_offset_corrected = np.zeros((nr_obs, nr_chunks))
     for i in range(nr_obs):
@@ -167,6 +173,9 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                                                 # for chunk timeseries offsets)
             'rv_errs': np.zeros(nr_obs),        # The theoretical measurement uncertainty
             'c2c_scatters': np.zeros(nr_obs),   # The chunk-to-chunk velocity scatter in each observation
+            'rv_precision1': 0.0,               # The inverse root of all summed simple weights (1/sigma**2)
+            'rv_precision2': 0.0,               # The inverse root of all summed observation-median
+                                                # corrected weights
             'crxs': np.zeros(nr_obs),           # The chromatic index in each observation
             'crx_errs': np.zeros(nr_obs)        # The fit errors of the chromatic indices
             }
@@ -228,11 +237,13 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                     chunk_vels_corr, wavelengths[i])
         
     # Some metrics of the quality of the RV timeseries
-    rv_quality1 = np.sqrt(1./np.nansum(wt0))
-    rv_quality2 = np.sqrt(1./np.nansum(np.nanmedian(wt1, axis=0)))
+    rv_dict['rv_precision1'] = np.sqrt(1./np.nansum(wt0))
+    rv_dict['rv_precision2'] = np.sqrt(1./np.nansum(np.nanmedian(wt1, axis=0)))
     
-    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(rv_quality1))
-    printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(rv_quality2))
+    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(
+            rv_dict['rv_precision1']))
+    printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(
+            rv_dict['rv_precision2']))
     
     return rv_dict
 

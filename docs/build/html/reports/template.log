@@ -1,0 +1,46 @@
+Traceback (most recent call last):
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 1087, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/paul/anaconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 540, in async_execute
+    await self.async_execute_cell(
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 832, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/home/paul/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 740, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
+                    plot_dir=plot_dir, res_files=res_files)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mIndexError[0m                                Traceback (most recent call last)
+[0;32m<ipython-input-5-907d82b0ba85>[0m in [0;36m<module>[0;34m[0m
+[0;32m----> 1[0;31m pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
+[0m[1;32m      2[0m                     plot_dir=plot_dir, res_files=res_files)
+
+[0;32m~/pyodine/pyodine_create_templates.py[0m in [0;36mcreate_template[0;34m(utilities, Pars, ostar_files, temp_files, temp_outname, plot_dir, res_files)[0m
+[1;32m     86[0m [0;34m[0m[0m
+[1;32m     87[0m     [0;31m# Take the sum of the O-star spectra[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 88[0;31m     [0mostar[0m [0;34m=[0m [0mpyodine[0m[0;34m.[0m[0mcomponents[0m[0;34m.[0m[0mSummedObservation[0m[0;34m([0m[0;34m*[0m[0mall_ostar_obs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     89[0m [0;34m[0m[0m
+[1;32m     90[0m     [0;31m# Load the stellar spectra obtained without I2 (stellar template observations)[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/pyodine/pyodine/components.py[0m in [0;36m__init__[0;34m(self, *observations)[0m
+[1;32m    423[0m             [0;32mexcept[0m [0mflux[0m[0;34m,[0m [0mexptime[0m[0;34m,[0m [0;34m([0m[0;31m?[0m[0;31m?[0m[0;31m?[0m[0;34m)[0m [0;32mfrom[0m [0mthis[0m [0mone[0m[0;34m.[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    424[0m         """
+[0;32m--> 425[0;31m         [0mself[0m[0;34m.[0m[0mnpix[0m [0;34m=[0m [0mobservations[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mnpix[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    426[0m         [0mself[0m[0;34m.[0m[0mnord[0m [0;34m=[0m [0mobservations[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mnord[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    427[0m         [0mself[0m[0;34m.[0m[0mstar[0m [0;34m=[0m [0mobservations[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mstar[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mIndexError[0m: tuple index out of range
+IndexError: tuple index out of range
+
