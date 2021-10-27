@@ -15,6 +15,97 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+
+def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
+                             diag_file=None, plot_dir=None, comb_res_out=None, 
+                             vels_out=None, reject_files=None):
+    
+    
+    
+    
+    ###########################################################################
+    ## Set up the environment, and load all neccessary data and parameters
+    ###########################################################################
+    
+    # Set up the CombinedResults object, and load from file
+    # Either load a list of individual fit results, handed directly through
+    # res_files or in a text-file, or load a previously saved CombinedResults 
+    # object if a filename has been supplied through comb_res_in
+    Results = timeseries.base.CombinedResults()
+    
+    if isinstance(res_files, str):
+        with open(res_files, 'r') as f:
+            res_names = [l.strip() for l in f.readlines()]
+        Results.load_individual_results(res_names)
+        
+    elif isinstance(res_files, (list,tuple)):
+        res_names = res_files
+        Results.load_individual_results(res_names)
+        
+    elif isinstance(comb_res_in, str):
+        Results.load_combined(comb_res_in)
+        
+    else:
+        raise ValueError('Either hand individual fit results through "res_files"' +
+                         'as list or tuple or in a text-file, or an existing' +
+                         'CombinedResults object through "comb_res_in"!')
+    
+    # Final output name for the diagnosis file (setup the directory structure 
+    # if non-existent)
+    if isinstance(diag_file, str):
+        diag_file_dir = os.path.dirname(diag_file)
+        if not os.path.exists(diag_file_dir):
+            os.makedirs(diag_file_dir)
+    
+    # Output directory for plots (setup the directory structure if non-existent)
+    if isinstance(plot_dir, str):
+        if not os.path.exists(plot_dir):
+            os.makedirs(plot_dir)
+    
+    # Final output name for the CombinedResults object  (setup the directory 
+    # structure if non-existent)
+    if isinstance(comb_res_out, str):
+        comb_res_dir = os.path.dirname(comb_res_out)
+        if not os.path.exists(comb_res_dir):
+            os.makedirs(comb_res_dir)
+    
+    # Output name for the RV text file (in .vels format or any other defined in
+    # the parameter input file) (setup the directory structure if non-existent)
+    if isinstance(vels_out, str):
+        vels_out_dir = os.path.dirname(vels_out)
+        if not os.path.exists(vels_out_dir):
+            os.makedirs(vels_out_dir)
+    
+    # Load a list of files that should be rejected in the timeseries
+    if isinstance(reject_files, (list,tuple)):
+        reject_names = reject_files
+    elif isinstance(reject_files, str):
+        with open(reject_files, 'r') as f:
+            reject_names = [l.strip() for l in f.readlines()]
+    
+    
+    ###########################################################################
+    ## Now do the velocity weighting and combination, as prescribed in the 
+    ## parameter input file
+    ###########################################################################
+    
+    Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
+                              diag_file=diag_file, do_crx=Pars.do_crx)
+    
+    Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
+                           delimiter=Pars.txt_delimiter, header=Pars.txt_header)
+    
+
+
+
+
+
+
+
+
+
+
 # This is where the results sit
 #resdir = '../data_lick/data_res/hip88048/multigausslick_ch_norecenter/hip88048all_4o_flat_nonorm_tempwc_nobpm/'
 resdir = '../data_song/data_res/sun/multigauss_song_new/sun_flat_lsfc_lsfnew/collected_results.h5'

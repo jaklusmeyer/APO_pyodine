@@ -8,7 +8,7 @@ Created on Thu Oct 21 15:45:44 2021
 
 import numpy as np
 from .misc import robust_mean, robust_std, reweight
-from ..lib.misc import printLog, fit_polynomial
+from ..lib.misc import printLog
 import lmfit
 
 """The default _weighting_pars array contains a combination of values for the 
@@ -167,17 +167,20 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     
     # Prepare the output dict
     rv_dict = {
-            'rvs': np.zeros(nr_obs),            # Weighted RV timeseries
-            'rvs_bc': np.zeros(nr_obs),         # Weighted RV timeseries, BV-corrected
-            'mdvels': np.zeros(nr_obs),         # The simple observation median (after correcting 
+            'rv': np.zeros(nr_obs),             # Weighted RV timeseries
+            'rv_bc': np.zeros(nr_obs),          # Weighted RV timeseries, BV-corrected
+            'mdvel': np.zeros(nr_obs),          # The simple observation median (after correcting 
                                                 # for chunk timeseries offsets)
-            'rv_errs': np.zeros(nr_obs),        # The theoretical measurement uncertainty
-            'c2c_scatters': np.zeros(nr_obs),   # The chunk-to-chunk velocity scatter in each observation
+            'rv_err': np.zeros(nr_obs),         # The theoretical measurement uncertainty
+            'c2c_scatter': np.zeros(nr_obs),    # The chunk-to-chunk velocity scatter in each observation
             'rv_precision1': 0.0,               # The inverse root of all summed simple weights (1/sigma**2)
             'rv_precision2': 0.0,               # The inverse root of all summed observation-median
                                                 # corrected weights
-            'crxs': np.zeros(nr_obs),           # The chromatic index in each observation
-            'crx_errs': np.zeros(nr_obs)        # The fit errors of the chromatic indices
+            'crx': np.zeros(nr_obs),            # The chromatic index in each observation
+            'crx_err': np.zeros(nr_obs),        # The fit errors of the chromatic indices
+            'RV_wave': np.zeros(nr_obs),        # The effect. wavelengths at the weighted RVs
+            'RV_wave_err': np.zeros(nr_obs),    # The fit errors of the effect. wavelengths
+            'crx_redchi': np.zeros(nr_obs)      # The red. Chi**2 of the crx fits
             }
     
     
@@ -211,30 +214,32 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         
         # A simple, unweighted estimate of the RV timeseries is just a
         # median of these corrected chunk velocities
-        rv_dict['mdvels'][i] = np.nanmedian(chunk_vels_corr)
+        rv_dict['mdvel'][i] = np.nanmedian(chunk_vels_corr)
         
         # The weighted RV timeseries takes the chunk weights into account
-        rv_dict['rvs'][i] = np.nansum(chunk_vels_corr * weight_corr) / np.nansum(weight_corr)
+        rv_dict['rv'][i] = np.nansum(chunk_vels_corr * weight_corr) / np.nansum(weight_corr)
         
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
-        rv_dict['rv_errs'][i] = 1. / np.sqrt(np.nansum(weight_corr))
+        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(weight_corr))
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
-        rv_dict['c2c_scatters'][i] = robust_std(chunk_vels_corr)
+        rv_dict['c2c_scatter'][i] = robust_std(chunk_vels_corr)
         
         # BV-correction instead through actual z and barycorrpy?!
         if isinstance(bvc, (list,np.ndarray)):
-            rv_dict['rvs_bc'][i] = rv_dict['rvs'][i] + bvc[i]
+            rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
         
         # Compute the chromatic index in the observation, which is the slope
         # of the chunk velocities over chunk wavelengths
         # ToDo: Use the corrected chunk velocities or the raw ones?!
         # ToDo: Use weights?!
         if isinstance(wavelengths, (list,tuple,np.ndarray)):
-            crx, crx_err, redchi = chromatic_index_observation(
-                    chunk_vels_corr, wavelengths[i])
+            crx_dict = chromatic_index_observation(
+                    chunk_vels_corr, wavelengths[i], rv_dict['rv'][i])
+            for key, value in crx_dict.items():
+                rv_dict[key][i] = crx_dict[key]
         
     # Some metrics of the quality of the RV timeseries
     rv_dict['rv_precision1'] = np.sqrt(1./np.nansum(wt0))
@@ -285,27 +290,24 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         None, no weights are used in the fitting.
     :type weights: ndarray[nr_chunks], or None
     
-    :return: The modelled chromatic index of the observation.
-    :rtype: float
-    :return: The model uncertainty of the chromatic index.
-    :rtype: float
-    :return: The modelled effective wavelength at the weighted observation RV.
-    :rtype: float
-    :return: The model uncertainty of the effective wavelength.
-    :rtype: float
-    :return: The red. Chi**2 of the crx model.
-    :rtype: float
+    :return: A dictionary of results: chromatic index ('crx') and its model
+        uncertainty ('crx_err'), the effective wavelength at the weighted RV
+        ('RV_wave') and its model uncertainty ('RV_wave_err'), and the red. 
+        Chi**2 of the fit ('crx_redchi').
+    :rtype: dict
     """
     
-    def func(lmfit_params, ln_wave, velocities, weights):
+    def func(lmfit_params, wavelengths, velocities, RV, weights):
         """The objective function for the crx model
         
         :param lmfit_params: The crx parameters.
         :type lmfit_params: :class:`lmfit.Parameters`
-        :param ln_wave: The natural logarithm of the wavelengths.
-        :type ln_wave: ndarray[nr_chunks]
+        :param wavelengths: The chunk wavelengths.
+        :type wavelengths: ndarray[nr_chunks]
         :param velocities: The chunk velocities.
         :type velocities: ndarray[nr_chunks]
+        :param RV: The weighted RV of the observation.
+        :type RV: float
         :param weights: The weights of the chunks.
         :type weights: ndarray[nr_chunks] (or None)
         
@@ -314,25 +316,44 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         :rtype: ndarray[nr_chunks]
         """
         
-        velocities_fit = chromatic_index(ln_wave, lmfit_params['RV_zero'], lmfit_params['crx'])
+        velocities_fit = velocity_from_chromatic_index(
+                wavelengths, RV, lmfit_params['RV_wave'], lmfit_params['crx'])
         if isinstance(weights, (list,np.ndarray)):
             return (velocities_fit - velocities) * np.sqrt(np.abs(weights))
         else:
             return velocities_fit - velocities
     
-    # The chromatic index is evaluated over the log of the wavelengths
-    ln_wave = np.log(wavelengths)
-    
     # First a simple polynomial fit to get a first estimate
-    velocities_fit, coeffs = fit_polynomial(ln_wave, velocities, deg=1)
+    #velocities_fit, coeffs = fit_polynomial(ln_wave, velocities, deg=1)
+    
+    # Now do the parameter starting guesses
+    # For the effective wavelength of the modelled RV:
+    # Median of all wavelengths
+    RV_wave_guess = np.median(wavelengths)
+    # For the chromatic index:
+    # Slope between the first (30) and last (30) chunk velocities
+    vels_first = np.median(velocities[:30])
+    vels_last  = np.median(velocities[-30:])
+    waves_first = np.median(wavelengths[:30])
+    waves_last  = np.median(wavelengths[-30:])
+    
+    # This follows when rearranging Equ. 21 in Zechmeister et al. (2018)
+    crx_guess = (vels_last - vels_first) / np.log(waves_last / waves_first)
     
     # Set up the the lmfit parameters
     lmfit_params = lmfit.Parameters()
-    lmfit_params.add(('RV_zero', coeffs[0]))
-    lmfit_params.add(('crx', coeffs[1]))
+    lmfit_params.add(('RV_wave', RV_wave_guess))
+    lmfit_params.add(('crx', crx_guess))
     
     # And fit
-    lmfit_result = lmfit.minimize(func, lmfit_params, args=[ln_wave, velocities, weights])
+    lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
     
+    crx_dict = {
+            'crx': lmfit_result.params['crx'], 
+            'crx_err': lmfit_result.params['crx'].stderr, 
+            'RV_wave': lmfit_result.params['RV_wave'], 
+            'RV_wave_err': lmfit_result.params['RV_wave'].stderr, 
+            'crx_redchi': lmfit_result.redchi
+            }
     
-    return lmfit_result.params['crx'], lmfit_result.params['crx'].stderr, lmfit_result.redchi
+    return crx_dict

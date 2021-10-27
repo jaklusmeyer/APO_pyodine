@@ -5,7 +5,7 @@
     Paul Heeren, 8/03/2021
 """
 
-class Parameters:
+class TimeseriesParameters:
     
     def __init__(self):
         # General parameters:

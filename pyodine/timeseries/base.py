@@ -32,7 +32,8 @@ class CombinedResults():
                 print(e)
     
     
-    def create_timeseries(self, weighting_pars=None, diag_file=None):
+    def create_timeseries(self, weighting_pars=None, diag_file=None, 
+                          do_crx=True):
         """Create the timeseries data (weighted and unweighted RVs with 
         uncertainties, chunk-to-chunk scatter, RV precision measures, and
         optionally chromatic indices with uncertainties)
@@ -45,23 +46,64 @@ class CombinedResults():
             information about the weighting process into. If None, the info
             is just printed to the terminal.
         :type diag_file: str, or None
+        :param do_crx: Whether to also compute chromatic indices of the 
+            observations. Defaults to True.
+        :type do_crx: bool
         """
         
         velocities = self.params['velocity']
-        bvc = self.observation['bary_vel_corr']
-        self._tseries, self.weighting_pars = combine_chunk_velocities(
+        bvc = self.timeseries['bary_vel_corr']
+        wavelengths = None
+        if do_crx:
+            wavelengths = self.params['wave_intercept']
+        tseries, self.weighting_pars = combine_chunk_velocities(
                 velocities, self.nr_chunks_order, bvc=bvc, 
-                diag_file=diag_file, weighting_pars=weighting_pars)
+                wavelengths=wavelengths, diag_file=diag_file, 
+                weighting_pars=weighting_pars)
         
-        self.fill_tseries_attributes()
+        self.timeseries.update(tseries)
+        self.fill_timeseries_attributes()
     
     
-    def fill_tseries_attributes(self):
-        """Create an object attribute for each entry in the the self._tseries 
+    def fill_timeseries_attributes(self):
+        """Create an object attribute for each entry in the the self.timeseries 
         dictionary (to make the results easier accessible).
         """
-        for key, value in self._tseries.items():
+        for key, value in self.timeseries.items():
             setattr(self, key, value)
+    
+    
+    def results_to_txt(self, filename, outkeys=None, delimiter='\t', 
+                       header=None):
+        """Write timeseries results to a txt-file
+        
+        :param filename: The output filepath.
+        :type filename: str
+        :param outkeys: Which of the self._tseries items to write to file. If
+            None, write the 'bary_date', 'rv' and 'rv_err' entries by default.
+        :type outkeys: str, list, tuple, or None
+        :param delimiter: The delimiter used in the txt-file. Defaults to '\t'.
+        :type delimiter: str
+        :param header: Potential header row to write before the data (e.g. the
+            keys). If None, no header row is written.
+        :type header: str
+        """
+        
+        if not isinstance(outkeys, (str,list,tuple)):
+            outkeys = ['bary_date', 'rv', 'rv_err']
+        elif isinstance(outkeys, str):
+            outkeys = [outkeys]
+        
+        outdata = []
+        for key in outkeys:
+            if key in self.timeseries.keys():
+                if 'rv_precision' not in key:
+                    outdata.append(self.timeseries[key])
+                else:
+                    outdata.append([self.timeseries[key]]*len(self.timeseries['rv']))
+        
+        outdata = np.array(outdata)
+        np.savetxt(filename, outdata.T, delimiter=delimiter, header=header)
     
     
     def load_individual_results(self, filenames):
@@ -72,7 +114,6 @@ class CombinedResults():
         :type filenames: list or tuple 
         """
         self.nr_files = len(filenames)
-        self.res_filenames = [os.path.abspath(f) for f in filenames]
         
         # Check whether the results are saved as 'dill' or 'h5py'. 
         # We assume that all files are of same type,
@@ -106,7 +147,7 @@ class CombinedResults():
         self.nr_chunks_order = self.nr_chunks / self.nr_orders
         
         # Allocate arrays
-        self.observation = {
+        self.timeseries = {
             #'time_start': np.zeros(nfiles, dtype='S23'),
             'bary_date': np.zeros(self.nr_files),
             'bary_vel_corr': np.zeros(self.nr_files),
@@ -129,8 +170,8 @@ class CombinedResults():
             if not isinstance(result, dict):
                 result = fitters.create_results_dict(result)
             
-            for k in self.observation.keys():
-                self.observation[k][i] = result['observation'][str(k)]
+            for k in self.timeseries.keys():
+                self.timeseries[k][i] = result['observation'][str(k)]
             for k in self.param_names:
                 self.params[k][i] = result['params'][k]
                 self.errors[k][i] = result['errors'][k]
@@ -140,8 +181,9 @@ class CombinedResults():
             self.residuals[i] = result['residuals']
             self.medcnts[i] = result['medcounts']
         
-        # Initiate an empty timeseries and empty weighting pars attribute
-        self._tseries = {}
+        self.timeseries['res_filename'] = [os.path.abspath(f).encode('utf8', 'replace') for f in filenames]
+        
+        # Initiate an empty weighting pars attribute
         self.weighting_pars = {}
     
         
@@ -158,17 +200,16 @@ class CombinedResults():
                 filename, 'h5py', correct=True)
         
         with h5py.File(new_filename, 'w') as h:
-            h5quick.dict_to_group(self.observation, h, 'observation')
+            h5quick.dict_to_group(self.timeseries, h, 'timeseries')
             h5quick.dict_to_group(self.params, h, 'params')
             h5quick.dict_to_group(self.errors, h, 'errors')
             h5quick.dict_to_group(self.chunks, h, 'chunks')
             h5quick.dict_to_group(self.info, h, 'info')
-            h5quick.dict_to_group(self._tseries, h, 'tseries')
             h5quick.dict_to_group(self.weighting_pars, h, 'weighting_pars')
             h['redchi2'] = self.redchi2
             h['residuals'] = self.residuals
             h['medcounts'] = self.medcnts
-            h['res_filenames'] = [f.encode('utf8', 'replace') for f in self.res_filenames]
+            #h['res_filenames'] = [f.encode('utf8', 'replace') for f in self.res_filenames]
     
     
     def load_combined(self, filename):
@@ -178,16 +219,16 @@ class CombinedResults():
         :type filename: str
         """
         with h5py.File(filename, 'r') as h:
-            self.observation = h5quick.h5data(h['observation'])
+            self.timeseries = h5quick.h5data(h['timeseries'])
             self.params = h5quick.h5data(h['params'])
             self.errors = h5quick.h5data(h['errors'])
             self.chunks = h5quick.h5data(h['chunks'])
             self.info = h5quick.h5data(h['info'])
-            try:
-                self._tseries = h5quick.h5data(h['tseries'])
-                self.fill_tseries_attributes()
-            except:
-                self._tseries = {}
+            #try:
+            #    self._tseries = h5quick.h5data(h['tseries'])
+            self.fill_timeseries_attributes()
+            #except:
+            #    self._tseries = {}
             try:
                 self.weighting_pars = h5quick.h5data(h['weighting_pars'])
             except:
@@ -195,7 +236,7 @@ class CombinedResults():
             self.redchi2 = h5quick.h5data(h['redchi2'])
             self.residuals = h5quick.h5data(h['residuals'])
             self.medcnts = h5quick.h5data(h['medcounts'])
-            self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
+            #self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
             
         self.nr_chunks = self.chunks['order'].shape[0]
         self.orders = np.unique(self.chunks['order'][0])
@@ -205,5 +246,44 @@ class CombinedResults():
         self.nr_files = len(self.res_filenames)
         self.param_names = [k for k in self.params.keys()]
         self.chunk_names = [k for k in self.chunks.keys()]
+        
+        
+    def remove_observations(self, res_names=None, obs_names=None):
+        """Remove a number of individual results from the object, either
+        by their individual result filenames or their original observation
+        filenames.
+        
+        :param res_names: A list of individual result filenames to remove. If 
+            None, supply 'obs_names' instead.
+        :type res_names: list or tuple, or None
+        :param obs_names: A list of original observation filenames to remove. If 
+            None, supply 'res_names' instead.
+        :type obs_names: list or tuple, or None
+        """
+        
+        if isinstance(res_names, (list,tuple)):
+            inds = self._return_indices_of_filenames(res_names, self.timeseries['res_filename'])
+        elif isinstance(obs_names, (list,tuple)):
+            inds = self._return_indices_of_filenames(obs_names, self.timeseries['orig_filename'])
+        else:
+            raise KeyError('Either of "res_names" or "obs_names" must be list or tuple!')
+        
+        # Remove from timeseries
+        for key in self.timeseries.keys():
+            if isinstance(self.timeseries[key], np.ndarray):
+                self.timeseries[key] = np.delete(self.timeseries[key], inds)
+            elif isinstance(self.timeseries[key], list):
+                for i in sorted(inds, reverse=True):
+                    del self.timeseries[key][i]
+    
+    
+    def _return_indices_of_filenames(self, filenames, all_names):
+        
+        inds = []
+        for i, f in enumerate(all_names):
+            if f.decode() in filenames:
+                inds.append(i)
+        
+        return inds
         
             
