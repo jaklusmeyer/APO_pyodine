@@ -21,7 +21,7 @@ _weighting_pars = {
         'reweight_beta': 8.0,
         'reweight_sigma': 2.0,
         'weight_correct': 0.01,
-        'sig_limits': (4., 1000.),
+        'sig_limits': [4., 1000.],
         'sig_correct': 1000.,
         'good_chunks': None, #(3, 15), #(150, 350)
         'good_orders': None #(6,14)
@@ -64,8 +64,13 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         RV uncertainties ('rv_errs'), chunk-to-chunk scatter within each
         observation ('c2c_scatters'), the chromatic index of each observation 
         ('crxs', optional), the uncertainty of the chromatic indices 
-        ('crx_errs', optional), and measures of the achieved RV precision of 
-        the timeseries ('RV_precision1', 'RV_precision2').
+        ('crx_errs', optional).
+    :rtype: dict
+    :return: A dictionary of auxiliary results: The chunk timeseries sigmas 
+        ('chunk_sigma'), individual chunk deviations ('chunk_dev'), chunk 
+        timeseries offsets from observation medians ('chunk_offsets'), 
+        corrected chunk weights ('chunk_weights'), and measures of the achieved 
+        RV precision of the timeseries ('RV_precision1', 'RV_precision2').
     :rtype: dict
     """
     
@@ -165,7 +170,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
             np.nanmedian(sig), np.nanstd(sig)))
     
-    # Prepare the output dict
+    # Prepare the output dicts
     rv_dict = {
             'rv': np.zeros(nr_obs),             # Weighted RV timeseries
             'rv_bc': np.zeros(nr_obs),          # Weighted RV timeseries, BV-corrected
@@ -173,21 +178,17 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                                                 # for chunk timeseries offsets)
             'rv_err': np.zeros(nr_obs),         # The theoretical measurement uncertainty
             'c2c_scatter': np.zeros(nr_obs),    # The chunk-to-chunk velocity scatter in each observation
-            'rv_precision1': 0.0,               # The inverse root of all summed simple weights (1/sigma**2)
-            'rv_precision2': 0.0,               # The inverse root of all summed observation-median
-                                                # corrected weights
-            'crx': np.zeros(nr_obs),            # The chromatic index in each observation
-            'crx_err': np.zeros(nr_obs),        # The fit errors of the chromatic indices
-            'RV_wave': np.zeros(nr_obs),        # The effect. wavelengths at the weighted RVs
-            'RV_wave_err': np.zeros(nr_obs),    # The fit errors of the effect. wavelengths
-            'crx_redchi': np.zeros(nr_obs)      # The red. Chi**2 of the crx fits
             }
+    if isinstance(wavelengths, (list,tuple,np.ndarray)):
+        rv_dict['crx'] = np.zeros(nr_obs)           # The chromatic index in each observation
+        rv_dict['crx_err'] = np.zeros(nr_obs),      # The fit errors of the chromatic indices
+        rv_dict['RV_wave'] = np.zeros(nr_obs),      # The effect. wavelengths at the weighted RVs
+        rv_dict['RV_wave_err'] = np.zeros(nr_obs),  # The fit errors of the effect. wavelengths
+        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits
+        
     
-    
-    # The weights for the chunks based on the scatter in their time-series
-    wt0 = 1./sig**2.                            # The weight from the 'sigmas' for each chunk timeseries
-    wt1 = np.zeros((nr_obs,nr_chunks))          # The corrected weights for each individual chunk 
-                                                # (after the reweight function)
+    chunk_weights = np.zeros((nr_obs,nr_chunks)),   # The corrected weights for each individual chunk 
+                                                    # (after the reweight function)
     
     # Now loop over the observations to compute the final results
     for i in range(nr_obs):
@@ -205,8 +206,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         # Now correct the sigma accordingly. The chunk weights are then
         # simply the inverse of the square of the sigmas.
         sig_corr = sig / wd
-        weight_corr = 1.0 / sig_corr**2
-        wt1[i] = weight_corr
+        chunk_weights[i] = 1.0 / sig_corr**2
         
         # Correct the chunk velocities of this observation by subtracting
         # their respective chunk timeseries offsets
@@ -217,11 +217,11 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         rv_dict['mdvel'][i] = np.nanmedian(chunk_vels_corr)
         
         # The weighted RV timeseries takes the chunk weights into account
-        rv_dict['rv'][i] = np.nansum(chunk_vels_corr * weight_corr) / np.nansum(weight_corr)
+        rv_dict['rv'][i] = np.nansum(chunk_vels_corr * chunk_weights[i]) / np.nansum(chunk_weights[i])
         
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
-        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(weight_corr))
+        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i]))
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
@@ -242,15 +242,25 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                 rv_dict[key][i] = crx_dict[key]
         
     # Some metrics of the quality of the RV timeseries
-    rv_dict['rv_precision1'] = np.sqrt(1./np.nansum(wt0))
-    rv_dict['rv_precision2'] = np.sqrt(1./np.nansum(np.nanmedian(wt1, axis=0)))
+    rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
+    rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(chunk_weights[i], axis=0)))
     
     printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(
             rv_dict['rv_precision1']))
     printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(
             rv_dict['rv_precision2']))
     
-    return rv_dict
+    auxiliary_dict = {
+            'chunk_sigma': sig,
+            'chunk_dev': dev,
+            'chunk_offsets': offsets_chunk,
+            'chunk_weights': chunk_weights,
+            'rv_precision1': rv_precision1,     # The inverse root of all summed simple weights (1/sigma**2)
+            'rv_precision2': rv_precision2,     # The inverse root of all summed observation-median
+                                                # corrected weights
+            }
+    
+    return rv_dict, auxiliary_dict, weighting_pars
 
 
 def velocity_from_chromatic_index(wavelengths, RV, RV_wave, crx):
