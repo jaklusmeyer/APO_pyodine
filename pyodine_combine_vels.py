@@ -9,19 +9,56 @@ Created on Wed Feb 17 10:18:22 2021
 # Import packages
 from pyodine.lib.misc import printLog, chauvenet_criterion
 from pyodine import timeseries
-from pyodine.timeseries.misc import robust_mean, robust_std, reweight
+from pyodine.timeseries.misc import robust_mean, robust_std
 
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+import argparse
+
+# Use importlib for more flexibility of which pyodine parameter file to import?!
+import importlib
 
 
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
                              diag_file=None, plot_dir=None, comb_res_out=None, 
                              vels_out=None, reject_files=None):
+    """Weight and combine chunk velocities from modelling results
     
+    :param Pars: The parameters to use in the routine.
+    :type Pars: :class:`Timeseries_Parameters`
+    :param res_files: A pathname to a text-file with pathnames of individual 
+        results to load for the combination, or, alternatively, a list of 
+        pathnames to individual results. If this is None, hand an existing 
+        saved CombinedResults object to 'comb_res_in'!
+    :type res_files: str, list, tuple, or None
+    :param comb_res_in: A pathname to a saved CombinedResults object to load. 
+        If this is None, hand individual results to 'res_files'!
+    :type comb_res_in: str, or None
+    :param diag_file: The pathname of a text-file to write diagnosis messages 
+        into. If None, the messages are just printed in the terminal.
+    :type diag_file: str, or None
+    :param plot_dir: The directory name to save analysis plots into. If it does
+        not exist, the directory is created in the process. If None, no plots
+        are saved.
+    :type plot_dir: str, or None
+    :param comb_res_out: The pathname where to save the final CombinedResults 
+        object into. If None, the results are not saved.
+    :type comb_res_out: str, or None
+    :param vels_out: The pathname of a text-file to write chosen timeseries 
+        results into. If None, no results are written.
+    :type vels_out: str, or None
+    :param reject_files: A pathname to a text-file with pathnames of individual 
+        results to reject from the combination, or, alternatively, a list of 
+        pathnames to individual results. If None, all results are used in the 
+        combination algorithm.
+    :type reject_files: str, list, tuple, or None
     
+    :return: The final CombinedResults object, containing the timeseries 
+        results.
+    :rtype: :class:`CombinedResults`
+    """
     
     
     ###########################################################################
@@ -109,9 +146,11 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     ###########################################################################
     
     if Pars.save_comb_res and isinstance(comb_res_out, str):
+        print('\nSaving results to:\n\t{}'.format(comb_res_out))
         Results.save_combined(comb_res_out)
     
     if Pars.plot_analysis and isinstance(plot_dir, str):
+        print('\nCreating and saving analysis plots to\n\t{}:'.format(plot_dir))
         
         # Plot velocity results
         fig = plt.figure(figsize=(10,6))
@@ -148,6 +187,12 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
                 Results.info['star_name'], len(bad_rvs[0])))
         plt.savefig(os.path.join(plot_dir, 'RV_timeseries_goodobs.png'), format='png', dpi=300)
         plt.close()
+        
+        # Print the outliers to file, if desired
+        if Pars.print_outliers:
+            printLog(diag_file, '\nObservations with outlier RVs:')
+            for i in range(len(bad_rvs[0])):
+                printLog(diag_file, Results.res_filename[bad_rvs[0][i]])
         
         # Plot chunk-to-chunk scatter of observations
         fig = plt.figure(figsize=(10,6))
@@ -189,6 +234,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # 3D plot of velocities (corrected by chunk offsets & barycentric velocities)
         vel_corrected = Results.params['velocity'] - Results.auxiliary['chunk_offsets']
         vel_corrected = vel_corrected.T + Results.bary_vel_corr
+        
         fig = plt.figure(figsize=(10,10))
         plt.imshow(vel_corrected, aspect='auto')
         plt.colorbar()
@@ -208,7 +254,17 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         plt.savefig(os.path.join(plot_dir, 'chunk_devs.png'), format='png', dpi=300)
         plt.close()
         
-        
+        # Histogram of the final velocity weights
+        fig = plt.figure(figsize=(10,6))
+        plt.hist(Results.auxiliary['chunk_weights'].flatten(), bins=100, alpha=0.7,
+                 label=r'Mean: {}+-{} (m/s)$^{-2}$'.format(
+                         robust_mean(Results.auxiliary['chunk_weights']), 
+                         robust_std(Results.auxiliary['chunk_weights'])))
+        plt.legend()
+        plt.xlabel(r'Weights [(m/s)$^{-2}$]')
+        plt.title('{}, chunk weights'.format(Results.info['star_name']))
+        plt.savefig(os.path.join(plot_dir, 'chunk_weights_hist.png'), format='png', dpi=300)
+        plt.close()
         
         # Plot chromatic indices (if any)
         if Pars.do_crx:
@@ -223,220 +279,51 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             plt.savefig(os.path.join(plot_dir, 'CRX_timeseries.png'), format='png', dpi=300)
             plt.close()
         
+    ###########################################################################
+    ## Everything's done now, return the CombinedResults object
+    ###########################################################################
+    
+    print('All done!')
+    
+    return Results
 
 
-# Histogram of the final velocity weights
-fig = plt.figure(figsize=(10,8))
-plt.hist(wt1.flatten(), bins=200, alpha=0.75)
-plt.legend(['Median weights (only non-0): \n{} +- {} m/s'.format(
-        np.nanmedian(wt1[wt1!=0.]), np.nanstd(wt1[wt1!=0.]))])
-plt.xlabel('Weights')
-plt.title('Chunk weights after velocity rms weighting (0 for rejected chunks)')
-plt.savefig(os.path.join(savepath, 'weights_hist1.png'), format='png', dpi=300)
-plt.close()
-
-"""
-Now comes the analysis with plots
-"""
-
-# Print outliers to analysis file
-printLog(diag_file, 'Outlier velocities:')
-for i in range(len(bad_rvs[0])):
-    printLog(diag_file, res_filename[bad_rvs[0][i]])
-"""
-# Load original Lick velocities
-jd_orig = np.genfromtxt(orig_vst_file, unpack=True, usecols=[0])
-vel_orig = np.genfromtxt(orig_vst_file, unpack=True, usecols=[1])
-vel_orig -= np.median(vel_orig)
-#vel_orig = np.array([-0., -0., 0., 0., 0.])
-err_orig = np.genfromtxt(orig_vst_file, unpack=True, usecols=[2])
-
-
-# Plot again velocity results, this time vs. original Lick results
-fig = plt.figure(figsize=(10,8))
-plt.errorbar(bjd, rv-np.nanmedian(rv), yerr=errvel, fmt='.', alpha=0.75)
-plt.errorbar(jd_orig, vel_orig, yerr=err_orig, fmt='.', alpha=0.75)
-plt.legend(['Weighted velocities\n(std={:.2f} m/s)'.format(np.nanstd(rv)), 
-            'Original velocities\n(std={:.2f} m/s)'.format(np.nanstd(vel_orig))])
-plt.xlabel('JD')
-plt.ylabel('RV [m/s]')
-plt.title('Velocity time series with original Lick results')
-plt.savefig(os.path.join(savepath, 'velocity_series1.png'), format='png', dpi=300)
-plt.close()
-
-
-# Same as above, but outliers rejected
-fig = plt.figure(figsize=(10,8))
-plt.errorbar(bjd_good, rv_good-np.nanmedian(rv_good), yerr=errvel_good, fmt='.', alpha=0.75)
-plt.errorbar(jd_orig, vel_orig, yerr=err_orig, fmt='.', alpha=0.75)
-plt.legend(['Weighted velocities\n(std={:.2f} m/s)'.format(np.nanstd(rv_good)), 
-            'Original velocities\n(std={:.2f} m/s)'.format(np.nanstd(vel_orig))])
-plt.xlabel('JD')
-plt.ylabel('RV [m/s]')
-plt.title('Velocity time series (without outliers) with original Lick results')
-plt.savefig(os.path.join(savepath, 'velocity_series1_restricted.png'), format='png', dpi=300)
-
-
-# Find original velocities that correspond to ours and plot differences
-ind_ours = []
-ind_orig = []
-for i in range(len(bjd)):
-    ind = np.argmin(np.abs(bjd[i]-jd_orig))
-    if abs(bjd[i] - jd_orig[ind]) < 0.01:
-        ind_ours.append(i)
-        ind_orig.append(ind)
-
-jd_res = bjd[ind_ours]
-full_res = rv[ind_ours] - vel_orig[ind_orig]
-full_res -= np.nanmedian(full_res)
-full_res_err = np.sqrt(errvel[ind_ours]**2 + err_orig[ind_orig]**2)
-
-fig = plt.figure(figsize=(10,8))
-plt.errorbar(jd_res, full_res, yerr=full_res_err, fmt='.', alpha=0.75)
-plt.legend(['Residual velocities\n(std={:.2f} m/s)'.format(np.nanstd(full_res))])
-plt.xlabel('JD')
-plt.ylabel('Residual RV [m/s]')
-plt.title('Difference to original Lick results')
-plt.savefig(os.path.join(savepath, 'velocity_difference.png'), format='png', dpi=300)
-plt.close()
-"""
-"""
-# Diss plot
-fig = plt.figure(figsize=(8,7))
-plt.errorbar(bjd, rv-vel_orig-np.nanmean(rv-vel_orig),
-             yerr=np.sqrt(errvel**2 + err_orig**2), fmt='p', alpha=0.75)
-plt.plot(bjd, mdvel+bvc-vel_orig-np.nanmean(mdvel+bvc-vel_orig), 'o', alpha=0.75)
-plt.legend(['Unweighted RVs\n(rms={:.2f} m/s)'.format(
-            np.nanstd(mdvel+bvc-vel_orig-np.nanmean(mdvel+bvc-vel_orig))),
-    'Weighted RVs\n(rms={:.2f} m/s)'.format(
-    np.nanstd(rv-vel_orig-np.nanmean(rv-vel_orig)))
-    ])
-plt.axhline(y=0, c='g', linestyle='--', alpha=0.5)
-plt.xlabel('JD')
-plt.ylabel('$v_\mathrm{meas} - v_\mathrm{inj}$ [m/s]')
-plt.title('Residuals measured vs. injected RVs')
-plt.savefig(os.path.join(savepath, 'rv_weighted_median_diff.png'), format='png', dpi=300)
-plt.close()
-
-# Plot distribution of velocities
-fig = plt.figure(figsize=(8,7))
-velocity_med = np.nanmedian(vel[-1])
-velocity_std = np.nanstd(vel[-1])
-plt.hist(vel[-1], bins=200)#, alpha=0.75)#, range=(0,2000));
-plt.xlabel('Velocity [m/s]')
-#plt.xlim((0,400.))
-plt.axvline(x=velocity_med, color='r', alpha=0.5)
-plt.axvline(x=velocity_med-velocity_std, color='g', alpha=0.5)
-plt.axvline(x=velocity_med+velocity_std, color='g', alpha=0.5)
-plt.legend(['Med = {:5.1f} m/s\nStd = {:5.1f} m/s'.format(velocity_med, velocity_std)])
-plt.title('Chunk velocities for $v_\mathrm{inj} = 2000 \,\mathrm{m/s}$')
-#plt.xlim(-3000,500)
-plt.savefig(os.path.join(savepath, 'vel_hist_4.png'),
-                         format='png', dpi=300)
-plt.close()
-"""
-"""
-# Same as above but without outliers
-ind_ours2 = []
-ind_orig2 = []
-for i in range(len(bjd_good)):
-    ind = np.argmin(np.abs(bjd_good[i]-jd_orig))
-    if abs(bjd_good[i] - jd_orig[ind]) < 0.2:
-        ind_ours2.append(i)
-        ind_orig2.append(ind)
-
-jd_good_res = bjd_good[ind_ours2]
-good_res = rv_good[ind_ours2] - vel_orig[ind_orig2]
-good_res -= np.nanmedian(good_res)
-good_res_errs = np.sqrt(errvel_good[ind_ours2]**2 + err_orig[ind_orig2]**2)
-
-fig = plt.figure(figsize=(10,8))
-plt.errorbar(jd_good_res, good_res, yerr=good_res_errs, fmt='.', alpha=0.75)
-plt.legend(['Residual velocities\n(std={:.2f} m/s)'.format(np.nanstd(good_res))])
-plt.xlabel('JD')
-plt.ylabel('Residual RV [m/s]')
-plt.title('Difference to original Lick results, without outliers')
-plt.savefig(os.path.join(savepath, 'velocity_difference_restricted.png'), format='png', dpi=300)
-plt.close()
-
-
-# Compare date and bvc of this pipeline with original Lick values
-
-# Plot difference in Julian Date between this and the original Lick data
-fig = plt.figure(figsize=(10,8))
-plt.plot(jd_orig[ind_orig], bjd[ind_ours]-jd_orig[ind_orig], '.', alpha=0.75)
-plt.xlabel('Original JD')
-plt.ylabel('JD difference [d]')
-plt.title('Difference between our JDs and the original ones')
-plt.savefig(os.path.join(savepath, 'JD_difference_to_lickvst.png'), format='png', dpi=300)
-plt.close()
-
-
-# Plot correlation of velocity residuals to barycentric velocities
-fig = plt.figure(figsize=(10,8))
-plt.plot(np.abs(full_res), bvc[ind_ours], '.', alpha=0.75)
-plt.xlabel('Residual vels [m/s]')
-plt.ylabel('BVC [m/s]')
-plt.title('Correlation between RV residuals and BVCs')
-plt.savefig(os.path.join(savepath, 'RVres_vs_bvcs.png'), format='png', dpi=300)
-plt.close()
-
-
-# Plot correlation of velocity residuals to date residuals
-fig = plt.figure(figsize=(10,8))
-plt.plot(np.abs(full_res), bjd[ind_ours]-jd_orig[ind_orig], '.', alpha=0.75)
-plt.xlabel('Residual vels [m/s]')
-plt.ylabel('Residual JDs')
-plt.title('Correlation between RV residuals and JD residuals')
-plt.savefig(os.path.join(savepath, 'RVres_vs_jdres.png'), format='png', dpi=300)
-plt.close()
-"""
-"""
-# Get original barycentric velocity values for this star
-bcvel_all = np.genfromtxt(bvc_file, skip_header=1, unpack=True, dtype=str)
-
-bcvels = bcvel_all[:,np.where((bcvel_all[1,:]==star_name[3:]) | (bcvel_all[1,:]==star_name))[0]]
-print(bcvels.shape)
-
-bcvels_v = bcvels[2,:].astype(np.float)
-bcvels_d = bcvels[3,:].astype(np.float) + 2440000.
-
-
-# Show dates from this routine and the original one
-fig = plt.figure(figsize=(10,8))
-plt.vlines(bcvels_d, ymin=0., ymax=0.5, label='lick', color='r', linewidth=0.7)
-plt.vlines(bjd, ymin=0.5, ymax=1., label='pyodine', color='b', linewidth=0.7)
-plt.legend()
-plt.xlabel('JD')
-plt.title('Date signatures of pyodine and orig. Lick')
-plt.savefig(os.path.join(savepath, 'JD_comparison_lickbvc.png'), format='png', dpi=300)
-plt.close()
-
-
-# Compare barycentric dates from this routine to original ones
-ind_pyodine = []
-ind_lickbvc = []
-for i in range(len(bjd)):
-    ind = np.argmin(np.abs(bjd[i]-bcvels_d))
-    if abs(bjd[i] - bcvels_d[ind]) < .5:
-        ind_pyodine.append(i)
-        ind_lickbvc.append(ind)
-
-fig = plt.figure(figsize=(10,8))
-plt.plot(bcvels_d[ind_lickbvc], bcvels_d[ind_lickbvc]-bjd[ind_pyodine], '.', alpha=0.75)
-plt.xlabel('Lick BVC JD')
-plt.ylabel('JD difference [d]')
-plt.title('Difference between pyodine JDs and Lick BVC dates')
-plt.savefig(os.path.join(savepath, 'JD_difference_to_lickbvc.png'), format='png', dpi=300)
-plt.close()
-
-
-# Residuals from barycentric velocities from this routine to original ones
-fig = plt.figure(figsize=(10,8))
-plt.plot(bjd[ind_pyodine], bvc[ind_pyodine]-bcvels_v[ind_lickbvc], '.', alpha=0.75)
-plt.xlabel('pyodine JD')
-plt.ylabel('BVC difference [m/s]')
-plt.title('Difference between pyodine BVCs and Lick BVCs')
-plt.savefig(os.path.join(savepath, 'BVC_difference_to_lickbvc.png'), format='png', dpi=300)
-plt.close()
-"""
+if __name__ == '__main__':
+    
+    # Set up the parser for input arguments
+    parser = argparse.ArgumentParser(
+            description='Weight and combine velocities from observation modelling')
+    
+    # Required input arguments:
+    # utilities_dir, ostar_files, temp_files, temp_outname, (plot_dir=None, par_file=None)
+    parser.add_argument('par_file', type=str, help='The pathname to the timeseries parameters file to use.')
+    parser.add_argument('--res_files', type=str, help='A pathname to a text-file with the pathnames of modelling results.')
+    parser.add_argument('--comb_res_in', type=str, help='The pathname to a saved CombinedResults object.')
+    parser.add_argument('--diag_file', type=str, help='The pathname of a text-file to write diagnosis messages into.')
+    parser.add_argument('--plot_dir', type=str, help='The pathname to a directory where to save analysis plots.')
+    parser.add_argument('--comb_res_out', type=str, help='The pathname where to save the CombinedResults object.')
+    parser.add_argument('--vels_out', type=str, help='The pathname of a text-file where to save chosen timeseries results.')
+    parser.add_argument('--reject_files', type=str, help='A pathname of a text-file with the pathnames of results to reject.')
+    
+    # Parse the input arguments
+    args = parser.parse_args()
+    
+    par_file = args.par_file
+    res_files = args.res_files
+    comb_res_in = args.comb_res_in
+    diag_file = args.diag_file
+    plot_dir = args.plot_dir
+    comb_res_out = args.comb_res_out
+    vels_out = args.vels_out
+    reject_files = args.reject_files
+    
+    # Import and load the timeseries parameters
+    par_file = os.path.splitext(par_file)[0].replace('/', '.')
+    timeseries_parameters = importlib.import_module(par_file)
+    Pars = timeseries_parameters.Timeseries_Parameters()
+    
+    # And run the velocity weighting routine
+    combine_velocity_results(Pars, res_files=res_files, comb_res_in=comb_res_in, 
+                             diag_file=diag_file, plot_dir=plot_dir, 
+                             comb_res_out=comb_res_out, vels_out=vels_out, 
+                             reject_files=reject_files)

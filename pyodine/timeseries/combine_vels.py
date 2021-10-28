@@ -79,10 +79,9 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     else:
         pars = weighting_pars
     
-    printLog(diag_file, '--------------------------------------------------')
-    printLog(diag_file, '- Pyodine chunk combination (based on SONG code) -')
-    printLog(diag_file, '--------------------------------------------------')
-    printLog(diag_file, '')
+    printLog(diag_file, '---------------------------------------------------')
+    printLog(diag_file, '- Pyodine chunk combination (based on iSONG code) -')
+    printLog(diag_file, '---------------------------------------------------\n')
     
     printLog(diag_file, 'Weighting parameters used:')
     for key, value in pars.items():
