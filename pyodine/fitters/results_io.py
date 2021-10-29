@@ -5,7 +5,7 @@ import dill
 import os
 
 _group_keys = ('observation', 'chunks', 'params', 'errors', 'model')
-_array_keys = ('reports', 'redchi2', 'residuals', 'medcounts')
+_array_keys = ('reports', 'redchi2', 'residuals', 'medcnts')
 
 _fileformats = {
         'h5py': ('.h5',),
@@ -24,7 +24,7 @@ def create_results_dict(fit_results):
     """
     
     res_dict = {k: None for k in _group_keys}
-    res_dict = {k: None for k in _array_keys}
+    res_dict.update( {k: None for k in _array_keys} )
     
     # Collect observation info
     # Note: Unicode strings are currently not supported by h5py, so we need to
@@ -203,6 +203,9 @@ def save_results(filename, fit_results, filetype='h5py'):
                 h5quick.dict_to_group(res_dict[key], h, key)
             
             for key in _array_keys:
+                #print(key)
+                #print(res_dict[key])
+                #h5quick.dict_to_group(res_dict[key], h, key)
                 h[key] = res_dict[key]
             """
             h5quick.dict_to_group(res_dict['observation'], h, 'observation')
@@ -324,7 +327,7 @@ def load_results(filename, filetype='h5py', force=True):
     
     if match:
         # For dill: recover the whole object structure
-        if filetype == dill:
+        if filetype == 'dill':
             try:
                 with open(filename, 'rb') as f:
                     fit_results = dill.load(f)
@@ -428,6 +431,6 @@ def save_template_results(filename, fit_results):
         h5quick.dict_to_group(errors, h, 'errors')
         h['reports'] = reports
         h['redchi2'] = redchi2
-        h['medcounts'] = medcnts
+        h['medcnts'] = medcnts
         h5quick.dict_to_group(modinfo, h, 'model')
         

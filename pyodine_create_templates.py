@@ -356,10 +356,10 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                 os.makedirs(res_save_name_dir)
             # Save it under the correct file type
             if 'save_filetype' in run_dict.keys() and run_dict['save_filetype'] == 'dill':
-                pyodine.fitters.save_results(
+                pyodine.fitters.results_io.save_results(
                         res_save_name, run_results[run_id]['results'], filetype='dill')
             else:
-                pyodine.fitters.save_results(
+                pyodine.fitters.results_io.save_results(
                         res_save_name, run_results[run_id]['results'], filetype='h5py')
         
         

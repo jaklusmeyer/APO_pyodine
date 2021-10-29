@@ -276,17 +276,19 @@ class ChunkedDeconvolver():#Deconvolver):
         template = StellarTemplate_Chunked(normalized_observation, velocity_offset=velocity_offset, 
                                            bary_vel_corr=bary_v, osample=deconv_pars['osample_temp'])
         
-        with ProgressBar(max_value=len(self.ostar_chunks), redirect_stdout=True) as bar:
-            bar.update(0)
-            print('Deconvolving chunks...')
+        print('Deconvolving chunks...')
+        bar = ProgressBar(max_value=len(self.ostar_chunks), redirect_stdout=True)
+        bar.update(0)
 
-            for i in range(len(self.ostar_chunks)):
-                #print('Deconvolve chunk ', i)
-                sys.stdout.flush()  # TODO: Logging
-                temp_chunk = self.deconvolve_single_chunk(normalized_observation, i, deconv_pars, 
-                                                          weights=weights, lsf_fixed=lsf_fixed)
-                template.append(temp_chunk)
-                bar.update(i+1)
+        for i in range(len(self.ostar_chunks)):
+            #print('Deconvolve chunk ', i)
+            sys.stdout.flush()  # TODO: Logging
+            temp_chunk = self.deconvolve_single_chunk(normalized_observation, i, deconv_pars, 
+                                                      weights=weights, lsf_fixed=lsf_fixed)
+            template.append(temp_chunk)
+            bar.update(i+1)
+        
+        bar.finish()
         
         return template
 

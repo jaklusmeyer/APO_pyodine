@@ -447,8 +447,9 @@ def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1.,
         print(e)
 
 
-def plot_lsfs_grid(lsf_array, chunks, x_nr=3, y_nr=3, alpha=1.0, xlim=None, 
-                   grid=True, savename=None, dpi=300, show_plot=False):
+def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0, 
+                   xlim=None, grid=True, savename=None, dpi=300, 
+                   show_plot=False):
     """Plot a grid of evaluated LSFs
     
     A grid of 'x_nr x y_nr' LSFs is plotted.
@@ -458,6 +459,9 @@ def plot_lsfs_grid(lsf_array, chunks, x_nr=3, y_nr=3, alpha=1.0, xlim=None,
     :type lsf_array: ndarray[nr_chunks, nr_pix]
     :param chunks: A list of chunks of an observation.
     :type chunks: :class:`ChunkArray`
+    :param x_lsf: You can hand in a predefined x-vector for the LSFs here. If
+        None, the x-vector is created through the length of the LSFs.
+    :type x_lsf: ndarray[nr_pix], or None
     :param x_nr: Number of LSFs to plot in x-direction (along the orders, 
         dispersion direction). Defaults to 3.
     :type x_nr: int
@@ -483,11 +487,14 @@ def plot_lsfs_grid(lsf_array, chunks, x_nr=3, y_nr=3, alpha=1.0, xlim=None,
     
     """    
     
-    nr_chunks_order = len(chunks[chunks[0].order])
+    nr_chunks_order = len(chunks.get_order(chunks[0].order))
     nr_orders = len(chunks.orders)
     
-    fig = plt.figure(figsize=(14,14))
-    gs = gridspec.GridSpec(x_nr, y_nr, height_ratios=[1]*y_nr, width_ratios=[1]*x_nr)
+    if not isinstance(x_lsf, (list,np.ndarray)):
+        x_lsf = np.linspace(-len(lsf_array[0])/2., len(lsf_array[0])/2., len(lsf_array[0]))
+    
+    fig = plt.figure(figsize=(4*x_nr,4*y_nr))
+    gs = gridspec.GridSpec(y_nr, x_nr, height_ratios=[x_nr/y_nr]*y_nr, width_ratios=[y_nr/x_nr]*x_nr)
     ax = []
     for i in range(y_nr):
         for j in range(x_nr):
@@ -495,7 +502,7 @@ def plot_lsfs_grid(lsf_array, chunks, x_nr=3, y_nr=3, alpha=1.0, xlim=None,
             #ind = int(nr_chunks_total/18.) + int(nr_chunks_total/9.) * (i*3+j)
             ind = (int(nr_orders/y_nr/2.) + int(nr_orders/y_nr) * i) * nr_chunks_order + \
                     (int(nr_chunks_order/x_nr/2.) + int(nr_chunks_order/x_nr) * j)
-            ax[-1].plot(lsf_array[ind], '-o', alpha=alpha)
+            ax[-1].plot(x_lsf, lsf_array[ind], '-o', alpha=alpha)
             
             ax[-1].set_title('Chunk {}, order {}, pixel {}'.format(
                     ind, chunks[ind].order, chunks[ind].abspix[int(len(chunks[ind])/2.)]))
