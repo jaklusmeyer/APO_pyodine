@@ -30,6 +30,6 @@ my_instruments = {
 
 # List of iodine atlas locations
 my_iodine_atlases = {
-    1: '../data_lick/iodine_atlas/song_iodine_cell_01_65C.h5',
-    2: '../data_lick/iodine_atlas/ftslick05_norm_new.h5'
+    1: '/home/paul/pyodine/iodine_atlas/song_iodine_cell_01_65C.h5',
+    2: '/home/paul/pyodine/iodine_atlas/ftslick05_norm_new.h5'
 }

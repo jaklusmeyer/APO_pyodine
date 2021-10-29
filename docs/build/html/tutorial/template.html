@@ -207,7 +207,11 @@
 <p>First, we need to set up the path and import the required pyodine modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Automatic reloading of imports</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -219,7 +223,7 @@
 </div>
 </div>
 </div>
-<p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. Upon import we call it just <code class="docutils literal notranslate"><span class="pre">utilities</span></code>.</p>
+<p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from fits along with useful information from the fits headers. Upon import we call the SONG-specific <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> simply <code class="docutils literal notranslate"><span class="pre">utilities</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
@@ -227,7 +231,7 @@
 </div>
 </div>
 </div>
-<p>Additionally, a parameter input object of type <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> is needed. By default, there should be a module called <code class="docutils literal notranslate"><span class="pre">pyodine_parameters</span></code> within each <code class="docutils literal notranslate"><span class="pre">utilities</span></code>, but you could also create a different one and import it if you wish you experiment with changing parameters. However, we will stick with the well-tested default parameters here:</p>
+<p>Additionally, a parameter input object of type <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> is needed. That one contains all the instruments-specific parameters such as oversampling used, how to chunk up the spectrum, and also the exact definition of the workflow for the analysis routine. By default, there should be a module called <code class="docutils literal notranslate"><span class="pre">pyodine_parameters</span></code> within each <code class="docutils literal notranslate"><span class="pre">utilities</span></code> module, but you could also create a different one and import it if you wish to experiment with changing parameters. However, we will stick with the well-tested default parameters here:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Pars</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">pyodine_parameters</span><span class="o">.</span><span class="n">Template_Parameters</span><span class="p">()</span>
@@ -235,22 +239,26 @@
 </div>
 </div>
 </div>
-<p>Load the pathnames to the observations of the O-star with I2, and to the observations of the star without I2:</p>
+<p>Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the pathname for a directory where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as ‘.h5’ (HDF5 format), the second as ‘.pkl’ (through the <strong>dill</strong> Python package).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># O-star observations to use for the modelling</span>
-<span class="n">ostar_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ostar_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar&#39;</span>
+<span class="n">ostar_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ostar_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">ostar_dir</span><span class="p">)]</span>
+<span class="n">ostar_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># Stellar observations to use for the deconvolution</span>
-<span class="n">temp_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp&#39;</span>
+<span class="n">temp_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)]</span>
+<span class="n">temp_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># Output pathname for the template</span>
-<span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/templates/blub.h5&#39;</span>
+<span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5&#39;</span>
 
 <span class="c1"># Output directory for plots and pathnames for modelling results</span>
-<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;&#39;</span><span class="p">]</span>
+<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/&#39;</span>
+<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res1.pkl&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -263,8 +271,183 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Orders to use:  [18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41]
+Velocity guess: 25.136 km/s
+Barycentric velocity: 2.026 km/s
+Warning! Max. nr. of chunks without cutting down is 21!
+
+Total number of chunks:  528
+Chunks per order:  22
+First and last covered pixel of chunks: 30, 2031
+Orders:  18  -  41
+
+
+----------------------
+RUN 0
+----------------------
+</pre></div>
 </div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:17 Time:  0:00:17
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  6.491226501145553
+    left_2  =  -8.060503954209725
+    left_3  =  4.2641949580532925
+    left_4  =  -1.4996989286612574
+    left_5  =  0.37808604131223594
+    right1  =  6.491312875599473
+    right2  =  -8.060599340542252
+    right3  =  4.264240048195785
+    right4  =  -1.499713032073036
+    right5  =  0.3780894175194895
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:25 Time:  0:01:25
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+The extension .dill does not match the filetype dill.
+It should be one of:  (&#39;.pkl&#39;,)
+Correcting it to: .pkl
+Creating analysis plots...
+
+----------------------
+All runs done, continuing to template deconvolution...
+
+Deconvolving chunks...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:55 Time:  0:01:55
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  254.0637001991272
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, everything went fine!</p>
 <p>Open the saved results file and inspect it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results_1</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">load_results</span><span class="p">(</span><span class="n">res_files</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">&#39;dill&#39;</span><span class="p">)</span>
+
+<span class="n">chunks</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">ChunkArray</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results_1</span><span class="p">:</span>
+    <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">chunk</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_residual_hist</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Residuals histogram&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_16_0.png" src="../_images/template_16_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_17_0.png" src="../_images/template_17_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lsf_model</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lsf_model</span>
+<span class="n">lsf_x</span> <span class="o">=</span> <span class="n">lsf_model</span><span class="o">.</span><span class="n">generate_x</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">conv_width</span><span class="o">=</span><span class="mf">6.</span><span class="p">)</span>
+
+<span class="n">lsfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">)):</span>
+    <span class="n">lsf_pars</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;lsf&#39;</span><span class="p">)</span>
+    <span class="n">lsfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsf_model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">lsf_pars</span><span class="p">))</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_lsfs_grid</span><span class="p">(</span><span class="n">lsfs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">x_lsf</span><span class="o">=</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">x_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_18_0.png" src="../_images/template_18_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wave_slopes_model</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_slope&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results_1</span><span class="p">]</span>
+<span class="n">wave_slopes_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="p">[</span><span class="n">wave_slopes_model</span><span class="p">,</span><span class="n">wave_slopes_data</span><span class="p">],</span> 
+                                    <span class="n">scatter_fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">scatter_label</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">],</span> 
+                                    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;wave_slope [$\AA$/pix]&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_19_0.png" src="../_images/template_19_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">recover_obs_result</span>
+
+<span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_0</span> <span class="o">=</span> <span class="n">recover_obs_result</span><span class="o">.</span><span class="n">recover_obs_results</span><span class="p">(</span><span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning! Max. nr. of chunks without cutting down is 21!
+30
+Total number of created chunks: 528 (in result file: 528)
+Number of created chunks per order: 22
+&lt;ParameterSet (values: 8)&gt;
+    cont_intercept  =  34264.84865543534
+    cont_slope      =  59.16037013167056
+    iod_depth       =  0.9118854140584899
+    lsf_fwhm        =  1.7504541232372794
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  4995.288846059235
+    wave_slope      =  0.024104910295125084
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lsf_model</span> <span class="o">=</span> <span class="n">fit_results_0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lsf_model</span>
+<span class="n">lsf_x</span> <span class="o">=</span> <span class="n">lsf_model</span><span class="o">.</span><span class="n">generate_x</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">conv_width</span><span class="o">=</span><span class="mf">6.</span><span class="p">)</span>
+
+<span class="n">lsfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_results_0</span><span class="p">)):</span>
+    <span class="n">lsf_pars</span> <span class="o">=</span> <span class="n">fit_results_0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;lsf&#39;</span><span class="p">)</span>
+    <span class="n">lsfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsf_model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">lsf_pars</span><span class="p">))</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_lsfs_grid</span><span class="p">(</span><span class="n">lsfs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">x_lsf</span><span class="o">=</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">x_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_23_0.png" src="../_images/template_23_0.png" />
+</div>
+</div>
 </div>
 
 

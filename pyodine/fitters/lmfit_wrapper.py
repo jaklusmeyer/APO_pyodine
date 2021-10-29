@@ -211,7 +211,7 @@ class LmfitWrapper(Fitter):
                 return 0
         
         @property
-        def medcounts(self):
+        def medcnts(self):
             """Return the median counts of the chunk"""
             return np.median(self.chunk.flux)
     

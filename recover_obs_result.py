@@ -14,8 +14,8 @@ import numpy as np
 def recover_obs_results(filename):
     
     # First check the filetype corresponding to the filename
-    filetype = pyodine.fitters.filetype_from_ext(filename)
-    result = pyodine.fitters.load_results(filename, filetype)
+    filetype = pyodine.fitters.results_io.filetype_from_ext(filename)
+    result = pyodine.fitters.results_io.load_results(filename, filetype)
     
     # If it was a 'dill' file, the result should already be recovered as
     # object structure
@@ -32,7 +32,7 @@ def recover_obs_results(filename):
         #print(result)
         
         # First the observation name(s)
-        if isinstance(result['observation']['orig_filename'], list):
+        if isinstance(result['observation']['orig_filename'], (list,np.ndarray)):
             obs_path = [f.decode() for f in result['observation']['orig_filename']]
         else:
             obs_path = [result['observation']['orig_filename'].decode()]
@@ -54,12 +54,21 @@ def recover_obs_results(filename):
         orders = np.unique(np.array([o for o in res_chunks['order']]))
         
         # Load the data
-        obs = utilities.load_pyodine.ObservationWrapper(obs_path)
+        all_obs = [utilities.load_pyodine.ObservationWrapper(f) for f in obs_path]
+        if len(obs_path) > 1:
+            obs = pyodine.components.SummedObservation(*all_obs)
+        else:
+            obs = all_obs[0]
+        
         if temp_path:
-            temp = pyodine.template.base.StellarTemplate_Chunked(temp_path)
+            all_temp = [pyodine.template.base.StellarTemplate_Chunked(f) for f in temp_path]
+            if len(temp_path) > 1:
+                temp = pyodine.components.SummedObservation(*all_temp)
+            else:
+                temp = all_temp[0]
         else:
             temp = None
-        iod = utilities.load_pyodine.IodineAtlas(iod_path)
+        iod = utilities.load_pyodine.IodineTemplate(iod_path)
         
         # Build the model and fitter
         lsf_model = pyodine.models.lsf.model_index[lsf_name]
