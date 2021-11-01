@@ -49,7 +49,7 @@ Pars = utilities.pyodine_parameters.Template_Parameters()
 
 # Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the pathname for a directory where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as '.h5' (HDF5 format), the second as '.pkl' (through the **dill** Python package).
 
-# In[9]:
+# In[4]:
 
 
 # O-star observations to use for the modelling
@@ -73,7 +73,7 @@ res_files = ['/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5',
 
 # And now, we can kick off the template creation:
 
-# In[7]:
+# In[5]:
 
 
 pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
@@ -90,7 +90,7 @@ pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_file
 
 # Open the saved results file and inspect it
 
-# In[31]:
+# In[6]:
 
 
 fit_results_1 = pyodine.fitters.results_io.load_results(res_files[1], filetype='dill')
@@ -100,19 +100,19 @@ for r in fit_results_1:
     chunks.append(r.chunk)
 
 
-# In[32]:
+# In[7]:
 
 
 residuals = pyodine.plot_lib.plot_residual_hist(fit_results_1, title='Residuals histogram', show_plot=True)
 
 
-# In[33]:
+# In[8]:
 
 
 pyodine.plot_lib.plot_chunkmodel(fit_results_1, chunks, 270, template=False, show_plot=True)
 
 
-# In[61]:
+# In[9]:
 
 
 lsf_model = fit_results_1[0].model.lsf_model
@@ -126,7 +126,7 @@ for i in range(len(fit_results_1)):
 pyodine.plot_lib.plot_lsfs_grid(lsfs, chunks, x_lsf=lsf_x, x_nr=3, y_nr=3, alpha=0.7, xlim=(-4,4), show_plot=True)
 
 
-# In[75]:
+# In[10]:
 
 
 wave_slopes_model = [r.params['wave_slope'] for r in fit_results_1]
@@ -149,15 +149,13 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=[wave_slopes_model,wave_slopes_data]
 
 
 
-# In[85]:
+# In[19]:
 
 
-import recover_obs_result
-
-chunks, fit_results_0 = recover_obs_result.recover_obs_results(res_files[0])
+chunks, fit_results_0 = pyodine.fitters.results_io.restore_results_object(utilities, res_files[0])
 
 
-# In[88]:
+# In[20]:
 
 
 lsf_model = fit_results_0[0].model.lsf_model

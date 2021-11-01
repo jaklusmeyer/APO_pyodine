@@ -18,17 +18,18 @@ class Timeseries_Parameters:
         # algorithm: 
         # - 'good_chunks' and 'good_orders' define which chunks to use in the
         #   computation of observation means (to offset-correct all chunks)
-        # - 'sig_limits' defines the lower and upper limit in m/s that chunk
-        #   timeseries are allowed to have - outliers are corrected to 
-        #   'sig_correct';
+        # - 'sig_limit_low' and 'sig_limit_up' define the lower and upper limit 
+        #   in m/s that chunk timeseries are allowed to have - outliers are 
+        #   corrected to 'sig_correct';
         # - 'reweight_alpha', 'reweight_beta' and 'reweight_sigma' are
         #   used in the reweight function to create the chunk weights;
         # - 'weight_correct' is the value that weights of 0 or NaN are 
         #   corrected to.
         self.weighting_pars = {
-                'good_chunks': None, #(3, 15), #(150, 350)
-                'good_orders': None, #(6,14)
-                'sig_limits': [4., 1000.],
+                'good_chunks': range(3,15), #(150, 350)
+                'good_orders': range(6,14),
+                'sig_limit_low': 4., 
+                'sig_limit_up': 1000.,
                 'sig_correct': 1000.,
                 'reweight_alpha': 1.8,
                 'reweight_beta': 8.0,
@@ -42,8 +43,8 @@ class Timeseries_Parameters:
         # For writing timeseries results to a text-file:
         self.txt_outkeys = ['bary_date', 'rv', 'rv_err']    # Write these results
         self.txt_delimiter = '\t'                           # Delimiter to use
-        self.txt_header = None                              # Header line
-        self.txt_outformat = ['%10.5f', '6.4f', '3.4f']     # Output format (make sure
+        self.txt_header = ''                                # Header line
+        self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']   # Output format (make sure
                                                             # this matches the keys!)
         
         # Save the final results to file?

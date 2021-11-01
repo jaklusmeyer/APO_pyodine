@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.special import erfinv
+import logging
 
 _c = 299792458  # m/s
 
@@ -19,6 +20,34 @@ def printLog(filename=None, *args):
                 print(*args, file=f)
         except Exception as e:
             print(e)
+
+
+def initialize_logger(filename=None, terminal=True):
+    """
+    
+    From: https://aykutakin.wordpress.com/2013/08/06/logging-to-console-and-file-in-python/
+    """
+    if isinstance(filename, str) or terminal:
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+         
+        # Create console handler and set level to info
+        if terminal:
+            handler = logging.StreamHandler()
+            handler.setLevel(logging.INFO)
+            formatter = logging.Formatter('%(levelname)s: %(message)s')
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+     
+        # Create debug file handler and set level to debug
+        if isinstance(filename, str):
+            handler = logging.FileHandler(filename, 'w')
+            handler.setLevel(logging.DEBUG)
+            formatter = logging.Formatter('%(asctime)s - %(message)s (%(levelname)s)')
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+        
+        return logger
 
 
 def findwave(multiorder, wavelength):

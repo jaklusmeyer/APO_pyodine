@@ -74,7 +74,7 @@ class CombinedResults():
     
     
     def results_to_txt(self, filename, outkeys=None, delimiter='\t', 
-                       header=None, outformat=None):
+                       header='', outformat=None):
         """Write timeseries results to a txt-file
         
         :param filename: The output filepath.
@@ -85,7 +85,7 @@ class CombinedResults():
         :param delimiter: The delimiter used in the txt-file. Defaults to '\t'.
         :type delimiter: str
         :param header: Potential header row to write before the data (e.g. the
-            keys). If None, no header row is written.
+            keys). If empty, no header row will be written.
         :type header: str
         :param outformat: The output format of each column. Make sure that this
             matches the data types (particularly for strings)!
@@ -133,12 +133,12 @@ class CombinedResults():
         
         # Get param names and general info from first file. It can be either
         # 'h5py' or 'dill', so take care of that.
-        filetype = fitters.filetype_from_ext(filenames[0])
-        result = fitters.load_results(filenames[0], filetype=filetype)
+        filetype = fitters.results_io.filetype_from_ext(filenames[0])
+        result = fitters.results_io.load_results(filenames[0], filetype=filetype)
         # If it was a 'dill' file, transform the recovered object structure
         # to a dictionary
         if not isinstance(result, dict):
-            result = fitters.create_results_dict(result)
+            result = fitters.results_io.create_results_dict(result)
         
         self.param_names = [k for k in result['params'].keys()]
         self.chunk_names = [k for k in result['chunks'].keys()]
@@ -151,6 +151,7 @@ class CombinedResults():
             self.info['stellar_template'] = result['model']['stellar_template'].decode()
             self.info['iodine_file'] = result['model']['iodine_file'].decode()
             self.info['osample_factor'] = result['model']['osample_factor']
+            self.info['lsf_conv_width'] = result['model']['lsf_conv_width']
         
         self.nr_chunks = len(result['chunks'][self.chunk_names[0]])
         self.orders = np.unique(result['chunks']['order'])
@@ -174,12 +175,12 @@ class CombinedResults():
         # Now load the results from all files and fill up the object properties,
         # again making sure about the file formats
         for i, file in enumerate(filenames):
-            filetype = fitters.filetype_from_ext(file)
-            result = fitters.load_results(file, filetype=filetype)
+            filetype = fitters.results_io.filetype_from_ext(file)
+            result = fitters.results_io.load_results(file, filetype=filetype)
             # If it was a 'dill' file, transform the recovered object structure
             # to a dictionary
             if not isinstance(result, dict):
-                result = fitters.create_results_dict(result)
+                result = fitters.results_io.create_results_dict(result)
             
             for k in self.timeseries.keys():
                 self.timeseries[k][i] = result['observation'][k]
@@ -192,7 +193,7 @@ class CombinedResults():
                 self.chunks[k][i] = result['chunks'][k]
             self.redchi2[i] = result['redchi2']
             self.residuals[i] = result['residuals']
-            self.medcnts[i] = result['medcounts']
+            self.medcnts[i] = result['medcnts']
         
         self.timeseries['res_filename'] = [os.path.abspath(f) for f in filenames]
         
@@ -212,7 +213,7 @@ class CombinedResults():
         
         # Make sure that the file extension matches the h5py format, and
         # correct if this is not the case
-        match, new_filename = fitters.check_filename_format(
+        match, new_filename = fitters.results_io.check_filename_format(
                 filename, 'h5py', correct=True)
         
         with h5py.File(new_filename, 'w') as h:
@@ -230,7 +231,7 @@ class CombinedResults():
             h5quick.dict_to_group(self.weighting_pars, h, 'weighting_pars')
             h['redchi2'] = self.redchi2
             h['residuals'] = self.residuals
-            h['medcounts'] = self.medcnts
+            h['medcnts'] = self.medcnts
             #h['res_filenames'] = [f.encode('utf8', 'replace') for f in self.res_filenames]
     
     
@@ -262,7 +263,7 @@ class CombinedResults():
                 self.weighting_pars = {}
             self.redchi2 = h5quick.h5data(h['redchi2'])
             self.residuals = h5quick.h5data(h['residuals'])
-            self.medcnts = h5quick.h5data(h['medcounts'])
+            self.medcnts = h5quick.h5data(h['medcnts'])
             #self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
             
         self.nr_chunks = self.chunks['order'].shape[0]

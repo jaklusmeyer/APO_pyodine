@@ -19,7 +19,7 @@ rcParams["figure.dpi"] = 120
 # 
 # - with that template, :doc:`modelling the I2 observations <observation>` of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);
 # 
-# - :ref:`weighting and combining the chunk velocities <tutorial_combine_velocities>` to compute the RV timeseries of the observations.
+# - :doc:`weighting and combining the chunk velocities <velocities>` to compute the RV timeseries of the observations.
 # 
 # In each of these steps, we will present how to use built-in methods of **pyodine** to visualize and analyze the results.
 # 

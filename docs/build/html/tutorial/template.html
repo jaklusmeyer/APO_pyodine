@@ -313,15 +313,12 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:25 Time:  0:01:25
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:45 Time:  0:01:45
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
 Number of chunks with outliers:  0
 Number of chunks with nan fitted red. Chi2:  0
-The extension .dill does not match the filetype dill.
-It should be one of:  (&#39;.pkl&#39;,)
-Correcting it to: .pkl
 Creating analysis plots...
 
 ----------------------
@@ -330,10 +327,10 @@ All runs done, continuing to template deconvolution...
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:55 Time:  0:01:55
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:11 Time:  0:02:11
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  254.0637001991272
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  294.87574434280396
 </pre></div>
 </div>
 </div>
@@ -406,26 +403,14 @@ Deconvolving chunks...
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">recover_obs_result</span>
-
-<span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_0</span> <span class="o">=</span> <span class="n">recover_obs_result</span><span class="o">.</span><span class="n">recover_obs_results</span><span class="p">(</span><span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_0</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning! Max. nr. of chunks without cutting down is 21!
-30
 Total number of created chunks: 528 (in result file: 528)
 Number of created chunks per order: 22
-&lt;ParameterSet (values: 8)&gt;
-    cont_intercept  =  34264.84865543534
-    cont_slope      =  59.16037013167056
-    iod_depth       =  0.9118854140584899
-    lsf_fwhm        =  1.7504541232372794
-    tem_depth       =  1.0
-    velocity        =  0.0
-    wave_intercept  =  4995.288846059235
-    wave_slope      =  0.024104910295125084
 </pre></div>
 </div>
 </div>

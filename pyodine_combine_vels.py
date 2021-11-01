@@ -120,6 +120,8 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     elif isinstance(reject_files, str):
         with open(reject_files, 'r') as f:
             reject_names = [l.strip() for l in f.readlines()]
+    else:
+        reject_names = None
     
     
     ###########################################################################
@@ -155,11 +157,13 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # Plot velocity results
         fig = plt.figure(figsize=(10,6))
         plt.errorbar(Results.bary_date, Results.rv_bc, yerr=Results.rv_err, 
-                     fmt='.', alpha=0.7, label='Weighted velocities\nstd={:.2f} m/s'.format(
-                             np.nanstd(Results.rv_bc)))
+                     fmt='.', alpha=0.7, label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(Results.rv_bc),
+                             robust_std(Results.rv_bc)))
         plt.plot(Results.bary_date, Results.mdvel+Results.bary_vel_corr, 
-                 '.', alpha=0.5, label='Median velocities\nstd={:.2f} m/s'.format(
-                         np.nanstd(Results.mdvel+Results.bary_vel_corr)))
+                 '.', alpha=0.5, label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                         robust_mean(Results.mdvel+Results.bary_vel_corr),
+                         robust_std(Results.mdvel+Results.bary_vel_corr)))
         plt.legend()
         plt.xlabel('JD')
         plt.ylabel('RV [m/s]')
@@ -177,9 +181,13 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         
         fig = plt.figure(figsize=(10,6))
         plt.errorbar(bjd_good, rv_good, yerr=rv_err_good, fmt='.', alpha=0.7,
-                     label='Weighted velocities\nstd={:.2f} m/s)'.format(np.nanstd(rv_good)))
+                     label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(rv_good),
+                             robust_std(rv_good)))
         plt.plot(bjd_good, mdvel_good+bvc_good, '.', alpha=0.5,
-                 label='Median velocities\nstd={:.2f} m/s)'.format(np.nanstd(mdvel_good+bvc_good)))
+                 label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                         robust_mean(mdvel_good+bvc_good),
+                         robust_std(mdvel_good+bvc_good)))
         plt.legend()
         plt.xlabel('JD')
         plt.ylabel('RV [m/s]')
@@ -197,7 +205,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # Plot chunk-to-chunk scatter of observations
         fig = plt.figure(figsize=(10,6))
         plt.plot(Results.bary_date, Results.c2c_scatter, '.', alpha=0.7, 
-                 label='std={:.2f} m/s'.format(np.nanstd(Results.c2c_scatter)))
+                 label='Mean: {:.2f}+-{:.2f} m/s'.format(
+                         robust_mean(Results.c2c_scatter),
+                         robust_std(Results.c2c_scatter)))
         plt.legend()
         plt.xlabel('JD')
         plt.ylabel('Chunk scatter [m/s]')
@@ -207,10 +217,10 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         
         # Plot of chunk sigmas
         fig = plt.figure(figsize=(10,6))
-        plt.plot(Results.auxiliary['sigma'], '.', alpha=0.7, 
+        plt.plot(Results.auxiliary['chunk_sigma'], '.', alpha=0.7, 
                  label='Mean: {:.2f}+-{:.2f} m/s'.format(
-                         robust_mean(Results.auxiliary['sigma']), 
-                         robust_std(Results.auxiliary['sigma'])))
+                         robust_mean(Results.auxiliary['chunk_sigma']), 
+                         robust_std(Results.auxiliary['chunk_sigma'])))
         plt.legend()
         plt.xlabel('Chunks')
         plt.ylabel('Chunk sigmas [m/s]')
@@ -235,7 +245,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         vel_corrected = Results.params['velocity'] - Results.auxiliary['chunk_offsets']
         vel_corrected = vel_corrected.T + Results.bary_vel_corr
         
-        fig = plt.figure(figsize=(10,10))
+        fig = plt.figure(figsize=(12,10))
         plt.imshow(vel_corrected, aspect='auto')
         plt.colorbar()
         plt.xlabel('Observations')
@@ -245,7 +255,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         plt.close()
         
         # 3D plot of chunk deviations
-        fig = plt.figure(figsize=(10,10))
+        fig = plt.figure(figsize=(12,10))
         plt.imshow(Results.auxiliary['chunk_dev'].T, aspect='auto')
         plt.colorbar()
         plt.xlabel('Observations')
@@ -257,7 +267,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # Histogram of the final velocity weights
         fig = plt.figure(figsize=(10,6))
         plt.hist(Results.auxiliary['chunk_weights'].flatten(), bins=100, alpha=0.7,
-                 label=r'Mean: {}+-{} (m/s)$^{-2}$'.format(
+                 label='Mean: {:.3e}+-{:.3e} (m/s)$^{{-2}}$'.format(
                          robust_mean(Results.auxiliary['chunk_weights']), 
                          robust_std(Results.auxiliary['chunk_weights'])))
         plt.legend()
@@ -270,8 +280,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         if Pars.do_crx:
             fig = plt.figure(figsize=(10,6))
             plt.errorbar(Results.bary_date, Results.crx, yerr=Results.crx_err, 
-                         fmt='.', alpha=0.7, label='std={:.2f} m/s'.format(
-                                 np.nanstd(Results.crx)))
+                         fmt='.', alpha=0.7, label='Mean: {:.2f}+-{:.2f} (m/s)/Np'.format(
+                                 robust_mean(Results.crx), 
+                                 robust_std(Results.crx)))
             plt.legend()
             plt.xlabel('JD')
             plt.ylabel('CRX [(m/s)/Np]')
