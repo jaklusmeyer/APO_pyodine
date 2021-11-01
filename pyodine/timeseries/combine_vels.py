@@ -21,7 +21,8 @@ _weighting_pars = {
         'reweight_beta': 8.0,
         'reweight_sigma': 2.0,
         'weight_correct': 0.01,
-        'sig_limits': [4., 1000.],
+        'sig_limit_low': 4., 
+        'sig_limit_up': 1000.,
         'sig_correct': 1000.,
         'good_chunks': None, #(3, 15), #(150, 350)
         'good_orders': None #(6,14)
@@ -77,7 +78,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     if not isinstance(weighting_pars, dict):
         pars = _weighting_pars
     else:
-        pars = weighting_pars
+        pars = weighting_pars.copy()
     
     printLog(diag_file, '---------------------------------------------------')
     printLog(diag_file, '- Pyodine chunk combination (based on iSONG code) -')
@@ -121,6 +122,8 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
             good_ind += [(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][1]+1)]
     else:
         good_ind = [i for i in range(len(velocities))]
+        del pars['good_orders']
+        del pars['good_chunks']
     
     vel_offset_corrected = np.zeros((nr_obs, nr_chunks))
     for i in range(nr_obs):
@@ -161,7 +164,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         dev[i,:] = dev[i,:] - robust_mean(dev[i,:])
     
     # Finally, set very low and very high sigmas to a pre-defined value
-    ind = np.where(np.logical_or(sig<=pars['sig_limits'][0], sig>=pars['sig_limits'][1]))
+    ind = np.where(np.logical_or(sig<=pars['sig_limit_low'], sig>=pars['sig_limit_up']))
     sig[ind] = pars['sig_correct']
     
     # Print to file
@@ -180,13 +183,13 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
             }
     if isinstance(wavelengths, (list,tuple,np.ndarray)):
         rv_dict['crx'] = np.zeros(nr_obs)           # The chromatic index in each observation
-        rv_dict['crx_err'] = np.zeros(nr_obs),      # The fit errors of the chromatic indices
-        rv_dict['RV_wave'] = np.zeros(nr_obs),      # The effect. wavelengths at the weighted RVs
-        rv_dict['RV_wave_err'] = np.zeros(nr_obs),  # The fit errors of the effect. wavelengths
+        rv_dict['crx_err'] = np.zeros(nr_obs)       # The fit errors of the chromatic indices
+        rv_dict['RV_wave'] = np.zeros(nr_obs)       # The effect. wavelengths at the weighted RVs
+        rv_dict['RV_wave_err'] = np.zeros(nr_obs)   # The fit errors of the effect. wavelengths
         rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits
         
     
-    chunk_weights = np.zeros((nr_obs,nr_chunks)),   # The corrected weights for each individual chunk 
+    chunk_weights = np.zeros((nr_obs,nr_chunks))    # The corrected weights for each individual chunk 
                                                     # (after the reweight function)
     
     # Now loop over the observations to compute the final results
@@ -236,18 +239,21 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         # ToDo: Use weights?!
         if isinstance(wavelengths, (list,tuple,np.ndarray)):
             crx_dict = chromatic_index_observation(
-                    chunk_vels_corr, wavelengths[i], rv_dict['rv'][i])
+                    #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                    #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+            
             for key, value in crx_dict.items():
-                rv_dict[key][i] = crx_dict[key]
+                rv_dict[key][i] = value
         
     # Some metrics of the quality of the RV timeseries
     rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
     rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(chunk_weights[i], axis=0)))
     
     printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(
-            rv_dict['rv_precision1']))
+            rv_precision1))
     printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(
-            rv_dict['rv_precision2']))
+            rv_precision2))
     
     auxiliary_dict = {
             'chunk_sigma': sig,
@@ -327,13 +333,25 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         
         velocities_fit = velocity_from_chromatic_index(
                 wavelengths, RV, lmfit_params['RV_wave'], lmfit_params['crx'])
+        if len(np.where(np.isnan(velocities_fit))[0]) > 0:
+            print(velocities_fit)
         if isinstance(weights, (list,np.ndarray)):
             return (velocities_fit - velocities) * np.sqrt(np.abs(weights))
         else:
             return velocities_fit - velocities
     
-    # First a simple polynomial fit to get a first estimate
-    #velocities_fit, coeffs = fit_polynomial(ln_wave, velocities, deg=1)
+    # Take care of NaNs in the wavelengths or velocities arrays: Exclude them
+    w_nan_inds = np.where(np.isnan(wavelengths))
+    if len(w_nan_inds[0]) > 0:
+        w_fin_inds = np.where(np.isfinite(wavelengths))
+        wavelengths = wavelengths[w_fin_inds]
+        velocities = velocities[w_fin_inds]
+        
+    v_nan_inds = np.where(np.isnan(velocities))
+    if len(v_nan_inds[0]) > 0:
+        v_fin_inds = np.where(np.isfinite(velocities))
+        wavelengths = wavelengths[v_fin_inds]
+        velocities = velocities[v_fin_inds]
     
     # Now do the parameter starting guesses
     # For the effective wavelength of the modelled RV:
@@ -351,16 +369,17 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
     
     # Set up the the lmfit parameters
     lmfit_params = lmfit.Parameters()
-    lmfit_params.add(('RV_wave', RV_wave_guess))
-    lmfit_params.add(('crx', crx_guess))
+    lmfit_params.add('RV_wave', value=RV_wave_guess, min=np.min(wavelengths), 
+                     max=np.max(wavelengths))
+    lmfit_params.add('crx', value=crx_guess)
     
     # And fit
     lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
     
     crx_dict = {
-            'crx': lmfit_result.params['crx'], 
+            'crx': lmfit_result.params['crx'].value,
             'crx_err': lmfit_result.params['crx'].stderr, 
-            'RV_wave': lmfit_result.params['RV_wave'], 
+            'RV_wave': lmfit_result.params['RV_wave'].value, 
             'RV_wave_err': lmfit_result.params['RV_wave'].stderr, 
             'crx_redchi': lmfit_result.redchi
             }

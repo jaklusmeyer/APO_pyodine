@@ -330,13 +330,12 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
         print('Run results analysis failed...')
 
 
-def velocity_results_analysis(fit_results, save_dir, nr_chunks_order, 
+def velocity_results_analysis(run_result, save_dir, nr_chunks_order, 
                               nr_orders, obs_filename):
     """Perform a short analysis of velocity results
     
-    :param fit_results: A list containing instances of :class:`LmfitResult`
-        for each chunk.
-    :type fit_results: list[:class:`LmfitResult`]
+    :param run_result: Then results dictionary of the final modelling run.
+    :type run_result: dict
     :param save_dir: The directory name where to save plots.
     :type save_dir: str
     :param nr_chunks_order: Number of chunks per order. If this and nr_orders 
@@ -357,7 +356,7 @@ def velocity_results_analysis(fit_results, save_dir, nr_chunks_order,
         # Process and print overview of results
         obs_params = []
         obs_errors = []
-        for r in fit_results:
+        for r in run_result['results']:
             obs_params.append(r.params)
             obs_errors.append(r.errors)
         
@@ -459,12 +458,12 @@ def velocity_results_analysis(fit_results, save_dir, nr_chunks_order,
                                  format='png', dpi=300)
         plt.close()
         
-        # Wavelengths (residuals to fit) phase-folded over orders
+        # Wavelengths (residuals to fit) phase-folded over orders        
         fig = plt.figure(figsize=(12,6))
         for i in range(nr_orders):
             plt.plot(np.arange(nr_chunks_order), 
-                     [fit_results[j].params['wave_intercept'] for j in range(i*nr_chunks_order,(i+1)*nr_chunks_order)] - \
-                     fit_results['wave_intercept_fit'][i*nr_chunks_order:(i+1)*nr_chunks_order],
+                     [obs_params[j]['wave_intercept'] for j in range(i*nr_chunks_order,(i+1)*nr_chunks_order)] - \
+                     run_result['wave_intercept_fit'][i*nr_chunks_order:(i+1)*nr_chunks_order],
                      '-', alpha=0.5)
         plt.ylim(-0.02,0.02)
         plt.xlabel('Chunk # within order')

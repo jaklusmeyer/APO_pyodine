@@ -201,7 +201,11 @@
 <p>Bla blub</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Automatic reloading of imports</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -211,6 +215,1292 @@
 <span class="kn">import</span> <span class="nn">pyodine_model_observations</span>
 </pre></div>
 </div>
+</div>
+</div>
+<p>Again, import the utilities, and the parameter input object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
+
+<span class="n">Pars</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">pyodine_parameters</span><span class="o">.</span><span class="n">Parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observation filenames, pathnames of deconvolved stellar templates, plot directories and results filenames:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Observations to model</span>
+<span class="n">obs_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_obs_tutorial/&#39;</span>
+<span class="n">obs_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obs_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">obs_dir</span><span class="p">)]</span>
+<span class="n">obs_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># Deconvolved stellar template to use</span>
+<span class="n">temp_file</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5&#39;</span>
+<span class="n">temp_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">temp_file</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_files</span><span class="p">)</span>
+
+<span class="c1"># Output directories for plots and output pathnames for modelling results</span>
+<span class="n">plot_dir_parent</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs/&#39;</span>
+<span class="n">plot_dirs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">res_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">obs_file</span> <span class="ow">in</span> <span class="n">obs_files</span><span class="p">:</span>
+    <span class="n">plot_dir_base</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">obs_file</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">plot_dirs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir_parent</span><span class="p">,</span> <span class="n">plot_dir_base</span><span class="p">)]</span>
+    
+    <span class="n">res_files</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;sigdra_res0.h5&#39;</span><span class="p">),</span> 
+                      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;sigdra_res1.h5&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now model the observations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_multi_observations</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
+                                                    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-20T03-01-01_ext.fits
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-20T03-07-04_ext.fits
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-20T03-13-07_ext.fits
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-22T04-31-04_ext.fits
+Order correction: -1
+
+Order correction: -1
+
+Order correction: -1
+
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.260 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.124 km/s (relative to template)
+
+(Barycentric velocity of observation: -0.017 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 2042.7667999999999, z = 6.813936593428244e-06
+
+Number of chunks:  528
+In lowest order: Measured velocity rel. to reference spectrum: 27.208 km/s 
+22Template velocity: 25.136 km/s
+
+Orders: Velocity guess: 2.072 km/s (relative to template)
+
+(Barycentric velocity of observation: -0.019 km/s) 
+17(Barycentric velocity of template: 2.026 km/s)
+ 
+ - Barycentric redshift between template and observation: 
+v = 2044.5937999999999, z = 6.820030809447514e-06
+ 40
+
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks:  528
+In lowest order:  Measured velocity rel. to reference spectrum: 27.202 km/s22
+Template velocity: 25.136 km/s
+
+Orders: Velocity guess: 2.066 km/s (relative to template)
+ 17
+ (Barycentric velocity of observation: -0.021 km/s) - 
+ (Barycentric velocity of template: 2.026 km/s)
+40
+
+
+Barycentric redshift between template and observation: 
+v = 2046.5000999999997, z = 6.826389541794276e-06
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks:  528Measured velocity rel. to reference spectrum: 27.311 km/s
+
+In lowest order: Template velocity: 25.136 km/s 22
+Orders:  
+Velocity guess: 2.174 km/s (relative to template)
+17
+ (Barycentric velocity of observation: 0.104 km/s) - 
+(Barycentric velocity of template: 2.026 km/s)
+
+ 40
+
+Barycentric redshift between template and observation: 
+v = 1921.1191, z = 6.408163543593881e-06
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Creating analysis plots...
+Creating analysis plots...
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+
+----------------------
+RUN 1
+----------------------
+
+----------------------
+RUN 1
+----------------------
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.12569729999735
+    left_2  =  -8.908975141361404
+    left_3  =  4.394336325367605
+    left_4  =  -1.5034370478714385
+    left_5  =  0.3948158226921298
+    right1  =  8.12568792631719
+    right2  =  -8.90896851325473
+    right3  =  4.394334373388575
+    right4  =  -1.5034368895090913
+    right5  =  0.394815863973859
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.005461803369819
+    left_2  =  -8.842208186472336
+    left_3  =  4.369049109471312
+    left_4  =  -1.4948637685558328
+    left_5  =  0.3921666518035927
+    right1  =  8.005458796483321
+    right2  =  -8.842206209479235
+    right3  =  4.36904873492262
+    right4  =  -1.4948639272519884
+    right5  =  0.3921667539566389
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.840342570181647
+    left_2  =  -8.921104162179152
+    left_3  =  4.367622539035587
+    left_4  =  -1.50275912079006
+    left_5  =  0.4072150957703115
+    right1  =  8.840329978936975
+    right2  =  -8.921095831702125
+    right3  =  4.367618433805855
+    right4  =  -1.5027577269140833
+    right5  =  0.4072147168458073
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  7.952999660052042
+    left_2  =  -8.812066508287234
+    left_3  =  4.357821901357913
+    left_4  =  -1.4911581250760837
+    left_5  =  0.391047945429118
+    right1  =  7.952993615981757
+    right2  =  -8.812062245753744
+    right3  =  4.357820779940487
+    right4  =  -1.4911581405817538
+    right5  =  0.39104801956544905
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Velocity robust mean: 1980.605744281596
+Velocity robust std: 197.28484578633567
+
+Velocity error robust mean: 74.36439723038305
+Velocity error robust std: 62.17112035957051
+
+Minimum error: 24.441468809560366 in chunk 81
+Maximum error: 2174.9995306880774 in chunk 400
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 185.54859497072636
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Time to model this observation:  271.9480631351471
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-22T04-37-07_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.342 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.206 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.102 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1924.0323999999998, z = 6.417881266379289e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Creating analysis plots...
+Velocity robust mean: 2114.0658717669066
+Velocity robust std: 209.70757596876823
+
+Velocity error robust mean: 70.34113686723641
+Velocity error robust std: 66.0742628828204
+
+Minimum error: 19.041840933081193 in chunk 81
+Maximum error: 4679.303714047238 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 188.305613665041
+Time to model this observation:  287.49936962127686
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-22T04-43-10_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.338 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.202 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.099 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1926.9929999999997, z = 6.4277567649817256e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Velocity robust mean: 2105.9401426213244
+Velocity robust std: 200.37714415075098
+
+Velocity error robust mean: 73.6074672368713
+Velocity error robust std: 64.807452174591
+
+Minimum error: 22.071189735066948 in chunk 54
+Maximum error: 3908.7089056356253 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 189.75547306353928
+Velocity robust mean: 2100.8666725134467
+Velocity robust std: 199.36463640059335
+
+Velocity error robust mean: 72.81863520233567
+Velocity error robust std: 67.53793296761148
+
+Minimum error: 18.248731996120657 in chunk 81
+Maximum error: 284908.5034560086 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time to model this observation:  297.5653455257416
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-23T05-01-07_ext.fits
+Velocity error at percentile 80: 185.69401709276661
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.177 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.041 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.167 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1858.2756999999997, z = 6.1985405249921255e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Time to model this observation:  301.7081928253174
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-23T05-07-10_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.215 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.078 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.164 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1861.4337999999998, z = 6.209074812682578e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+
+----------------------
+RUN 1
+----------------------
+Creating analysis plots...
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.838734769866136
+    left_2  =  -8.920957855626188
+    left_3  =  4.36742235845423
+    left_4  =  -1.5027143738010285
+    left_5  =  0.40720357015269343
+    right1  =  8.83873266861459
+    right2  =  -8.920956485871859
+    right3  =  4.367421687288989
+    right4  =  -1.5027141420275476
+    right5  =  0.40720350504960984
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.82216830984469
+    left_2  =  -8.919634798531504
+    left_3  =  4.365521471621463
+    left_4  =  -1.5023252028626055
+    left_5  =  0.4071083383653532
+    right1  =  8.822155141741709
+    right2  =  -8.919627855895433
+    right3  =  4.365519046100027
+    right4  =  -1.502324906147587
+    right5  =  0.4071083565407716
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.708383518004318
+    left_2  =  -8.906051844068077
+    left_3  =  4.3527669877581285
+    left_4  =  -1.4995065536480874
+    left_5  =  0.4064212597006704
+    right1  =  8.708385322667652
+    right2  =  -8.906052848026137
+    right3  =  4.352767309725277
+    right4  =  -1.4995065729899604
+    right5  =  0.40642124600667023
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.70168229395422
+    left_2  =  -8.905024116721638
+    left_3  =  4.352028091860546
+    left_4  =  -1.4993341575622712
+    left_5  =  0.4063793141943309
+    right1  =  8.701674342498356
+    right2  =  -8.905020799293805
+    right3  =  4.3520278053482215
+    right4  =  -1.4993347457206385
+    right5  =  0.40637960737190215
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1986.7512160560864
+Velocity robust std: 210.86168521981543
+
+Velocity error robust mean: 74.26726513704727
+Velocity error robust std: 63.09301708916692
+
+Minimum error: 20.579141134136187 in chunk 53
+Maximum error: 7347.184211400373 in chunk 477
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 192.26733645701165
+Time to model this observation:  274.52991676330566
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-23T05-13-12_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.167 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.031 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.161 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1864.6278999999997, z = 6.2197291834473024e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Velocity robust mean: 1985.8976435246107
+Velocity robust std: 207.63326536250207
+
+Velocity error robust mean: 74.16562065941797
+Velocity error robust std: 63.50663658219112
+
+Minimum error: 24.80857554143 in chunk 253
+Maximum error: 4177.207355444456 in chunk 400
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity robust mean: 1918.991902290118
+Velocity robust std: 209.42562485663365
+
+Velocity error robust mean: 70.92718804175247
+Velocity error robust std: 61.165539987521726
+
+Minimum error: 23.652948549043373 in chunk 54
+Maximum error: 2530.976791218838 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 187.22506316319152
+Velocity error at percentile 80: 183.2684704491224
+Time to model this observation:  274.544141292572
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-24T04-21-04_ext.fits
+Time to model this observation:  264.7203469276428
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-24T04-27-07_ext.fits
+Order correction: -1
+
+Order correction: -1
+
+Velocity robust mean: 1929.8173164322604
+Velocity robust std: 220.3116677826936
+
+Velocity error robust mean: 71.47415644923514
+Velocity error robust std: 61.34376066995702
+
+Minimum error: 22.108493781596408 in chunk 54
+Maximum error: 7152.924951882587 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Measured velocity rel. to reference spectrum: 27.008 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.872 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.265 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1760.6891999999998, z = 5.873026999231581e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Measured velocity rel. to reference spectrum: 27.070 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.934 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.262 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1763.5863999999997, z = 5.882691018197662e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Velocity error at percentile 80: 178.8849683949794
+Time to model this observation:  266.6832127571106
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-24T04-33-10_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.057 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.921 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.259 km/s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1766.5313999999998, z = 5.892514480801247e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+
+----------------------
+RUN 1
+----------------------
+Creating analysis plots...
+Creating analysis plots...
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.685563550778621
+    left_2  =  -8.902458244024253
+    left_3  =  4.350261247875076
+    left_4  =  -1.4989217352603124
+    left_5  =  0.40627962347622404
+    right1  =  8.68556007436158
+    right2  =  -8.902457318129734
+    right3  =  4.35026167380149
+    right4  =  -1.498922323523738
+    right5  =  0.4062798666363492
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.936020978345017
+    left_2  =  -8.925420699572463
+    left_3  =  4.379137716412336
+    left_4  =  -1.504938379151953
+    left_5  =  0.4077571415967053
+    right1  =  8.936007282244985
+    right2  =  -8.925412971586592
+    right3  =  4.379134284468824
+    right4  =  -1.50493752006764
+    right5  =  0.4077569648446829
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.862013459198069
+    left_2  =  -8.922568766572844
+    left_3  =  4.37014664339634
+    left_4  =  -1.5032628937919428
+    left_5  =  0.4073389717864911
+    right1  =  8.86201967686876
+    right2  =  -8.922574172855313
+    right3  =  4.370150018378221
+    right4  =  -1.5032644207669554
+    right5  =  0.40733945849361347
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.854411017936005
+    left_2  =  -8.922095105044205
+    left_3  =  4.369260923727088
+    left_4  =  -1.5030891450470916
+    left_5  =  0.40729637172079197
+    right1  =  8.85440514622647
+    right2  =  -8.9220912853405
+    right3  =  4.369259005175519
+    right4  =  -1.503088441996331
+    right5  =  0.40729616244024736
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1930.578663796998
+Velocity robust std: 212.0268319132885
+
+Velocity error robust mean: 72.67800176258126
+Velocity error robust std: 61.54533079502134
+
+Minimum error: 21.718740832030935 in chunk 81
+Maximum error: 5467.958034890414 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 177.880320478996
+Time to model this observation:  259.8359270095825
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-25T04-01-03_ext.fits
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.159 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.023 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.352 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1673.8397999999997, z = 5.583328583936557e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Creating analysis plots...
+Number of chunks with no uncertainties:  1
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1822.2326711541252
+Velocity robust std: 217.04486753125315
+
+Velocity error robust mean: 79.76667724979235
+Velocity error robust std: 67.26517035481262
+
+Minimum error: 25.801159739684387 in chunk 253
+Maximum error: 3223.8316922457043 in chunk 400
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 194.71309793746164
+Velocity robust mean: 1824.1200414932362
+Velocity robust std: 218.6010113344298
+
+Velocity error robust mean: 83.36301020468854
+Velocity error robust std: 67.13213997025775
+
+Minimum error: 26.384673850057176 in chunk 253
+Maximum error: 31527.991201941695 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  [381]
+Velocity error at percentile 80: 194.57379616405225
+Time to model this observation:  276.0372974872589
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-25T04-07-06_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.194 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.058 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.349 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1676.5930999999998, z = 5.592512604169648e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Time to model this observation:  279.5195348262787
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-25T04-13-09_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.152 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.016 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.346 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1679.4008, z = 5.601878083270527e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Velocity robust mean: 1830.1709122060715
+Velocity robust std: 227.3905957376948
+
+Velocity error robust mean: 81.23958983565332
+Velocity error robust std: 65.92719929239935
+
+Minimum error: 22.317660753580707 in chunk 54
+Maximum error: 78119.80699419987 in chunk 469
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 194.38970359845945
+Time to model this observation:  281.3552474975586
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-26T03-01-02_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 26.947 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.811 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.453 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1572.1482999999998, z = 5.244122252068129e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.746352717747474
+    left_2  =  -8.911410614769117
+    left_3  =  4.356969356482662
+    left_4  =  -1.5004678926073043
+    left_5  =  0.40665479685041345
+    right1  =  8.746346781960007
+    right2  =  -8.911406959450542
+    right3  =  4.356967843773466
+    right4  =  -1.500467514826839
+    right5  =  0.4066547222798039
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.685791051923717
+    left_2  =  -8.90250451051757
+    left_3  =  4.350290520074771
+    left_4  =  -1.498929420280598
+    left_5  =  0.40628158566294625
+    right1  =  8.685770493175287
+    right2  =  -8.902493410204523
+    right3  =  4.3502871738456825
+    right4  =  -1.4989292741297797
+    right5  =  0.40628173499503933
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.809059189963497
+    left_2  =  -8.91846479916494
+    left_3  =  4.364028789839978
+    left_4  =  -1.5020139997317525
+    left_5  =  0.40703241646133514
+    right1  =  8.809059595837896
+    right2  =  -8.918465356358931
+    right3  =  4.364029269959266
+    right4  =  -1.5020143127175558
+    right5  =  0.40703253792494887
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.814999465115886
+    left_2  =  -8.919000733526811
+    left_3  =  4.364699238848746
+    left_4  =  -1.5021529440449952
+    left_5  =  0.407066074711484
+    right1  =  8.81498547417736
+    right2  =  -8.918992076018007
+    right3  =  4.364695344959396
+    right4  =  -1.502151779604208
+    right5  =  0.40706578233525653
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1734.3599821008534
+Velocity robust std: 210.91058823909563
+
+Velocity error robust mean: 76.73106543704795
+Velocity error robust std: 65.17700941233032
+
+Minimum error: 22.52868544760979 in chunk 58
+Maximum error: 3327.4189766140457 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 190.31084832785274
+Time to model this observation:  288.22413992881775
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-26T03-07-05_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 26.962 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.826 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.451 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1574.2857, z = 5.251251851038894e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Velocity robust mean: 1739.4196967779562
+Velocity robust std: 213.40543375903238
+
+Velocity error robust mean: 75.20283282639801
+Velocity error robust std: 64.96750164623052
+
+Minimum error: 22.92619361534288 in chunk 119
+Maximum error: 2710.469618035871 in chunk 437
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 190.12184033004928
+Creating analysis plots...
+Time to model this observation:  295.88705372810364
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-26T03-13-08_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 26.944 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 1.807 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.449 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1576.4962999999998, z = 5.258625618927344e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Velocity robust mean: 1736.4336797330827
+Velocity robust std: 213.4224494899295
+
+Velocity error robust mean: 79.10156967780502
+Velocity error robust std: 67.49750514245262
+
+Minimum error: 24.523778135765767 in chunk 119
+Maximum error: 113731.61712031697 in chunk 437
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 191.08891881425652
+Time to model this observation:  300.226140499115
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-27T04-38-23_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.256 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.120 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.488 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1537.4899999999998, z = 5.128514607262067e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1621.6504308567116
+Velocity robust std: 212.6307193748783
+
+Velocity error robust mean: 78.49667062447035
+Velocity error robust std: 68.08192534358834
+
+Minimum error: 19.13588502036074 in chunk 81
+Maximum error: 3369.8798167332284 in chunk 400
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 194.67214578994597
+Time to model this observation:  314.8072307109833
+
+---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-27T04-44-26_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.302 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.166 km/s (relative to template)
+
+(Barycentric velocity of observation: 0.485 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 1540.6071999999997, z = 5.138912467237584e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.780783175577474
+    left_2  =  -8.915565655848608
+    left_3  =  4.360821249568267
+    left_4  =  -1.5013226144836391
+    left_5  =  0.4068630829692995
+    right1  =  8.780766428144423
+    right2  =  -8.915555874496736
+    right3  =  4.360817312416153
+    right4  =  -1.5013216637153322
+    right5  =  0.4068628895277139
+Number of chunks with no uncertainties:  1
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  8.785093283235897
+    left_2  =  -8.91604662492548
+    left_3  =  4.361312881250771
+    left_4  =  -1.501431519164006
+    left_5  =  0.40688997124360266
+    right1  =  8.785078712935752
+    right2  =  -8.916038091139013
+    right3  =  4.361309468783288
+    right4  =  -1.5014307466243275
+    right5  =  0.4068898340300646
+
+----------------------
+RUN 1
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  7.893177362564948
+    left_2  =  -8.982690782863124
+    left_3  =  4.5136954338343935
+    left_4  =  -1.5540926418006311
+    left_5  =  0.40165059598925423
+    right1  =  7.893163093662705
+    right2  =  -8.982677920351037
+    right3  =  4.513689904774943
+    right4  =  -1.554090846951326
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    right5  =  0.40165007923750334
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  5.18240957739959
+    left_2  =  -7.108178564981885
+    left_3  =  4.111716981907693
+    left_4  =  -1.5347383456142105
+    left_5  =  0.3719444845565083
+    right1  =  5.182397604141514
+    right2  =  -7.108161525254743
+    right3  =  4.111706165311735
+    right4  =  -1.5347333990662244
+    right5  =  0.37194292177822963
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1632.7574827421797
+Velocity robust std: 204.6519728723176
+
+Velocity error robust mean: 77.5403999623451
+Velocity error robust std: 66.68171754422396
+
+Minimum error: 25.422188354023536 in chunk 81
+Maximum error: 28545.71860702296 in chunk 437
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 198.7414664849114
+Time to model this observation:  351.44223618507385
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1602.6550671513673
+Velocity robust std: 209.9818296206532
+
+Velocity error robust mean: 70.81227160051536
+Velocity error robust std: 62.868616881257445
+
+Minimum error: 16.925782737951042 in chunk 81
+Maximum error: 6644.845040109092 in chunk 437
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 175.82838757174525
+Time to model this observation:  341.8572316169739
+Velocity robust mean: 1630.8589246064873
+Velocity robust std: 217.7410821488936
+
+Velocity error robust mean: 82.06477883136182
+Velocity error robust std: 71.51096439345422
+
+Minimum error: 26.33222150426935 in chunk 53
+Maximum error: 1659.82267752005 in chunk 467
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 196.2665790403595
+Time to model this observation:  357.18479204177856
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 1597.8872658865926
+Velocity robust std: 201.4595340841589
+
+Velocity error robust mean: 70.70969167079566
+Velocity error robust std: 59.0383558113675
+
+Minimum error: 22.399687320515817 in chunk 76
+Maximum error: 4422.761462708121 in chunk 437
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 176.82327326278255
+Time to model this observation:  357.47420835494995
+
+Done, full working time:  1522.470097541809
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_1</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Order correction: -1
+
+Barycentric redshift between template and observation: 
+v = 2042.7667999999999, z = 6.813936593428244e-06
+
+Total number of created chunks: 528 (in result file: 528)
+Number of created chunks per order: 22
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/observation_12_0.png" src="../_images/observation_12_0.png" />
 </div>
 </div>
 </div>

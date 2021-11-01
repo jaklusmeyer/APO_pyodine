@@ -22,6 +22,7 @@ class Parameters:
     
     def __init__(self):
         # General parameters:
+        #self.print_terminal = True              # Print messages to the terminal
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         self.number_cores = 4                   # Number of processor cores for multiprocessing
@@ -332,6 +333,7 @@ class Template_Parameters:
     
     def __init__(self):
         # General parameters:
+        #self.print_terminal = True              # Print messages to the terminal
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         

@@ -3,6 +3,11 @@ import numpy as np
 from ..lib import h5quick
 import dill
 import os
+from ..components import ChunkArray, SummedObservation
+from ..template.base import StellarTemplate_Chunked
+from ..models import lsf, wave, cont, spectrum
+from ..fitters.lmfit_wrapper import LmfitWrapper
+from .. import chunks
 
 _group_keys = ('observation', 'chunks', 'params', 'errors', 'model')
 _array_keys = ('reports', 'redchi2', 'residuals', 'medcnts')
@@ -45,7 +50,8 @@ def create_results_dict(fit_results):
     res_dict['model'] = {
             'lsf_model': fit_results[0].model.lsf_model.name().encode('utf8', 'replace'),
             'iodine_file': os.path.abspath(fit_results[0].model.iodine_atlas.orig_filename).encode('utf8', 'replace'),
-            'osample_factor': fit_results[0].model.osample_factor
+            'osample_factor': fit_results[0].model.osample_factor,
+            'lsf_conv_width': fit_results[0].model.conv_width
             }
     # If not a fit result from O-star modelling
     if fit_results[0].model.stellar_template is not None:
@@ -66,7 +72,7 @@ def create_results_dict(fit_results):
     # Collect info from all chunks
     res_dict['reports']   = np.array([res.report for res in fit_results], dtype='S')
     res_dict['redchi2']   = np.array([res.redchi for res in fit_results])
-    res_dict['residuals'] = np.array([res.residuals for res in fit_results])
+    res_dict['residuals'] = np.array([res.rel_residuals_rms() for res in fit_results])
     res_dict['medcnts']   = np.array([res.medcnts for res in fit_results])
     
     res_dict['chunks'] = {k: np.zeros(nchunk, dtype='int') for k in ('order', 'firstpix', 'lastpix', 'padding')}
@@ -203,95 +209,11 @@ def save_results(filename, fit_results, filetype='h5py'):
                 h5quick.dict_to_group(res_dict[key], h, key)
             
             for key in _array_keys:
-                #print(key)
-                #print(res_dict[key])
-                #h5quick.dict_to_group(res_dict[key], h, key)
                 h[key] = res_dict[key]
-            """
-            h5quick.dict_to_group(res_dict['observation'], h, 'observation')
-            h5quick.dict_to_group(res_dict['chunks'], h, 'chunks')
-            h5quick.dict_to_group(res_dict['params'], h, 'params')
-            h5quick.dict_to_group(res_dict['errors'], h, 'errors')
-            h['reports'] = reports
-            h['redchi2'] = redchi2
-            h['residuals'] = residuals
-            h['medcounts'] = medcnts
-            h5quick.dict_to_group(modinfo, h, 'model')
-            """
     
     else:
         raise KeyError('The savetype must be either of "h5py" or "dill",' + \
-                       'but {} was supplied!'.format(filetype))
-        
-        """
-        # Collect observation info
-        # Note: Unicode strings are currently not supported by h5py, so we need to
-        # convert to bytestring (ascii). Special characters are replaced with
-        # question marks
-        obs = fit_results[0].chunk.observation
-        obsinfo = {
-            'instrument_name': obs.instrument.name.encode('utf8', 'replace'),
-            'star_name': obs.star.name.encode('utf8', 'replace'),
-            'orig_header': obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
-            'time_start': obs.time_start.isot.encode('utf8', 'replace'),
-            'bary_date': obs.bary_date,
-            'bary_vel_corr': obs.bary_vel_corr,
-        }
-        
-        # Collect modelling info
-        modinfo = {
-                'lsf_model': fit_results[0].model.lsf_model.name().encode('utf8', 'replace'),
-                'iodine_file': fit_results[0].model.iodine_atlas.orig_filename.encode('utf8', 'replace'),
-                'osample_factor': fit_results[0].model.osample_factor
-                }
-        # If not a fit result from O-star modelling
-        if fit_results[0].model.stellar_template is not None:
-            # Include the template info and the original filename of the observation
-            modinfo['stellar_template'] = fit_results[0].model.stellar_template.orig_filename.encode('utf8', 'replace')
-            obsinfo['orig_filename'] = obs.orig_filename.encode('utf8', 'replace')
-        else:
-            # Include the original filenames of all modelled O-star observations (if more than one)
-            if hasattr(obs, 'all_filenames'):
-                obsinfo['orig_filename'] = [f.encode('utf8', 'replace') for f in obs.all_filenames]
-            else:
-                obsinfo['orig_filename'] = obs.orig_filename.encode('utf8', 'replace')
-    
-        # Assume parameter names are the same in all elements of input array
-        param_names = list(fit_results[0].params.keys())
-        nchunk = len(fit_results)
-    
-        # Collect info from all chunks
-        chunks = {k: np.zeros(nchunk, dtype='int')
-                  for k in ('order', 'firstpix', 'lastpix', 'padding')}
-        params = {k: np.zeros(nchunk, dtype='float64')
-                  for k in param_names}
-        errors = {k: np.zeros(nchunk, dtype='float64')
-                  for k in param_names}
-        reports = []
-        redchi2 = []
-        residuals = []
-        medcnts = []
-        for i in range(nchunk):
-            res = fit_results[i]
-            # Get chunk info
-            chunks['order'][i] = res.chunk.order
-            chunks['firstpix'][i] = res.chunk.abspix[0]
-            chunks['lastpix'][i] = res.chunk.abspix[-1]
-            chunks['padding'][i] = res.chunk.padding
-            # Get parameter values and errors
-            for p in param_names:
-                params[p][i] = res.params[p]
-                errors[p][i] = res.errors[p]
-            reports += [res.report]
-            redchi2 += [res.redchi]
-            residuals += [res.rel_res_mean()]
-            medcnts += [res.medcounts]
-        reports = np.array(reports, dtype='S')
-        redchi2 = np.array(redchi2)
-        residuals = np.array(residuals)
-        medcnts = np.array(medcnts)
-        """
-        
+                       'but {} was supplied!'.format(filetype))        
     
 
 def load_results(filename, filetype='h5py', force=True):
@@ -355,82 +277,153 @@ def load_results(filename, filetype='h5py', force=True):
                 filename, filetype))
     
 
-def save_template_results(filename, fit_results):
-    """Preliminary function to save a set of results from the template creation
+def restore_results_object(utilities, filename):
+    """A wrapper function to restore saved results as 
+    :class:`LmfitWrapper.LmfitResult` objects
     
-    This is essentially the same as save_results(), except for the missing
-    template path name (obviously). So pull both together?! -> included now
-    up there. Let's test it.
+    If the results are saved as '.pkl' (dill format), this is straight forward.
+    If the save format however is '.h5' (HDF5/h5py), it's more complicated as
+    the objects need to be created from scratch, using the information 
+    contained in the saved dictionary. IMPORTANT: This only works if all 
+    pathnames of the input files (observation spectra, I2 atlas, templates) 
+    have not changed!
     
-    If 'filename' exists, it will be overwritten.
+    :param utilities: The utilities module for the instrument used.
+    :type utilities: library
+    :param filename: The filename of the saved results.
+    :type filename: str
     
-    Args:
-        filename (str): Output path for the results file.
-        fit_results (list): A list of :class:'LmfitWrapper.LmfitResult' objects.
+    :return: The chunks of the modelled observation.
+    :rtype: :class:`ChunkArray`
+    :return: The list of fit results of the modelled observation.
+    :rtype: list
     """
     
-    # Collect observation info
-    # Note: Unicode strings are currently not supported by h5py, so we need to
-    # convert to bytestring (ascii). Special characters are replaced with
-    # question marks
-    obs = fit_results[0].chunk.observation
-    obsinfo = {
-        'instrument_name': obs.instrument.name.encode('utf8', 'replace'),
-        'star_name': obs.star.name.encode('utf8', 'replace'),
-        'orig_filename': obs.orig_filename.encode('utf8', 'replace'),
-        'orig_header': obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
-        'time_start': obs.time_start.isot.encode('utf8', 'replace'),
-        'bary_date': obs.bary_date,
-        'bary_vel_corr': obs.bary_vel_corr,
-    }
+    # First check the filetype of the filename
+    filetype = filetype_from_ext(filename)
+    results = load_results(filename, filetype)
     
-    # Collect modelling info
-    modinfo = {
-            'lsf_model': fit_results[0].model.lsf_model.name().encode('utf8', 'replace'),
-            'iodine_file': fit_results[0].model.iodine_atlas.orig_filename.encode('utf8', 'replace'),
-            'osample_factor': fit_results[0].model.osample_factor
-            }
-
-    # Assume parameter names are the same in all elements of input array
-    param_names = list(fit_results[0].params.keys())
-    nchunk = len(fit_results)
-
-    # Collect info from all chunks
-    chunks = {k: np.zeros(nchunk, dtype='int')
-              for k in ('order', 'firstpix', 'lastpix', 'padding')}
-    params = {k: np.zeros(nchunk, dtype='float64')
-              for k in param_names}
-    errors = {k: np.zeros(nchunk, dtype='float64')
-              for k in param_names}
-    reports = []
-    redchi2 = []
-    medcnts = []
-    for i in range(nchunk):
-        res = fit_results[i]
-        # Get chunk info
-        chunks['order'][i] = res.chunk.order
-        chunks['firstpix'][i] = res.chunk.abspix[0]
-        chunks['lastpix'][i] = res.chunk.abspix[-1]
-        chunks['padding'][i] = res.chunk.padding
-        # Get parameter values and errors
-        for p in param_names:
-            params[p][i] = res.params[p]
-            errors[p][i] = res.errors[p]
-        reports += [res.report]
-        redchi2 += [res.redchi]
-        medcnts += [res.medcounts]
-    reports = np.array(reports, dtype='S')
-    redchi2 = np.array(redchi2)
-    medcnts = np.array(medcnts)
-
-    # Save to HDF5
-    with h5py.File(filename, 'w') as h:
-        h5quick.dict_to_group(obsinfo, h, 'observation')
-        h5quick.dict_to_group(chunks, h, 'chunks')
-        h5quick.dict_to_group(params, h, 'params')
-        h5quick.dict_to_group(errors, h, 'errors')
-        h['reports'] = reports
-        h['redchi2'] = redchi2
-        h['medcnts'] = medcnts
-        h5quick.dict_to_group(modinfo, h, 'model')
+    # If it was a 'dill' file, the result should already be recovered as
+    # object structure and we only need to create the chunk array
+    if not isinstance(results, dict):
+        obs_chunks = ChunkArray()
+        for r in results:
+            obs_chunks.append(r.chunk)
+        
+        return obs_chunks, results
+    
+    # For a 'h5py' file in contrast, we need to try and manually rebuild the
+    # object structure from the information in the saved dictionary
+    else:
+        
+        # First get the names of the observation(s) (this could be more than
+        # one, in case several observation spectra were summed up)
+        if isinstance(results['observation']['orig_filename'], (list,np.ndarray)):
+            obs_path = [f.decode() for f in results['observation']['orig_filename']]
+        else:
+            obs_path = [results['observation']['orig_filename'].decode()]
+        
+        # Now the stellar template name (if any - for hot star modelling during
+        # template creation this is None)
+        if 'stellar_template' in results['model'].keys():
+            temp_path = results['model']['stellar_template'].decode()
+        else:
+            temp_path = None
+        
+        # Now other important information: The pathname to the I2 atlas, the
+        # used oversampling factor, the LSF convolution width, the name of the 
+        # used LSF, and info about the chunks and best-fit parameters
+        iod_path       = results['model']['iodine_file'].decode()
+        osample        = results['model']['osample_factor']
+        lsf_conv_width = results['model']['lsf_conv_width']
+        lsf_name       = results['model']['lsf_model'].decode()
+        res_chunks     = results['chunks']
+        res_params     = results['params']
+        
+        # The orders covered by the chunks, the width of the chunks, and the
+        # padding of the chunks (these are constructed from implicit 
+        # information in the res_chunks dictionary)
+        orders  = np.unique(np.array([o for o in res_chunks['order']]))
+        # Chunk 2 should really not be affected by order edge effects
+        width   = abs(res_chunks['lastpix'][2]-res_chunks['firstpix'][2])+1
+        padding = res_chunks['padding'][2]
+        
+        # Load the observation data (either single one or multiple summed up)
+        all_obs = [utilities.load_pyodine.ObservationWrapper(f) for f in obs_path]
+        if len(obs_path) > 1:
+            obs = SummedObservation(*all_obs)
+        else:
+            obs = all_obs[0]
+        
+        # If a template was used, load it also
+        # ToDo: Allow also for 'StellarTemplate' object?
+        if temp_path:
+            temp = StellarTemplate_Chunked(temp_path)
+        else:
+            temp = None
+        
+        # Load the I2 atlas
+        iod = utilities.load_pyodine.IodineTemplate(iod_path)
+        
+        # Build the model and fitter
+        lsf_model  = lsf.model_index[lsf_name]
+        wave_model = wave.LinearWaveModel
+        cont_model = cont.LinearContinuumModel
+        model      = spectrum.SimpleModel(
+                lsf_model, wave_model, cont_model, iod, stellar_template=temp, 
+                osample_factor=osample, conv_width=lsf_conv_width)
+        
+        # Initialize the fitter object
+        fitter = LmfitWrapper(model)
+        
+        # Build the chunk array: If a template is given, use the wave_defined
+        # algorithm, otherwise the user_defined function (default functions
+        # in the standard pyodine distribution)
+        if temp:
+            # Compute possible order shifts between template and observation,
+            # by searching for the best coverage of first template order in
+            # observation
+            obs_order_min, min_coverage = obs.check_wavelength_range(
+                    temp[0].w0, temp[len(temp.get_order_indices(temp.orders_unique[0]))-1].w0)
+            order_correction = obs_order_min - temp.orders_unique[0]
+            print('Order correction: {}\n'.format(order_correction))
+            
+            obs_chunks = chunks.wave_defined(obs, temp, width=width, orders=orders-order_correction, 
+                                             padding=padding, order_correction=order_correction)
+        else:
+            chunks_per_order = len(np.where(res_chunks['order'] == orders[0])[0])
+            pix_offset0      = res_chunks['firstpix'][0]
+            
+            obs_chunks = chunks.user_defined(obs, width=width, orders=orders, 
+                                             padding=padding, chunks_per_order=chunks_per_order, 
+                                             pix_offset0=pix_offset0)
+        
+        # The total number of chunks, and the number of chunks per order
+        nr_chunks_total = len(obs_chunks)
+        nr_chunks       = len(obs_chunks.get_order(orders[0]))
+        
+        print('Total number of created chunks: {} (in result file: {})'.format(
+                nr_chunks_total, len(res_chunks['order'])))
+        print('Number of created chunks per order: {}'.format(nr_chunks))
+        
+        # Loop over the chunks to build the fit_result object
+        fit_results = []
+        for i, chunk in enumerate(obs_chunks):
+            # First guess the chunk parameters to create the ParameterSet object
+            pars = model.guess_params(chunk)
+            
+            # Then fill it with the best-fit results for that chunk
+            for key in res_params.keys():
+                pars[key] = res_params[key][i]
+            
+            # Convert it to an LM-fit parameter object, fix all the parameters
+            lmfit_pars = fitter.convert_params(pars, to_lmfit=True)
+            for key in lmfit_pars.keys():
+                lmfit_pars[key].set(vary=False)
+            
+            # Finally 'fit' it (work-around to create a fully functional 
+            # FitResults object)
+            fit_results.append(fitter.fit(chunk, lmfit_pars, chunk_ind=i))
+        
+        return obs_chunks, fit_results
         
