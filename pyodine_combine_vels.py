@@ -14,6 +14,7 @@ from pyodine.timeseries.misc import robust_mean, robust_std
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 import argparse
 
@@ -60,6 +61,8 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     :rtype: :class:`CombinedResults`
     """
     
+    # Start timer
+    start_t = time.time()
     
     ###########################################################################
     ## Set up the environment, and load all neccessary data and parameters
@@ -294,7 +297,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     ## Everything's done now, return the CombinedResults object
     ###########################################################################
     
+    work_time = time.time() - start_t
     print('All done!')
+    print('Full work time: ', work_time)
     
     return Results
 

@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 from .. import fitters
 from ..lib import h5quick
+from ..lib.misc import return_existing_files
 from .combine_vels import combine_chunk_velocities
 
 
@@ -124,19 +125,25 @@ class CombinedResults():
             results to load.
         :type filenames: list or tuple 
         """
-        self.nr_files = len(filenames)
         
-        # Check whether the results are saved as 'dill' or 'h5py'. 
-        # We assume that all files are of same type,
-        # so we should be able to tell from the first one
+        # First check whether all filenames supplied actually exist,
+        # and only use the ones that do
+        filenames, bad_files = return_existing_files(filenames)
+        if len(bad_files) > 0:
+            print('Non-existing files:')
+            for f in bad_files:
+                print(f)
         
+        self.nr_files = len(filenames)        
         
         # Get param names and general info from first file. It can be either
         # 'h5py' or 'dill', so take care of that.
         filetype = fitters.results_io.filetype_from_ext(filenames[0])
-        result = fitters.results_io.load_results(filenames[0], filetype=filetype)
-        # If it was a 'dill' file, transform the recovered object structure
-        # to a dictionary
+        result = fitters.results_io.load_results(
+                filenames[0], filetype=filetype)
+                        
+        # If it was a 'dill' file, transform the recovered object 
+        # structure to a dictionary
         if not isinstance(result, dict):
             result = fitters.results_io.create_results_dict(result)
         

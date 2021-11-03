@@ -115,13 +115,12 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     # For the robust mean: Only use the best chunk velocities
     # (parameters 'good_chunks' & 'good_orders', if available):
     if isinstance(pars['good_orders'], (list,tuple,np.ndarray)) and \
-    isinstance(pars['good_chunks'], (list,tuple,np.ndarray)) and \
-    len(pars['good_orders']) == 2 and len(pars['good_chunks']) == 2:
+    isinstance(pars['good_chunks'], (list,tuple,np.ndarray)):
         good_ind = []
-        for o in range(pars['good_orders'][0], pars['good_orders'][1]+1):
-            good_ind += [(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][1]+1)]
+        for o in range(pars['good_orders'][0], pars['good_orders'][-1]+1):
+            good_ind += [int(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][-1]+1)]
     else:
-        good_ind = [i for i in range(len(velocities))]
+        good_ind = [i for i in range(len(velocities[0]))]
         del pars['good_orders']
         del pars['good_chunks']
     
