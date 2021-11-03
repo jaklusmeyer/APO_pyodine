@@ -2,6 +2,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 from scipy.special import erfinv
 import logging
+import os.path as path
 
 _c = 299792458  # m/s
 
@@ -48,6 +49,30 @@ def initialize_logger(filename=None, terminal=True):
             logger.addHandler(handler)
         
         return logger
+
+
+def return_existing_files(filenames):
+    """Check the input filenames and only return those that actually exist
+    
+    :param filenames: The full pathname(s) of the input file(s).
+    :type filenames: str, list, ndarray, tuple
+    
+    :return: A list of existing files.
+    :rtype: list
+    :return: A list of non-existing files.
+    :rtype: list
+    """
+    
+    if isinstance(filenames, str):
+        filenames = [filenames]
+    
+    if isinstance(filenames, (list,tuple,np.ndarray)):
+        existing_files = [f for f in filenames if path.isfile(f)]
+        bad_files = [f for f in filenames if not path.isfile(f)]
+    else:
+        raise ValueError('No files supplied! (Either of str, list, ndarray, tuple)')
+    
+    return existing_files, bad_files
 
 
 def findwave(multiorder, wavelength):

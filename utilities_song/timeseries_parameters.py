@@ -26,8 +26,8 @@ class Timeseries_Parameters:
         # - 'weight_correct' is the value that weights of 0 or NaN are 
         #   corrected to.
         self.weighting_pars = {
-                'good_chunks': range(3,15), #(150, 350)
-                'good_orders': range(6,14),
+                'good_chunks': list(range(3,15)), #(150, 350)
+                'good_orders': list(range(6,14)),
                 'sig_limit_low': 4., 
                 'sig_limit_up': 1000.,
                 'sig_correct': 1000.,
