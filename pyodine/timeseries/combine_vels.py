@@ -264,7 +264,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                                                 # corrected weights
             }
     
-    return rv_dict, auxiliary_dict, weighting_pars
+    return rv_dict, auxiliary_dict, pars
 
 
 def velocity_from_chromatic_index(wavelengths, RV, RV_wave, crx):
