@@ -328,7 +328,7 @@ class CombinedResults():
         
         # Remove from chunks
         for key in self.chunks.keys():
-            self.chunk[key] = np.delete(self.chunks[key], inds, axis=0)
+            self.chunks[key] = np.delete(self.chunks[key], inds, axis=0)
         
         # Remove from redchi2, residuals and medcnts
         self.redchi2 = np.delete(self.redchi2, inds, axis=0)
