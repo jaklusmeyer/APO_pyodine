@@ -247,7 +247,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         
     # Some metrics of the quality of the RV timeseries
     rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
-    rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(chunk_weights[i], axis=0)))
+    rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(chunk_weights, axis=0)))
     
     printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(
             rv_precision1))

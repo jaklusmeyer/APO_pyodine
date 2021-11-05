@@ -258,7 +258,7 @@ class CombinedResults():
             self.chunks = h5quick.h5data(h['chunks'])
             self.info = h5quick.h5data(h['info'])
             for k in self.info:
-                if isinstance(self.info[k], np._bytes):
+                if isinstance(self.info[k], np.bytes_):
                     self.info[k] = self.info[k].decode()
             #try:
             #    self._tseries = h5quick.h5data(h['tseries'])
@@ -278,11 +278,11 @@ class CombinedResults():
         self.nr_orders = len(self.orders)
         self.nr_chunks_order = self.nr_chunks / self.nr_orders
         
-        self.nr_files = len(self.res_filenames)
         self.param_names = [k for k in self.params.keys()]
         self.chunk_names = [k for k in self.chunks.keys()]
         
         self.fill_timeseries_attributes()
+        self.nr_files = len(self.res_filename)
         
         
     def remove_observations(self, res_names=None, obs_names=None):
