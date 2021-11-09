@@ -49,6 +49,7 @@ def create_results_dict(fit_results):
     # observation(s)
     res_dict['model'] = {
             'lsf_model': fit_results[0].model.lsf_model.name().encode('utf8', 'replace'),
+            'lsf_pars_dict': fit_results[0].model.lsf_model.pars_dict,
             'iodine_file': os.path.abspath(fit_results[0].model.iodine_atlas.orig_filename).encode('utf8', 'replace'),
             'osample_factor': fit_results[0].model.osample_factor,
             'lsf_conv_width': fit_results[0].model.conv_width
@@ -337,6 +338,7 @@ def restore_results_object(utilities, filename):
         osample        = results['model']['osample_factor']
         lsf_conv_width = results['model']['lsf_conv_width']
         lsf_name       = results['model']['lsf_model'].decode()
+        lsf_pars_dict  = results['model']['lsf_pars_dict']
         res_chunks     = results['chunks']
         res_params     = results['params']
         
@@ -367,6 +369,9 @@ def restore_results_object(utilities, filename):
         
         # Build the model and fitter
         lsf_model  = lsf.model_index[lsf_name]
+        # Adapt the LSF setup to the instrument
+        lsf_model.adapt_LSF(lsf_pars_dict)
+        
         wave_model = wave.LinearWaveModel
         cont_model = cont.LinearContinuumModel
         model      = spectrum.SimpleModel(

@@ -7,6 +7,20 @@
 
 from pyodine import models
 
+###############################################################################
+## Here we define the instrument-specific setup of the LSFs. These values can #
+## then be used to change the class variables of the respective LSF models.   #
+###############################################################################
+
+# For the MultiGaussian model: 11 positions & sigmas for the central Gauss and
+# the satellites
+# In Butler 1996: Gaussians placed at 0.5 pixels apart; this is from the cf's
+_multigauss_setup_dict = {
+        'positions': [-2.4, -2.1, -1.6, -1.1, -0.6, 0.0, 0.6, 1.1, 1.6, 2.1, 2.4],
+        'sigmas':    [ 0.3,  0.3,  0.3,  0.3,  0.3, 0.4, 0.3, 0.3, 0.3, 0.3, 0.3]
+        }
+
+
 class Parameters:
     """The control commands for the main routine
     
@@ -100,7 +114,8 @@ class Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian_Lick,    # LSF model to use (this is absolutely neccessary)
+                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -437,7 +452,8 @@ class Template_Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian_Lick,    # LSF model to use (this is absolutely neccessary)
+                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)

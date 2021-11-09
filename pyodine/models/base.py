@@ -113,12 +113,12 @@ class StaticModel(Model):
     def __new__(cls, *args, **kwargs):
         raise TypeError('Intended for static use only')
 
-    @staticmethod
-    def eval(x, params):
+    @classmethod
+    def eval(cls, x, params):
         raise NotImplementedError
 
-    @staticmethod
-    def guess_params(chunk):
+    @classmethod
+    def guess_params(cls, chunk):
         raise NotImplementedError
 
 

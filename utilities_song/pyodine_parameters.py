@@ -7,6 +7,19 @@
 
 from pyodine import models
 
+###############################################################################
+## Here we define the instrument-specific setup of the LSFs. These values can #
+## then be used to change the class variables of the respective LSF models.   #
+###############################################################################
+
+# For the MultiGaussian model: 11 positions & sigmas for the central Gauss and
+# the satellites
+_multigauss_setup_dict = {
+        'positions': [-2.9, -2.5, -1.9, -1.4, -1.0, 0.0, 1.0, 1.4, 1.9, 2.5, 2.9],
+        'sigmas':    [ 0.9,  0.9,  0.9,  0.9,  0.9, 0.6, 0.9, 0.9, 0.9, 0.9, 0.9]
+        }
+
+
 class Parameters:
     """The control commands for the main routine
     
@@ -15,7 +28,7 @@ class Parameters:
     and details about how many runs are used in the modelling and which LSF
     models are employed (and more).
     
-    Furthermore, in the class method :method:'constrain_parameters' you can
+    Furthermore, in the class method :method:`constrain_parameters` you can
     specify and alter input parameter descriptions for the model, e.g. set
     bounds or fix parameters.
     """
@@ -100,7 +113,8 @@ class Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian_SONGnew,    # LSF model to use (this is absolutely neccessary)
+                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -437,7 +451,8 @@ class Template_Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian_SONGnew,    # LSF model to use (this is absolutely neccessary)
+                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
