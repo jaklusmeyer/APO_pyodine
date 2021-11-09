@@ -219,6 +219,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             
             # Build the desired LSF, wavelength and continuum models
             lsf_model = run_dict['lsf_model']
+            # For the LSF model: Potentially adapt it to the instrument
+            if 'lsf_setup_dict' in run_dict.keys() and isinstance(run_dict['lsf_setup_dict'], dict):
+                lsf_model.adapt_LSF(run_dict['lsf_setup_dict'])
+            
             wave_model = pyodine.models.wave.LinearWaveModel
             cont_model = pyodine.models.cont.LinearContinuumModel
             

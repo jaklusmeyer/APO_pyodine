@@ -112,7 +112,7 @@ residuals = pyodine.plot_lib.plot_residual_hist(fit_results_1, title='Residuals 
 pyodine.plot_lib.plot_chunkmodel(fit_results_1, chunks, 270, template=False, show_plot=True)
 
 
-# In[9]:
+# In[12]:
 
 
 lsf_model = fit_results_1[0].model.lsf_model
@@ -126,7 +126,7 @@ for i in range(len(fit_results_1)):
 pyodine.plot_lib.plot_lsfs_grid(lsfs, chunks, x_lsf=lsf_x, x_nr=3, y_nr=3, alpha=0.7, xlim=(-4,4), show_plot=True)
 
 
-# In[10]:
+# In[13]:
 
 
 wave_slopes_model = [r.params['wave_slope'] for r in fit_results_1]
@@ -149,13 +149,13 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=[wave_slopes_model,wave_slopes_data]
 
 
 
-# In[19]:
+# In[14]:
 
 
 chunks, fit_results_0 = pyodine.fitters.results_io.restore_results_object(utilities, res_files[0])
 
 
-# In[20]:
+# In[15]:
 
 
 lsf_model = fit_results_0[0].model.lsf_model

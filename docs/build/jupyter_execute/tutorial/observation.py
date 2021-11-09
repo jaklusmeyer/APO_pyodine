@@ -34,7 +34,7 @@ Pars = utilities.pyodine_parameters.Parameters()
 
 # Observation filenames, pathnames of deconvolved stellar templates, plot directories and results filenames:
 
-# In[3]:
+# In[4]:
 
 
 # Observations to model
@@ -60,7 +60,7 @@ for obs_file in obs_files:
 
 # Now model the observations:
 
-# In[6]:
+# In[5]:
 
 
 pyodine_model_observations.model_multi_observations(utilities, Pars, obs_files, temp_files, 
@@ -79,13 +79,13 @@ pyodine_model_observations.model_multi_observations(utilities, Pars, obs_files, 
 
 
 
-# In[7]:
+# In[6]:
 
 
 chunks, fit_results_1 = pyodine.fitters.results_io.restore_results_object(utilities, res_files[0][1])
 
 
-# In[8]:
+# In[7]:
 
 
 pyodine.plot_lib.plot_chunkmodel(fit_results_1, chunks, 270, template=True, show_plot=True)
