@@ -8,7 +8,7 @@ Created on Thu Oct 21 15:45:44 2021
 
 import numpy as np
 from .misc import robust_mean, robust_std, reweight
-from ..lib.misc import printLog
+from ..lib.misc import printLog, chauvenet_criterion
 import lmfit
 
 """The default _weighting_pars array contains a combination of values for the 
@@ -185,7 +185,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         rv_dict['crx_err'] = np.zeros(nr_obs)       # The fit errors of the chromatic indices
         rv_dict['RV_wave'] = np.zeros(nr_obs)       # The effect. wavelengths at the weighted RVs
         rv_dict['RV_wave_err'] = np.zeros(nr_obs)   # The fit errors of the effect. wavelengths
-        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits
+        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits\
         
     
     chunk_weights = np.zeros((nr_obs,nr_chunks))    # The corrected weights for each individual chunk 
@@ -222,7 +222,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
-        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i]))
+        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i])) #(dev[i]/sig)**2))#
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
@@ -384,3 +384,186 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
             }
     
     return crx_dict
+
+
+_lick_pars = {
+        'percentile': 0.997,
+        'maxchi': 100000000.,
+        'min_counts': 1000.,
+        'default_sigma': 1000.,
+        'useage_percentile': 0.997,
+        }
+
+
+def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts, bvc=None, 
+                                  diag_file=None):
+    
+    pars = _lick_pars
+    
+    printLog(diag_file, '---------------------------------------------------')
+    printLog(diag_file, '- Pyodine chunk combination (based on Lick code)  -')
+    printLog(diag_file, '---------------------------------------------------\n')
+    
+    # How many observations and chunks?
+    (nr_obs, nr_chunks) = velocities.shape
+    printLog(diag_file, 'Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
+    
+    # Give an overview of counts and redchi2 values
+    printLog(diag_file, 'Med. counts: {} +- {}'.format(np.nanmedian(medcnts), np.nanstd(medcnts)))
+    printLog(diag_file, 'Med. red. Chi^2: {} +- {}'.format(np.nanmedian(redchi2), np.nanstd(redchi2)))
+    
+    # Where are chunk velocities nan?
+    ind_nan = np.where(np.isnan(velocities))
+    if len(ind_nan[0]) > 0:
+        printLog(diag_file, '')
+        printLog(diag_file, 'Nan velocities (obs,chunk):')
+        outstring = ''
+        for i in range(len(ind_nan[0])):
+            outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
+        printLog(diag_file, outstring)
+    printLog(diag_file, '')
+    
+    # Set up the barycentric corrected velocities and the weights array
+    vel_bc = np.transpose(np.transpose(velocities) + bvc)
+    weight = 1./np.ones(velocities.shape)
+    
+    # First step to reject chunks:
+    # Loop through all chunks and reject the bad ones, i.e. use Chauvenet criterion 
+    # to get rid of chunks that fall far away from the distribution
+    err = np.ones(velocities.shape)
+    res_vel = np.zeros(velocities.shape)
+    
+    for i in range(nr_obs):
+        # Median velocity of that observation
+        medvel = np.nanmedian(vel_bc[i])
+        # Relative offset of chunk velocities from that median (residual velocities)
+        res_vel[i] = vel_bc[i] - medvel
+        # Chauvenet criterion: Reject outliers, set weights to zero and errs to 99
+        try:
+            mask, good_ind, bad_ind = chauvenet_criterion(res_vel[i])
+        except Exception as e:
+            print(e)
+            raise ValueError('Failed observation: ', i)
+        weight[i,bad_ind] = 0.
+        for k in range(nr_chunks):
+            if weight[i,k] == 0.:
+                err[i,k] = 99.
+            else:
+                err[i,k] = 1./np.sqrt(weight[i,k])
+        #plt.plot(rvel[i][good_ind]+i*1000., '.', alpha=0.3)
+        #plt.plot(rvel[i][bad_ind], '.')
+    
+    printLog(diag_file, '')
+    printLog(diag_file, 'Nr of velocity outlier chunks: {}'.format(weight[weight==0.].size))
+    
+    sorted_err = np.sort(err, axis=None)
+    max_err = sorted_err[int(pars['percentile']*(len(sorted_err)-1))]
+    sorted_redchi2 = np.sort(redchi2, axis=None)
+    max_redchi2 = sorted_redchi2[int(pars['percentile']*(len(sorted_redchi2)-1))]
+    
+    if np.isnan(max_redchi2):
+        max_redchi2 = pars['maxchi']
+    else:
+        max_redchi2 = min(max_redchi2, pars['maxchi'])
+    
+    printLog(diag_file, 'Maximum chunk error: {}, maximum chunk red. Chi^2: {}'.format(max_err, max_redchi2))
+    
+    # Set weights of these chunks to zero (what about errs?!)
+    err_ind = np.where(err > max_err)
+    weight[err_ind] = 0.
+    redchi2_ind = np.where(redchi2 > max_redchi2)
+    weight[redchi2_ind] = 0.
+    
+    cnts_ind = np.where(medcnts < pars['min_counts'])
+    weight[cnts_ind] = 0.
+    
+    # What are the chunks that we are left with?
+    printLog(diag_file, 'Total number of good chunks: {}'.format(weight[weight!=0.0].size))
+    printLog(diag_file, 'Bad chunks: {}'.format(weight[weight==0.0].size))
+    
+    # Weight chunks by velocity rms of chunk series (over all observations!!!)
+    sig = np.zeros(nr_chunks)
+    default_sig = pars['default_sigma']
+    
+    printLog(diag_file, '')
+    printLog(diag_file, 'Default chunk timeseries sigma: {}'.format(default_sig))
+    
+    # First compute the chunk series deviation from observation medians (chunk rms)
+    for k in range(nr_chunks):
+        igd = np.where(weight[:,k] > 0.)
+        if len(igd[0]) > 3:
+            sig[k] = np.std(res_vel[igd[0],k])
+        else:
+            sig[k] = default_sig
+    
+    printLog(diag_file, 'Median chunk timeseries sigma: {} +- {}'.format(
+            np.nanmedian(sig), np.nanstd(sig)))
+    ind_sig_above_default = np.where(sig>default_sig)[0]
+    if len(ind_sig_above_default) > 0:
+        printLog(diag_file, 'Chunk timeseries above default sigma ({}):'.format(
+                len(ind_sig_above_default)))
+        for i in range(len(ind_sig_above_default)):
+            printLog(diag_file, '{}\t{}'.format(
+                    ind_sig_above_default[i], sig[ind_sig_above_default[i]]))
+    
+    # Now weight each chunk rms to the mean rms
+    for i in range(nr_obs):
+        # Median deviation of chunks in this obs. in terms of deviations of chunks rms
+        const = np.nanmedian(np.abs(res_vel[i])/sig)
+        # Deviation of chunks series scaled by median chunks rms of this obs.
+        sig_obs = const * sig
+        # Now set weights accordingly: Chunks with a lower sigma are weighted higher
+        igd = np.where(weight[i,:] > 0.)
+        weight[i,igd[0]] = 1./sig_obs[igd[0]]**2.
+    
+    printLog(diag_file, '')
+    printLog(diag_file, 'Final median weights (without rejected ones): {} +- {}'.format(
+            np.nanmedian(weight[weight!=0.]), np.nanstd(weight[weight!=0.])))
+    
+    # Finally compute weighted observation velocities
+    # -> only use best 2 or 3 sigma (95.5 or 99.7 %)
+    percentile2 = pars['useage_percentile'] #955 #997
+    
+    printLog(diag_file, '')
+    printLog(diag_file, 'Final velocity rejection percentile limit: {}'.format(percentile2))
+    
+    all_gd = np.zeros((nr_obs, nr_chunks))
+    
+    # Prepare the output dicts
+    rv_dict = {
+            'rv': np.zeros(nr_obs),             # Weighted RV timeseries
+            'rv_bc': np.zeros(nr_obs),          # Weighted RV timeseries, BV-corrected
+            'mdvel': np.zeros(nr_obs),          # The simple observation median (after correcting 
+                                                # for chunk timeseries offsets)
+            'rv_err': np.zeros(nr_obs),         # The theoretical measurement uncertainty
+            }
+    
+    auxiliary_dict = {
+            'chunk_sigma': sig,
+            'chunk_weight': np.zeros((nr_obs,nr_chunks))
+            }
+    
+    for i in range(nr_obs):
+        # Identify indices of chunks with good weights and low scatter
+        resid = np.abs(velocities[i] - np.nanmedian(velocities[i]))
+        ires = np.argsort(resid)
+        gd1 = np.where((weight[i] < 100.) & (weight[i] > 0.))[0]
+        gd2 = ires[:int(percentile2*(len(ires)-1))]
+        #gd = np.unique(np.concatenate((gd1, gd2)))
+        gd = np.intersect1d(gd1, gd2)
+        gd = np.sort(gd)
+        all_gd[i,gd] = 1
+        
+        velobs = velocities[i,gd]
+        wt = weight[i,gd]
+        
+        auxiliary_dict['chunk_weight'][i] = weight[i]
+        
+        rv_dict['mdvel'][i] = np.nanmedian(velobs)
+        rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
+        rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
+        rv_dict['rv_err'][i] = 1./np.sqrt(np.nansum(wt))
+    
+    
+    
+    return rv_dict, auxiliary_dict
