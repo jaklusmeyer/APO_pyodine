@@ -4,7 +4,7 @@ import numpy as np
 from .. import fitters
 from ..lib import h5quick
 from ..lib.misc import return_existing_files
-from .combine_vels import combine_chunk_velocities
+from .combine_vels import combine_chunk_velocities, combine_chunk_velocities_lick
 
 
 
@@ -61,7 +61,11 @@ class CombinedResults():
                 velocities, self.nr_chunks_order, bvc=bvc, 
                 wavelengths=wavelengths, diag_file=diag_file, 
                 weighting_pars=weighting_pars)
-        
+        """
+        tseries, self.auxiliary = combine_chunk_velocities_lick(
+                velocities, self.nr_chunks_order, self.redchi2, self.medcnts, 
+                bvc=bvc, diag_file=diag_file)
+        """
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()
     
