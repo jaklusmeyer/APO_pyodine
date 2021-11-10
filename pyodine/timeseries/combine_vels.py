@@ -141,7 +141,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     # Print to file
     printLog(diag_file, 'Chunk-to-chunk offsets from observation mean:')
     printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
-            np.nanmedian(offsets_chunk), np.nanstd(offsets_chunk)))
+            robust_mean(offsets_chunk), robust_std(offsets_chunk)))
     
     # Set up the sigma and deviation arrays
     sig = np.zeros(nr_chunks)
@@ -169,7 +169,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     # Print to file
     printLog(diag_file, 'Chunk sigmas:')
     printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
-            np.nanmedian(sig), np.nanstd(sig)))
+            robust_mean(sig), robust_std(sig)))
     
     # Prepare the output dicts
     rv_dict = {

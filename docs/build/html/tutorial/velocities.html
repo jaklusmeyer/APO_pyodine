@@ -37,6 +37,8 @@
     <script src="../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Model the stellar I2 observations" href="observation.html" />
@@ -187,6 +189,29 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-the-code">
+   Run the code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inspect-the-results">
+   Inspect the results
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -197,8 +222,13 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="weight-and-combine-the-chunk-velocities">
 <h1>Weight and combine the chunk velocities<a class="headerlink" href="#weight-and-combine-the-chunk-velocities" title="Permalink to this headline">¶</a></h1>
-<p>We have modelled all observations of our star and saved the results to file. To retrieve the RV timeseries of the star, we still need to combine the individual best-fit velocities of all 522 chunks for each observation. One might think of a simple mean or median over the chunk velocities to achieve this - but some chunks contain more spectral information than others, deliver therefore more realistic results and should be weighted higher than poorly constraint outlier chunks.</p>
-<p>In this script, we show how to run the combination routine. For a sound mathematical description, please check out our !!!paper!!!.</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>We have modelled all observations of our star and saved the results to file. To retrieve the RV timeseries of the star, we still need to combine the individual best-fit velocities of all 522 chunks for each observation. One might think of a simple mean or median over the chunk velocities within each observation to achieve this - but as we have seen <a class="reference internal" href="observation.html"><span class="doc std std-doc">in the previous chapter</span></a> we have quite a number of ‘bad’ chunks, with outlier velocities and huge errors. Also, some chunks contain more spectral information than others, deliver therefore more realistic results and should be weighted higher than poorly constraint outlier chunks.</p>
+<p>In this script, we show how to run the combination routine. For a sound mathematical description, please check out our !!!paper!!!. But basically, weights are created for each chunk not only based on their ‘velocity performance’ within one observation, but also based on their performance throughout the whole timeseries. I.e. if the velocity timeseries of one chunk with index <span class="math notranslate nohighlight">\(i\)</span> shows a highly significant scatter around the mean timeseries of all chunk velocities, that chunk receives lower weight IN ALL OBSERVATIONS!</p>
+</div>
+<div class="section" id="run-the-code">
+<h2>Run the code<a class="headerlink" href="#run-the-code" title="Permalink to this headline">¶</a></h2>
 <p>First of, as before, we set up the path structure and import the velocity combination routine:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -210,21 +240,15 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>  <span class="c1"># Put in the pyodine path on your machine here!</span>
 
 <span class="kn">import</span> <span class="nn">pyodine</span>
-<span class="kn">import</span> <span class="nn">pyodine_combine_vels</span>         <span class="c1"># &lt;- the velocity combination routine</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
+<span class="kn">import</span> <span class="nn">pyodine_combine_vels</span>             <span class="c1"># &lt;- the velocity combination routine</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Important parameters for the velocity combination routine are defined in a timeseries parameter object, which we also need to load:</p>
+<p>Again we load an object which contains all the important parameters for the velocity combination - this is the <code class="docutils literal notranslate"><span class="pre">Timeseries_Parameters</span></code> object:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
@@ -234,7 +258,7 @@
 </div>
 </div>
 </div>
-<p>Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a :class:<code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object, can be saved to a HDF5-file whose pathname we also specify below.</p>
+<p>Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a <code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object, can be saved to a HDF5-file whose pathname we also specify below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Individual result files to use</span>
@@ -243,7 +267,7 @@
 <span class="n">res_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># The directory for analysis plots</span>
-<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs/vel_combined&#39;</span>
+<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_combined&#39;</span>
 
 <span class="c1"># The diagnosis file to write analysis info into</span>
 <span class="n">diag_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;diag_file.log&#39;</span><span class="p">)</span>
@@ -257,7 +281,7 @@
 </div>
 </div>
 </div>
-<p>Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the :class:<code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object as well as some analysis plots and additional data as specified above. In the end the :class:<code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object is returned:</p>
+<p>Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the <code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object as well as some analysis plots and additional data as specified above. In the end the <code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object is returned:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Results</span> <span class="o">=</span> <span class="n">pyodine_combine_vels</span><span class="o">.</span><span class="n">combine_velocity_results</span><span class="p">(</span>
@@ -267,9 +291,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Non-existing files:
-/home/paul/data_song2/data_res/sigdra_obs/vel_combined/sigdra_res1.h5
----------------------------------------------------
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------
 - Pyodine chunk combination (based on iSONG code) -
 ---------------------------------------------------
 
@@ -287,37 +309,54 @@ Weighting parameters used:
 Nr. of obs, chunks per obs: 20, 528
 
 Chunk-to-chunk offsets from observation mean:
-Median: -9.95 +- 830.62
+Median: -1.83 +- 201.35
 
 Chunk sigmas:
-Median: 45.97 +- 154.49
+Median: 46.50 +- 36.23
 
 RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.6396876050001081 m/s
 RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.6396902508898112 m/s
 
 Saving results to:
-	/home/paul/data_song2/data_res/sigdra_obs/vel_combined/sigdra_combined.h5
+	/home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
 
 Creating and saving analysis plots to
-	/home/paul/data_song2/data_res/sigdra_obs/vel_combined:
+	/home/paul/data_song2/data_res/sigdra_combined:
 
 Observations with outlier RVs:
 /home/paul/data_song2/data_res/sigdra_obs/s1_2015-04-25T04-13-09_ext/sigdra_res1.h5
 /home/paul/data_song2/data_res/sigdra_obs/s1_2015-04-26T03-01-02_ext/sigdra_res1.h5
 All done!
-Full work time:  7.7108776569366455
+Full work time:  4.7134644985198975
 </pre></div>
 </div>
 </div>
 </div>
-<p>Great!</p>
+<p>Great, and again some print output to explain:</p>
+<ul class="simple">
+<li><p>In the beginning, the weighting parameters used in the velocity combination (and supplied through the <code class="docutils literal notranslate"><span class="pre">Timeseries_Parameters</span></code> object) are printed. Also the code reports about the number of observations and chunks that it found in the results.</p></li>
+<li><p>Next, the (robust) mean and standard deviation (std) of the offsets of chunk timeseries from observation means are printed. Below, the mean and std of the velocity scatter within each chunk timeseries is reported (‘Chunk sigmas’). The sigmas are used to weight the chunk velocities when computing the RV timeseries.</p></li>
+<li><p>Finally, two ‘quality factors’ for the velocity weighting are reported. They should always be very similar, and as they basically represent the RV precision achieved in this timeseries, you would want them to be as small as possible.</p></li>
+</ul>
+</div>
+<div class="section" id="inspect-the-results">
+<h2>Inspect the results<a class="headerlink" href="#inspect-the-results" title="Permalink to this headline">¶</a></h2>
+<p>Now finally, after all this modelling, we can plot our RV timeseries:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv_bc</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">Results</span><span class="o">.</span><span class="n">rv_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The barycentric date, RV with barycentric correction, and RV uncertainty</span>
+<span class="n">bary_date</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span>
+<span class="n">rv_bc</span>     <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv_bc</span>
+<span class="n">rv_err</span>    <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv_err</span>
+
+<span class="n">star_name</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;star_name&#39;</span><span class="p">]</span>     <span class="c1"># the star name</span>
+
+<span class="c1"># And plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">rv_bc</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">rv_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: RV timeseries&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;star_name&#39;</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: RV timeseries&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -325,16 +364,16 @@ Full work time:  7.7108776569366455
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: RV timeseries&#39;)
 </pre></div>
 </div>
-<img alt="../_images/velocities_10_1.png" src="../_images/velocities_10_1.png" />
+<img alt="../_images/velocities_15_1.png" src="../_images/velocities_15_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Chromatic index [(m/s)/Np]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chromatix index variation&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;star_name&#39;</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chromatix index variation&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -342,7 +381,7 @@ Full work time:  7.7108776569366455
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chromatix index variation&#39;)
 </pre></div>
 </div>
-<img alt="../_images/velocities_12_1.png" src="../_images/velocities_12_1.png" />
+<img alt="../_images/velocities_17_1.png" src="../_images/velocities_17_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -351,7 +390,7 @@ Full work time:  7.7108776569366455
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">c2c_scatter</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk velocity scatter in observations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;star_name&#39;</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk velocity scatter in observations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -359,7 +398,7 @@ Full work time:  7.7108776569366455
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chunk velocity scatter in observations&#39;)
 </pre></div>
 </div>
-<img alt="../_images/velocities_14_1.png" src="../_images/velocities_14_1.png" />
+<img alt="../_images/velocities_19_1.png" src="../_images/velocities_19_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -386,7 +425,8 @@ Full work time:  7.7108776569366455
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/velocities_16_0.png" src="../_images/velocities_16_0.png" />
+<img alt="../_images/velocities_21_0.png" src="../_images/velocities_21_0.png" />
+</div>
 </div>
 </div>
 </div>

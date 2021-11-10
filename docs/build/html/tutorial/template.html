@@ -37,6 +37,8 @@
     <script src="../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Model the stellar I2 observations" href="observation.html" />
@@ -188,6 +190,34 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-the-code">
+   Run the code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inspecting-the-fit-results">
+   Inspecting the fit results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inspecting-the-deconvolved-stellar-template">
+   Inspecting the deconvolved stellar template
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -198,13 +228,24 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="create-a-deconvolved-stellar-template">
 <h1>Create a deconvolved stellar template<a class="headerlink" href="#create-a-deconvolved-stellar-template" title="Permalink to this headline">¶</a></h1>
-<p>Before modelling observations of the star to extract RVs, we need to create a high-S/N stellar template</p>
-<p>What you need:</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Before modelling observations of the star to extract RVs, we need to create a high-S/N stellar template to use in the observation modelling.</p>
+<p>What you need for this:</p>
 <ul class="simple">
-<li><p>observation spectra of hot stars, which do not show any spectral features in the I2 wavelength range between ~ 5000 – 6000 Å, obtained <em>with</em> the I2 cell in the light path; the recorded spectra then basically only consist of the I2 features, and can be used to determine the LSF of the instrument.</p></li>
-<li><p>observation spectra of the star of interest <em>without</em> any I2 absorption features;</p></li>
+<li><p>observation spectra of hot stars, typically of spectral type O or B, which do not show any spectral features in the I2 wavelength range between ~ 5000 – 6000 Å, obtained <em>with</em> the I2 cell in the light path; the recorded spectra then basically only consist of the I2 features, and can be used to determine the LSF of the instrument;</p></li>
+<li><p>observation spectra of the star of interest <em>without</em> any I2 absorption features, taken inbetween the O/B-star spectra.</p></li>
 </ul>
-<p>First, we need to set up the path and import the required pyodine modules:</p>
+<p>So in the template creation we first model the sum of all O/B-star spectra <span class="math notranslate nohighlight">\(I_\mathrm{O/B}\)</span> from a combination of a flat continuum and the I2 template spectrum <span class="math notranslate nohighlight">\(T_\mathrm{I2}(\lambda)\)</span>, convolved by a model of the LSF <span class="math notranslate nohighlight">\(L(x)\)</span> and multiplied by a continuum model <span class="math notranslate nohighlight">\(k(x)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \hat{I}_\mathrm{O/B}(x) = k(x) \cdot T_\mathrm{I2}\big(\lambda(x)\big) * L(x)
+\]</div>
+<p>This is done in small chunks of the whole spectrum (<span class="math notranslate nohighlight">\(\sim 2 \,Å\)</span> in length) to reduce complexity. From this we receive a good guess of the LSF of the instrument for each chunk. We assume that the LSF is fairly stable over the short time difference lying between the observations of the O/B-stars and our target star, so we can use the results now to deconvolve the summed up target star spectra and end up with a deconvolved, high-S/N stellar template spectrum of that star (again in chunks). (More on this you find e.g. in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1996PASP..108..500B/abstract/">Butler et al. (1996)</a>)</p>
+</div>
+<div class="section" id="run-the-code">
+<h2>Run the code<a class="headerlink" href="#run-the-code" title="Permalink to this headline">¶</a></h2>
+<p>But <strong>pyodine</strong> allows you to create the template without having to know exactly how it works. First, we need to set up the path and import the required pyodine modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Automatic reloading of imports</span>
@@ -214,16 +255,23 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>  <span class="c1"># Put in the pyodine path on your machine here!</span>
 
 <span class="kn">import</span> <span class="nn">pyodine</span>
-<span class="kn">import</span> <span class="nn">pyodine_create_templates</span>
+<span class="kn">import</span> <span class="nn">pyodine_create_templates</span>         <span class="c1"># &lt;- the template creation routines</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
 </pre></div>
 </div>
 </div>
 </div>
-<p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from fits along with useful information from the fits headers. Upon import we call the SONG-specific <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> simply <code class="docutils literal notranslate"><span class="pre">utilities</span></code>:</p>
+<p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from <code class="docutils literal notranslate"><span class="pre">fits</span></code>-format along with useful information from the <code class="docutils literal notranslate"><span class="pre">fits</span></code>-headers. Upon import we call the SONG-specific <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> simply <code class="docutils literal notranslate"><span class="pre">utilities</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
@@ -231,7 +279,7 @@
 </div>
 </div>
 </div>
-<p>Additionally, a parameter input object of type <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> is needed. That one contains all the instruments-specific parameters such as oversampling used, how to chunk up the spectrum, and also the exact definition of the workflow for the analysis routine. By default, there should be a module called <code class="docutils literal notranslate"><span class="pre">pyodine_parameters</span></code> within each <code class="docutils literal notranslate"><span class="pre">utilities</span></code> module, but you could also create a different one and import it if you wish to experiment with changing parameters. However, we will stick with the well-tested default parameters here:</p>
+<p>Additionally, a parameter input object of type <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> is needed. It contains all the instrument-specific parameters such as oversampling used in the modelling, how to chunk up the spectra, and also the exact definition of the workflow for the analysis routine. By default, there should be a module called <code class="docutils literal notranslate"><span class="pre">pyodine_parameters</span></code> within each <code class="docutils literal notranslate"><span class="pre">utilities</span></code> module, but you could also create a different one and import it if you wish to experiment with changing parameters. However, we will stick with the well-tested default parameters for SONG here:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Pars</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">pyodine_parameters</span><span class="o">.</span><span class="n">Template_Parameters</span><span class="p">()</span>
@@ -239,7 +287,7 @@
 </div>
 </div>
 </div>
-<p>Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the pathname for a directory where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as ‘.h5’ (HDF5 format), the second as ‘.pkl’ (through the <strong>dill</strong> Python package).</p>
+<p>Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the directory name where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as ‘.h5’ (HDF5 format), the second as ‘.pkl’ (through the <strong>dill</strong> Python package).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># O-star observations to use for the modelling</span>
@@ -266,8 +314,8 @@
 <p>And now, we can kick off the template creation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_create_templates</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">ostar_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> <span class="n">temp_outname</span><span class="p">,</span> 
-                    <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_create_templates</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">ostar_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
+                                         <span class="n">temp_outname</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -288,7 +336,7 @@ RUN 0
 ----------------------
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:27 Time:  0:00:27
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:18 Time:  0:00:18
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
@@ -313,7 +361,7 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:58 Time:  0:01:58
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:29 Time:  0:01:29
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
@@ -327,20 +375,32 @@ All runs done, continuing to template deconvolution...
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:28 Time:  0:02:28
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:03 Time:  0:02:03
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  342.98305678367615
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  268.14899373054504
 </pre></div>
 </div>
 </div>
 </div>
-<p>Great, everything went fine!</p>
-<p>Open the saved results file and inspect it</p>
+<p>Great, everything went fine! Let’s have a look at the printed output:</p>
+<ul class="simple">
+<li><p>2nd row from top, a velocity guess is reported. This has been found by cross-correlation of the template observation spectrum with a reference spectrum (Arcturus or Sun), and in the end this velocity guess is saved as meta-information to the deconvolved stellar template. Later, when modelling an observation, a first guess of the relative velocity shift between observation and template is found by taking the difference between the observation velocity guess (again relative to the same reference spectrum) and the template velocity guess.</p></li>
+<li><p>4th row from top a warning is reported. In our parameter file we define to create 22 chunks per order, but given the desired chunk parameters (width, padding, pixel offset) the padding region of the last chunk within each order would extend over the order edges. We do not need to worry though, as the algorithm automatically reduces the padding size of the last chunks to make it fit (the last chunk then only has a padding of 17 pixels instead of 25)!</p></li>
+<li><p>We then see that RUN 0, where we use a Single-Gaussian LSF model, looped quite quickly through all chunks of the O/B-star spectrum. We get some information about fitting success, and you would have to worry if chunks with ‘nan fitted red. Chi2’ was larger than 0, this would mean that the fitting had failed for some chunks.</p></li>
+<li><p>In RUN 1, we use a Multi-Gaussian LSF model, and to receive good starting parameters for it we fit a Single-Gaussian model, constructed from the median of the RUN 0 best-fit results from all chunks, with the Multi-Gaussian model - the result of that fit is printed under ‘Fitted LSF parameters’.</p></li>
+<li><p>RUN 1 then takes a bit longer to loop over all chunks than RUN 0 (no wonder due to the more complex model). Again, we see that for no chunks the fitting failed (this is absolutely necessary, as the best-fit results from this run are used in the deconvolution).</p></li>
+<li><p>Finally, the deconvolution of the stellar template observation begins, which again takes some time.</p></li>
+</ul>
+</div>
+<div class="section" id="inspecting-the-fit-results">
+<h2>Inspecting the fit results<a class="headerlink" href="#inspecting-the-fit-results" title="Permalink to this headline">¶</a></h2>
+<p>Alright, let’s load the saved results and inspect them - first the results from the second (Multi-Gaussian) run. This is quite straight forward, as they were saved through the <strong>dill</strong> package, where the whole object structure is preserved and can easily be restored:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results_1</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">load_results</span><span class="p">(</span><span class="n">res_files</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">&#39;dill&#39;</span><span class="p">)</span>
 
+<span class="c1"># Also construct the original chunks array of the O/B-star observations</span>
 <span class="n">chunks</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">ChunkArray</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results_1</span><span class="p">:</span>
     <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">chunk</span><span class="p">)</span>
@@ -348,62 +408,30 @@ Deconvolving chunks...
 </div>
 </div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fit_results_1</span></code> list contains the original fit-results objects for each chunk, along with model and chunk data, which makes it really easy to analyze and work with:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_residual_hist</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Residuals histogram&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of chunks/fit results:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Object structure of each fit result:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/template_16_0.png" src="../_images/template_16_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/template_17_0.png" src="../_images/template_17_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lsf_model</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lsf_model</span>
-<span class="n">lsf_x</span> <span class="o">=</span> <span class="n">lsf_model</span><span class="o">.</span><span class="n">generate_x</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">conv_width</span><span class="o">=</span><span class="mf">6.</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks/fit results: 528
 
-<span class="n">lsfs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">)):</span>
-    <span class="n">lsf_pars</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;lsf&#39;</span><span class="p">)</span>
-    <span class="n">lsfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsf_model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">lsf_pars</span><span class="p">))</span>
-
-<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_lsfs_grid</span><span class="p">(</span><span class="n">lsfs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">x_lsf</span><span class="o">=</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">x_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+Object structure of each fit result:
+{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7fbb55c67a90&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7fbb56342220&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7fbb56342160&gt;, &#39;chunk_ind&#39;: 0}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/template_18_0.png" src="../_images/template_18_0.png" />
 </div>
-</div>
+<p>The results from the first run (Single-Gaussian) in contrast we saved in HDF5-format, which is basically just a dictionary of the model results and important meta-information. In order to preserve functionality, <strong>pyodine</strong> comes with a routine <code class="docutils literal notranslate"><span class="pre">restore_results_object()</span></code> that helps restoring the fit-results objects, model and chunks from that saved dictionary (basically by building them from scratch using the dictionary information).</p>
+<p><em>Important:</em> As the data of the input spectra is not saved with the results when using the HDF5-format, the observation spectra must be loaded again from the pathnames used in the original modelling. Therefore you also need to hand the correct <code class="docutils literal notranslate"><span class="pre">utilities</span></code> module to the function. <em>Of course, this only works if the pathnames of the input spectra are still the same!</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wave_slopes_model</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_slope&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results_1</span><span class="p">]</span>
-<span class="n">wave_slopes_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
-
-<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="p">[</span><span class="n">wave_slopes_model</span><span class="p">,</span><span class="n">wave_slopes_data</span><span class="p">],</span> 
-                                    <span class="n">scatter_fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">scatter_label</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">],</span> 
-                                    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;wave_slope [$\AA$/pix]&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/template_19_0.png" src="../_images/template_19_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_0</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_0</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span>
+    <span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -415,23 +443,181 @@ Number of created chunks per order: 22
 </div>
 </div>
 </div>
+<p>So let’s have a look at the results (RUN 1 for now). Always interesting: Checking out some random chunk to see the data along with the best-fit model result for that chunk. This is straight forward, just use the dedicated built-in plotting function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lsf_model</span> <span class="o">=</span> <span class="n">fit_results_0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lsf_model</span>
-<span class="n">lsf_x</span> <span class="o">=</span> <span class="n">lsf_model</span><span class="o">.</span><span class="n">generate_x</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">conv_width</span><span class="o">=</span><span class="mf">6.</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chunk index</span>
+<span class="n">chunk_ind</span> <span class="o">=</span> <span class="mi">300</span>
 
-<span class="n">lsfs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_results_0</span><span class="p">)):</span>
-    <span class="n">lsf_pars</span> <span class="o">=</span> <span class="n">fit_results_0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;lsf&#39;</span><span class="p">)</span>
-    <span class="n">lsfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsf_model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">lsf_pars</span><span class="p">))</span>
-
-<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_lsfs_grid</span><span class="p">(</span><span class="n">lsfs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">x_lsf</span><span class="o">=</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">x_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">chunk_ind</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                 <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <img alt="../_images/template_23_0.png" src="../_images/template_23_0.png" />
 </div>
+</div>
+<p>As you see, mostly the model fits the data quite well, and the rms of the relative residuals is roughly <span class="math notranslate nohighlight">\(0.9 \%\)</span>.</p>
+<p>Next, we can get an impression about the overall modelling success by plotting a histogram of the relative residuals of all chunks - again there is a built-in function for that:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_residual_hist</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Residuals histogram&#39;</span><span class="p">,</span> 
+                                                <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_25_0.png" src="../_images/template_25_0.png" />
+</div>
+</div>
+<p>We can see that while most chunks have residuals around <span class="math notranslate nohighlight">\(1 \%\)</span>, there’s a small peak of chunks with residuals around <span class="math notranslate nohighlight">\(2 \%\)</span>. To find out more, we can also just create a scatter plot of the residuals over all chunks:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Chunk residuals [%]&#39;</span><span class="p">,</span> 
+                                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Chunk residuals&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_27_0.png" src="../_images/template_27_0.png" />
+</div>
+</div>
+<p>As you can see, at higher indices (redder wavelengths) the chunk residuals go up significantly - this is due to a combination of a fringing effect in the optical path of the SONG telescope and probably also some telluric contamination of the spectra. Still, this is not as bad as it looks and we are still able to receive good RV results!</p>
+<p>Also, I’m always intrigued by looking at the actual LSFs. To do so, we must first evaluate them (in the fit results only the best-fit LSF parameters for each chunk are saved). Then, we can use another built-in function for plotting:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The LSF model, oversampling and convolution width used</span>
+<span class="n">lsf_model</span>      <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lsf_model</span>
+<span class="n">osample_factor</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">osample_factor</span>
+<span class="n">conv_width</span>     <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">conv_width</span>
+
+<span class="c1"># Generate the pixel vector to evaluate the LSF over</span>
+<span class="n">lsf_x</span> <span class="o">=</span> <span class="n">lsf_model</span><span class="o">.</span><span class="n">generate_x</span><span class="p">(</span><span class="n">osample_factor</span><span class="o">=</span><span class="n">osample_factor</span><span class="p">,</span> <span class="n">conv_width</span><span class="o">=</span><span class="n">conv_width</span><span class="p">)</span>
+
+<span class="c1"># Now loop over all chunks, evaluate the LSFs and append them to a list</span>
+<span class="n">lsfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">)):</span>
+    <span class="n">lsf_pars</span> <span class="o">=</span> <span class="n">fit_results_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;lsf&#39;</span><span class="p">)</span>
+    <span class="n">lsfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lsf_model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">lsf_pars</span><span class="p">))</span>
+
+<span class="c1"># Finally plot a grid of 3x3 LSFs</span>
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_lsfs_grid</span><span class="p">(</span><span class="n">lsfs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">x_lsf</span><span class="o">=</span><span class="n">lsf_x</span><span class="p">,</span> <span class="n">x_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y_nr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_29_0.png" src="../_images/template_29_0.png" />
+</div>
+</div>
+<p>It is obvious that the LSF is generally quite stable spatially - at lower orders and higher pixel numbers the peak is a bit smaller, but the overall shape never changes much.</p>
+<p>Finally, let’s check out the wavelength model. We can pull the best-fit results for the wavelength slope from all chunks, and compare it to the simple dispersion for each chunk computed by:</p>
+<div class="math notranslate nohighlight">
+\[
+    \delta\lambda = \frac{\lambda_{-1} - \lambda_{0}}{\#_\mathrm{pix}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_{-1}\)</span> and <span class="math notranslate nohighlight">\(\lambda_{0}\)</span> are the wavelengths of the last and first pixel of each chunk, and <span class="math notranslate nohighlight">\(\#_\mathrm{pix}\)</span> is the number of pixels in the chunk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The best-fit wavelength slopes for all chunks</span>
+<span class="n">wave_slopes_model</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_slope&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results_1</span><span class="p">]</span>
+<span class="c1"># The estimated dispersion for all chunks (from the original spectrum)</span>
+<span class="n">wave_slopes_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ch</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="p">[</span><span class="n">wave_slopes_model</span><span class="p">,</span><span class="n">wave_slopes_data</span><span class="p">],</span> 
+                                    <span class="n">scatter_fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">scatter_label</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">],</span> 
+                                    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;wave_slope [$\AA$/pix]&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_31_0.png" src="../_images/template_31_0.png" />
+</div>
+</div>
+<p>And now, for completeness sake, let’s again look at the same chunk as in the beginning - but using the results from RUN 0. You’ll see that the residuals are in fact larger when using the Single-Gaussian LSF:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chunk index</span>
+<span class="n">chunk_ind</span> <span class="o">=</span> <span class="mi">300</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_0</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">chunk_ind</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                 <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/template_33_0.png" src="../_images/template_33_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="inspecting-the-deconvolved-stellar-template">
+<h2>Inspecting the deconvolved stellar template<a class="headerlink" href="#inspecting-the-deconvolved-stellar-template" title="Permalink to this headline">¶</a></h2>
+<p>Of course, what we are really interested in is the deconvolved stellar template, as we will use that later when we model observations of the star. So, let’s load the deconvolved template from file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">StellarTemplate_Chunked</span><span class="p">(</span><span class="n">temp_outname</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The deconvolved template object:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The first chunk of the template:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The deconvolved template object:
+ &lt;StellarTemplate_Chunked of HD 185144 (528 chunks, 24 orders)&gt;
+
+The first chunk of the template:
+ &lt;Spectrum (1401 pixels, 4993.6009-4996.9754 Å&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The deconvolved template in this form is saved basically as a list of the individual deconvolved chunks, along with some meta-data and information.</p>
+<p>We want to compare it to the original stellar template observations that it was deconvolved from, so let’s load these observations also:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First the individual observations into a list</span>
+<span class="n">temp_obs_specs</span> <span class="o">=</span> <span class="p">[</span><span class="n">utilities</span><span class="o">.</span><span class="n">load_pyodine</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temp_files</span><span class="p">]</span>
+
+<span class="c1"># Now create the summed observation from all individual ones</span>
+<span class="n">temp_obs</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">SummedObservation</span><span class="p">(</span><span class="o">*</span><span class="n">temp_obs_specs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And now let us plot a chunk of both - for the summed observation we obviously need to extract exactly the part which corresponds to the template chunk:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chunk index</span>
+<span class="n">chunk_ind</span> <span class="o">=</span> <span class="mi">301</span>
+
+<span class="c1"># The wavelength range covered by this chunk</span>
+<span class="n">wave_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">template</span><span class="p">[</span><span class="n">chunk_ind</span><span class="p">]</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">template</span><span class="p">[</span><span class="n">chunk_ind</span><span class="p">]</span><span class="o">.</span><span class="n">wave</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="c1"># Load a sub-spectrum of the summed observation covering this range</span>
+<span class="n">temp_obs_ch</span> <span class="o">=</span> <span class="n">temp_obs</span><span class="o">.</span><span class="n">get_wavelength_range</span><span class="p">(</span><span class="n">wave_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wave_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># And plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="n">chunk_ind</span><span class="p">]</span><span class="o">.</span><span class="n">wave</span><span class="p">,</span> <span class="n">template</span><span class="p">[</span><span class="n">chunk_ind</span><span class="p">]</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> 
+         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Deconv. template&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp_obs_ch</span><span class="o">.</span><span class="n">wave</span><span class="p">,</span> <span class="n">temp_obs_ch</span><span class="o">.</span><span class="n">flux</span><span class="o">/</span><span class="p">(</span><span class="n">temp_obs_ch</span><span class="o">.</span><span class="n">cont</span><span class="o">*</span><span class="mi">3</span><span class="p">),</span> 
+         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Template obs.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [$\AA$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, chunk </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">starname</span><span class="p">,</span> <span class="n">chunk_ind</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD 185144, chunk 301&#39;)
+</pre></div>
+</div>
+<img alt="../_images/template_40_1.png" src="../_images/template_40_1.png" />
+</div>
+</div>
+<p>That’s cool, the deconvolved template actually shows deeper, narrower absorption lines than the observation - exactly what we would expect when cleaning a spectrum of the instrumental LSF!</p>
 </div>
 </div>
 

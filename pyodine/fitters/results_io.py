@@ -341,6 +341,7 @@ def restore_results_object(utilities, filename):
         lsf_pars_dict  = results['model']['lsf_pars_dict']
         res_chunks     = results['chunks']
         res_params     = results['params']
+        res_errors     = results['errors']
         
         # The orders covered by the chunks, the width of the chunks, and the
         # padding of the chunks (these are constructed from implicit 
@@ -429,6 +430,10 @@ def restore_results_object(utilities, filename):
             # Finally 'fit' it (work-around to create a fully functional 
             # FitResults object)
             fit_results.append(fitter.fit(chunk, lmfit_pars, chunk_ind=i))
+            
+            # And add the correct errors from the dictionary
+            for key in res_errors.keys():
+                fit_results[-1].lmfit_result.params[key].stderr = res_errors[key][i]
         
         return obs_chunks, fit_results
         
