@@ -37,6 +37,8 @@
     <script src="../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Weight and combine the chunk velocities" href="velocities.html" />
@@ -188,6 +190,34 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-the-code">
+   Run the code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inspecting-the-fit-results-of-an-observation">
+   Inspecting the fit results of an observation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-the-code-on-many-observations">
+   Run the code on many observations
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -198,7 +228,19 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="model-the-stellar-i2-observations">
 <h1>Model the stellar I2 observations<a class="headerlink" href="#model-the-stellar-i2-observations" title="Permalink to this headline">¶</a></h1>
-<p>Bla blub</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>If you’ve completed the last tutorial <a class="reference internal" href="template.html"><span class="doc std std-doc">and created a deconvolved stellar template</span></a>, we can now use that to model I2 observations of our star. This means: observations of the star conducted with the I2 cell in the light path, so that the stellar and I2 spectrum are both recorded together. The resulting spectrum <span class="math notranslate nohighlight">\(I_*(x)\)</span> can then be modelled by a combination of the deconvolved stellar template <span class="math notranslate nohighlight">\(T_*(\lambda)\)</span>, the I2 template <span class="math notranslate nohighlight">\(T_\mathrm{I2}(\lambda)\)</span>, a LSF model <span class="math notranslate nohighlight">\(L(x)\)</span>, and a continuum model <span class="math notranslate nohighlight">\(k(x)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \hat{I}_*(x) = k(x) \cdot \Big[ T_\mathrm{I2}\big(\lambda(x)\big) \cdot T_*\big(\lambda(x) \cdot (1 + v/c)\big) \Big] * L(x)
+\]</div>
+<p>As you can see, the deconvolved stellar template is shifted in wavelength by a factor <span class="math notranslate nohighlight">\((1 + v/c)\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> is the relative radial velocity between the observation and the template. So, in words: The I2 atlas gives us a measure to constrain the wavelength model and consequently detect the relative wavelength shift between observation and template.</p>
+<p>Again, all this is done in chunks to reduce complexity.</p>
+</div>
+<div class="section" id="run-the-code">
+<h2>Run the code<a class="headerlink" href="#run-the-code" title="Permalink to this headline">¶</a></h2>
+<p>Again, first let’s set up the path and import the required packages:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Automatic reloading of imports</span>
@@ -208,16 +250,17 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>  <span class="c1"># Put in the pyodine path on your machine here!</span>
 
 <span class="kn">import</span> <span class="nn">pyodine</span>
-<span class="kn">import</span> <span class="nn">pyodine_model_observations</span>
+<span class="kn">import</span> <span class="nn">pyodine_model_observations</span>       <span class="c1"># &lt;- the observation modelling routines</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Again, import the utilities, and the parameter input object:</p>
+<p>And, as before, import the utilities module and the parameter input object (this time not <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code>, but <code class="docutils literal notranslate"><span class="pre">Parameters</span></code>):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song</span> <span class="k">as</span> <span class="nn">utilities</span>
@@ -227,7 +270,7 @@
 </div>
 </div>
 </div>
-<p>Observation filenames, pathnames of deconvolved stellar templates, plot directories and results filenames:</p>
+<p>Now we define the pathnames of the input data and output results: first the observation filenames, and for each single observation we need to specify the pathname of the deconvolved stellar template to use for it; in our case it’s always the same (as all observations are of the same star), but this structure allows also to model observations from different stars in the same go (useful e.g. when analyzing all observations of an observing night). Also we define plot directories and results filenames (now we save all in HDF5 - this takes up much less memory than when using <strong>dill</strong>):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Observations to model</span>
@@ -253,11 +296,195 @@
 </div>
 </div>
 </div>
-<p>Now model the observations:</p>
+<p>And with that done, we can model the first observation to get an idea of what’s going on. For that, we use the function <code class="docutils literal notranslate"><span class="pre">model_single_observation</span></code>, and only hand in the first entry of all the created pathname arrays above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_multi_observations</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
-                                                    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_single_observation</span><span class="p">(</span>
+    <span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temp_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+    <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">res_names</span><span class="o">=</span><span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+/home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-04-20T03-01-01_ext.fits
+Order correction: -1
+
+Measured velocity rel. to reference spectrum: 27.260 km/s
+Template velocity: 25.136 km/s
+Velocity guess: 2.124 km/s (relative to template)
+
+(Barycentric velocity of observation: -0.017 km/s)
+(Barycentric velocity of template: 2.026 km/s)
+
+Barycentric redshift between template and observation: 
+v = 2042.7667999999999, z = 6.813936593428244e-06
+
+Number of chunks:  528
+In lowest order:  22
+Orders:  17  -  40
+
+
+----------------------
+RUN 0
+----------------------
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+
+----------------------
+RUN 1
+----------------------
+Fitted LSF parameters:
+ &lt;ParameterSet (values: 10)&gt;
+    left_1  =  7.952999660052042
+    left_2  =  -8.812066508287234
+    left_3  =  4.357821901357913
+    left_4  =  -1.4911581250760837
+    left_5  =  0.391047945429118
+    right1  =  7.952993615981757
+    right2  =  -8.812062245753744
+    right3  =  4.357820779940487
+    right4  =  -1.4911581405817538
+    right5  =  0.39104801956544905
+Number of chunks with no uncertainties:  0
+Number of chunks with outliers:  0
+Number of chunks with nan fitted red. Chi2:  0
+Creating analysis plots...
+Velocity robust mean: 2100.8666725134467
+Velocity robust std: 199.36463640059335
+
+Velocity error robust mean: 72.81863520233567
+Velocity error robust std: 67.53793296761148
+
+Minimum error: 18.248731996120657 in chunk 81
+Maximum error: 284908.5034560086 in chunk 473
+
+Chunks with nan velocities:  []
+Chunks with nan velocity errors:  []
+Velocity error at percentile 80: 185.69401709276661
+Time to model this observation:  170.0567581653595
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, let’s again have a look at the output:</p>
+<ul class="simple">
+<li><p>In the beginning, an ‘order correction’ of -1 is reported - this tells us that with regard to the observation that the deconvolved template was constructed from, the extracted Echelle orders seem to have shifted by one position.</p></li>
+<li><p>Next, the velocity guess of the observation with respect to a reference spectrum (cross-correlation with Arcturus or Sun spectrum), along with the reference velocity of the stellar template, and the relative velocity between both - this serves as first guess of the model velocity <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p>Also, the barycentric velocities of the observation and stellar template are printed (taken from the original <code class="docutils literal notranslate"><span class="pre">fits</span></code>-headers) - the difference between both is used to find the chunk positions in the observation spectrum.</p></li>
+<li><p>The next print outputs are very much the same as in the <a class="reference internal" href="template.html"><span class="doc std std-doc">template creation routine</span></a>.</p></li>
+<li><p>Finally, some information about the best-fit results for the chunk velocities (<span class="math notranslate nohighlight">\(v\)</span>) is given.</p></li>
+</ul>
+</div>
+<div class="section" id="inspecting-the-fit-results-of-an-observation">
+<h2>Inspecting the fit results of an observation<a class="headerlink" href="#inspecting-the-fit-results-of-an-observation" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s quickly take a look at the results of the second run (RUN 1) for this observation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restore the RUN 1 fit results for the first observation</span>
+<span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span>
+    <span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Order correction: -1
+
+Barycentric redshift between template and observation: 
+v = 2042.7667999999999, z = 6.813936593428244e-06
+
+Total number of created chunks: 528 (in result file: 528)
+Number of created chunks per order: 22
+</pre></div>
+</div>
+</div>
+</div>
+<p>We again plot the data and best-fit model for one chunk - this time setting <code class="docutils literal notranslate"><span class="pre">template=True</span></code> in the function, to also display the stellar template data of that chunk:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chunk index</span>
+<span class="n">chunk_ind</span> <span class="o">=</span> <span class="mi">300</span>
+
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">chunk_ind</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                 <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/observation_17_0.png" src="../_images/observation_17_0.png" />
+</div>
+</div>
+<p>Great, and let’s also check out the residuals of all chunks:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the histogram of residuals</span>
+<span class="n">residuals</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_residual_hist</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Residuals histogram&#39;</span><span class="p">,</span> 
+                                                <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Plot the scatter of residuals</span>
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Chunk residuals [%]&#39;</span><span class="p">,</span> 
+                                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Chunk residuals&#39;</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/observation_19_0.png" src="../_images/observation_19_0.png" />
+<img alt="../_images/observation_19_1.png" src="../_images/observation_19_1.png" />
+</div>
+</div>
+<p>Finally, it would be interesting to see the best-fit velocity results for all chunks, wouldn’t it?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">time_start</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2015-04-20T03:01:01.302&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch observation info</span>
+<span class="n">star_name</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">star</span><span class="o">.</span><span class="n">name</span>
+<span class="n">obs_date</span>  <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">time_start</span><span class="o">.</span><span class="n">value</span>
+
+<span class="c1"># Fetch the velocities and and their fit uncertainties</span>
+<span class="n">velocities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results</span><span class="p">])</span>
+<span class="n">vel_errors</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">fit_results</span><span class="p">]</span>
+
+<span class="c1"># Compute robust mean and std</span>
+<span class="n">vel_med</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">robust_mean</span><span class="p">(</span><span class="n">velocities</span><span class="p">)</span>
+<span class="n">vel_std</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">robust_std</span><span class="p">(</span><span class="n">velocities</span><span class="p">)</span>
+
+<span class="c1"># And plot (in constraint y-range)</span>
+<span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunk_scatter</span><span class="p">(</span>
+    <span class="n">errorbar</span><span class="o">=</span><span class="n">velocities</span><span class="p">,</span> <span class="n">errorbar_yerr</span><span class="o">=</span><span class="n">vel_errors</span><span class="p">,</span> <span class="n">errorbar_alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> 
+    <span class="n">errorbar_label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">+-</span><span class="si">{:.1f}</span><span class="s1"> m/s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vel_med</span><span class="p">,</span> <span class="n">vel_std</span><span class="p">),</span>
+    <span class="n">yrange</span><span class="o">=</span><span class="p">(</span><span class="n">vel_med</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="n">vel_std</span><span class="p">,</span> <span class="n">vel_med</span><span class="o">+</span><span class="mi">5</span><span class="o">*</span><span class="n">vel_std</span><span class="p">),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, velocities&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">,</span> <span class="n">obs_date</span><span class="p">),</span> 
+    <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/observation_22_0.png" src="../_images/observation_22_0.png" />
+</div>
+</div>
+<p>There is quite some scatter and large uncertainties at high chunk indices, i.e. red wavelengths, and also a linear trend throughout the chunks is apparent. Nevertheless, we will be able to generate quite good RVs out of these results, as you will see <a class="reference internal" href="velocities.html"><span class="doc std std-doc">in the next chapter</span></a>.</p>
+</div>
+<div class="section" id="run-the-code-on-many-observations">
+<h2>Run the code on many observations<a class="headerlink" href="#run-the-code-on-many-observations" title="Permalink to this headline">¶</a></h2>
+<p>We have seen now how to model a single observation, and what the results look like. For a timeseries however we need multiple observations, and to model these you can use the function <code class="docutils literal notranslate"><span class="pre">model_multi_observations</span></code> - it parallelizes the tasks to accelerate the whole procedure. With the attribute <code class="docutils literal notranslate"><span class="pre">number_cores</span></code> of your parameter object <code class="docutils literal notranslate"><span class="pre">Pars</span></code> you can control how many separate processes are created - right now it is set to 4, but better check your computing power before you run the code!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_multi_observations</span><span class="p">(</span>
+    <span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
+    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -822,9 +1049,8 @@ Velocity guess: 1.921 km/s (relative to template)
 
 (Barycentric velocity of observation: 0.259 km/s)
 (Barycentric velocity of template: 2.026 km/s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Barycentric redshift between template and observation: 
+
+Barycentric redshift between template and observation: 
 v = 1766.5313999999998, z = 5.892514480801247e-06
 
 Number of chunks:  528
@@ -1380,9 +1606,7 @@ Fitted LSF parameters:
 Number of chunks with no uncertainties:  0
 Number of chunks with outliers:  0
 Number of chunks with nan fitted red. Chi2:  0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating analysis plots...
+Creating analysis plots...
 
 ----------------------
 RUN 1
@@ -1472,33 +1696,6 @@ Done, full working time:  1535.8628900051117
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunks</span><span class="p">,</span> <span class="n">fit_results_1</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">fitters</span><span class="o">.</span><span class="n">results_io</span><span class="o">.</span><span class="n">restore_results_object</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">res_files</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Order correction: -1
-
-Barycentric redshift between template and observation: 
-v = 2042.7667999999999, z = 6.813936593428244e-06
-
-Total number of created chunks: 528 (in result file: 528)
-Number of created chunks per order: 22
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine</span><span class="o">.</span><span class="n">plot_lib</span><span class="o">.</span><span class="n">plot_chunkmodel</span><span class="p">(</span><span class="n">fit_results_1</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/observation_12_0.png" src="../_images/observation_12_0.png" />
 </div>
 </div>
 </div>

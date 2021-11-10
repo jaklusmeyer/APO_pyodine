@@ -3,13 +3,17 @@
 
 # # Weight and combine the chunk velocities
 
-# We have modelled all observations of our star and saved the results to file. To retrieve the RV timeseries of the star, we still need to combine the individual best-fit velocities of all 522 chunks for each observation. One might think of a simple mean or median over the chunk velocities to achieve this - but some chunks contain more spectral information than others, deliver therefore more realistic results and should be weighted higher than poorly constraint outlier chunks.
+# ## Background
+
+# We have modelled all observations of our star and saved the results to file. To retrieve the RV timeseries of the star, we still need to combine the individual best-fit velocities of all 522 chunks for each observation. One might think of a simple mean or median over the chunk velocities within each observation to achieve this - but as we have seen [in the previous chapter](./observation.ipynb) we have quite a number of 'bad' chunks, with outlier velocities and huge errors. Also, some chunks contain more spectral information than others, deliver therefore more realistic results and should be weighted higher than poorly constraint outlier chunks.
 # 
-# In this script, we show how to run the combination routine. For a sound mathematical description, please check out our !!!paper!!!.
-# 
+# In this script, we show how to run the combination routine. For a sound mathematical description, please check out our !!!paper!!!. But basically, weights are created for each chunk not only based on their 'velocity performance' within one observation, but also based on their performance throughout the whole timeseries. I.e. if the velocity timeseries of one chunk with index $i$ shows a highly significant scatter around the mean timeseries of all chunk velocities, that chunk receives lower weight IN ALL OBSERVATIONS!
+
+# ## Run the code
+
 # First of, as before, we set up the path structure and import the velocity combination routine:
 
-# In[6]:
+# In[1]:
 
 
 # Automatic reloading of imports
@@ -20,15 +24,15 @@ import sys
 import os
 import matplotlib.pyplot as plt
 
-sys.path.append('/home/paul/pyodine/')
+sys.path.append('/home/paul/pyodine/')  # Put in the pyodine path on your machine here!
 
 import pyodine
-import pyodine_combine_vels         # <- the velocity combination routine
+import pyodine_combine_vels             # <- the velocity combination routine
 
 
-# Important parameters for the velocity combination routine are defined in a timeseries parameter object, which we also need to load:
+# Again we load an object which contains all the important parameters for the velocity combination - this is the `Timeseries_Parameters` object:
 
-# In[7]:
+# In[2]:
 
 
 import utilities_song as utilities
@@ -36,9 +40,9 @@ import utilities_song as utilities
 Pars = utilities.timeseries_parameters.Timeseries_Parameters()
 
 
-# Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a :class:`CombinedResults` object, can be saved to a HDF5-file whose pathname we also specify below.
+# Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a `CombinedResults` object, can be saved to a HDF5-file whose pathname we also specify below.
 
-# In[8]:
+# In[4]:
 
 
 # Individual result files to use
@@ -47,7 +51,7 @@ res_files = [os.path.join(parent_dir, f, 'sigdra_res1.h5') for f in os.listdir(p
 res_files.sort()
 
 # The directory for analysis plots
-plot_dir = '/home/paul/data_song2/data_res/sigdra_obs/vel_combined'
+plot_dir = '/home/paul/data_song2/data_res/sigdra_combined'
 
 # The diagnosis file to write analysis info into
 diag_file = os.path.join(plot_dir, 'diag_file.log')
@@ -59,9 +63,9 @@ comb_res_out = os.path.join(plot_dir, 'sigdra_combined.h5')
 vels_out = os.path.join(plot_dir, 'sigdra.vels')
 
 
-# Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the :class:`CombinedResults` object as well as some analysis plots and additional data as specified above. In the end the :class:`CombinedResults` object is returned:
+# Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the `CombinedResults` object as well as some analysis plots and additional data as specified above. In the end the `CombinedResults` object is returned:
 
-# In[9]:
+# In[7]:
 
 
 Results = pyodine_combine_vels.combine_velocity_results(
@@ -69,16 +73,34 @@ Results = pyodine_combine_vels.combine_velocity_results(
     comb_res_out=comb_res_out, vels_out=vels_out)
 
 
-# Great!
+# Great, and again some print output to explain:
+# 
+# - In the beginning, the weighting parameters used in the velocity combination (and supplied through the `Timeseries_Parameters` object) are printed. Also the code reports about the number of observations and chunks that it found in the results.
+# 
+# - Next, the (robust) mean and standard deviation (std) of the offsets of chunk timeseries from observation means are printed. Below, the mean and std of the velocity scatter within each chunk timeseries is reported ('Chunk sigmas'). The sigmas are used to weight the chunk velocities when computing the RV timeseries.
+# 
+# - Finally, two 'quality factors' for the velocity weighting are reported. They should always be very similar, and as they basically represent the RV precision achieved in this timeseries, you would want them to be as small as possible.
 
-# In[25]:
+# ## Inspect the results
+
+# Now finally, after all this modelling, we can plot our RV timeseries:
+
+# In[10]:
 
 
+# The barycentric date, RV with barycentric correction, and RV uncertainty
+bary_date = Results.bary_date
+rv_bc     = Results.rv_bc
+rv_err    = Results.rv_err
+
+star_name = Results.info['star_name']     # the star name
+
+# And plot
 fig = plt.figure(figsize=(10,6))
-plt.errorbar(Results.bary_date, Results.rv_bc, yerr=Results.rv_err, fmt='o', alpha=0.7)
+plt.errorbar(bary_date, rv_bc, yerr=rv_err, fmt='o', alpha=0.7)
 plt.xlabel('Time [JD]')
 plt.ylabel('Velocity [m/s]')
-plt.title('{}: RV timeseries'.format(Results.info['star_name']))
+plt.title('{}: RV timeseries'.format(star_name))
 
 
 # In[ ]:
@@ -87,14 +109,14 @@ plt.title('{}: RV timeseries'.format(Results.info['star_name']))
 
 
 
-# In[23]:
+# In[11]:
 
 
 fig = plt.figure(figsize=(10,6))
-plt.errorbar(Results.bary_date, Results.crx, yerr=Results.crx_err, fmt='o', alpha=0.7)
+plt.errorbar(bary_date, Results.crx, yerr=Results.crx_err, fmt='o', alpha=0.7)
 plt.xlabel('Time [JD]')
 plt.ylabel('Chromatic index [(m/s)/Np]')
-plt.title('{}: Chromatix index variation'.format(Results.info['star_name']))
+plt.title('{}: Chromatix index variation'.format(star_name))
 
 
 # In[ ]:
@@ -103,14 +125,14 @@ plt.title('{}: Chromatix index variation'.format(Results.info['star_name']))
 
 
 
-# In[27]:
+# In[12]:
 
 
 fig = plt.figure(figsize=(10,6))
 plt.plot(Results.bary_date, Results.c2c_scatter, 'o', alpha=0.7)
 plt.xlabel('Time [JD]')
 plt.ylabel('Velocity [m/s]')
-plt.title('{}: Chunk velocity scatter in observations'.format(Results.info['star_name']))
+plt.title('{}: Chunk velocity scatter in observations'.format(star_name))
 
 
 # In[ ]:

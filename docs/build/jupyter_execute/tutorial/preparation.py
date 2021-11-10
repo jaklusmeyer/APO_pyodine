@@ -15,11 +15,11 @@ rcParams["figure.dpi"] = 120
 
 # In the following tutorial, we will use **pyodine** to compute RVs from SONG spectra for the star !!!!XYZ!!!! This includes three basic steps:
 # 
-# - using I2-free observations of the star, plus B-star spectra *with* the I2 cell, to :doc:`create a deconvolved stellar template <template>`;
+# - using I2-free observations of the star, plus B-star spectra *with* the I2 cell, to [create a deconvolved stellar template](./template.ipynb);
 # 
-# - with that template, :doc:`modelling the I2 observations <observation>` of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);
+# - with that template, [modelling the I2 observations](./observation.ipynb) of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);
 # 
-# - :doc:`weighting and combining the chunk velocities <velocities>` to compute the RV timeseries of the observations.
+# - [weighting and combining the chunk velocities](./velocities.ipynb) to compute the RV timeseries of the observations.
 # 
 # In each of these steps, we will present how to use built-in methods of **pyodine** to visualize and analyze the results.
 # 
@@ -42,7 +42,7 @@ import pyodine
 
 # ## The I2 atlas
 
-# -> if you have your own, bring it into the correct hdf5-format (find out more about `HDF5/h5py <http://www.h5py.org/>`_)
+# -> if you have your own, bring it into the correct hdf5-format (find out more about [HDF5/h5py](http://www.h5py.org/))
 # 
 # -> here, we just use the one by SONG
 # 
@@ -62,7 +62,8 @@ flux_normalized = h5data(h['flux_normalized'])
 wavelength_air  = h5data(h['wavelength_air'])
 
 print('\nLength of the wavelength/flux vectors:', len(wavelength_air))
-print('\nFull wavelength range (air): {} - {} Angstrom'.format(wavelength_air[0], wavelength_air[-1]))
+print('\nFull wavelength range (air): {} - {} Angstrom'.format(
+    wavelength_air[0], wavelength_air[-1]))
 
 
 # As you can see, the I2 atlas contains the wavelength range between roughly 4989 and 6498 Å.

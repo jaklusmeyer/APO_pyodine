@@ -1,45 +1,66 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
-# Automatic reloading of imports
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
-
-import sys
-import os
-import matplotlib.pyplot as plt
-import h5py
-
-sys.path.append('/home/paul/pyodine/')
-
-import pyodine
+import dill
 
 
 # In[2]:
 
 
-a = {'1': 1, '2': 2}
-
-b = {'3': 3, 'four': 4}
-
-c = {'a': a, 'b': b}
-
-
-# In[18]:
-
-
-with h5py.File('blub.h5', 'w') as h:
-    pyodine.lib.h5quick.dict_to_group(c, h, 'blub')
+class A:
+    
+    dic = {
+        'a': 1,
+        'b': 2
+    }
+    
+    @classmethod
+    def change(cls, dic):
+        cls.dic = dic
 
 
-# In[22]:
+# In[3]:
 
 
-with h5py.File('blub.h5', 'r') as h:
-    print(h['blub/a/1'][()])
+a = A
+a.dic
+
+
+# In[4]:
+
+
+a.change({'a': 4, 'b': 5})
+a.dic
+
+
+# In[5]:
+
+
+b = A
+b.dic
+
+
+# In[6]:
+
+
+with open('save.pkl', 'wb') as f:
+    dill.dump(a, f)
+
+
+# In[7]:
+
+
+with open('save.pkl', 'rb') as f:
+    c = dill.load(f)
+
+
+# In[8]:
+
+
+c.dic
 
 
 # In[ ]:

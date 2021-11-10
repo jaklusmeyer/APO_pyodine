@@ -37,6 +37,8 @@
     <script src="../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Create a deconvolved stellar template" href="template.html" />
@@ -229,9 +231,9 @@
 </div>
 <p>In the following tutorial, we will use <strong>pyodine</strong> to compute RVs from SONG spectra for the star !!!!XYZ!!!! This includes three basic steps:</p>
 <ul class="simple">
-<li><p>using I2-free observations of the star, plus B-star spectra <em>with</em> the I2 cell, to :doc:<code class="docutils literal notranslate"><span class="pre">create</span> <span class="pre">a</span> <span class="pre">deconvolved</span> <span class="pre">stellar</span> <span class="pre">template</span> <span class="pre">&lt;template&gt;</span></code>;</p></li>
-<li><p>with that template, :doc:<code class="docutils literal notranslate"><span class="pre">modelling</span> <span class="pre">the</span> <span class="pre">I2</span> <span class="pre">observations</span> <span class="pre">&lt;observation&gt;</span></code> of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);</p></li>
-<li><p>:doc:<code class="docutils literal notranslate"><span class="pre">weighting</span> <span class="pre">and</span> <span class="pre">combining</span> <span class="pre">the</span> <span class="pre">chunk</span> <span class="pre">velocities</span> <span class="pre">&lt;velocities&gt;</span></code> to compute the RV timeseries of the observations.</p></li>
+<li><p>using I2-free observations of the star, plus B-star spectra <em>with</em> the I2 cell, to <a class="reference internal" href="template.html"><span class="doc std std-doc">create a deconvolved stellar template</span></a>;</p></li>
+<li><p>with that template, <a class="reference internal" href="observation.html"><span class="doc std std-doc">modelling the I2 observations</span></a> of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);</p></li>
+<li><p><a class="reference internal" href="velocities.html"><span class="doc std std-doc">weighting and combining the chunk velocities</span></a> to compute the RV timeseries of the observations.</p></li>
 </ul>
 <p>In each of these steps, we will present how to use built-in methods of <strong>pyodine</strong> to visualize and analyze the results.</p>
 <p>But, first of all, we need to prepare everything.</p>
@@ -250,7 +252,7 @@
 <p>In the following, we will use some capabilities of <strong>pyodine</strong> to examine the I2 atlas and the utilities module.</p>
 <div class="section" id="the-i2-atlas">
 <h2>The I2 atlas<a class="headerlink" href="#the-i2-atlas" title="Permalink to this headline">¶</a></h2>
-<p>-&gt; if you have your own, bring it into the correct hdf5-format (find out more about <code class="docutils literal notranslate"><span class="pre">HDF5/h5py</span> <span class="pre">&lt;http://www.h5py.org/&gt;</span></code>_)</p>
+<p>-&gt; if you have your own, bring it into the correct hdf5-format (find out more about <a class="reference external" href="http://www.h5py.org/">HDF5/h5py</a>)</p>
 <p>-&gt; here, we just use the one by SONG</p>
 <p>We use functions contained in <code class="docutils literal notranslate"><span class="pre">pyodine.lib.h5quick</span></code> to print information about the I2 atlas: <code class="docutils literal notranslate"><span class="pre">h5print</span></code> to show the structure of the HDF5 file/h5py object, and <code class="docutils literal notranslate"><span class="pre">h5data</span></code> to load the wavelength and flux vectors needed in the later modelling.</p>
 <div class="cell docutils container">
@@ -266,7 +268,8 @@
 <span class="n">wavelength_air</span>  <span class="o">=</span> <span class="n">h5data</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;wavelength_air&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Length of the wavelength/flux vectors:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelength_air</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Full wavelength range (air): </span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1"> Angstrom&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wavelength_air</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wavelength_air</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Full wavelength range (air): </span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1"> Angstrom&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">wavelength_air</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wavelength_air</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
