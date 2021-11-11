@@ -14,22 +14,19 @@ import os
 import sys
 import time
 import numpy as np
-#from multiprocessing import Pool
+import logging
 from pathos.multiprocessing import Pool
 import traceback
 
-#from progressbar import ProgressBar
-#from tqdm import tqdm
 import argparse
-
-# Use importlib for more flexibility of which pyodine parameter file to import?!
 import importlib
 
 
 
 def model_single_observation(utilities, Pars, obs_file, temp_file, 
                              iod=None, orders=None, normalizer=None, 
-                             tellurics=None, plot_dir=None, res_names=None):
+                             tellurics=None, plot_dir=None, res_names=None, 
+                             error_log=None, info_log=None, quiet=False):
     """Model a single observation
     
     This routine models a stellar observation spectrum with I2, using a stellar
@@ -69,8 +66,23 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         it will be created in the process. If None is given, no results will be 
         saved (default).
     :type res_names: str, list, or None
+    :param error_log: A pathname of a log-file used for error messages. If 
+        None, no errors are logged.
+    :type error_log: str, or None
+    :param info_log: A pathname of a log-file used for info messages. If 
+        None, no info is logged.
+    :type info_log: str, or None
+    :param quiet: Whether or not to print info messages to terminal. Defaults 
+        to False (messages are printed).
+    :type quiet: bool
     
     """
+    
+    # Check whether a logger is already setup. If no, setup a new one
+    if not logging.getLogger().hasHandlers():
+        pyodine.lib.misc.setup_logging(
+                config_file=Pars.log_config_file, level=Pars.log_level,
+                error_log=error_log, info_log=info_log, quiet=quiet)
     
     # I put everything in try - except, so that when it runs in parallel 
     # processes and something goes wrong, the overall routine does not crash.
@@ -80,7 +92,9 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         # Start timer
         start_t = time.time()
         
-        print('\n---------------------------\n' + obs_file)
+        logging.info('')
+        logging.info('---------------------------')
+        logging.info('Working on: {}'.format(obs_file))
         
         ###########################################################################
         ## Set up the environment, and load all neccessary data and parameters
@@ -128,7 +142,8 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         obs_order_min, min_coverage = obs.check_wavelength_range(
                 template[0].w0, template[len(template.get_order_indices(template.orders_unique[0]))-1].w0)
         order_correction = obs_order_min - template.orders_unique[0]
-        print('Order correction: {}\n'.format(order_correction))
+        logging.info('')
+        logging.info('Order correction: {}'.format(order_correction))
         
         # Compute weights array
         weight = obs.compute_weight(weight_type=Pars.weight_type)
@@ -153,11 +168,12 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         
         ref_velocity = normalizer.guess_velocity(obs[Pars.velgues_order_range[0]:Pars.velgues_order_range[1]])
         obs_velocity = ref_velocity - template.velocity_offset
-        print('Measured velocity rel. to reference spectrum: {0:.3f} km/s'.format(ref_velocity*1e-3))
-        print('Template velocity: {0:.3f} km/s'.format(template.velocity_offset*1e-3))
-        print('Velocity guess: {0:.3f} km/s (relative to template)\n'.format(obs_velocity*1e-3))
-        print('(Barycentric velocity of observation: {0:.3f} km/s)'.format(obs.bary_vel_corr*1e-3))
-        print('(Barycentric velocity of template: {0:.3f} km/s)\n'.format(template.bary_vel_corr*1e-3))
+        logging.info('')
+        logging.info('Measured velocity rel. to reference spectrum: {0:.3f} km/s'.format(ref_velocity*1e-3))
+        logging.info('Template velocity: {0:.3f} km/s'.format(template.velocity_offset*1e-3))
+        logging.info('Velocity guess: {0:.3f} km/s (relative to template)\n'.format(obs_velocity*1e-3))
+        logging.info('(Barycentric velocity of observation: {0:.3f} km/s)'.format(obs.bary_vel_corr*1e-3))
+        logging.info('(Barycentric velocity of template: {0:.3f} km/s)\n'.format(template.bary_vel_corr*1e-3))
         
         # Load the tellurics (if desired and not given)
         if not tellurics and Pars.telluric_mask is not None:
@@ -177,10 +193,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         nr_chunks_total = len(obs_chunks)
         nr_chunks_order = len(obs_chunks.get_order(orders[0]+order_correction))
         nr_orders = len(orders)
-        print('Number of chunks: ', nr_chunks_total)
-        print('In lowest order: ', nr_chunks_order)
-        print('Orders: ', obs_chunks[0].order, ' - ', obs_chunks[-1].order)
-        print()
+        logging.info('')
+        logging.info('Number of chunks: {}'.format(nr_chunks_total))
+        logging.info('In lowest order: {}'.format(nr_chunks_order))
+        logging.info('Orders: {}'.format(obs_chunks[0].order, ' - ', obs_chunks[-1].order))
         
         # Produce the chunk weight array
         chunk_weight = []
@@ -213,9 +229,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         
         # Run for run now...
         for run_id, run_dict in Pars.model_runs.items():
-            print('\n----------------------')
-            print('RUN {}'.format(run_id))
-            print('----------------------')
+            logging.info('')
+            logging.info('----------------------')
+            logging.info('RUN {}'.format(run_id))
+            logging.info('----------------------')
             
             # Build the desired LSF, wavelength and continuum models
             lsf_model = run_dict['lsf_model']
@@ -236,7 +253,8 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                 # Check if the run LSFs to smooth over actually exist
                 if smooth_lsf_run in run_results.keys() and len(run_results[smooth_lsf_run]['results']) == nr_chunks_total:
                     # Smooth the desired LSFs over adjacent chunks and orders
-                    print('Smooth LSF...')
+                    logging.info('')
+                    logging.info('Smooth LSF...')
                     manual_redchi2 = None
                     if 'smooth_manual_redchi' in run_dict.keys() and run_dict['smooth_manual_redchi']:
                         manual_redchi2 = run_results[smooth_lsf_run]['red_chi_sq']
@@ -248,7 +266,8 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                             obs_chunks, run_dict['smooth_pixels'], run_dict['smooth_orders'], 
                             run_dict['order_separation'], run_results[smooth_lsf_run]['results'],
                             redchi2=manual_redchi2, osample=smooth_osample)
-                    print('LSFs with nans: ', len(np.unique(np.argwhere(np.isnan(lsf_smoothed))[:,0])))
+                    logging.info('')
+                    logging.info('LSFs with nans: {}'.format(len(np.unique(np.argwhere(np.isnan(lsf_smoothed))[:,0]))))
                     
                     LSFarr = pyodine.models.lsf.LSF_Array(lsf_smoothed, np.array([ch.order for ch in obs_chunks]),
                                                           np.array([ch.abspix[0] for ch in obs_chunks]))
@@ -335,9 +354,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                                     'uncertainties could not be estimated' in run_results[run_id]['results'][i].report]
             # For which chunks is the red. Chi2 nan?!
             nan_rchi_fit = [i for i in range(nr_chunks_total) if np.isnan(run_results[run_id]['results'][i].redchi)]
-            print('Number of chunks with no uncertainties: ', len(uncertainties_failed))
-            print('Number of chunks with outliers: ', len(chauvenet_outliers))
-            print('Number of chunks with nan fitted red. Chi2: ', len(nan_rchi_fit))
+            logging.info('')
+            logging.info('Number of chunks with no uncertainties: {}'.format(len(uncertainties_failed)))
+            logging.info('Number of chunks with outliers: {}'.format(len(chauvenet_outliers)))
+            logging.info('Number of chunks with nan fitted red. Chi2: {}'.format(len(nan_rchi_fit)))
             
             
             # Save the fitting result to file
@@ -415,7 +435,8 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                     nan_rchi_fit = None
                     chauvenet_outliers = None
                 
-                print('Creating analysis plots...')
+                logging.info('')
+                logging.info('Creating analysis plots...')
                 
                 pipe_lib.create_analysis_plots(
                         run_results[run_id]['results'], plot_dir, run_id=run_id, 
@@ -448,22 +469,25 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                 nr_chunks_order, nr_orders, obs.orig_filename)
         
         modelling_time = time.time() - start_t
-        print('Time to model this observation: ', modelling_time)
+        logging.info('')
+        logging.info('Time to model this observation: {}'.format(modelling_time))
     
     except Exception as e:
         """
         with open(error_file, 'a') as f:
             f.write(parameters[5]+'\n')
         """
-        print('Something went wrong with input file {}.'.format(obs_file))
         traceback.print_exc()
+        logging.info('Something went wrong with input file {}'.format(obs_file), 
+                     exc_info=True)
         print()
         print(e)
         
 
 
 def model_multi_observations(utilities, Pars, obs_files, temp_files, 
-                             plot_dirs=None, res_files=None):
+                             plot_dirs=None, res_files=None, error_files=None, 
+                             info_files=None, quiet=False):
     """Model multiple observations at the same time
     
     This function can parallelize the modelling of multiple observations,
@@ -496,6 +520,17 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
         exist yet, it will be created in the process. If None is given, no 
         results will be saved (default).
     :type res_files: str, list, or None
+    :param error_files: A pathname to a text-file with pathnames to log-files 
+        used for error messages, or, alternatively, a list with the 
+        pathname(s). If None, no errors are logged (default).
+    :type error_files: str, list, or None
+    :param info_files: A pathname to a text-file with pathnames to log-files 
+        used for info messages, or, alternatively, a list with the pathname(s). 
+        If None, no info is logged (default).
+    :type info_files: str, or None
+    :param quiet: Whether or not to print info messages to terminal. Defaults 
+        to False (messages are printed).
+    :type quiet: bool
     """
     
     ###########################################################################
@@ -565,6 +600,28 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
     else:
         res_names = [None] * len(obs_names)
     
+    # Pathnames for the error log files
+    if isinstance(error_files, list):
+        error_logs = error_files
+    elif isinstance(error_files, str):
+        error_logs = []
+        with open(error_files, 'r') as f:
+            for l in f.readlines():
+                error_logs.append(l.strip())
+    else:
+        error_logs = [None] * len(obs_names)
+    
+    # Pathnames for the info log files
+    if isinstance(info_files, list):
+        info_logs = info_files
+    elif isinstance(info_files, str):
+        info_logs = []
+        with open(info_files, 'r') as f:
+            for l in f.readlines():
+                info_logs.append(l.strip())
+    else:
+        info_logs = [None] * len(obs_names)
+    
     
     ###########################################################################
     ## Now parallelize the modelling of the observations, by initializing the
@@ -575,14 +632,16 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
     # Prepare the input arguments list for all the jobs (corresponding
     # to the arguments of the function model_single_observation)
     input_arguments = [
-            (utilities, Pars, obs_name, temp_name
+            (utilities, Pars, obs_name, temp_name,
              ) for obs_name, temp_name in zip(obs_names, temp_names)]
     # Prepare the keyword arguments list for all the jobs (corresponding
     # to the keywords of the function model_single_observation)
     input_keywords  = [
-            {'iod': iod, 'normalizer': normalizer,
-             'tellurics': tellurics, 'plot_dir': plot_dir_name, 'res_names': res_name
-             } for plot_dir_name, res_name in zip(plot_dir_names, res_names)]
+            {'iod': iod, 'normalizer': normalizer, 'tellurics': tellurics, 
+             'plot_dir': plot_dir_name, 'res_names': res_name,
+             'error_log': error_log, 'info_log': info_log, 'quiet': quiet
+             } for plot_dir_name, res_name, error_log, info_log in zip(
+             plot_dir_names, res_names, error_logs, info_logs)]
     
     # Setup the Pool object, distribute the arguments and start the jobs
     with Pool(Pars.number_cores) as p:
@@ -621,16 +680,22 @@ if __name__ == '__main__':
     parser.add_argument('--plot_dirs', type=str, help='A pathname to a text-file with directory names for each observation where to save analysis plots.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with pathnames under which to save modelling results.')
     parser.add_argument('--par_file', type=str, help='The pathname of the parameter input file to use.')
+    parser.add_argument('--error_files', type=str, help='The pathname to a text-file with pathnames of error log files.')
+    parser.add_argument('--info_files', type=str, help='The pathname to a text-file with pathnames of info log files.')
+    parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
     
     # Parse the input arguments
     args = parser.parse_args()
     
     utilities_dir = args.utilities_dir
-    obs_files = args.obs_files
-    temp_files = args.temp_files
-    plot_dirs = args.plot_dirs
-    res_files = args.res_files
-    par_file = args.par_file
+    obs_files     = args.obs_files
+    temp_files    = args.temp_files
+    plot_dirs     = args.plot_dirs
+    res_files     = args.res_files
+    par_file      = args.par_file
+    error_files    = args.error_files
+    info_files     = args.info_files
+    quiet         = args.quiet
     
     # Import and load the utilities
     sys.path.append(os.path.abspath(utilities_dir))
@@ -649,4 +714,6 @@ if __name__ == '__main__':
     
     # And run the multiprocessing observation modelling routine
     model_multi_observations(utilities, Pars, obs_files, temp_files, 
-                             plot_dirs=plot_dirs, res_files=res_files)
+                             plot_dirs=plot_dirs, res_files=res_files,
+                             error_files=error_files, info_files=info_files, 
+                             quiet=quiet)

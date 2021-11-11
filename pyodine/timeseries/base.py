@@ -1,6 +1,9 @@
 import os
 import h5py
 import numpy as np
+import logging
+import sys
+
 from .. import fitters
 from ..lib import h5quick
 from ..lib.misc import return_existing_files
@@ -23,14 +26,19 @@ class CombinedResults():
     """
     
     def __init__(self, filename=None):
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+        
         # Check whether one combined result should be loaded
         if isinstance(filename, str):
             try:
                 self.filename = filename
                 self.load_combined(self.filename)
             except Exception as e:
-                print('Problem loading combined results:')
-                print(e)
+                logging.error('Problem loading combined results:', exc_info=True)
     
     
     def create_timeseries(self, weighting_pars=None, diag_file=None, 
@@ -134,9 +142,9 @@ class CombinedResults():
         # and only use the ones that do
         filenames, bad_files = return_existing_files(filenames)
         if len(bad_files) > 0:
-            print('Non-existing files:')
+            logging.info('Non-existing files:')
             for f in bad_files:
-                print(f)
+                logging.info(f)
         
         self.nr_files = len(filenames)        
         
@@ -222,6 +230,8 @@ class CombinedResults():
         :type filename: str
         """
         
+        logging.info('Saving combined results to {}'.format(filename))
+        
         # Make sure that the file extension matches the h5py format, and
         # correct if this is not the case
         match, new_filename = fitters.results_io.check_filename_format(
@@ -252,6 +262,9 @@ class CombinedResults():
         :param filename: The pathname of the file.
         :type filename: str
         """
+        
+        logging.info('Loading combined results from {}'.format(filename))
+        
         with h5py.File(filename, 'r') as h:
             self.timeseries = h5quick.h5data(h['timeseries'])
             for k in ('res_filename', 'orig_filename'):
@@ -264,10 +277,7 @@ class CombinedResults():
             for k in self.info:
                 if isinstance(self.info[k], np.bytes_):
                     self.info[k] = self.info[k].decode()
-            #try:
-            #    self._tseries = h5quick.h5data(h['tseries'])
-            #except:
-            #    self._tseries = {}
+            
             try:
                 self.weighting_pars = h5quick.h5data(h['weighting_pars'])
             except:

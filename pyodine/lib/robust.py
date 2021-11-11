@@ -33,6 +33,7 @@ For additional information about the original IDL routines, see:
 
 import math
 import numpy
+import logging
 
 __version__ = '0.3'
 __revision__ = '$Rev: 1055 $'
@@ -191,9 +192,7 @@ def std(inputData, Zero=False):
     good = numpy.where(u2 <= 1.0)
     good = good[0]
     if len(good) < 3:
-        print(
-            "WARNING:  Distribution is too strange to compute standard "
-            "deviation")
+        logging.warning('Distribution is too strange to compute standard deviation!')
         sigma = -1.0
         return sigma
 

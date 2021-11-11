@@ -1,26 +1,14 @@
 import sys
 import numpy as np
+from progressbar import ProgressBar
+import logging
+
 from ..components import Spectrum, TemplateChunk
 from ..template.base import StellarTemplate, StellarTemplate_Chunked
 from ..lib import misc
 
-from progressbar import ProgressBar
-#from ..models.lsf import LSFModel
-#from scipy import signal
 
-
-#class Deconvolver:
-#    """Abstract base class"""
-#    def deconvolve_obs(self, normalized_observation, velocity_offset):
-#        """Deconvolve an Observation (multiorder)"""
-#        raise NotImplementedError
-#
-#    def deconvolve_single(self, normalized_spectrum, order):
-#        """Deconvolve a single spectrum"""
-#        raise NotImplementedError
-
-
-class SimpleDeconvolver():#Deconvolver):
+class SimpleDeconvolver():
     """Deconvolver to create a :class:'StellarTemplate' with stitched chunks
     
     A simple deconvolver, that deconvolves all chunks of a stellar spectrum
@@ -37,10 +25,18 @@ class SimpleDeconvolver():#Deconvolver):
         chunk containing the best-fit results.
     :type ostar_params: list[:class:`ParameterSet`]
     """
+    
     def __init__(self, ostar_chunks, ostar_model, ostar_params):
+        
         self.ostar_chunks = ostar_chunks
         self.ostar_model = ostar_model
         self.ostar_params = ostar_params
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+    
 
     def deconvolve_obs(self, normalized_observation, velocity_offset, bary_v,
                        lsf_fixed=None, deconv_pars=None):
@@ -68,6 +64,9 @@ class SimpleDeconvolver():#Deconvolver):
         :rtype: :class:`StellarTemplate`
         """
         
+        logging.info('Deconvolve: {}'.format(normalized_observation.orig_filename))
+        
+        # The deconvolution parameters
         if deconv_pars == None:
             deconv_pars = {'osample_temp': 10.0,
                            'jansson_niter': 1200,
@@ -78,15 +77,20 @@ class SimpleDeconvolver():#Deconvolver):
                            'lsf_conv_width': 6.
                            }
         
+        # Initialize the template object
         template = StellarTemplate(normalized_observation, velocity_offset=velocity_offset, 
                                    bary_vel_corr=bary_v, osample=deconv_pars['osample_temp'])
         
+        # Loop over the orders and append the deconvolved and stitched orders
+        # to the template
         for i in normalized_observation.orders:
-            print('Deconvolve order ', i)
+            logging.info('Deconvolve order: {}'.format(i))
             sys.stdout.flush()  # TODO: Logging
             template[i] = self.deconvolve_single(normalized_observation[i], i, 
                     deconv_pars, lsf_fixed)
+        
         return template
+    
 
     def deconvolve_single(self, normalized_spectrum, order, deconv_pars, 
                           lsf_fixed=None):
@@ -110,11 +114,11 @@ class SimpleDeconvolver():#Deconvolver):
         :rtype: :class:`Spectrum`
         """
 
-        osample = deconv_pars['osample_temp'] #10.0    # Oversampling factor in Jansson deconvolution
-        niter = deconv_pars['jansson_niter'] #1200      # This many iterations
-        zerolevel = deconv_pars['jansson_zerolevel'] #0.00  # The zeropoint -- should always be zero, unless you know better
-        contlevel = deconv_pars['jansson_contlevel'] #1.02  # Continuum level
-        conver = deconv_pars['jansson_conver'] #0.2      # Convergence parameter in Jansson deconvolution #0.02
+        osample = deconv_pars['osample_temp']           # Oversampling factor in Jansson deconvolution
+        niter = deconv_pars['jansson_niter']            # This many iterations
+        zerolevel = deconv_pars['jansson_zerolevel']    # The zeropoint -- should always be zero, unless you know better
+        contlevel = deconv_pars['jansson_contlevel']    # Continuum level
+        conver = deconv_pars['jansson_conver']          # Convergence parameter in Jansson deconvolution #0.02
 
         # Pixel vector for the LSF
         nlsf = deconv_pars['lsf_conv_width']  # TODO: Warn if more than chunk padding
@@ -154,10 +158,9 @@ class SimpleDeconvolver():#Deconvolver):
                 lsf = self.ostar_model.lsf_model.eval(pix_lsf, lsf_params)  # TODO: Maybe better to use the same x-vector as in the fit?
             else:
                 lsf = lsf_fixed[i]
-                #lsf = self.ostar_model.lsf_model.eval(lsf_fixed[i], lsf_params)
             
             flux_deconv = jansson(flux_fine, lsf, niter, a=zerolevel, b=contlevel, 
-                                  delta=conver, chi_change=deconv_pars['jansson_chi_change'])  # b = max(flux)?
+                                  delta=conver, chi_change=deconv_pars['jansson_chi_change'])
             jj = slice(nlsf_fine, -nlsf_fine)
             deconv_chunks.append({
                 'flux': flux_deconv[jj],
@@ -229,10 +232,18 @@ class ChunkedDeconvolver():#Deconvolver):
         chunk containing the best-fit results.
     :type ostar_params: list[:class:`ParameterSet`]
     """
+    
     def __init__(self, ostar_chunks, ostar_model, ostar_params):
+        
         self.ostar_chunks = ostar_chunks
         self.ostar_model = ostar_model
         self.ostar_params = ostar_params
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+    
 
     def deconvolve_obs(self, normalized_observation, velocity_offset, bary_v, 
                        weights=None, lsf_fixed=None, deconv_pars=None):
@@ -263,6 +274,9 @@ class ChunkedDeconvolver():#Deconvolver):
         :rtype: :class:`StellarTemplate_Chunked`
         """
         
+        logging.info('Deconvolve: {}'.format(normalized_observation.orig_filename))
+        
+        # The deconvolution parameters
         if deconv_pars == None:
             deconv_pars = {'osample_temp': 10.0,
                            'jansson_niter': 1200,
@@ -273,16 +287,19 @@ class ChunkedDeconvolver():#Deconvolver):
                            'lsf_conv_width': 10.
                            }
         
-        template = StellarTemplate_Chunked(normalized_observation, velocity_offset=velocity_offset, 
-                                           bary_vel_corr=bary_v, osample=deconv_pars['osample_temp'])
+        # Initialize the deconvolved template object
+        template = StellarTemplate_Chunked(
+                normalized_observation, velocity_offset=velocity_offset, 
+                bary_vel_corr=bary_v, osample=deconv_pars['osample_temp'])
         
-        print('Deconvolving chunks...')
+        logging.info('Deconvolving chunks...')
+        
         bar = ProgressBar(max_value=len(self.ostar_chunks), redirect_stdout=True)
         bar.update(0)
 
         for i in range(len(self.ostar_chunks)):
-            #print('Deconvolve chunk ', i)
-            sys.stdout.flush()  # TODO: Logging
+            
+            sys.stdout.flush()
             temp_chunk = self.deconvolve_single_chunk(normalized_observation, i, deconv_pars, 
                                                       weights=weights, lsf_fixed=lsf_fixed)
             template.append(temp_chunk)
@@ -318,11 +335,11 @@ class ChunkedDeconvolver():#Deconvolver):
         :rtype: :class:`TemplateChunk`          
         """
 
-        osample = deconv_pars['osample_temp'] #10.0    # Oversampling factor in Jansson deconvolution
-        niter = deconv_pars['jansson_niter'] #1200      # This many iterations
-        zerolevel = deconv_pars['jansson_zerolevel'] #0.00  # The zeropoint -- should always be zero, unless you know better
-        contlevel = deconv_pars['jansson_contlevel'] #1.02  # Continuum level
-        conver = deconv_pars['jansson_conver'] #0.2      # Convergence parameter in Jansson deconvolution #0.02
+        osample = deconv_pars['osample_temp']           # Oversampling factor in Jansson deconvolution
+        niter = deconv_pars['jansson_niter']            # This many iterations
+        zerolevel = deconv_pars['jansson_zerolevel']    # The zeropoint -- should always be zero, unless you know better
+        contlevel = deconv_pars['jansson_contlevel']    # Continuum level
+        conver = deconv_pars['jansson_conver']          # Convergence parameter in Jansson deconvolution #0.02
 
         # Pixel vector for the LSF
         nlsf = deconv_pars['lsf_conv_width']  # TODO: Warn if more than chunk padding
@@ -430,7 +447,6 @@ def jansson(observed, lsf, niter, a=0.0, b=1.0, delta=0.1, chi_change=1e-8):
         old += relax * (convol1 - convol2)
         chi = np.std((observed-old)**2)
         if abs((old_chi/chi)-1.) < chi_change:
-            #print(k, (old_chi/chi))
             k = niter + 1
     
     return old

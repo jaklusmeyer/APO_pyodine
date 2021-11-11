@@ -1,4 +1,7 @@
 import numpy as np
+import sys
+import logging
+
 from ..components import Spectrum, MultiOrderSpectrum, NormalizedObservation
 from ..lib.misc import rebin
 from ..reference import load_reference
@@ -33,8 +36,15 @@ class SimpleNormalizer(Normalizer):
     # ftp://ftp.noao.edu/catalogs/arcturusatlas/visual/
 
     def __init__(self, velocity=None, reference='sun'):
+        
         self.velocity = velocity
         self.reference = load_reference(reference)
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+    
 
     def normalize_obs(self, observation, velocity, orders=None):
         """Normalize an Observation (multiorder) or a list of orders within
@@ -51,6 +61,7 @@ class SimpleNormalizer(Normalizer):
         :return: The normalized observation.
         :rtype: :class:`NormalizedObservation`
         """
+        
         norm_obs = NormalizedObservation(observation)
         if orders is None:
             orders = observation.orders
@@ -61,6 +72,7 @@ class SimpleNormalizer(Normalizer):
                 return_type='flux'
             )
         return norm_obs
+
 
     def normalize_single(self, spectrum: Spectrum, velocity, return_type='spectrum'):
         """Normalize a single spectrum by comparison with the solar atlas, if
@@ -98,6 +110,7 @@ class SimpleNormalizer(Normalizer):
         if return_type == 'spectrum':
             return Spectrum(flux, spectrum.wave, spectrum.cont)
 
+
     def compare_sun(self, wave, flux, velocity, threshold=0.01) -> np.ndarray:
         """Compare a spectrum to the normalized reference spectrum and fit the 
         continuum
@@ -127,13 +140,14 @@ class SimpleNormalizer(Normalizer):
         if len(jj[0]) > 100 \
                 and np.std(jj[0]) > 0.2 * len(wave) \
                 and np.abs(np.std(flux[jj]) / np.mean(flux[jj])) < 3 * threshold:
-            # print('Fitting..')  # TODO: Log this!
+            logging.info('Fit the continuum...')
+            
             yfit = np.polyval(np.polyfit(pix[jj], flux[jj], 4), pix)
             return yfit
         else:
-            # print('Dropping..')  # TODO: Log this!
+            logging.info('Dropping...')
 
-            raise ValueError('Solar comparison failed - could not fit ')  # FIXME: Throw a better exception here
+            raise ValueError('Solar comparison failed - could not fit.')
 
     def guess_velocity(self, spec, normalize=True):
         """Re-bin a spectrum to constant velocity spacing and cross-correlate
@@ -260,14 +274,14 @@ def get_velocity_offset(spectrum, reference, normalize=True):
         if spectrum.cont is not None:
             ind0 = np.where(spectrum.cont == 0.)
             if len(ind0[0]) > 0:
-                print('0-values in continuum. Estimating continuum for normalization...')
+                logging.info('0-values in continuum. Estimating continuum for normalization...')
                 flux = spectrum.flux / top(spectrum.flux)
             else:
                 try:
                     flux = spectrum.flux / spectrum.cont
                 except Exception as e:
-                    print(e)
-                    print('Estimating continuum for normalization...')
+                    logging.error(e)
+                    logging.error('Estimating continuum for normalization...')
                     flux = spectrum.flux / top(spectrum.flux)
         else:
             flux = spectrum.flux / top(spectrum.flux)

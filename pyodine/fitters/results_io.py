@@ -1,8 +1,10 @@
 import h5py
 import numpy as np
-from ..lib import h5quick
+import logging
 import dill
 import os
+
+from ..lib import h5quick
 from ..components import ChunkArray, SummedObservation
 from ..template.base import StellarTemplate_Chunked
 from ..models import lsf, wave, cont, spectrum
@@ -91,14 +93,6 @@ def create_results_dict(fit_results):
         for p in param_names:
             res_dict['params'][p][i] = res.params[p]
             res_dict['errors'][p][i] = res.errors[p]
-        #res_dict['reports'] += [res.report]
-        #res_dict['redchi2'] += [res.redchi]
-        #res_dict['residuals'] += [res.rel_res_mean()]
-        #res_dict['medcnts'] += [res.medcounts]
-    #res_dict['reports'] = np.array(reports, dtype='S')
-    #res_dict['redchi2'] = np.array(redchi2)
-    #res_dict['residuals'] = np.array(residuals)
-    #res_dict['medcnts'] = np.array(medcnts)
     
     return res_dict
 
@@ -151,13 +145,13 @@ def check_filename_format(filename, filetype, correct=True):
         # Split the filename and check the extension
         file_ext = os.path.splitext(filename)
         if file_ext[1] not in _fileformats[filetype]:
-            print('The extension {} does not match the filetype {}.'.format(
+            logging.warning('The extension {} does not match the filetype {}.'.format(
                     file_ext[1], filetype))
-            print('It should be one of: ', _fileformats[filetype])
+            logging.warning('It should be one of: ', _fileformats[filetype])
             
             # Possibly correct
             if correct:
-                print('Correcting it to: {}'.format(_fileformats[filetype][0]))
+                logging.warning('Correcting it to: {}'.format(_fileformats[filetype][0]))
                 new_filename = file_ext[0] + _fileformats[filetype][0]
             else:
                 new_filename = filename
@@ -268,7 +262,7 @@ def load_results(filename, filetype='h5py', force=True):
                             fit_results[key] = h5quick.h5data(h[key])
                         except:
                             fit_results[key] = None
-                            print('Key {} not in result file!'.format(key))
+                            logging.warning('Key {} not in result file!'.format(key))
                 return fit_results
             except Exception as e:
                 raise(e)        
@@ -392,7 +386,7 @@ def restore_results_object(utilities, filename):
             obs_order_min, min_coverage = obs.check_wavelength_range(
                     temp[0].w0, temp[len(temp.get_order_indices(temp.orders_unique[0]))-1].w0)
             order_correction = obs_order_min - temp.orders_unique[0]
-            print('Order correction: {}\n'.format(order_correction))
+            logging.info('Order correction: {}\n'.format(order_correction))
             
             obs_chunks = chunks.wave_defined(obs, temp, width=width, orders=orders-order_correction, 
                                              padding=padding, order_correction=order_correction)
@@ -408,9 +402,9 @@ def restore_results_object(utilities, filename):
         nr_chunks_total = len(obs_chunks)
         nr_chunks       = len(obs_chunks.get_order(orders[0]))
         
-        print('Total number of created chunks: {} (in result file: {})'.format(
+        logging.info('Total number of created chunks: {} (in result file: {})'.format(
                 nr_chunks_total, len(res_chunks['order'])))
-        print('Number of created chunks per order: {}'.format(nr_chunks))
+        logging.info('Number of created chunks per order: {}'.format(nr_chunks))
         
         # Loop over the chunks to build the fit_result object
         fit_results = []

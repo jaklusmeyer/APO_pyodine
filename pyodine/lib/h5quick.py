@@ -1,6 +1,8 @@
 # A few simple tools for quick reading of HDF5-data
 
 import h5py
+import sys
+import logging
 
 
 def h5print(h, level=0):
@@ -12,10 +14,16 @@ def h5print(h, level=0):
         print the whole structure recursively).
     :type level: int
     """
+    # Check if there are already logging handles initialized somewhere - if no,
+    # initialize a basic logger so that the output is actually printed
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     if level == 0:
-        print(h.name)
+        logging.info(h.name)
     for k in h.keys():
-        print('    ' * level + '└ ' + k)
+        logging.info('    ' * level + '└ ' + k)
         if isinstance(h[k], h5py.Group):
             h5print(h[k], level + 1)
 

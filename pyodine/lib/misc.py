@@ -3,6 +3,8 @@ from scipy.interpolate import interp1d
 from scipy.special import erfinv
 import logging
 import os.path as path
+import json
+import logging.config
 
 _c = 299792458  # m/s
 
@@ -23,32 +25,55 @@ def printLog(filename=None, *args):
             print(e)
 
 
-def initialize_logger(filename=None, terminal=True):
+def setup_logging(config_file=None, level=logging.INFO, error_log=None,
+                  info_log=None, quiet=False):
+    """Setup logging configuration
+    https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
     """
     
-    From: https://aykutakin.wordpress.com/2013/08/06/logging-to-console-and-file-in-python/
-    """
-    if isinstance(filename, str) or terminal:
-        logger = logging.getLogger()
-        logger.setLevel(logging.DEBUG)
-         
-        # Create console handler and set level to info
-        if terminal:
-            handler = logging.StreamHandler()
-            handler.setLevel(logging.INFO)
-            formatter = logging.Formatter('%(levelname)s: %(message)s')
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-     
-        # Create debug file handler and set level to debug
-        if isinstance(filename, str):
-            handler = logging.FileHandler(filename, 'w')
-            handler.setLevel(logging.DEBUG)
-            formatter = logging.Formatter('%(asctime)s - %(message)s (%(levelname)s)')
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-        
-        return logger
+    log_handlers = []
+    
+    # Is the configuration file (json format) there?
+    if isinstance(config_file, str) and path.exists(config_file):
+        try:
+            # Try and load the configuration dictionary
+            with open(config_file, 'rt') as f:
+                config = json.load(f)
+            
+            # If you want errors logged
+            if isinstance(error_log, str):
+                config['handlers']['error_file_handler']['filename'] = error_log
+                log_handlers.append('error_file_handler')
+            else:
+                del config['handlers']['error_file_handler']
+            
+            # If you want info logged
+            if isinstance(info_log, str):
+                config['handlers']['info_file_handler']['filename'] = info_log
+                config['handlers']['info_file_handler']['level'] = level
+                log_handlers.append('info_file_handler')
+            else:
+                del config['handlers']['info_file_handler']
+            
+            # If you want info printed
+            if quiet:
+                del config['handlers']['console']
+            else:
+                config['handlers']['console']['level'] = level
+                log_handlers.append('console')
+            
+            config['root']['handlers'] = log_handlers
+            config['root']['level'] = level
+            
+            logging.config.dictConfig(config)
+            
+        except Exception as e:
+            logging.basicConfig(level=level)
+            logging.error('Logger could not be configured from config file', 
+                          exc_info=True)
+    else:
+        logging.basicConfig(level=level)
+        logging.warning('No config file supplied or config file not found.')
 
 
 def return_existing_files(filenames):
@@ -159,7 +184,7 @@ def rebin(wold, sold, wnew):
 
     # Verify that new wavelength scale is a subset of old wavelength scale.
     if (wnew[0] < wold[0]) or (wnew[nnew - 1] > wold[nold - 1]):
-        print('New wavelength scale not subset of old.')
+        logging.warning('New wavelength scale not subset of old.')
 
     # Select integration or interpolation depending on change in dispersion.
 
@@ -332,7 +357,7 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
         #print(xsm)
         
         if len(xsm[0]) == 0:
-            print('Chunk {}: No chunks to smooth over.'.format(i))
+            logging.warning('Chunk {}: No chunks to smooth over. Using input chunk.'.format(i))
             # Use lsf from fit result for that chunk
             lsfs_smoothed.append(chunk_lsfs[i])
         
@@ -472,8 +497,8 @@ def fit_polynomial(x_data, y_data, deg=2):
                 x_data[idx], y_data[idx], deg, full=True, window=(0, n), domain=(0, n))
         return pfit(x_data), pfit.coef
     except Exception as e:
-        print(e)
-        print('Falling back to input values.')
+        logging.error('Polynomial fitting failed. Falling back to input values', 
+                      exc_info=True)
         return y_data, None
 
 

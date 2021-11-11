@@ -1,4 +1,7 @@
 import numpy as np
+import logging
+import sys
+
 from .base import StaticModel, ParameterSet
 
 
@@ -111,6 +114,11 @@ class SuperGaussian(LSFModel, StaticModel):
                     2.5, 2.5])
             }
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     @classmethod
     def adapt_LSF(cls, pars_dict):
         """Adapt the LSF setup to different instruments
@@ -124,6 +132,8 @@ class SuperGaussian(LSFModel, StaticModel):
         :type pars_dict: dict
         """
         if isinstance(pars_dict, dict):
+            
+            # Update the positions in the parameter dictionary
             if 'positions' in pars_dict.keys() and \
             isinstance(pars_dict['positions'], (list,tuple,np.ndarray)) and \
             len(pars_dict['positions']) == 3:
@@ -131,6 +141,8 @@ class SuperGaussian(LSFModel, StaticModel):
                     cls.pars_dict['positions'] = np.array(pars_dict['positions'])
                 else:
                     cls.pars_dict['positions'] = pars_dict['positions']
+            
+            # Update the satellite sigmas in the parameter dictionary
             if 'satellite_sigmas' in pars_dict.keys() and \
             isinstance(pars_dict['satellite_sigmas'], (list,tuple,np.ndarray)) and \
             len(pars_dict['satellite_sigmas']) == 2:
@@ -139,6 +151,7 @@ class SuperGaussian(LSFModel, StaticModel):
                 else:
                     cls.pars_dict['satellite_sigmas'] = pars_dict['satellite_sigmas']
         else:
+            logging.error(pars_dict)
             raise ValueError('Make sure you supply a dictionary with positions' + 
                              ' and/or sigmas, in list, tuple or ndarray of length 3 and/or 2!')
 
@@ -168,34 +181,25 @@ class SuperGaussian(LSFModel, StaticModel):
             # Replace negative values with zero
             f[np.where(f < 0.0)] = 0.0
             return f
-
-        # Evaluate function
-        y = func(x)
         
-        # Added for NaN-debugging
-        y_sum = np.sum(y)
-        if np.isnan(y_sum):
-            print(y)
-        
-        # Calculate centroid and re-center the LSF
-        offset = np.sum(x * y) / y_sum #np.sum(y)
-        y = func(x + offset)
-        
-        # Added for NaN-debugging
-        if any(np.isnan(y)):
-            print('NaN value detected in un-normalized lsf function.')
-            print('Sum of y: ', y_sum)
-            print(params)
-        y_sum = np.sum(y)
-        
-        y = y / y_sum
-        if any(np.isnan(y)):
-            print('NaN value detected in lsf function.')
-            print('Sum of y: ', y_sum)
-            print(params)
-        
-        # Make sure that the sum equals one
-        return y
+        try:
+            # Evaluate function
+            y = func(x)
+            
+            # Calculate centroid and re-center the LSF
+            offset = np.sum(x * y) / np.sum(y)
+            y = func(x + offset)
+            
+            # Make sure that the sum equals one
+            y_sum = np.sum(y)
+            y = y / y_sum
+            
+            return y
+        except Exception as e:
+            logging.error('LSF evaluation failed. Parameters:')
+            logging.error(params)
+            logging.error('Sum of un-normalized LSF: {}'.format(y_sum))
+            raise e
 
     @classmethod
     def guess_params(cls, chunk):
@@ -354,7 +358,12 @@ class MultiGaussian(LSFModel, StaticModel):
                     0.3, 0.3, 0.3, 0.3, 0.3,
                     0.4,
                     0.3, 0.3, 0.3, 0.3, 0.3])
-            }    
+            }
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
     
     @classmethod
     def adapt_LSF(cls, pars_dict):
@@ -368,6 +377,8 @@ class MultiGaussian(LSFModel, StaticModel):
         :type pars_dict: dict
         """
         if isinstance(pars_dict, dict):
+            
+            # Update the positions in the parameter dictionary
             if 'positions' in pars_dict.keys() and \
             isinstance(pars_dict['positions'], (list,tuple,np.ndarray)) and \
             len(pars_dict['positions']) == 11:
@@ -375,6 +386,8 @@ class MultiGaussian(LSFModel, StaticModel):
                     cls.pars_dict['positions'] = np.array(pars_dict['positions'])
                 else:
                     cls.pars_dict['positions'] = pars_dict['positions']
+            
+            # Update the sigmas in the parameter dictionary
             if 'sigmas' in pars_dict.keys() and \
             isinstance(pars_dict['sigmas'], (list,tuple,np.ndarray)) and \
             len(pars_dict['sigmas']) == 11:
@@ -383,6 +396,7 @@ class MultiGaussian(LSFModel, StaticModel):
                 else:
                     cls.pars_dict['sigmas'] = pars_dict['sigmas']
         else:
+            logging.error(pars_dict)
             raise ValueError('Make sure you supply a dictionary with positions' + 
                              ' and/or sigmas, in list, tuple or ndarray of length 11!')
 
@@ -415,27 +429,26 @@ class MultiGaussian(LSFModel, StaticModel):
                                             / cls.pars_dict['sigmas'])**2.), axis=1)
             f[np.where(f < 0.0)] = 0.0
             return f
-
-        # Evaluate function and find centroid
-        y = func(x)
         
-        # Calculate centroid and re-center the LSF
-        offset = np.sum(x * y) / np.sum(y)  # TODO: Is this the correct way of weighting?
-        y = func(x + offset)
-        
-        # Added for NaN-debugging
-        if any(np.isnan(y)):
-            print('NaN value detected in un-normalized lsf function.')
-        
-        y_sum = np.sum(y)
-        
-        y = y / y_sum
-        if any(np.isnan(y)):
-            print('NaN value detected in lsf function.')
-            print('Sum of y: ', y_sum)
-            print(params)
-        
-        return y
+        try:
+            # Evaluate function and find centroid
+            y = func(x)
+            
+            # Calculate centroid and re-center the LSF
+            offset = np.sum(x * y) / np.sum(y)
+            y = func(x + offset)
+            
+            # Make sure that the sum equals one
+            y_sum = np.sum(y)
+            y = y / y_sum
+            
+            return y
+        except Exception as e:
+            logging.error('LSF evaluation failed. Parameters:')
+            logging.error(params)
+            logging.error('Sum of un-normalized LSF: {}'.format(y_sum))
+            raise e
+            
 
     @classmethod
     def guess_params(cls, chunk):
@@ -659,6 +672,11 @@ class LSF_Array:
         self.lsf_array = lsf_array
         self.orders = orders
         self.pixels = pixels
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
     
     def __getitem__(self, args):
         """The dedicated get-method
@@ -674,9 +692,11 @@ class LSF_Array:
                 chunk.
         """
         if len(args) != 2:
-            raise IndexError('Two indices expected.')
+            raise IndexError('Two indices expected, but got {}.'.format(len(args)))
         order, pixel = args
         try:
             return self.lsf_array[np.where((self.orders==order) & (self.pixels==pixel))[0][0]]
         except Exception as e:
+            logging.error('LSF retrieval failed. Arguments:')
+            logging.error(args)
             raise e
