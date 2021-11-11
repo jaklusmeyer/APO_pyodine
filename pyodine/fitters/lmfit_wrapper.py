@@ -1,5 +1,6 @@
 import numpy as np
 import lmfit
+import logging
 
 from .base import Fitter, FitResult
 from ..models.base import ParameterSet
@@ -112,7 +113,7 @@ class LmfitWrapper(Fitter):
             # Return output as LmfitResult object
             return self.LmfitResult(chunk, self.model, lmfit_result, chunk_ind=chunk_ind)
         except NoDataError:
-            print('No Data!')
+            logging.error('Chunk {}: No Data! Returning LmfitResult with None.'.format(chunk_ind))
             return self.LmfitResult(chunk, self.model, None, chunk_ind=chunk_ind)
 
 

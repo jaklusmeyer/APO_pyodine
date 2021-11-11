@@ -8,6 +8,7 @@ Created on Mon Aug  3 15:12:20 2020
 
 import numpy as np
 from ..components import Observation, NormalizedObservation
+import logging
 
 def correct_spectrum(spec, weights, orders):
     """Correct bad pixel regions in spectra
@@ -46,6 +47,6 @@ def correct_spectrum(spec, weights, orders):
             elif isinstance(spec, Observation):
                 spec[o].flux = spec_order.flux
         else:
-            print('No zero weights: Order {}!'.format(o))
+            logging.info('No zero weights: Order {}!'.format(o))
     
     return spec

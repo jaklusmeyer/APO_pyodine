@@ -2,6 +2,8 @@ import os.path
 import h5py
 import astropy.time
 import numpy as np
+import logging
+import sys
 
 from ..components import MultiOrderSpectrum, Spectrum, Observation, NoDataError, TemplateChunk
 
@@ -35,9 +37,16 @@ class StellarTemplate(MultiOrderSpectrum):
     def __init__(self, observation, velocity_offset=None, bary_vel_corr=None, 
                  osample=None):
         
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+        
         self._data = {}
         # Load existing template, if first argument is a string
         if type(observation) is str:
+            logging.info('Loading template from file: {}'.format(observation))
+            
             try:
                 with h5py.File(observation, 'r') as h:
                     try:
@@ -88,13 +97,16 @@ class StellarTemplate(MultiOrderSpectrum):
         :param filename: The pathname of the directory where to save the
             file, or the filename itself.
         :type filename: str
-        
         """
-        # TODO: Add other formats
+        
+        logging.info('Saving deconvolved template to {}'.format(filename))
+        
         if os.path.isdir(filename):
             date = self.time_start.datetime.strftime("%Y%m%d")
             filename = os.path.join(filename, self.starname + '_' + date + '.h5')
-            print('Filename: ', filename)
+            logging.warning('Supplied filename was a directory.')
+            logging.warning('New filename: {}'.format(filename))
+            
         with h5py.File(filename, 'w') as h:
             h.create_dataset('/orig_filename', data=os.path.abspath(filename))
             h.create_dataset('/starname', data=self.starname)
@@ -116,7 +128,7 @@ class StellarTemplate(MultiOrderSpectrum):
         try:
             return self._data[order]  # TODO: Deepcopy this?
         except:
-            print(NoDataError('No data for order {}!'.format(order)))
+            logging.error(NoDataError('No data for order {}!'.format(order)))
 
     def __setitem__(self, order, spectrum):
         self._data[order] = spectrum  # TODO: Deepcopy this?
@@ -158,10 +170,17 @@ class StellarTemplate_Chunked:
     def __init__(self, observation, velocity_offset=None, bary_vel_corr=None, 
                  osample=None):
         
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+        
         self.chunks = []
         
         # Load existing template, if first argument is a string
         if type(observation) is str:
+            logging.info('Loading template from file: {}'.format(observation))
+            
             try:
                 with h5py.File(observation, 'r') as h:
                     try:
@@ -189,8 +208,9 @@ class StellarTemplate_Chunked:
                         pixel = h['/chunks/{}/pixel'.format(i)][()]
                         self.chunks.append(TemplateChunk(flux, wave, pixel, w0[i], w1[i], 
                                             orders[i], pix0[i], weight[i]))
-            except:
-                raise  # TODO: Better exception handling
+            except Exception as e:
+                raise e
+        
         # Initialize template from observation
         elif isinstance(observation, Observation) and velocity_offset is not None:
             # FIXME: Handle different velocity offsets (relative to Arcturus atlas etc.)
@@ -356,11 +376,15 @@ class StellarTemplate_Chunked:
         :type filename: str
         
         """
-        # TODO: Add other formats
+        
+        logging.info('Saving deconvolved template to {}'.format(filename))
+        
         if os.path.isdir(filename):
             date = self.time_start.datetime.strftime("%Y%m%d")
             filename = os.path.join(filename, self.starname + '_' + date + '.h5')
-            print('Filename: ', filename)
+            logging.warning('Supplied filename was a directory.')
+            logging.warning('New filename: {}'.format(filename))
+            
         with h5py.File(filename, 'w') as h:
             h.create_dataset('/orig_filename', data=os.path.abspath(filename))
             h.create_dataset('/starname', data=self.starname)
@@ -386,12 +410,12 @@ class StellarTemplate_Chunked:
     
     def __getitem__(self, index):
         try:
-            return self.chunks[index]  # TODO: Deepcopy this?
+            return self.chunks[index]
         except:
             raise NoDataError('No data for chunk {}!'.format(index))
 
     def __setitem__(self, index, templatechunk):
-        self.chunks[index] = templatechunk  # TODO: Deepcopy this?
+        self.chunks[index] = templatechunk
     
     def __str__(self):
         return '<StellarTemplate_Chunked of {} ({} chunks, {} orders)>'.format(

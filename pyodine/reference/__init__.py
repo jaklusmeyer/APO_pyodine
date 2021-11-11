@@ -1,5 +1,6 @@
 from os.path import dirname
 from astropy.io import fits
+
 from ..components import Spectrum
 
 _ref_path = dirname(__file__) + '/arcturus/ardata.fits'
@@ -26,4 +27,4 @@ def load_reference(name='arcturus'):
             ref_flux = h[1].data['arcturus']
             return Spectrum(ref_flux, ref_wave)
         else:
-            raise ValueError('Unknown reference "{}"..'.format(name))
+            raise ValueError('Unknown reference "{}"'.format(name))

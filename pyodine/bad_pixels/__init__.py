@@ -11,7 +11,7 @@ to cosmics and bad pixels in the spectra and return a bad pixel mask.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pyodine.components import Observation, SummedObservation
+from pyodine.components import Observation #, SummedObservation
 
 from . import correct_spec
 
