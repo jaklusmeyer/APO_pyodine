@@ -7,24 +7,22 @@ Created on Wed Feb 17 10:18:22 2021
 """
 
 # Import packages
-from pyodine.lib.misc import printLog, chauvenet_criterion
-from pyodine import timeseries
+import pyodine
 from pyodine.timeseries.misc import robust_mean, robust_std
 
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 import time
+import logging
 
 import argparse
-
-# Use importlib for more flexibility of which pyodine parameter file to import?!
 import importlib
 
 
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
                              diag_file=None, plot_dir=None, comb_res_out=None, 
-                             vels_out=None, reject_files=None):
+                             vels_out=None, reject_files=None, error_log=None, 
+                             info_log=None, quiet=False):
     """Weight and combine chunk velocities from modelling results
     
     :param Pars: The parameters to use in the routine.
@@ -55,253 +53,272 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         pathnames to individual results. If None, all results are used in the 
         combination algorithm.
     :type reject_files: str, list, tuple, or None
+    :param error_log: A pathname of a log-file used for error messages. If 
+        None, no errors are logged.
+    :type error_log: str, or None
+    :param info_log: A pathname of a log-file used for info messages. If 
+        None, no info is logged.
+    :type info_log: str, or None
+    :param quiet: Whether or not to print info messages to terminal. Defaults 
+        to False (messages are printed).
+    :type quiet: bool
     
     :return: The final CombinedResults object, containing the timeseries 
         results.
     :rtype: :class:`CombinedResults`
     """
     
-    # Start timer
-    start_t = time.time()
+    # Check whether a logger is already setup. If no, setup a new one
+    if not logging.getLogger().hasHandlers():
+        pyodine.lib.misc.setup_logging(
+                config_file=Pars.log_config_file, level=Pars.log_level,
+                error_log=error_log, info_log=info_log, quiet=quiet)
     
-    ###########################################################################
-    ## Set up the environment, and load all neccessary data and parameters
-    ###########################################################################
-    
-    # Set up the CombinedResults object, and load from file
-    # Either load a list of individual fit results, handed directly through
-    # res_files or in a text-file, or load a previously saved CombinedResults 
-    # object if a filename has been supplied through comb_res_in
-    Results = timeseries.base.CombinedResults()
-    
-    if isinstance(res_files, str):
-        with open(res_files, 'r') as f:
-            res_names = [l.strip() for l in f.readlines()]
-        Results.load_individual_results(res_names)
+    try:
+        # Start timer
+        start_t = time.time()
         
-    elif isinstance(res_files, (list,tuple)):
-        res_names = res_files
-        Results.load_individual_results(res_names)
+        ###########################################################################
+        ## Set up the environment, and load all neccessary data and parameters
+        ###########################################################################
         
-    elif isinstance(comb_res_in, str):
-        Results.load_combined(comb_res_in)
+        # Set up the CombinedResults object, and load from file
+        # Either load a list of individual fit results, handed directly through
+        # res_files or in a text-file, or load a previously saved CombinedResults 
+        # object if a filename has been supplied through comb_res_in
+        Results = pyodine.timeseries.base.CombinedResults()
         
-    else:
-        raise ValueError('Either hand individual fit results through "res_files"' +
-                         'as list or tuple or in a text-file, or an existing' +
-                         'CombinedResults object through "comb_res_in"!')
-    
-    # Final output name for the diagnosis file (setup the directory structure 
-    # if non-existent)
-    if isinstance(diag_file, str):
-        diag_file_dir = os.path.dirname(diag_file)
-        if not os.path.exists(diag_file_dir):
-            os.makedirs(diag_file_dir)
-    
-    # Output directory for plots (setup the directory structure if non-existent)
-    if isinstance(plot_dir, str):
-        if not os.path.exists(plot_dir):
-            os.makedirs(plot_dir)
-    
-    # Final output name for the CombinedResults object  (setup the directory 
-    # structure if non-existent)
-    if isinstance(comb_res_out, str):
-        comb_res_dir = os.path.dirname(comb_res_out)
-        if not os.path.exists(comb_res_dir):
-            os.makedirs(comb_res_dir)
-    
-    # Output name for the RV text file (in .vels format or any other defined in
-    # the parameter input file) (setup the directory structure if non-existent)
-    if isinstance(vels_out, str):
-        vels_out_dir = os.path.dirname(vels_out)
-        if not os.path.exists(vels_out_dir):
-            os.makedirs(vels_out_dir)
-    
-    # Load a list of files that should be rejected in the timeseries
-    if isinstance(reject_files, (list,tuple)):
-        reject_names = reject_files
-    elif isinstance(reject_files, str):
-        with open(reject_files, 'r') as f:
-            reject_names = [l.strip() for l in f.readlines()]
-    else:
-        reject_names = None
-    
-    
-    ###########################################################################
-    ## Now do the velocity weighting and combination, as prescribed in the 
-    ## parameter input file
-    ###########################################################################
-    
-    if isinstance(reject_names, (list,tuple)):
-        if Pars.reject_type == 'obs_names':
-            Results.remove_observations(obs_names=reject_names)
+        if isinstance(res_files, str):
+            with open(res_files, 'r') as f:
+                res_names = [l.strip() for l in f.readlines()]
+            Results.load_individual_results(res_names)
+            
+        elif isinstance(res_files, (list,tuple)):
+            res_names = res_files
+            Results.load_individual_results(res_names)
+            
+        elif isinstance(comb_res_in, str):
+            Results.load_combined(comb_res_in)
+            
         else:
-            Results.remove_observations(res_names=reject_names)
-    
-    Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
-                              diag_file=diag_file, do_crx=Pars.do_crx)
-    
-    if isinstance(vels_out, str):
-        Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
-                               delimiter=Pars.txt_delimiter, header=Pars.txt_header,
-                               outformat=Pars.txt_outformat)
-    
-    ###########################################################################
-    ## Possibly save the CombinedResults object and create analysis plots
-    ###########################################################################
-    
-    if Pars.save_comb_res and isinstance(comb_res_out, str):
-        print('\nSaving results to:\n\t{}'.format(comb_res_out))
-        Results.save_combined(comb_res_out)
-    
-    if Pars.plot_analysis and isinstance(plot_dir, str):
-        print('\nCreating and saving analysis plots to\n\t{}:'.format(plot_dir))
+            raise ValueError('Either hand individual fit results through "res_files"' +
+                             'as list or tuple or in a text-file, or an existing' +
+                             'CombinedResults object through "comb_res_in"!')
         
-        # Plot velocity results
-        fig = plt.figure(figsize=(10,6))
-        plt.errorbar(Results.bary_date, Results.rv_bc, yerr=Results.rv_err, 
-                     fmt='.', alpha=0.7, label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
-                             robust_mean(Results.rv_bc),
-                             robust_std(Results.rv_bc)))
-        plt.plot(Results.bary_date, Results.mdvel+Results.bary_vel_corr, 
-                 '.', alpha=0.5, label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
-                         robust_mean(Results.mdvel+Results.bary_vel_corr),
-                         robust_std(Results.mdvel+Results.bary_vel_corr)))
-        plt.legend()
-        plt.xlabel('JD')
-        plt.ylabel('RV [m/s]')
-        plt.title('{}, RV time series'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'RV_timeseries.png'), format='png', dpi=300)
-        plt.close()
+        # Final output name for the diagnosis file (setup the directory structure 
+        # if non-existent)
+        if isinstance(diag_file, str):
+            diag_file_dir = os.path.dirname(diag_file)
+            if not os.path.exists(diag_file_dir):
+                os.makedirs(diag_file_dir)
         
-        # Same as above, but outliers rejected
-        mask_rvs, good_rvs, bad_rvs = chauvenet_criterion(Results.rv_bc)
-        rv_good = Results.rv_bc[good_rvs]
-        bjd_good = Results.bary_date[good_rvs]
-        rv_err_good = Results.rv_err[good_rvs]
-        mdvel_good = Results.mdvel[good_rvs]
-        bvc_good = Results.bary_vel_corr[good_rvs]
+        # Output directory for plots (setup the directory structure if non-existent)
+        if isinstance(plot_dir, str):
+            if not os.path.exists(plot_dir):
+                os.makedirs(plot_dir)
         
-        fig = plt.figure(figsize=(10,6))
-        plt.errorbar(bjd_good, rv_good, yerr=rv_err_good, fmt='.', alpha=0.7,
-                     label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
-                             robust_mean(rv_good),
-                             robust_std(rv_good)))
-        plt.plot(bjd_good, mdvel_good+bvc_good, '.', alpha=0.5,
-                 label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
-                         robust_mean(mdvel_good+bvc_good),
-                         robust_std(mdvel_good+bvc_good)))
-        plt.legend()
-        plt.xlabel('JD')
-        plt.ylabel('RV [m/s]')
-        plt.title('{}, RV time series, without {} outliers'.format(
-                Results.info['star_name'], len(bad_rvs[0])))
-        plt.savefig(os.path.join(plot_dir, 'RV_timeseries_goodobs.png'), format='png', dpi=300)
-        plt.close()
+        # Final output name for the CombinedResults object  (setup the directory 
+        # structure if non-existent)
+        if isinstance(comb_res_out, str):
+            comb_res_dir = os.path.dirname(comb_res_out)
+            if not os.path.exists(comb_res_dir):
+                os.makedirs(comb_res_dir)
         
-        # Print the outliers to file, if desired
-        if Pars.print_outliers:
-            printLog(diag_file, '\nObservations with outlier RVs:')
-            for i in range(len(bad_rvs[0])):
-                printLog(diag_file, Results.res_filename[bad_rvs[0][i]])
+        # Output name for the RV text file (in .vels format or any other defined in
+        # the parameter input file) (setup the directory structure if non-existent)
+        if isinstance(vels_out, str):
+            vels_out_dir = os.path.dirname(vels_out)
+            if not os.path.exists(vels_out_dir):
+                os.makedirs(vels_out_dir)
         
-        # Plot chunk-to-chunk scatter of observations
-        fig = plt.figure(figsize=(10,6))
-        plt.plot(Results.bary_date, Results.c2c_scatter, '.', alpha=0.7, 
-                 label='Mean: {:.2f}+-{:.2f} m/s'.format(
-                         robust_mean(Results.c2c_scatter),
-                         robust_std(Results.c2c_scatter)))
-        plt.legend()
-        plt.xlabel('JD')
-        plt.ylabel('Chunk scatter [m/s]')
-        plt.title('{}, chunk scatter of observations'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'c2c_scatter.png'), format='png', dpi=300)
-        plt.close()
+        # Load a list of files that should be rejected in the timeseries
+        if isinstance(reject_files, (list,tuple)):
+            reject_names = reject_files
+        elif isinstance(reject_files, str):
+            with open(reject_files, 'r') as f:
+                reject_names = [l.strip() for l in f.readlines()]
+        else:
+            reject_names = None
         
-        # Plot of chunk sigmas
-        fig = plt.figure(figsize=(10,6))
-        plt.plot(Results.auxiliary['chunk_sigma'], '.', alpha=0.7, 
-                 label='Mean: {:.2f}+-{:.2f} m/s'.format(
-                         robust_mean(Results.auxiliary['chunk_sigma']), 
-                         robust_std(Results.auxiliary['chunk_sigma'])))
-        plt.legend()
-        plt.xlabel('Chunks')
-        plt.ylabel('Chunk sigmas [m/s]')
-        plt.title('{}, chunk sigmas'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'chunk_sigma.png'), format='png', dpi=300)
-        plt.close()
         
-        # Plot of chunk-to-chunk offsets
-        fig = plt.figure(figsize=(10,6))
-        plt.plot(Results.auxiliary['chunk_offsets'], '.', alpha=0.7,
-                 label='Mean: {:.2f}+-{:.2f}'.format(
-                         robust_mean(Results.auxiliary['chunk_offsets']), 
-                         robust_std(Results.auxiliary['chunk_offsets'])))
-        plt.legend()
-        plt.xlabel('Chunks')
-        plt.ylabel('Chunk offsets [m/s]')
-        plt.title('{}, chunk offsets from observation means'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'chunk_offsets.png'), format='png', dpi=300)
-        plt.close()
+        ###########################################################################
+        ## Now do the velocity weighting and combination, as prescribed in the 
+        ## parameter input file
+        ###########################################################################
         
-        # 3D plot of velocities (corrected by chunk offsets & barycentric velocities)
-        vel_corrected = Results.params['velocity'] - Results.auxiliary['chunk_offsets']
-        vel_corrected = vel_corrected.T + Results.bary_vel_corr
+        if isinstance(reject_names, (list,tuple)):
+            if Pars.reject_type == 'obs_names':
+                Results.remove_observations(obs_names=reject_names)
+            else:
+                Results.remove_observations(res_names=reject_names)
         
-        fig = plt.figure(figsize=(12,10))
-        plt.imshow(vel_corrected, aspect='auto')
-        plt.colorbar()
-        plt.xlabel('Observations')
-        plt.ylabel('Chunks')
-        plt.title('{}, offset-BV-corrected chunk velocities'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'chunk_vels_corr.png'), format='png', dpi=300)
-        plt.close()
+        Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
+                                  diag_file=diag_file, do_crx=Pars.do_crx)
         
-        # 3D plot of chunk deviations
-        fig = plt.figure(figsize=(12,10))
-        plt.imshow(Results.auxiliary['chunk_dev'].T, aspect='auto')
-        plt.colorbar()
-        plt.xlabel('Observations')
-        plt.ylabel('Chunks')
-        plt.title('{}, chunk deviations'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'chunk_devs.png'), format='png', dpi=300)
-        plt.close()
+        if isinstance(vels_out, str):
+            Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
+                                   delimiter=Pars.txt_delimiter, header=Pars.txt_header,
+                                   outformat=Pars.txt_outformat)
         
-        # Histogram of the final velocity weights
-        fig = plt.figure(figsize=(10,6))
-        plt.hist(Results.auxiliary['chunk_weights'].flatten(), bins=100, alpha=0.7,
-                 label='Mean: {:.3e}+-{:.3e} (m/s)$^{{-2}}$'.format(
-                         robust_mean(Results.auxiliary['chunk_weights']), 
-                         robust_std(Results.auxiliary['chunk_weights'])))
-        plt.legend()
-        plt.xlabel(r'Weights [(m/s)$^{-2}$]')
-        plt.title('{}, chunk weights'.format(Results.info['star_name']))
-        plt.savefig(os.path.join(plot_dir, 'chunk_weights_hist.png'), format='png', dpi=300)
-        plt.close()
+        ###########################################################################
+        ## Possibly save the CombinedResults object and create analysis plots
+        ###########################################################################
         
-        # Plot chromatic indices (if any)
-        if Pars.do_crx:
+        if Pars.save_comb_res and isinstance(comb_res_out, str):
+            print('\nSaving results to:\n\t{}'.format(comb_res_out))
+            Results.save_combined(comb_res_out)
+        
+        if Pars.plot_analysis and isinstance(plot_dir, str):
+            print('\nCreating and saving analysis plots to\n\t{}:'.format(plot_dir))
+            
+            # Plot velocity results
             fig = plt.figure(figsize=(10,6))
-            plt.errorbar(Results.bary_date, Results.crx, yerr=Results.crx_err, 
-                         fmt='.', alpha=0.7, label='Mean: {:.2f}+-{:.2f} (m/s)/Np'.format(
-                                 robust_mean(Results.crx), 
-                                 robust_std(Results.crx)))
+            plt.errorbar(Results.bary_date, Results.rv_bc, yerr=Results.rv_err, 
+                         fmt='.', alpha=0.7, label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                                 robust_mean(Results.rv_bc),
+                                 robust_std(Results.rv_bc)))
+            plt.plot(Results.bary_date, Results.mdvel+Results.bary_vel_corr, 
+                     '.', alpha=0.5, label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(Results.mdvel+Results.bary_vel_corr),
+                             robust_std(Results.mdvel+Results.bary_vel_corr)))
             plt.legend()
             plt.xlabel('JD')
-            plt.ylabel('CRX [(m/s)/Np]')
-            plt.title('{}, CRX time series'.format(Results.info['star_name']))
-            plt.savefig(os.path.join(plot_dir, 'CRX_timeseries.png'), format='png', dpi=300)
+            plt.ylabel('RV [m/s]')
+            plt.title('{}, RV time series'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'RV_timeseries.png'), format='png', dpi=300)
             plt.close()
+            
+            # Same as above, but outliers rejected
+            mask_rvs, good_rvs, bad_rvs = pyodine.lib.misc.chauvenet_criterion(Results.rv_bc)
+            rv_good = Results.rv_bc[good_rvs]
+            bjd_good = Results.bary_date[good_rvs]
+            rv_err_good = Results.rv_err[good_rvs]
+            mdvel_good = Results.mdvel[good_rvs]
+            bvc_good = Results.bary_vel_corr[good_rvs]
+            
+            fig = plt.figure(figsize=(10,6))
+            plt.errorbar(bjd_good, rv_good, yerr=rv_err_good, fmt='.', alpha=0.7,
+                         label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                                 robust_mean(rv_good),
+                                 robust_std(rv_good)))
+            plt.plot(bjd_good, mdvel_good+bvc_good, '.', alpha=0.5,
+                     label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(mdvel_good+bvc_good),
+                             robust_std(mdvel_good+bvc_good)))
+            plt.legend()
+            plt.xlabel('JD')
+            plt.ylabel('RV [m/s]')
+            plt.title('{}, RV time series, without {} outliers'.format(
+                    Results.info['star_name'], len(bad_rvs[0])))
+            plt.savefig(os.path.join(plot_dir, 'RV_timeseries_goodobs.png'), format='png', dpi=300)
+            plt.close()
+            
+            # Print the outliers to file, if desired
+            if Pars.print_outliers:
+                logging.info('')
+                logging.info('Observations with outlier RVs:')
+                for i in range(len(bad_rvs[0])):
+                    logging.info(Results.res_filename[bad_rvs[0][i]])
+            
+            # Plot chunk-to-chunk scatter of observations
+            fig = plt.figure(figsize=(10,6))
+            plt.plot(Results.bary_date, Results.c2c_scatter, '.', alpha=0.7, 
+                     label='Mean: {:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(Results.c2c_scatter),
+                             robust_std(Results.c2c_scatter)))
+            plt.legend()
+            plt.xlabel('JD')
+            plt.ylabel('Chunk scatter [m/s]')
+            plt.title('{}, chunk scatter of observations'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'c2c_scatter.png'), format='png', dpi=300)
+            plt.close()
+            
+            # Plot of chunk sigmas
+            fig = plt.figure(figsize=(10,6))
+            plt.plot(Results.auxiliary['chunk_sigma'], '.', alpha=0.7, 
+                     label='Mean: {:.2f}+-{:.2f} m/s'.format(
+                             robust_mean(Results.auxiliary['chunk_sigma']), 
+                             robust_std(Results.auxiliary['chunk_sigma'])))
+            plt.legend()
+            plt.xlabel('Chunks')
+            plt.ylabel('Chunk sigmas [m/s]')
+            plt.title('{}, chunk sigmas'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'chunk_sigma.png'), format='png', dpi=300)
+            plt.close()
+            
+            # Plot of chunk-to-chunk offsets
+            fig = plt.figure(figsize=(10,6))
+            plt.plot(Results.auxiliary['chunk_offsets'], '.', alpha=0.7,
+                     label='Mean: {:.2f}+-{:.2f}'.format(
+                             robust_mean(Results.auxiliary['chunk_offsets']), 
+                             robust_std(Results.auxiliary['chunk_offsets'])))
+            plt.legend()
+            plt.xlabel('Chunks')
+            plt.ylabel('Chunk offsets [m/s]')
+            plt.title('{}, chunk offsets from observation means'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'chunk_offsets.png'), format='png', dpi=300)
+            plt.close()
+            
+            # 3D plot of velocities (corrected by chunk offsets & barycentric velocities)
+            vel_corrected = Results.params['velocity'] - Results.auxiliary['chunk_offsets']
+            vel_corrected = vel_corrected.T + Results.bary_vel_corr
+            
+            fig = plt.figure(figsize=(12,10))
+            plt.imshow(vel_corrected, aspect='auto')
+            plt.colorbar()
+            plt.xlabel('Observations')
+            plt.ylabel('Chunks')
+            plt.title('{}, offset-BV-corrected chunk velocities'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'chunk_vels_corr.png'), format='png', dpi=300)
+            plt.close()
+            
+            # 3D plot of chunk deviations
+            fig = plt.figure(figsize=(12,10))
+            plt.imshow(Results.auxiliary['chunk_dev'].T, aspect='auto')
+            plt.colorbar()
+            plt.xlabel('Observations')
+            plt.ylabel('Chunks')
+            plt.title('{}, chunk deviations'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'chunk_devs.png'), format='png', dpi=300)
+            plt.close()
+            
+            # Histogram of the final velocity weights
+            fig = plt.figure(figsize=(10,6))
+            plt.hist(Results.auxiliary['chunk_weights'].flatten(), bins=100, alpha=0.7,
+                     label='Mean: {:.3e}+-{:.3e} (m/s)$^{{-2}}$'.format(
+                             robust_mean(Results.auxiliary['chunk_weights']), 
+                             robust_std(Results.auxiliary['chunk_weights'])))
+            plt.legend()
+            plt.xlabel(r'Weights [(m/s)$^{-2}$]')
+            plt.title('{}, chunk weights'.format(Results.info['star_name']))
+            plt.savefig(os.path.join(plot_dir, 'chunk_weights_hist.png'), format='png', dpi=300)
+            plt.close()
+            
+            # Plot chromatic indices (if any)
+            if Pars.do_crx:
+                fig = plt.figure(figsize=(10,6))
+                plt.errorbar(Results.bary_date, Results.crx, yerr=Results.crx_err, 
+                             fmt='.', alpha=0.7, label='Mean: {:.2f}+-{:.2f} (m/s)/Np'.format(
+                                     robust_mean(Results.crx), 
+                                     robust_std(Results.crx)))
+                plt.legend()
+                plt.xlabel('JD')
+                plt.ylabel('CRX [(m/s)/Np]')
+                plt.title('{}, CRX time series'.format(Results.info['star_name']))
+                plt.savefig(os.path.join(plot_dir, 'CRX_timeseries.png'), format='png', dpi=300)
+                plt.close()
+            
+        ###########################################################################
+        ## Everything's done now, return the CombinedResults object
+        ###########################################################################
         
-    ###########################################################################
-    ## Everything's done now, return the CombinedResults object
-    ###########################################################################
+        work_time = time.time() - start_t
+        logging.info('All done! Full work time: {}'.format(work_time))
+        
+        return Results
     
-    work_time = time.time() - start_t
-    print('All done!')
-    print('Full work time: ', work_time)
-    
-    return Results
+    except Exception as e:
+        logging.error('Something went wrong!', exc_info=True)
 
 
 if __name__ == '__main__':
@@ -320,6 +337,9 @@ if __name__ == '__main__':
     parser.add_argument('--comb_res_out', type=str, help='The pathname where to save the CombinedResults object.')
     parser.add_argument('--vels_out', type=str, help='The pathname of a text-file where to save chosen timeseries results.')
     parser.add_argument('--reject_files', type=str, help='A pathname of a text-file with the pathnames of results to reject.')
+    parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
+    parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
+    parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
     
     # Parse the input arguments
     args = parser.parse_args()
@@ -332,6 +352,9 @@ if __name__ == '__main__':
     comb_res_out = args.comb_res_out
     vels_out = args.vels_out
     reject_files = args.reject_files
+    error_file     = args.error_file
+    info_file      = args.info_file
+    quiet         = args.quiet
     
     # Import and load the timeseries parameters
     par_file = os.path.splitext(par_file)[0].replace('/', '.')
@@ -342,4 +365,5 @@ if __name__ == '__main__':
     combine_velocity_results(Pars, res_files=res_files, comb_res_in=comb_res_in, 
                              diag_file=diag_file, plot_dir=plot_dir, 
                              comb_res_out=comb_res_out, vels_out=vels_out, 
-                             reject_files=reject_files)
+                             reject_files=reject_files, error_log=error_file, 
+                             info_log=info_file, quiet=quiet)
