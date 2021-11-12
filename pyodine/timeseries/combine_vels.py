@@ -7,9 +7,12 @@ Created on Thu Oct 21 15:45:44 2021
 """
 
 import numpy as np
-from .misc import robust_mean, robust_std, reweight
-from ..lib.misc import printLog, chauvenet_criterion
 import lmfit
+import logging
+import sys
+
+from .misc import robust_mean, robust_std, reweight
+from ..lib.misc import chauvenet_criterion
 
 """The default _weighting_pars array contains a combination of values for the 
 weighting parameters that have proven to work well for the computation of RVs
@@ -75,16 +78,22 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     :rtype: dict
     """
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     if not isinstance(weighting_pars, dict):
         pars = _weighting_pars
     else:
         pars = weighting_pars.copy()
     
-    printLog(diag_file, '---------------------------------------------------')
-    printLog(diag_file, '- Pyodine chunk combination (based on iSONG code) -')
-    printLog(diag_file, '---------------------------------------------------\n')
+    logging.info('---------------------------------------------------')
+    logging.info('- Pyodine chunk combination (based on iSONG code) -')
+    logging.info('---------------------------------------------------')
+    logging.info('')
     
-    printLog(diag_file, 'Weighting parameters used:')
+    logging.info('Weighting parameters used:')
     for key, value in pars.items():
         if isinstance(value, (list,tuple)):
             print_str = '\t{}\t'.format(key)
@@ -92,23 +101,23 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
                 print_str += str(value[i]) + '\t'
         else:
             print_str = '\t{}\t{}'.format(key, value)
-        printLog(diag_file, print_str)
-    printLog(diag_file, '')
+        logging.info(print_str)
+    logging.info('')
     
     # How many observations and chunks?
     (nr_obs, nr_chunks) = velocities.shape
-    printLog(diag_file, 'Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
+    logging.info('Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
     
     # Where are chunk velocities nan?
     ind_nan = np.where(np.isnan(velocities))
     if len(ind_nan[0]) > 0:
-        printLog(diag_file, '')
-        printLog(diag_file, 'Nan velocities (obs,chunk):')
+        logging.info('')
+        logging.info('Nan velocities (obs,chunk):')
         outstring = ''
         for i in range(len(ind_nan[0])):
             outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
-        printLog(diag_file, outstring)
-    printLog(diag_file, '')
+        logging.info(outstring)
+    logging.info('')
     
     # For each observation, center the chunk velocities around 0 by
     # subtracting the robust mean of that observation
@@ -139,9 +148,10 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     offsets_chunk -= robust_mean(vel_offset_corrected)
     
     # Print to file
-    printLog(diag_file, 'Chunk-to-chunk offsets from observation mean:')
-    printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
+    logging.info('Chunk-to-chunk offsets from observation mean:')
+    logging.info('Median: {:.2f} +- {:.2f}'.format(
             robust_mean(offsets_chunk), robust_std(offsets_chunk)))
+    logging.info('')
     
     # Set up the sigma and deviation arrays
     sig = np.zeros(nr_chunks)
@@ -167,9 +177,10 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     sig[ind] = pars['sig_correct']
     
     # Print to file
-    printLog(diag_file, 'Chunk sigmas:')
-    printLog(diag_file, 'Median: {:.2f} +- {:.2f}\n'.format(
+    logging.info('Chunk sigmas:')
+    logging.info('Median: {:.2f} +- {:.2f}'.format(
             robust_mean(sig), robust_std(sig)))
+    logging.info('')
     
     # Prepare the output dicts
     rv_dict = {
@@ -249,9 +260,9 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
     rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
     rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(chunk_weights, axis=0)))
     
-    printLog(diag_file, 'RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {} m/s'.format(
+    logging.info('RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {:.5f} m/s'.format(
             rv_precision1))
-    printLog(diag_file, 'RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {} m/s'.format(
+    logging.info('RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {:.5f} m/s'.format(
             rv_precision2))
     
     auxiliary_dict = {
@@ -398,30 +409,36 @@ _lick_pars = {
 def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts, bvc=None, 
                                   diag_file=None):
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     pars = _lick_pars
     
-    printLog(diag_file, '---------------------------------------------------')
-    printLog(diag_file, '- Pyodine chunk combination (based on Lick code)  -')
-    printLog(diag_file, '---------------------------------------------------\n')
+    logging.info('---------------------------------------------------')
+    logging.info('- Pyodine chunk combination (based on Lick code)  -')
+    logging.info('---------------------------------------------------')
+    logging.info('')
     
     # How many observations and chunks?
     (nr_obs, nr_chunks) = velocities.shape
-    printLog(diag_file, 'Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
+    logging.info('Nr. of obs, chunks per obs: {}, {}'.format(nr_obs, nr_chunks))
     
     # Give an overview of counts and redchi2 values
-    printLog(diag_file, 'Med. counts: {} +- {}'.format(np.nanmedian(medcnts), np.nanstd(medcnts)))
-    printLog(diag_file, 'Med. red. Chi^2: {} +- {}'.format(np.nanmedian(redchi2), np.nanstd(redchi2)))
+    logging.info('Med. counts: {} +- {}'.format(np.nanmedian(medcnts), np.nanstd(medcnts)))
+    logging.info('Med. red. Chi^2: {} +- {}'.format(np.nanmedian(redchi2), np.nanstd(redchi2)))
     
     # Where are chunk velocities nan?
     ind_nan = np.where(np.isnan(velocities))
     if len(ind_nan[0]) > 0:
-        printLog(diag_file, '')
-        printLog(diag_file, 'Nan velocities (obs,chunk):')
+        logging.info('')
+        logging.info('Nan velocities (obs,chunk):')
         outstring = ''
         for i in range(len(ind_nan[0])):
             outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
-        printLog(diag_file, outstring)
-    printLog(diag_file, '')
+        logging.info(outstring)
+    logging.info('')
     
     # Set up the barycentric corrected velocities and the weights array
     vel_bc = np.transpose(np.transpose(velocities) + bvc)
@@ -453,8 +470,8 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts,
         #plt.plot(rvel[i][good_ind]+i*1000., '.', alpha=0.3)
         #plt.plot(rvel[i][bad_ind], '.')
     
-    printLog(diag_file, '')
-    printLog(diag_file, 'Nr of velocity outlier chunks: {}'.format(weight[weight==0.].size))
+    logging.info('')
+    logging.info('Nr of velocity outlier chunks: {}'.format(weight[weight==0.].size))
     
     sorted_err = np.sort(err, axis=None)
     max_err = sorted_err[int(pars['percentile']*(len(sorted_err)-1))]
@@ -466,7 +483,7 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts,
     else:
         max_redchi2 = min(max_redchi2, pars['maxchi'])
     
-    printLog(diag_file, 'Maximum chunk error: {}, maximum chunk red. Chi^2: {}'.format(max_err, max_redchi2))
+    logging.info('Maximum chunk error: {}, maximum chunk red. Chi^2: {}'.format(max_err, max_redchi2))
     
     # Set weights of these chunks to zero (what about errs?!)
     err_ind = np.where(err > max_err)
@@ -478,15 +495,15 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts,
     weight[cnts_ind] = 0.
     
     # What are the chunks that we are left with?
-    printLog(diag_file, 'Total number of good chunks: {}'.format(weight[weight!=0.0].size))
-    printLog(diag_file, 'Bad chunks: {}'.format(weight[weight==0.0].size))
+    logging.info('Total number of good chunks: {}'.format(weight[weight!=0.0].size))
+    logging.info('Bad chunks: {}'.format(weight[weight==0.0].size))
     
     # Weight chunks by velocity rms of chunk series (over all observations!!!)
     sig = np.zeros(nr_chunks)
     default_sig = pars['default_sigma']
     
-    printLog(diag_file, '')
-    printLog(diag_file, 'Default chunk timeseries sigma: {}'.format(default_sig))
+    logging.info('')
+    logging.info('Default chunk timeseries sigma: {}'.format(default_sig))
     
     # First compute the chunk series deviation from observation medians (chunk rms)
     for k in range(nr_chunks):
@@ -496,14 +513,14 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts,
         else:
             sig[k] = default_sig
     
-    printLog(diag_file, 'Median chunk timeseries sigma: {} +- {}'.format(
+    logging.info('Median chunk timeseries sigma: {} +- {}'.format(
             np.nanmedian(sig), np.nanstd(sig)))
     ind_sig_above_default = np.where(sig>default_sig)[0]
     if len(ind_sig_above_default) > 0:
-        printLog(diag_file, 'Chunk timeseries above default sigma ({}):'.format(
+        logging.info('Chunk timeseries above default sigma ({}):'.format(
                 len(ind_sig_above_default)))
         for i in range(len(ind_sig_above_default)):
-            printLog(diag_file, '{}\t{}'.format(
+            logging.info('{}\t{}'.format(
                     ind_sig_above_default[i], sig[ind_sig_above_default[i]]))
     
     # Now weight each chunk rms to the mean rms
@@ -516,16 +533,16 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts,
         igd = np.where(weight[i,:] > 0.)
         weight[i,igd[0]] = 1./sig_obs[igd[0]]**2.
     
-    printLog(diag_file, '')
-    printLog(diag_file, 'Final median weights (without rejected ones): {} +- {}'.format(
+    logging.info('')
+    logging.info('Final median weights (without rejected ones): {} +- {}'.format(
             np.nanmedian(weight[weight!=0.]), np.nanstd(weight[weight!=0.])))
     
     # Finally compute weighted observation velocities
     # -> only use best 2 or 3 sigma (95.5 or 99.7 %)
     percentile2 = pars['useage_percentile'] #955 #997
     
-    printLog(diag_file, '')
-    printLog(diag_file, 'Final velocity rejection percentile limit: {}'.format(percentile2))
+    logging.info('')
+    logging.info('Final velocity rejection percentile limit: {}'.format(percentile2))
     
     all_gd = np.zeros((nr_obs, nr_chunks))
     
