@@ -79,10 +79,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
     """
     
     # Check whether a logger is already setup. If no, setup a new one
-    if not logging.getLogger().hasHandlers():
-        pyodine.lib.misc.setup_logging(
-                config_file=Pars.log_config_file, level=Pars.log_level,
-                error_log=error_log, info_log=info_log, quiet=quiet)
+    #if not logging.getLogger().hasHandlers():
+    pyodine.lib.misc.setup_logging(
+            config_file=Pars.log_config_file, level=Pars.log_level,
+            error_log=error_log, info_log=info_log, quiet=quiet)
     
     # I put everything in try - except, so that when it runs in parallel 
     # processes and something goes wrong, the overall routine does not crash.
@@ -337,7 +337,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             modelling_return = pipe_lib.model_all_chunks(
                     obs_chunks, chunk_weight, fitter, lmfit_params, 
                     tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
-                    use_progressbar=False)
+                    use_progressbar=Pars.use_progressbar)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
              run_results[run_id]['fitting_failed'], chauvenet_outliers, 

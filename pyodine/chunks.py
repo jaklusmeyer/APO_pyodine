@@ -1,4 +1,7 @@
 import numpy as np
+import logging
+import sys
+
 from pyodine.components import Chunk, ChunkArray
 
 
@@ -71,6 +74,11 @@ def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, p
     Return:
         :class:'ChunkArray': The created chunks.
     """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
 
     # In case no orders were submitted, chunk all orders
     if orders is None:
@@ -84,7 +92,7 @@ def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, p
     if chunks_per_order is None:
         chunks_per_order = max_chunks_per_order
     elif chunks_per_order > max_chunks_per_order:
-        print('Warning! Max. nr. of chunks without cutting down is {}!'.format(
+        logging.info('Warning! Max. nr. of chunks without cutting down is {}!'.format(
                 max_chunks_per_order))
 
     # Pixel offset of first chunk
@@ -104,11 +112,15 @@ def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, p
             endpix = startpix + width
             # Make sure that chunks do not extend past the order edges
             if startpix < 0:
-                print('Startpixel: ', startpix)
+                logging.info('Startpixel (order {}, chunk {}): {}'.format(
+                        i, j, startpix))
+                logging.info('-> Correcting to 0.')
                 startpix2 = 0
                 width2 = width + startpix
             elif endpix > len(obs[i]):
-                print('Endpixel: ', endpix)
+                logging.info('Endpixel (order {}, chunk {}): {}'.format(
+                        i, j, endpix))
+                logging.info('-> Correcting to maximum pixel in order.')
                 startpix2 = startpix
                 width2 = width - (endpix - len(obs[i]))
             else:
@@ -205,6 +217,11 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
         :class:'ChunkArray': The created chunks.
     """
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     # Check if desired chunk width corresponds to template chunk width
     temp_width = temp[1].pix0 - temp[0].pix0
     if width == None:
@@ -234,8 +251,8 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
     else:
         init_dv = (temp.bary_vel_corr - obs.bary_vel_corr)
     init_z  = init_dv / c
-    print('Barycentric redshift between template and observation: ')
-    print('v = {}, z = {}\n'.format(init_dv, init_z))
+    logging.info('Barycentric redshift between template and observation: ')
+    logging.info('v = {}, z = {}\n'.format(init_dv, init_z))
     
     # One order at a time
     for o in orders:
@@ -250,10 +267,15 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
             endpix = startpix + width
             # Make sure that chunks do not extend past the order edges
             if startpix < 0:
-                print('Startpixel: ', startpix)
+                logging.info('Startpixel (order {}, chunk {}): {}'.format(
+                        o, i, startpix))
+                logging.info('-> Correcting to 0.')
                 startpix2 = 0
                 width2 = width + startpix
             elif endpix > len(obs[o+order_correction]):
+                logging.info('Endpixel (order {}, chunk {}): {}'.format(
+                        o, i, endpix))
+                logging.info('-> Correcting to maximum pixel in order.')
                 startpix2 = startpix
                 width2 = width - (endpix - len(obs[o+order_correction]))
             else:

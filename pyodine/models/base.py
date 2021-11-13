@@ -2,6 +2,7 @@ from ..components import Spectrum
 
 class Model:
     """Abstract base model"""
+    param_names = None
 
     def make_param_list(self, parameter_set):
         """Return a list of parameters

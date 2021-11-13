@@ -73,10 +73,12 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
     """
     
     # Check whether a logger is already setup. If no, setup a new one
-    if not logging.getLogger().hasHandlers():
-        pyodine.lib.misc.setup_logging(
-                config_file=Pars.log_config_file, level=Pars.log_level,
-                error_log=error_log, info_log=info_log, quiet=quiet)
+    #if not logging.getLogger().hasHandlers():
+    #print('Create logger')
+    #print(logging.getLogger().hasHandlers())
+    pyodine.lib.misc.setup_logging(
+            config_file=Pars.log_config_file, level=Pars.log_level,
+            error_log=error_log, info_log=info_log, quiet=quiet)
     
     try:
         
@@ -347,7 +349,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             modelling_return = pipe_lib.model_all_chunks(
                     ostar_chunks, chunk_weight, fitter, lmfit_params, 
                     tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
-                    use_progressbar=True)
+                    use_progressbar=Pars.use_progressbar)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
              run_results[run_id]['fitting_failed'], chauvenet_outliers, 

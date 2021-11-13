@@ -25,7 +25,7 @@
 
 # But **pyodine** allows you to create the template without having to know exactly how it works. First, we need to set up the path and import the required pyodine modules:
 
-# In[56]:
+# In[1]:
 
 
 # Automatic reloading of imports
@@ -45,7 +45,7 @@ import pyodine_create_templates         # <- the template creation routines
 
 # Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from `fits`-format along with useful information from the `fits`-headers. Upon import we call the SONG-specific ``utilities_song`` simply ``utilities``:
 
-# In[3]:
+# In[2]:
 
 
 import utilities_song as utilities
@@ -53,7 +53,7 @@ import utilities_song as utilities
 
 # Additionally, a parameter input object of type ``Template_Parameters`` is needed. It contains all the instrument-specific parameters such as oversampling used in the modelling, how to chunk up the spectra, and also the exact definition of the workflow for the analysis routine. By default, there should be a module called ``pyodine_parameters`` within each ``utilities`` module, but you could also create a different one and import it if you wish to experiment with changing parameters. However, we will stick with the well-tested default parameters for SONG here:
 
-# In[4]:
+# In[3]:
 
 
 Pars = utilities.pyodine_parameters.Template_Parameters()
@@ -61,16 +61,16 @@ Pars = utilities.pyodine_parameters.Template_Parameters()
 
 # Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the directory name where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as '.h5' (HDF5 format), the second as '.pkl' (through the **dill** Python package).
 
-# In[5]:
+# In[4]:
 
 
 # O-star observations to use for the modelling
-ostar_dir = '/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar'
+ostar_dir   = '/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar'
 ostar_files = [os.path.join(ostar_dir, f) for f in os.listdir(ostar_dir)]
 ostar_files.sort()
 
 # Stellar observations to use for the deconvolution
-temp_dir = '/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp'
+temp_dir   = '/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp'
 temp_files = [os.path.join(temp_dir, f) for f in os.listdir(temp_dir)]
 temp_files.sort()
 
@@ -78,18 +78,23 @@ temp_files.sort()
 temp_outname = '/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5'
 
 # Output directory for plots and pathnames for modelling results
-plot_dir = '/home/paul/data_song2/data_res/sigdra/'
+plot_dir  = '/home/paul/data_song2/data_res/sigdra/'
 res_files = ['/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5',
              '/home/paul/data_song2/data_res/sigdra/sigdra_res1.pkl']
+
+# Log files
+error_file = '/home/paul/data_song2/data_res/sigdra/error.log'
+info_file  = '/home/paul/data_song2/data_res/sigdra/info.log'
 
 
 # And now, we can kick off the template creation:
 
-# In[18]:
+# In[5]:
 
 
 pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_files, 
-                                         temp_outname, plot_dir=plot_dir, res_files=res_files)
+                                         temp_outname, plot_dir=plot_dir, res_files=res_files, 
+                                         error_log=error_file, info_log=info_file)
 
 
 # Great, everything went fine! Let's have a look at the printed output:
@@ -110,7 +115,7 @@ pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_file
 
 # Alright, let's load the saved results and inspect them - first the results from the second (Multi-Gaussian) run. This is quite straight forward, as they were saved through the **dill** package, where the whole object structure is preserved and can easily be restored:
 
-# In[34]:
+# In[6]:
 
 
 fit_results_1 = pyodine.fitters.results_io.load_results(res_files[1], filetype='dill')
@@ -123,7 +128,7 @@ for r in fit_results_1:
 
 # The `fit_results_1` list contains the original fit-results objects for each chunk, along with model and chunk data, which makes it really easy to analyze and work with:
 
-# In[38]:
+# In[7]:
 
 
 print('Number of chunks/fit results:', len(fit_results_1))
@@ -135,7 +140,7 @@ print(fit_results_1[0].__dict__)
 # 
 # *Important:* As the data of the input spectra is not saved with the results when using the HDF5-format, the observation spectra must be loaded again from the pathnames used in the original modelling. Therefore you also need to hand the correct `utilities` module to the function. *Of course, this only works if the pathnames of the input spectra are still the same!*
 
-# In[39]:
+# In[8]:
 
 
 chunks, fit_results_0 = pyodine.fitters.results_io.restore_results_object(
@@ -144,7 +149,7 @@ chunks, fit_results_0 = pyodine.fitters.results_io.restore_results_object(
 
 # So let's have a look at the results (RUN 1 for now). Always interesting: Checking out some random chunk to see the data along with the best-fit model result for that chunk. This is straight forward, just use the dedicated built-in plotting function:
 
-# In[40]:
+# In[9]:
 
 
 # Chunk index
@@ -158,7 +163,7 @@ pyodine.plot_lib.plot_chunkmodel(fit_results_1, chunks, chunk_ind, template=Fals
 # 
 # Next, we can get an impression about the overall modelling success by plotting a histogram of the relative residuals of all chunks - again there is a built-in function for that:
 
-# In[41]:
+# In[10]:
 
 
 residuals = pyodine.plot_lib.plot_residual_hist(fit_results_1, title='Residuals histogram', 
@@ -167,7 +172,7 @@ residuals = pyodine.plot_lib.plot_residual_hist(fit_results_1, title='Residuals 
 
 # We can see that while most chunks have residuals around $1 \%$, there's a small peak of chunks with residuals around $2 \%$. To find out more, we can also just create a scatter plot of the residuals over all chunks:
 
-# In[42]:
+# In[11]:
 
 
 pyodine.plot_lib.plot_chunk_scatter(scatter=residuals, ylabel='Chunk residuals [%]', 
@@ -178,7 +183,7 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=residuals, ylabel='Chunk residuals [
 # 
 # Also, I'm always intrigued by looking at the actual LSFs. To do so, we must first evaluate them (in the fit results only the best-fit LSF parameters for each chunk are saved). Then, we can use another built-in function for plotting:
 
-# In[43]:
+# In[12]:
 
 
 # The LSF model, oversampling and convolution width used
@@ -210,7 +215,7 @@ pyodine.plot_lib.plot_lsfs_grid(lsfs, chunks, x_lsf=lsf_x, x_nr=3, y_nr=3,
 # 
 # where $\lambda_{-1}$ and $\lambda_{0}$ are the wavelengths of the last and first pixel of each chunk, and $\#_\mathrm{pix}$ is the number of pixels in the chunk.
 
-# In[44]:
+# In[13]:
 
 
 # The best-fit wavelength slopes for all chunks
@@ -225,7 +230,7 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=[wave_slopes_model,wave_slopes_data]
 
 # And now, for completeness sake, let's again look at the same chunk as in the beginning - but using the results from RUN 0. You'll see that the residuals are in fact larger when using the Single-Gaussian LSF:
 
-# In[45]:
+# In[14]:
 
 
 # Chunk index
@@ -239,7 +244,7 @@ pyodine.plot_lib.plot_chunkmodel(fit_results_0, chunks, chunk_ind, template=Fals
 
 # Of course, what we are really interested in is the deconvolved stellar template, as we will use that later when we model observations of the star. So, let's load the deconvolved template from file:
 
-# In[66]:
+# In[15]:
 
 
 template = pyodine.template.base.StellarTemplate_Chunked(temp_outname)
@@ -252,7 +257,7 @@ print('\nThe first chunk of the template:\n', template[0])
 # 
 # We want to compare it to the original stellar template observations that it was deconvolved from, so let's load these observations also:
 
-# In[67]:
+# In[16]:
 
 
 # First the individual observations into a list
@@ -264,7 +269,7 @@ temp_obs = pyodine.components.SummedObservation(*temp_obs_specs)
 
 # And now let us plot a chunk of both - for the summed observation we obviously need to extract exactly the part which corresponds to the template chunk:
 
-# In[68]:
+# In[17]:
 
 
 # Chunk index

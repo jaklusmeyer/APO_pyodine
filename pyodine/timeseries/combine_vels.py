@@ -33,8 +33,7 @@ _weighting_pars = {
 
 
 def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None, 
-                             wavelengths=None, diag_file=None, 
-                             weighting_pars=None):
+                             wavelengths=None, weighting_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
     This routine follows the algorithm used in the original iSONG pipeline 
@@ -56,9 +55,6 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         in each observation is supplied, the chromatic indices (crx) of the 
         observations are modelled.
     :type wavelength: ndarray[nr_obs,nr_chunks], or None
-    :param diag_file: If the pathname to a text-file is supplied, diagnosis
-        output is printed there in addition to terminal output.
-    :type diag_file: str, or None
     :param weighting_pars: A dictionary of parameters used in the weighting 
         algorithm. If None is supplied, a dictionary of default values is used.
     :type weighting_pars: dict, or None
@@ -406,8 +402,8 @@ _lick_pars = {
         }
 
 
-def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, medcnts, bvc=None, 
-                                  diag_file=None):
+def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, 
+                                  medcnts, bvc=None):
     
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():

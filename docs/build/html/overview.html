@@ -37,6 +37,8 @@
     <script src="_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Code structure" href="code_structure.html" />
@@ -231,7 +233,7 @@
 <p>To create a deconvolved stellar template, you can use the <code class="docutils literal notranslate"><span class="pre">pyodine_create_templates.create_template()</span></code> function:</p>
 <dl class="py function">
 <dt id="pyodine_create_templates.create_template">
-<code class="sig-prename descclassname">pyodine_create_templates.</code><code class="sig-name descname">create_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">ostar_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">temp_outname</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_create_templates.create_template" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyodine_create_templates.</code><code class="sig-name descname">create_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">ostar_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">temp_outname</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">info_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_create_templates.create_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a deconvolved stellar template</p>
 <p>This routine takes a list of hot star observations, which are modelled
 with the I2 template and LSF. The best-fit parameters (mainly LSF) are then
@@ -263,6 +265,12 @@ pathname(s). If you want to save results from multiple runs, you should
 supply pathnames for each run. If the directory structure does not 
 exist yet, it will be created in the process. If None is given, no 
 results will be saved (default).</p></li>
+<li><p><strong>error_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for error messages. If 
+None, no errors are logged.</p></li>
+<li><p><strong>info_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for info messages. If 
+None, no info is logged.</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em>) – Whether or not to print info messages to terminal. Defaults 
+to False (messages are printed).</p></li>
 </ul>
 </dd>
 </dl>
@@ -274,7 +282,7 @@ results will be saved (default).</p></li>
 <p>After you have created a deconvolved stellar template, you can use it to model an observation of the same star, obtained <strong>WITH</strong> the I2 cell in the light path. This is done with the function <code class="docutils literal notranslate"><span class="pre">pyodine_model_observations.model_single_observation()</span></code>:</p>
 <dl class="py function">
 <dt id="pyodine_model_observations.model_single_observation">
-<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_single_observation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_file</span></em>, <em class="sig-param"><span class="n">temp_file</span></em>, <em class="sig-param"><span class="n">iod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orders</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalizer</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tellurics</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_names</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_single_observation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_single_observation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_file</span></em>, <em class="sig-param"><span class="n">temp_file</span></em>, <em class="sig-param"><span class="n">iod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orders</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalizer</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tellurics</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_names</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">info_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_single_observation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model a single observation</p>
 <p>This routine models a stellar observation spectrum with I2, using a stellar
 template spectrum, I2 template and LSF model. The modelling can be
@@ -305,6 +313,12 @@ want to save results from multiple runs, you should supply a list with
 pathnames for each run. If the directory structure does not exist yet, 
 it will be created in the process. If None is given, no results will be 
 saved (default).</p></li>
+<li><p><strong>error_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for error messages. If 
+None, no errors are logged.</p></li>
+<li><p><strong>info_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for info messages. If 
+None, no info is logged.</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em>) – Whether or not to print info messages to terminal. Defaults 
+to False (messages are printed).</p></li>
 </ul>
 </dd>
 </dl>
@@ -316,7 +330,7 @@ saved (default).</p></li>
 <p>In many cases you will have more than one single observation of the same star that you want to model. Then you can take advantage of Python’s parallelizing capabilities and use the function <code class="docutils literal notranslate"><span class="pre">pyodine_model_observations.model_multi_observations()</span></code> to model the observations on several cores at the same time:</p>
 <dl class="py function">
 <dt id="pyodine_model_observations.model_multi_observations">
-<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_multi_observations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">plot_dirs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_multi_observations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyodine_model_observations.</code><code class="sig-name descname">model_multi_observations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">obs_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">plot_dirs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">info_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_model_observations.model_multi_observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model multiple observations at the same time</p>
 <p>This function can parallelize the modelling of multiple observations,
 taking advantage of Python’s <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> capabilities.
@@ -344,6 +358,14 @@ pathname(s). If you want to save results from multiple runs, you should
 supply pathnames for each run. If the directory structure does not 
 exist yet, it will be created in the process. If None is given, no 
 results will be saved (default).</p></li>
+<li><p><strong>error_files</strong> (<em>str</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – A pathname to a text-file with pathnames to log-files 
+used for error messages, or, alternatively, a list with the 
+pathname(s). If None, no errors are logged (default).</p></li>
+<li><p><strong>info_files</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname to a text-file with pathnames to log-files 
+used for info messages, or, alternatively, a list with the pathname(s). 
+If None, no info is logged (default).</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em>) – Whether or not to print info messages to terminal. Defaults 
+to False (messages are printed).</p></li>
 </ul>
 </dd>
 </dl>

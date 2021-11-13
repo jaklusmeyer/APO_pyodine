@@ -1,5 +1,7 @@
 import numpy as np
 from astropy.time import TimeDelta
+import logging
+import sys
 
 
 class NoDataError(BaseException):
@@ -184,6 +186,11 @@ class MultiOrderSpectrum:
     """
     nord = None
     npix = None
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
 
     @property
     def orders(self):
@@ -232,7 +239,7 @@ class MultiOrderSpectrum:
             except NoDataError:
                 pass
         if selected_order is None:
-            print(NoDataError(
+            logging.error(NoDataError(
                 'Could not find wavelength range {}-{} Å'.format(
                     wave_start, wave_stop
                 )))

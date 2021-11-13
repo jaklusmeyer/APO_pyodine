@@ -12,6 +12,8 @@ import os
 import matplotlib.pyplot as plt
 
 from progressbar import ProgressBar
+import logging
+import sys
 
 
 def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params, 
@@ -54,6 +56,11 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
     
     """
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     chauvenet_outliers = []
     fitting_failed = []
     results = []
@@ -92,14 +99,14 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
             if result.lmfit_result is not None and use_chauvenet is True:
                 mask, mask_true, mask_false = pyodine.lib.misc.chauvenet_criterion(result.residuals)
                 if any(mask)==False:
-                    print('Fit again, reject outliers... (chunk {})'.format(i))
+                    logging.info('Fit again, reject outliers... (chunk {})'.format(i))
                     chauvenet_outliers.append([i, chunk])
                     ch_w[mask_false] = 0.
                     # Fit again
                     result = fitter.fit(chunk, lmfit_params[i], weight=ch_w, chunk_ind=i)
         except Exception as e:
-            print('Chunk {}:'.format(i))
-            print(e)
+            logging.warning('Chunk {}:'.format(i))
+            logging.warning(e)
             fitting_failed.append(i)
             result = fitter.LmfitResult(chunk, fitter.model, None, chunk_ind=i)
         results.append(result)
@@ -183,6 +190,11 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
     :type lsf_array: ndarray[nr_chunks, nr_pix], or None
     
     """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
     
     # I put everything in try - except, so that it does not destroy 
     #everything else
@@ -326,8 +338,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     dpi=300, show_plot=False)
     
     except Exception as e:
-        print(e)
-        print('Run results analysis failed...')
+        logging.error('Run results analysis failed...', exc_info=True)
 
 
 def velocity_results_analysis(run_result, save_dir, nr_chunks_order, 
@@ -350,6 +361,11 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
     
     """
     
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     # I put everything in try - except, so that it does not destroy 
     #everything else
     try:
@@ -368,23 +384,23 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
         vel_error_robust_mean = pyodine.timeseries.misc.robust_mean(vel_errors)
         vel_error_robust_std = pyodine.timeseries.misc.robust_std(vel_errors)
         
-        print('Velocity robust mean:', velocity_robust_mean)
-        print('Velocity robust std:', velocity_robust_std)
-        print()
+        logging.info('Velocity robust mean: {}'.format(velocity_robust_mean))
+        logging.info('Velocity robust std: {}'.format(velocity_robust_std))
+        logging.info('')
         
-        print('Velocity error robust mean:', vel_error_robust_mean)
-        print('Velocity error robust std:', vel_error_robust_std)
-        print()
+        logging.info('Velocity error robust mean: {}'.format(vel_error_robust_mean))
+        logging.info('Velocity error robust std: {}'.format(vel_error_robust_std))
+        logging.info('')
         
         try:
-            print('Minimum error: {} in chunk {}'.format(np.nanmin(vel_errors), np.nanargmin(vel_errors)))
-            print('Maximum error: {} in chunk {}'.format(np.nanmax(vel_errors), np.nanargmax(vel_errors)))
+            logging.info('Minimum error: {} in chunk {}'.format(np.nanmin(vel_errors), np.nanargmin(vel_errors)))
+            logging.info('Maximum error: {} in chunk {}'.format(np.nanmax(vel_errors), np.nanargmax(vel_errors)))
         except Exception as e:
-            print(e)
-        print()
+            logging.error(e)
+        logging.info('')
         
-        print('Chunks with nan velocities: ', np.where(np.isnan(velocities))[0])
-        print('Chunks with nan velocity errors: ', np.where(np.isnan(vel_errors))[0])
+        logging.info('Chunks with nan velocities: {}'.format(np.where(np.isnan(velocities))[0]))
+        logging.info('Chunks with nan velocity errors: {}'.format(np.where(np.isnan(vel_errors))[0]))
         
         #velocities_finite = velocities[np.where(np.isfinite(vel_errors))]
         vel_errors_finite = vel_errors[np.where(np.isfinite(vel_errors))]
@@ -410,7 +426,7 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
         percent = 80
         if len(vel_errors_finite) != 0:
             percentiles = np.percentile(vel_errors_finite, percent)
-            print('Velocity error at percentile {}: {}'.format(percent, percentiles))
+            logging.info('Velocity error at percentile {}: {}'.format(percent, percentiles))
             
             maxbin = 1000.
             
@@ -475,6 +491,5 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
         plt.close()
     
     except Exception as e:
-        print(e)
-        print('Velocity results analysis failed...')
+        logging.error('Velocity results analysis failed...', exc_info=True)
     
