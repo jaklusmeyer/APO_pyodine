@@ -19,7 +19,7 @@
 
 # Again, first let's set up the path and import the required packages:
 
-# In[2]:
+# In[1]:
 
 
 # Automatic reloading of imports
@@ -39,7 +39,7 @@ import pyodine_model_observations       # <- the observation modelling routines
 
 # And, as before, import the utilities module and the parameter input object (this time not `Template_Parameters`, but `Parameters`):
 
-# In[3]:
+# In[2]:
 
 
 import utilities_song as utilities
@@ -49,7 +49,7 @@ Pars = utilities.pyodine_parameters.Parameters()
 
 # Now we define the pathnames of the input data and output results: first the observation filenames, and for each single observation we need to specify the pathname of the deconvolved stellar template to use for it; in our case it's always the same (as all observations are of the same star), but this structure allows also to model observations from different stars in the same go (useful e.g. when analyzing all observations of an observing night). Also we define plot directories and results filenames (now we save all in HDF5 - this takes up much less memory than when using **dill**):
 
-# In[4]:
+# In[3]:
 
 
 # Observations to model
@@ -61,14 +61,22 @@ obs_files.sort()
 temp_file = '/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5'
 temp_files = [temp_file] * len(obs_files)
 
-# Output directories for plots and output pathnames for modelling results
+# Output directories for plots, log files, and output pathnames for modelling results
 plot_dir_parent = '/home/paul/data_song2/data_res/sigdra_obs/'
 plot_dirs = []
+error_files = []
+info_files = []
 res_files = []
 for obs_file in obs_files:
+    # Plot directories
     plot_dir_base = os.path.splitext(os.path.basename(obs_file))[0]
     plot_dirs += [os.path.join(plot_dir_parent, plot_dir_base)]
     
+    # Log files
+    error_files += [os.path.join(plot_dirs[-1], 'error.log')]
+    info_files  += [os.path.join(plot_dirs[-1], 'info.log')]
+    
+    # Result files
     res_files.append([os.path.join(plot_dirs[-1], 'sigdra_res0.h5'), 
                       os.path.join(plot_dirs[-1], 'sigdra_res1.h5')])
 
@@ -80,7 +88,8 @@ for obs_file in obs_files:
 
 pyodine_model_observations.model_single_observation(
     utilities, Pars, obs_files[0], temp_files[0], 
-    plot_dir=plot_dirs[0], res_names=res_files[0])
+    plot_dir=plot_dirs[0], res_names=res_files[0],
+    error_log=error_files[0], info_log=info_files[0])
 
 
 # Great, let's again have a look at the output:
@@ -99,7 +108,7 @@ pyodine_model_observations.model_single_observation(
 
 # Now let's quickly take a look at the results of the second run (RUN 1) for this observation:
 
-# In[21]:
+# In[6]:
 
 
 # Restore the RUN 1 fit results for the first observation
@@ -109,7 +118,7 @@ chunks, fit_results = pyodine.fitters.results_io.restore_results_object(
 
 # We again plot the data and best-fit model for one chunk - this time setting `template=True` in the function, to also display the stellar template data of that chunk:
 
-# In[18]:
+# In[7]:
 
 
 # Chunk index
@@ -121,7 +130,7 @@ pyodine.plot_lib.plot_chunkmodel(fit_results, chunks, chunk_ind, template=True,
 
 # Great, and let's also check out the residuals of all chunks:
 
-# In[29]:
+# In[8]:
 
 
 # Plot the histogram of residuals
@@ -134,13 +143,7 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=residuals, ylabel='Chunk residuals [
 
 # Finally, it would be interesting to see the best-fit velocity results for all chunks, wouldn't it?
 
-# In[37]:
-
-
-chunks[0].observation.time_start.value
-
-
-# In[39]:
+# In[10]:
 
 
 # Fetch observation info
@@ -171,10 +174,16 @@ pyodine.plot_lib.plot_chunk_scatter(
 
 # We have seen now how to model a single observation, and what the results look like. For a timeseries however we need multiple observations, and to model these you can use the function `model_multi_observations` - it parallelizes the tasks to accelerate the whole procedure. With the attribute `number_cores` of your parameter object `Pars` you can control how many separate processes are created - right now it is set to 4, but better check your computing power before you run the code!
 
-# In[5]:
+# In[12]:
 
 
 pyodine_model_observations.model_multi_observations(
     utilities, Pars, obs_files, temp_files, 
-    plot_dirs=plot_dirs, res_files=res_files)
+    plot_dirs=plot_dirs, res_files=res_files, quiet=True)
+
+
+# In[ ]:
+
+
+
 

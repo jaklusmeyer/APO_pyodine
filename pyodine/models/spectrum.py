@@ -14,6 +14,8 @@ class SimpleModel(DynamicModel):
     chunk and build a model spectrum.
     """
     
+    param_names = ['velocity', 'tem_depth', 'iod_depth']
+    
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
@@ -147,8 +149,8 @@ class SimpleModel(DynamicModel):
             lsf = self.lsf_model.eval(x_lsf, lsf_params)
         """
         
-        x_lsf, lsf = self.eval_lsf(lsf_params)
-
+        x_lsf, lsf = self.eval_lsf(params)
+        
         #######################################################################
         ## CONVOLUTION:
         #######################################################################

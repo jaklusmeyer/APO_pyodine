@@ -269,14 +269,15 @@
 <span class="c1"># The directory for analysis plots</span>
 <span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_combined&#39;</span>
 
-<span class="c1"># The diagnosis file to write analysis info into</span>
-<span class="n">diag_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;diag_file.log&#39;</span><span class="p">)</span>
-
 <span class="c1"># The output name of the CombinedResults object</span>
 <span class="n">comb_res_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_combined.h5&#39;</span><span class="p">)</span>
 
 <span class="c1"># The output name of the velocity results text file</span>
 <span class="n">vels_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra.vels&#39;</span><span class="p">)</span>
+
+<span class="c1"># Log files</span>
+<span class="n">error_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;error.log&#39;</span><span class="p">)</span>
+<span class="n">info_file</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;info.log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -285,8 +286,8 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Results</span> <span class="o">=</span> <span class="n">pyodine_combine_vels</span><span class="o">.</span><span class="n">combine_velocity_results</span><span class="p">(</span>
-    <span class="n">Pars</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> <span class="n">diag_file</span><span class="o">=</span><span class="n">diag_file</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> 
-    <span class="n">comb_res_out</span><span class="o">=</span><span class="n">comb_res_out</span><span class="p">,</span> <span class="n">vels_out</span><span class="o">=</span><span class="n">vels_out</span><span class="p">)</span>
+    <span class="n">Pars</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">comb_res_out</span><span class="o">=</span><span class="n">comb_res_out</span><span class="p">,</span> 
+    <span class="n">vels_out</span><span class="o">=</span><span class="n">vels_out</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -309,25 +310,25 @@ Weighting parameters used:
 Nr. of obs, chunks per obs: 20, 528
 
 Chunk-to-chunk offsets from observation mean:
-Median: -1.83 +- 201.35
+Median: 6.77 +- 207.46
 
 Chunk sigmas:
-Median: 46.50 +- 36.23
+Median: 48.36 +- 35.31
 
-RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.6396876050001081 m/s
-RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.6396902508898112 m/s
+RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.73882 m/s
+RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.73882 m/s
 
 Saving results to:
 	/home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
+Saving combined results to /home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
 
 Creating and saving analysis plots to
 	/home/paul/data_song2/data_res/sigdra_combined:
 
 Observations with outlier RVs:
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-04-25T04-13-09_ext/sigdra_res1.h5
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-04-26T03-01-02_ext/sigdra_res1.h5
-All done!
-Full work time:  4.7134644985198975
+/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-05T04-33-08_ext/sigdra_res1.h5
+/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-06T03-54-42_ext/sigdra_res1.h5
+All done! Full work time: 4.9361412525177
 </pre></div>
 </div>
 </div>
@@ -418,7 +419,7 @@ Full work time:  4.7134644985198975
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit_lower</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit_upper</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">1500.</span><span class="p">,</span> <span class="mf">2400.</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">1600.</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>

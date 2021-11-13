@@ -20,9 +20,9 @@ import importlib
 
 
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
-                             diag_file=None, plot_dir=None, comb_res_out=None, 
-                             vels_out=None, reject_files=None, error_log=None, 
-                             info_log=None, quiet=False):
+                             plot_dir=None, comb_res_out=None, vels_out=None, 
+                             reject_files=None, error_log=None, info_log=None, 
+                             quiet=False):
     """Weight and combine chunk velocities from modelling results
     
     :param Pars: The parameters to use in the routine.
@@ -35,12 +35,6 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     :param comb_res_in: A pathname to a saved CombinedResults object to load. 
         If this is None, hand individual results to 'res_files'!
     :type comb_res_in: str, or None
-    :param diag_file: The pathname of a text-file to write diagnosis messages 
-        into. If None, the messages are just printed in the terminal.
-    :type diag_file: str, or None
-    :param plot_dir: The directory name to save analysis plots into. If it does
-        not exist, the directory is created in the process. If None, no plots
-        are saved.
     :type plot_dir: str, or None
     :param comb_res_out: The pathname where to save the final CombinedResults 
         object into. If None, the results are not saved.
@@ -69,10 +63,10 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     """
     
     # Check whether a logger is already setup. If no, setup a new one
-    if not logging.getLogger().hasHandlers():
-        pyodine.lib.misc.setup_logging(
-                config_file=Pars.log_config_file, level=Pars.log_level,
-                error_log=error_log, info_log=info_log, quiet=quiet)
+    #if not logging.getLogger().hasHandlers():
+    pyodine.lib.misc.setup_logging(
+            config_file=Pars.log_config_file, level=Pars.log_level,
+            error_log=error_log, info_log=info_log, quiet=quiet)
     
     try:
         # Start timer
@@ -104,13 +98,6 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             raise ValueError('Either hand individual fit results through "res_files"' +
                              'as list or tuple or in a text-file, or an existing' +
                              'CombinedResults object through "comb_res_in"!')
-        
-        # Final output name for the diagnosis file (setup the directory structure 
-        # if non-existent)
-        if isinstance(diag_file, str):
-            diag_file_dir = os.path.dirname(diag_file)
-            if not os.path.exists(diag_file_dir):
-                os.makedirs(diag_file_dir)
         
         # Output directory for plots (setup the directory structure if non-existent)
         if isinstance(plot_dir, str):
@@ -153,11 +140,12 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
                 Results.remove_observations(res_names=reject_names)
         
         Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
-                                  diag_file=diag_file, do_crx=Pars.do_crx)
+                                  do_crx=Pars.do_crx)
         
         if isinstance(vels_out, str):
             Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
-                                   delimiter=Pars.txt_delimiter, header=Pars.txt_header,
+                                   delimiter=Pars.txt_delimiter, 
+                                   header=Pars.txt_header,
                                    outformat=Pars.txt_outformat)
         
         ###########################################################################
@@ -332,7 +320,6 @@ if __name__ == '__main__':
     parser.add_argument('par_file', type=str, help='The pathname to the timeseries parameters file to use.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with the pathnames of modelling results.')
     parser.add_argument('--comb_res_in', type=str, help='The pathname to a saved CombinedResults object.')
-    parser.add_argument('--diag_file', type=str, help='The pathname of a text-file to write diagnosis messages into.')
     parser.add_argument('--plot_dir', type=str, help='The pathname to a directory where to save analysis plots.')
     parser.add_argument('--comb_res_out', type=str, help='The pathname where to save the CombinedResults object.')
     parser.add_argument('--vels_out', type=str, help='The pathname of a text-file where to save chosen timeseries results.')
@@ -347,7 +334,6 @@ if __name__ == '__main__':
     par_file = args.par_file
     res_files = args.res_files
     comb_res_in = args.comb_res_in
-    diag_file = args.diag_file
     plot_dir = args.plot_dir
     comb_res_out = args.comb_res_out
     vels_out = args.vels_out
@@ -363,7 +349,7 @@ if __name__ == '__main__':
     
     # And run the velocity weighting routine
     combine_velocity_results(Pars, res_files=res_files, comb_res_in=comb_res_in, 
-                             diag_file=diag_file, plot_dir=plot_dir, 
-                             comb_res_out=comb_res_out, vels_out=vels_out, 
-                             reject_files=reject_files, error_log=error_file, 
-                             info_log=info_file, quiet=quiet)
+                             plot_dir=plot_dir, comb_res_out=comb_res_out, 
+                             vels_out=vels_out, reject_files=reject_files, 
+                             error_log=error_file, info_log=info_file, 
+                             quiet=quiet)

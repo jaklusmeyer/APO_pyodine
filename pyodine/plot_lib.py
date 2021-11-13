@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 import numpy as np
 from os import path
+import logging
+import sys
+
 from .template.base import StellarTemplate_Chunked
 from .timeseries.misc import robust_std
 
@@ -48,6 +51,12 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         to False.
     :type show_plot: bool
     """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     # Evaluate model
     try:
         sp = fit_results[chunk_nr].fitted_spectrum
@@ -149,8 +158,9 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         if show_plot:
             plt.show()
         plt.close()
+        
     except Exception as e:
-        print(e)
+        logging.error('Chunk could not be plotted', exc_info=True)
 
 
 def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=True, 
@@ -188,59 +198,69 @@ def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=Tr
     :rtype: tuple or ndarray
     
     """
-    if residual_arr is None:
-        all_res = np.array([r.rel_residuals_rms(robust=robust)*1e2 for r in fit_results \
-                            if r.lmfit_result is not None])
-        if tellurics is not None:
-            sub_res = []
-            for r in fit_results:
-                if r.lmfit_result is not None:
-                    ind = np.array(tellurics.is_affected(r.fitted_spectrum.wave))
-                    sub_res.append(robust_std(r.residuals[np.where(ind==0)]/r.fitted_spectrum.flux[np.where(ind==0)])*1e2)
-            sub_res = np.array(sub_res)
-        else:
-            sub_res = None
-    else:
-        if type(residual_arr) is tuple:
-            if len(residual_arr) == 2:
-                all_res, sub_res = residual_arr
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
+    try:
+        if residual_arr is None:
+            all_res = np.array([r.rel_residuals_rms(robust=robust)*1e2 for r in fit_results \
+                                if r.lmfit_result is not None])
+            if tellurics is not None:
+                sub_res = []
+                for r in fit_results:
+                    if r.lmfit_result is not None:
+                        ind = np.array(tellurics.is_affected(r.fitted_spectrum.wave))
+                        sub_res.append(robust_std(r.residuals[np.where(ind==0)]/r.fitted_spectrum.flux[np.where(ind==0)])*1e2)
+                sub_res = np.array(sub_res)
             else:
-                all_res = residual_arr[0]
                 sub_res = None
         else:
-            all_res = residual_arr
-            sub_res = None
+            if type(residual_arr) is tuple:
+                if len(residual_arr) == 2:
+                    all_res, sub_res = residual_arr
+                else:
+                    all_res = residual_arr[0]
+                    sub_res = None
+            else:
+                all_res = residual_arr
+                sub_res = None
+        
+        fig, ax = plt.subplots(figsize=(14,8))
+        ax.hist(all_res, bins=np.arange(0,10,0.1))#np.nanmax(all_res)*0.8,0.1))
+        ax.set_xlabel('Residuals [%]')
+        
+        axins = ax.inset_axes([0.48, 0.4, 0.5, 0.58])
+        axins.hist(all_res, bins=np.arange(0,2,0.02))
+        
+        if sub_res is not None:
+            ax.hist(sub_res, bins=np.arange(0,10,0.1), alpha=0.5)#np.nanmax(sub_res),0.1), alpha=0.5)
+            axins.hist(sub_res, bins=np.arange(0,2,0.02), alpha=0.5)
+            axins.legend(['All: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(all_res), np.nanstd(all_res)), 
+                          'Outside tell.: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(sub_res), np.nanstd(sub_res))])
+        else:
+            axins.legend(['All: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(all_res), np.nanstd(all_res))])
+        
+        if title == '':
+            title = 'Distribution of chunk residuals'
+        ax.set_title(title)
+        
+        if savename is not None:
+            fmt = path.splitext(savename)[1][1:]
+            plt.savefig(savename, format=fmt, dpi=dpi)
+        if show_plot:
+            plt.show()
+        plt.close()
+        
+        if sub_res is not None:
+            return all_res, sub_res
+        else:
+            return all_res
     
-    fig, ax = plt.subplots(figsize=(14,8))
-    ax.hist(all_res, bins=np.arange(0,10,0.1))#np.nanmax(all_res)*0.8,0.1))
-    ax.set_xlabel('Residuals [%]')
-    
-    axins = ax.inset_axes([0.48, 0.4, 0.5, 0.58])
-    axins.hist(all_res, bins=np.arange(0,2,0.02))
-    
-    if sub_res is not None:
-        ax.hist(sub_res, bins=np.arange(0,10,0.1), alpha=0.5)#np.nanmax(sub_res),0.1), alpha=0.5)
-        axins.hist(sub_res, bins=np.arange(0,2,0.02), alpha=0.5)
-        axins.legend(['All: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(all_res), np.nanstd(all_res)), 
-                      'Outside tell.: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(sub_res), np.nanstd(sub_res))])
-    else:
-        axins.legend(['All: med={:.3f}$\pm${:.3f}%'.format(np.nanmedian(all_res), np.nanstd(all_res))])
-    
-    if title == '':
-        title = 'Distribution of chunk residuals'
-    ax.set_title(title)
-    
-    if savename is not None:
-        fmt = path.splitext(savename)[1][1:]
-        plt.savefig(savename, format=fmt, dpi=dpi)
-    if show_plot:
-        plt.show()
-    plt.close()
-    
-    if sub_res is not None:
-        return all_res, sub_res
-    else:
-        return all_res
+    except Exception as e:
+        logging.error('Residual histogram could not be plotted', exc_info=True)
 
 
 def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1., 
@@ -337,6 +357,12 @@ def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1.,
     :type show_plot: bool
     
     """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
     # Make sure that if some input data was wrong, the whole program does not
     # crash
     try:
@@ -444,7 +470,7 @@ def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1.,
         plt.close()
     
     except Exception as e:
-        print(e)
+        logging.error('Residuals could not be plotted', exc_info=True)
 
 
 def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0, 
@@ -485,38 +511,47 @@ def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0,
         to False.
     :type show_plot: bool
     
-    """    
+    """
     
-    nr_chunks_order = len(chunks.get_order(chunks[0].order))
-    nr_orders = len(chunks.orders)
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
     
-    if not isinstance(x_lsf, (list,np.ndarray)):
-        x_lsf = np.linspace(-len(lsf_array[0])/2., len(lsf_array[0])/2., len(lsf_array[0]))
-    
-    fig = plt.figure(figsize=(4*x_nr,4*y_nr))
-    gs = gridspec.GridSpec(y_nr, x_nr, height_ratios=[x_nr/y_nr]*y_nr, width_ratios=[y_nr/x_nr]*x_nr)
-    ax = []
-    for i in range(y_nr):
-        for j in range(x_nr):
-            ax.append(plt.subplot(gs[i, j]))
-            #ind = int(nr_chunks_total/18.) + int(nr_chunks_total/9.) * (i*3+j)
-            ind = (int(nr_orders/y_nr/2.) + int(nr_orders/y_nr) * i) * nr_chunks_order + \
-                    (int(nr_chunks_order/x_nr/2.) + int(nr_chunks_order/x_nr) * j)
-            ax[-1].plot(x_lsf, lsf_array[ind], '-o', alpha=alpha)
-            
-            ax[-1].set_title('Chunk {}, order {}, pixel {}'.format(
-                    ind, chunks[ind].order, chunks[ind].abspix[int(len(chunks[ind])/2.)]))
-            #ax[-1].set_title('Chunk {}'.format(ind))
-            ax[-1].set_ylim(np.nanmin(lsf_array)-0.002, np.nanmax(lsf_array)+0.002)
-            if isinstance(xlim, (list, tuple, np.ndarray)) and len(xlim) == 2:
-                ax[-1].set_xlim(xlim[0], xlim[1])
-            plt.grid(grid)
+    try:
+        nr_chunks_order = len(chunks.get_order(chunks[0].order))
+        nr_orders = len(chunks.orders)
         
-    if savename is not None:
-        fmt = path.splitext(savename)[1][1:]
-        plt.savefig(savename, format=fmt, dpi=dpi)
-    if show_plot:
-        plt.show()
-    plt.close()
+        if not isinstance(x_lsf, (list,np.ndarray)):
+            x_lsf = np.linspace(-len(lsf_array[0])/2., len(lsf_array[0])/2., len(lsf_array[0]))
+        
+        fig = plt.figure(figsize=(4*x_nr,4*y_nr))
+        gs = gridspec.GridSpec(y_nr, x_nr, height_ratios=[x_nr/y_nr]*y_nr, width_ratios=[y_nr/x_nr]*x_nr)
+        ax = []
+        for i in range(y_nr):
+            for j in range(x_nr):
+                ax.append(plt.subplot(gs[i, j]))
+                #ind = int(nr_chunks_total/18.) + int(nr_chunks_total/9.) * (i*3+j)
+                ind = (int(nr_orders/y_nr/2.) + int(nr_orders/y_nr) * i) * nr_chunks_order + \
+                        (int(nr_chunks_order/x_nr/2.) + int(nr_chunks_order/x_nr) * j)
+                ax[-1].plot(x_lsf, lsf_array[ind], '-o', alpha=alpha)
+                
+                ax[-1].set_title('Chunk {}, order {}, pixel {}'.format(
+                        ind, chunks[ind].order, chunks[ind].abspix[int(len(chunks[ind])/2.)]))
+                #ax[-1].set_title('Chunk {}'.format(ind))
+                ax[-1].set_ylim(np.nanmin(lsf_array)-0.002, np.nanmax(lsf_array)+0.002)
+                if isinstance(xlim, (list, tuple, np.ndarray)) and len(xlim) == 2:
+                    ax[-1].set_xlim(xlim[0], xlim[1])
+                plt.grid(grid)
+            
+        if savename is not None:
+            fmt = path.splitext(savename)[1][1:]
+            plt.savefig(savename, format=fmt, dpi=dpi)
+        if show_plot:
+            plt.show()
+        plt.close()
+        
+    except Exception as e:
+        logging.error('LSFs could not be plotted', exc_info=True)
 
 

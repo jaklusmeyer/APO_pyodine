@@ -42,7 +42,7 @@ Pars = utilities.timeseries_parameters.Timeseries_Parameters()
 
 # Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a `CombinedResults` object, can be saved to a HDF5-file whose pathname we also specify below.
 
-# In[4]:
+# In[3]:
 
 
 # Individual result files to use
@@ -53,24 +53,25 @@ res_files.sort()
 # The directory for analysis plots
 plot_dir = '/home/paul/data_song2/data_res/sigdra_combined'
 
-# The diagnosis file to write analysis info into
-diag_file = os.path.join(plot_dir, 'diag_file.log')
-
 # The output name of the CombinedResults object
 comb_res_out = os.path.join(plot_dir, 'sigdra_combined.h5')
 
 # The output name of the velocity results text file
 vels_out = os.path.join(plot_dir, 'sigdra.vels')
 
+# Log files
+error_file = os.path.join(plot_dir, 'error.log')
+info_file  = os.path.join(plot_dir, 'info.log')
+
 
 # Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the `CombinedResults` object as well as some analysis plots and additional data as specified above. In the end the `CombinedResults` object is returned:
 
-# In[7]:
+# In[4]:
 
 
 Results = pyodine_combine_vels.combine_velocity_results(
-    Pars, res_files=res_files, diag_file=diag_file, plot_dir=plot_dir, 
-    comb_res_out=comb_res_out, vels_out=vels_out)
+    Pars, res_files=res_files, plot_dir=plot_dir, comb_res_out=comb_res_out, 
+    vels_out=vels_out, error_log=error_file, info_log=info_file)
 
 
 # Great, and again some print output to explain:
@@ -85,7 +86,7 @@ Results = pyodine_combine_vels.combine_velocity_results(
 
 # Now finally, after all this modelling, we can plot our RV timeseries:
 
-# In[10]:
+# In[5]:
 
 
 # The barycentric date, RV with barycentric correction, and RV uncertainty
@@ -109,7 +110,7 @@ plt.title('{}: RV timeseries'.format(star_name))
 
 
 
-# In[11]:
+# In[6]:
 
 
 fig = plt.figure(figsize=(10,6))
@@ -125,7 +126,7 @@ plt.title('{}: Chromatix index variation'.format(star_name))
 
 
 
-# In[12]:
+# In[7]:
 
 
 fig = plt.figure(figsize=(10,6))
@@ -141,7 +142,7 @@ plt.title('{}: Chunk velocity scatter in observations'.format(star_name))
 
 
 
-# In[5]:
+# In[11]:
 
 
 obs_ind = 10
@@ -159,7 +160,7 @@ plt.plot(Results.params['wave_intercept'][obs_ind], Results.params['velocity'][o
 plt.plot(Results.params['wave_intercept'][obs_ind], velocities_fit, alpha=0.7)
 plt.plot(Results.params['wave_intercept'][obs_ind], velocities_fit_lower, 'k', alpha=0.3)
 plt.plot(Results.params['wave_intercept'][obs_ind], velocities_fit_upper, 'k', alpha=0.3)
-plt.ylim(1500., 2400.)
+plt.ylim(500., 1600.)
 plt.show()
 plt.close()
 

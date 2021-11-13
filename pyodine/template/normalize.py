@@ -140,12 +140,12 @@ class SimpleNormalizer(Normalizer):
         if len(jj[0]) > 100 \
                 and np.std(jj[0]) > 0.2 * len(wave) \
                 and np.abs(np.std(flux[jj]) / np.mean(flux[jj])) < 3 * threshold:
-            logging.info('Fit the continuum...')
+            logging.debug('Fit the continuum...')
             
             yfit = np.polyval(np.polyfit(pix[jj], flux[jj], 4), pix)
             return yfit
         else:
-            logging.info('Dropping...')
+            logging.debug('Dropping...')
 
             raise ValueError('Solar comparison failed - could not fit.')
 

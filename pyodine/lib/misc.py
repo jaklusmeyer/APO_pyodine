@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.special import erfinv
-import logging
-import os.path as path
+import os
 import json
+import logging
 import logging.config
 
 _c = 299792458  # m/s
@@ -34,7 +34,7 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
     log_handlers = []
     
     # Is the configuration file (json format) there?
-    if isinstance(config_file, str) and path.exists(config_file):
+    if isinstance(config_file, str) and os.path.exists(config_file):
         try:
             # Try and load the configuration dictionary
             with open(config_file, 'rt') as f:
@@ -42,6 +42,12 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
             
             # If you want errors logged
             if isinstance(error_log, str):
+                
+                # Create directory structure if non-existent yet
+                error_log_dir = os.path.dirname(error_log)
+                if not os.path.exists(error_log_dir):
+                    os.makedirs(error_log_dir)
+                
                 config['handlers']['error_file_handler']['filename'] = error_log
                 log_handlers.append('error_file_handler')
             else:
@@ -49,6 +55,12 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
             
             # If you want info logged
             if isinstance(info_log, str):
+                
+                # Create directory structure if non-existent yet
+                info_log_dir = os.path.dirname(info_log)
+                if not os.path.exists(info_log_dir):
+                    os.makedirs(info_log_dir)
+                
                 config['handlers']['info_file_handler']['filename'] = info_log
                 config['handlers']['info_file_handler']['level'] = level
                 log_handlers.append('info_file_handler')
@@ -92,8 +104,8 @@ def return_existing_files(filenames):
         filenames = [filenames]
     
     if isinstance(filenames, (list,tuple,np.ndarray)):
-        existing_files = [f for f in filenames if path.isfile(f)]
-        bad_files = [f for f in filenames if not path.isfile(f)]
+        existing_files = [f for f in filenames if os.path.isfile(f)]
+        bad_files = [f for f in filenames if not os.path.isfile(f)]
     else:
         raise ValueError('No files supplied! (Either of str, list, ndarray, tuple)')
     

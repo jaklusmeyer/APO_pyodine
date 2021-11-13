@@ -264,12 +264,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre></div>
-</div>
-</div>
 </div>
 <p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from <code class="docutils literal notranslate"><span class="pre">fits</span></code>-format along with useful information from the <code class="docutils literal notranslate"><span class="pre">fits</span></code>-headers. Upon import we call the SONG-specific <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> simply <code class="docutils literal notranslate"><span class="pre">utilities</span></code>:</p>
 <div class="cell docutils container">
@@ -291,12 +285,12 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># O-star observations to use for the modelling</span>
-<span class="n">ostar_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar&#39;</span>
+<span class="n">ostar_dir</span>   <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar&#39;</span>
 <span class="n">ostar_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ostar_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">ostar_dir</span><span class="p">)]</span>
 <span class="n">ostar_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># Stellar observations to use for the deconvolution</span>
-<span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp&#39;</span>
+<span class="n">temp_dir</span>   <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp&#39;</span>
 <span class="n">temp_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)]</span>
 <span class="n">temp_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
@@ -304,9 +298,13 @@
 <span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5&#39;</span>
 
 <span class="c1"># Output directory for plots and pathnames for modelling results</span>
-<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/&#39;</span>
+<span class="n">plot_dir</span>  <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/&#39;</span>
 <span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5&#39;</span><span class="p">,</span>
              <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res1.pkl&#39;</span><span class="p">]</span>
+
+<span class="c1"># Log files</span>
+<span class="n">error_file</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/error.log&#39;</span>
+<span class="n">info_file</span>  <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/info.log&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -315,40 +313,50 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_create_templates</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">ostar_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
-                                         <span class="n">temp_outname</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">)</span>
+                                         <span class="n">temp_outname</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> 
+                                         <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Orders to use:  [18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+Aiming to create template: /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
+
+Orders to use: [18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41]
+
 Velocity guess: 25.136 km/s
 Barycentric velocity: 2.026 km/s
 Warning! Max. nr. of chunks without cutting down is 21!
 
-Total number of chunks:  528
-Chunks per order:  22
+Total number of chunks: 528
+Chunks per order: 22
 First and last covered pixel of chunks: 30, 2031
-Orders:  18  -  41
-
+Orders: 18 - 41
 
 ----------------------
 RUN 0
 ----------------------
+
+Constraining parameters for RUN 0
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:18 Time:  0:00:18
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:16 Time:  0:00:16
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
-Number of chunks with outliers:  0
-Number of chunks with nan fitted red. Chi2:  0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
+Number of chunks with outliers: 0
+Number of chunks with nan fitted red. Chi2: 0
+
 Creating analysis plots...
 
 ----------------------
 RUN 1
 ----------------------
+
+Constraining parameters for RUN 1
+
 Fitted LSF parameters:
- &lt;ParameterSet (values: 10)&gt;
+&lt;ParameterSet (values: 10)&gt;
     left_1  =  6.491226501145553
     left_2  =  -8.060503954209725
     left_3  =  4.2641949580532925
@@ -361,24 +369,27 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:29 Time:  0:01:29
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:30 Time:  0:01:30
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties:  0
-Number of chunks with outliers:  0
-Number of chunks with nan fitted red. Chi2:  0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
+Number of chunks with outliers: 0
+Number of chunks with nan fitted red. Chi2: 0
+
 Creating analysis plots...
 
 ----------------------
 All runs done, continuing to template deconvolution...
-
+Deconvolve: /home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-15-36_ext.fits
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:03 Time:  0:02:03
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:01 Time:  0:02:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  268.14899373054504
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving deconvolved template to /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
+
+Done, full working time: 266.37124514579773
 </pre></div>
 </div>
 </div>
@@ -421,7 +432,7 @@ Deconvolving chunks...
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks/fit results: 528
 
 Object structure of each fit result:
-{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7fbb55c67a90&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7fbb56342220&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7fbb56342160&gt;, &#39;chunk_ind&#39;: 0}
+{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7f1762353460&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7f176332f9d0&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7f176332f640&gt;, &#39;chunk_ind&#39;: 0}
 </pre></div>
 </div>
 </div>
@@ -564,7 +575,8 @@ Number of created chunks per order: 22
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The deconvolved template object:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading template from file: /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
+The deconvolved template object:
  &lt;StellarTemplate_Chunked of HD 185144 (528 chunks, 24 orders)&gt;
 
 The first chunk of the template:

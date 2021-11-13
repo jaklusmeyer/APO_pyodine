@@ -41,8 +41,7 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
-    def create_timeseries(self, weighting_pars=None, diag_file=None, 
-                          do_crx=True):
+    def create_timeseries(self, weighting_pars=None, do_crx=True):
         """Create the timeseries data (weighted and unweighted RVs with 
         uncertainties, chunk-to-chunk scatter, RV precision measures, and
         optionally chromatic indices with uncertainties)
@@ -51,10 +50,6 @@ class CombinedResults():
             needed in the weighting algorithm. If None, a dictionary of 
             default values is used there.
         :type weighting_pars: dict, or None
-        :param diag_file: A pathname of a text-file to write diagnostic 
-            information about the weighting process into. If None, the info
-            is just printed to the terminal.
-        :type diag_file: str, or None
         :param do_crx: Whether to also compute chromatic indices of the 
             observations. Defaults to True.
         :type do_crx: bool
@@ -67,12 +62,11 @@ class CombinedResults():
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities(
                 velocities, self.nr_chunks_order, bvc=bvc, 
-                wavelengths=wavelengths, diag_file=diag_file, 
-                weighting_pars=weighting_pars)
+                wavelengths=wavelengths, weighting_pars=weighting_pars)
         """
         tseries, self.auxiliary = combine_chunk_velocities_lick(
                 velocities, self.nr_chunks_order, self.redchi2, self.medcnts, 
-                bvc=bvc, diag_file=diag_file)
+                bvc=bvc)
         """
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()
