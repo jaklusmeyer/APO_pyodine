@@ -8,7 +8,7 @@ Created on Mon Nov 15 15:05:14 2021
 
 import os
 
-
+"""
 print()
 print('----------------------------------------------------')
 print('               Welcome to pyodine!                  ')
@@ -88,4 +88,4 @@ for ud in utilities_dirs:
             print(e)
     
     
-    
+"""
