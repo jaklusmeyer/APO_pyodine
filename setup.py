@@ -9,8 +9,10 @@ Created on Mon Nov 15 15:05:14 2021
 import os
 
 
+print()
 print('----------------------------------------------------')
 print('               Welcome to pyodine!                  ')
+print('----------------------------------------------------')
 print()
 
 ###############################################################################
@@ -64,9 +66,20 @@ for ud in utilities_dirs:
                 
                 for line in old_file:
                     stripped_line = line.strip()
-                    if value in stripped_line and stripped_line[stripped_line.index(value)+1] == '=':
-                        stripped_line[-1] = paths[value]
-                    new_file_content += stripped_line
+                    if value in stripped_line:
+                        ind = stripped_line.index(value)
+                        
+                        if '=' in stripped_line[ind+len(value):ind+len(value)+3]:
+                            stripped_line_new = "{} = '{}'".format(value, paths[value])
+                            
+                            print('File:', os.path.join(ud, key))
+                            print('\tChanged line:')
+                            print('\t{} -> {}\n'.format(stripped_line, stripped_line_new))
+                        
+                    else:
+                        stripped_line_new = stripped_line
+                            
+                    new_file_content += stripped_line_new + '\n'
             
             with open(os.path.join(ud, key), 'w') as new_file:
                 new_file.write(new_file_content)
