@@ -1,5 +1,9 @@
 from pyodine.components import Instrument
 
+import os
+
+i2_dir_path = '/home/paul/pyodine/iodine_atlas'
+
 # Used by get_instrument below...  # TODO: Make a settings file
 my_instruments = {
     'song_1': Instrument(
@@ -30,7 +34,6 @@ my_instruments = {
 
 # List of iodine atlas locations
 my_iodine_atlases = {
-    1: '../data_lick/iodine_atlas/song_iodine_cell_01_65C.h5',
-    2: '../data_lick/iodine_atlas/ftslick05_norm_new.h5',
-    3: '../data_lick/iodine_atlas/ftslick05_norm_new_wavetuned.h5'
+    1: os.path.join(i2_dir_path, 'song_iodine_cell_01_65C.h5'),
+    2: os.path.join(i2_dir_path, 'ftslick05_norm_new.h5')
 }
