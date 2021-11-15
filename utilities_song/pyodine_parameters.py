@@ -5,9 +5,14 @@
     Paul Heeren, 3/02/2021
 """
 
-import logging
 from pyodine import models
+
+import logging
+import os
 import sys
+
+
+master_dir_path = '/home/paul/pyodine'
 
 ###############################################################################
 ## Here we define the instrument-specific setup of the LSFs. These values can #
@@ -47,7 +52,7 @@ class Parameters:
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         self.number_cores = 4                   # Number of processor cores for multiprocessing
         
-        self.log_config_file = '/home/paul/pyodine/utilities_song/logging.json'   # The logging config file
+        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         self.use_progressbar = False            # Use a progressbar during chunk modelling?
@@ -374,7 +379,7 @@ class Template_Parameters:
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         
-        self.log_config_file = '/home/paul/pyodine/utilities_song/logging.json'   # The logging config file
+        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         self.use_progressbar = True             # Use a progressbar during chunk modelling?
