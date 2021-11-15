@@ -359,7 +359,7 @@ class Parameters:
 class Template_Parameters:
     """The control commands for the main template creation routine
     
-    This is mostly the same as the :class:'Parameters' class, but with some
+    This is mostly the same as the :class:`Parameters` class, but with some
     extra parameters essential for the deconvolution and template generation.
     """
     

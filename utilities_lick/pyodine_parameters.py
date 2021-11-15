@@ -5,7 +5,9 @@
     Paul Heeren, 3/02/2021
 """
 
+import logging
 from pyodine import models
+import sys
 
 ###############################################################################
 ## Here we define the instrument-specific setup of the LSFs. These values can #
@@ -35,11 +37,22 @@ class Parameters:
     """
     
     def __init__(self):
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+        
         # General parameters:
         #self.print_terminal = True             # Print messages to the terminal
         self.osample_obs = 4                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         self.number_cores = 12                  # Number of processor cores for multiprocessing
+        
+        self.log_config_file = '/home/paul/pyodine/utilities_song/logging.json'   # The logging config file
+        self.log_level = logging.INFO           # The logging level used for console and info file
+        
+        self.use_progressbar = False            # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -210,6 +223,9 @@ class Parameters:
         :rtype: list[:class:`lmfit.Parameters`]
         """
         
+        logging.info('')
+        logging.info('Constraining parameters for RUN {}'.format(run_id))
+        
         ###########################################################################
         # RUN 0
         # Mainly there for first wavelength solution to feed into the next runs.
@@ -247,7 +263,10 @@ class Parameters:
             median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
             lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
-            print('Fitted LSF parameters:\n', lsf_fit_pars)
+            
+            logging.info('')
+            logging.info('Fitted LSF parameters:')
+            logging.info(lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
@@ -342,15 +361,26 @@ class Parameters:
 class Template_Parameters:
     """The control commands for the main template creation routine
     
-    This is mostly the same as the :class:'Parameters' class, but with some
+    This is mostly the same as the :class:`Parameters` class, but with some
     extra parameters essential for the deconvolution and template generation.
     """
     
     def __init__(self):
+        
+        # Setup the logging if not existent yet
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                                format='%(message)s')
+        
         # General parameters:
         #self.print_terminal = True              # Print messages to the terminal
         self.osample_obs = 4                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
+        
+        self.log_config_file = '/home/paul/pyodine/utilities_song/logging.json'   # The logging config file
+        self.log_level = logging.INFO           # The logging level used for console and info file
+        
+        self.use_progressbar = True             # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -548,6 +578,9 @@ class Template_Parameters:
         :rtype: list[:class:`lmfit.Parameters`]
         """
         
+        logging.info('')
+        logging.info('Constraining parameters for RUN {}'.format(run_id))
+        
         ###########################################################################
         # RUN 0
         # Mainly there for first wavelength solution to feed into the next runs.
@@ -588,7 +621,10 @@ class Template_Parameters:
             median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
             lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
-            print('Fitted LSF parameters:\n', lsf_fit_pars)
+            
+            logging.info('')
+            logging.info('Fitted LSF parameters:')
+            logging.info(lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
