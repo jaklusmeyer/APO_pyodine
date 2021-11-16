@@ -7,26 +7,6 @@
 
 from pyodine import models
 
-import logging
-import os
-import sys
-
-
-master_dir_path = '/home/pheeren/pyodine'
-
-###############################################################################
-## Here we define the instrument-specific setup of the LSFs. These values can #
-## then be used to change the class variables of the respective LSF models.   #
-###############################################################################
-
-# For the MultiGaussian model: 11 positions & sigmas for the central Gauss and
-# the satellites
-_multigauss_setup_dict = {
-        'positions': [-2.9, -2.5, -1.9, -1.4, -1.0, 0.0, 1.0, 1.4, 1.9, 2.5, 2.9],
-        'sigmas':    [ 0.9,  0.9,  0.9,  0.9,  0.9, 0.6, 0.9, 0.9, 0.9, 0.9, 0.9]
-        }
-
-
 class Parameters:
     """The control commands for the main routine
     
@@ -35,27 +15,17 @@ class Parameters:
     and details about how many runs are used in the modelling and which LSF
     models are employed (and more).
     
-    Furthermore, in the class method :method:`constrain_parameters` you can
+    Furthermore, in the class method :method:'constrain_parameters' you can
     specify and alter input parameter descriptions for the model, e.g. set
     bounds or fix parameters.
     """
     
     def __init__(self):
-        
-        # Setup the logging if not existent yet
-        if not logging.getLogger().hasHandlers():
-            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
-                                format='%(message)s')
-        
         # General parameters:
+        #self.print_terminal = True              # Print messages to the terminal
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
-        self.number_cores = 12                  # Number of processor cores for multiprocessing
-        
-        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
-        self.log_level = logging.INFO           # The logging level used for console and info file
-        
-        self.use_progressbar = False            # Use a progressbar during chunk modelling?
+        self.number_cores = 12                   # Number of processor cores for multiprocessing
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -72,7 +42,7 @@ class Parameters:
         self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
         self.chunk_padding = 6                  # Padding (left and right) of the chunks in pixels
         self.chunks_per_order = None            # Maximum number of chunks per order (optional)
-        self.chunk_delta_v = None               # Velocity shift between template and observation 
+        self.chunk_delta_v = 10.               # Velocity shift between template and observation 
                                                 # (None: relative barycentric velocity)
         
         # Reference spectrum to use in normalizer and for the first velocity guess
@@ -112,7 +82,7 @@ class Parameters:
                  # You can also define the filetype:
                  #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
                  #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
-                 'save_result': True,                       # Save the result of this run (None: True)
+                 'save_result': False,                       # Save the result of this run (None: True)
                  'save_filetype': 'h5py',                   # Filetype to save in (None: 'h5py')
                  # After the chunks have been modeled, you can model the wavelength results for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for next run):
@@ -130,8 +100,7 @@ class Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
-                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_model': models.lsf.MultiGaussian_SONGnew,    # LSF model to use (this is absolutely neccessary)
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -226,9 +195,6 @@ class Parameters:
         :rtype: list[:class:`lmfit.Parameters`]
         """
         
-        logging.info('')
-        logging.info('Constraining parameters for RUN {}'.format(run_id))
-        
         ###########################################################################
         # RUN 0
         # Mainly there for first wavelength solution to feed into the next runs.
@@ -266,10 +232,7 @@ class Parameters:
             median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
             lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
-            
-            logging.info('')
-            logging.info('Fitted LSF parameters:')
-            logging.info(lsf_fit_pars)
+            print('Fitted LSF parameters:\n', lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
@@ -364,25 +327,15 @@ class Parameters:
 class Template_Parameters:
     """The control commands for the main template creation routine
     
-    This is mostly the same as the :class:`Parameters` class, but with some
+    This is mostly the same as the :class:'Parameters' class, but with some
     extra parameters essential for the deconvolution and template generation.
     """
     
     def __init__(self):
-        
-        # Setup the logging if not existent yet
-        if not logging.getLogger().hasHandlers():
-            logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
-                                format='%(message)s')
-        
         # General parameters:
+        #self.print_terminal = True              # Print messages to the terminal
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
-        
-        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
-        self.log_level = logging.INFO           # The logging level used for console and info file
-        
-        self.use_progressbar = True             # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -484,8 +437,7 @@ class Template_Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
-                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_model': models.lsf.MultiGaussian_SONGnew,    # LSF model to use (this is absolutely neccessary)
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -580,9 +532,6 @@ class Template_Parameters:
         :rtype: list[:class:`lmfit.Parameters`]
         """
         
-        logging.info('')
-        logging.info('Constraining parameters for RUN {}'.format(run_id))
-        
         ###########################################################################
         # RUN 0
         # Mainly there for first wavelength solution to feed into the next runs.
@@ -623,10 +572,7 @@ class Template_Parameters:
             median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
             lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
-            
-            logging.info('')
-            logging.info('Fitted LSF parameters:')
-            logging.info(lsf_fit_pars)
+            print('Fitted LSF parameters:\n', lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
