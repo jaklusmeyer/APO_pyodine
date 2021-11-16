@@ -147,10 +147,13 @@ class LmfitWrapper(Fitter):
                 and model.
             :rtype: float
             """
-            if robust:
-                return robust_std(self.residuals/self.fitted_spectrum.flux)
+            if self.lmfit_result is not None:
+                if robust:
+                    return robust_std(self.residuals/self.fitted_spectrum.flux)
+                else:
+                    return np.nanstd(self.residuals/self.fitted_spectrum.flux)
             else:
-                return np.nanstd(self.residuals/self.fitted_spectrum.flux)
+                return np.NaN
 
         @property
         def params(self):
