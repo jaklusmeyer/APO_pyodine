@@ -81,7 +81,7 @@ class Parameters:
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
         self.velgues_order_range = (2,15)       # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
-        self.maxlag  = 1000                     # The number of steps to each side in the cross-correlation
+        self.maxlag  = 10000                    # The number of steps to each side in the cross-correlation
         
         # Normalize chunks in the beginning?
         self.normalize_chunks = False

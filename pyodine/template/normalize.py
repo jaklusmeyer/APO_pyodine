@@ -304,10 +304,10 @@ def get_velocity_offset(spectrum, reference, normalize=True, delta_v=1000.,
     # Number of points in the narrow vector
     n = int(np.log(wave[-1] / wave[0]) / np.log(1.0 + delta_v / _c))
     # The actual velocity step size
-    deltav = (np.power(10.0, np.log10(wave[-1] / wave[0]) / n) - 1.0) * _c
+    delta_v = (np.power(10.0, np.log10(wave[-1] / wave[0]) / n) - 1.0) * _c
     # Create wavelength vectors with logarithmic steps
     logsteps = np.arange(-maxlag, n + maxlag, dtype='float')
-    logwave_wide = wave[0] * np.power(1.0 + deltav / _c, logsteps)
+    logwave_wide = wave[0] * np.power(1.0 + delta_v / _c, logsteps)
     logwave_narrow = logwave_wide[maxlag:-maxlag]
 
     # Rebin fluxes to new wavelength vectors
@@ -316,7 +316,7 @@ def get_velocity_offset(spectrum, reference, normalize=True, delta_v=1000.,
 
     # Create a velocity vector corresponding to the lag vector
     lags = np.arange(-maxlag, maxlag + 1, dtype='float')
-    lagscale = lags * deltav
+    lagscale = lags * delta_v
 
     # Cross correlate the rebinned fluxes
     cc = np.correlate(flux, flux_ref, 'valid')
