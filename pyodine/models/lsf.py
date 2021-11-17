@@ -226,107 +226,6 @@ class SuperGaussian(LSFModel, StaticModel):
         return __class__.__name__
 
 
-class MultiGaussian_SONG(LSFModel, StaticModel):
-    """The LSF model of a Multi Gaussian as used in SONG
-    
-    10 free parameters: Amplitudes of the Satellite Gaussians (5 left, 5 right).
-    """
-    param_names = [
-        'left_5', 'left_4', 'left_3', 'left_2', 'left_1',
-        'right1', 'right2', 'right3', 'right4', 'right5',
-    ]
-
-    @staticmethod
-    def eval(x, params):
-        # Temporary hack. Static methods can't see the rest of the class
-        param_names = [
-            'left_5', 'left_4', 'left_3', 'left_2', 'left_1',
-            'right1', 'right2', 'right3', 'right4', 'right5',
-        ]
-        # convert input dict to list (nope, this is not pretty..)
-        params = np.array([params[k] for k in param_names])
-
-        # Set up parameter vectors, including central gaussian
-        a = np.array([
-            params[0], params[1], params[2], params[3], params[4],
-            1.0,
-            params[5], params[6], params[7], params[8], params[9],
-        ])
-        """Old:
-        b = np.array([
-            -2.6, -2.0, -1.6, -1.2, -0.7,
-            0.0,
-            0.7, 1.2, 1.6, 2.0, 2.6,
-        ])
-        c = np.array([
-            0.7, 0.7, 0.7, 0.7, 0.7,
-            0.4,
-            0.7, 0.7, 0.7, 0.7, 0.7,
-        ])"""        
-        b = np.array([
-            -2.9, -2.5, -1.9, -1.4, -1.0,
-            0.0,
-            1.0, 1.4, 1.9, 2.5, 2.9,
-        ])
-        c = np.array([
-            0.9, 0.9, 0.9, 0.9, 0.9,
-            0.6,
-            0.9, 0.9, 0.9, 0.9, 0.9,
-        ])
-        n = 11
-
-        # Multigauss function
-        def func(x):
-            xarr = np.repeat([x], n, axis=0)
-            f = np.sum(a * np.exp(-0.5 * ((np.transpose(xarr) - b) / c)**2.), axis=1)
-            f[np.where(f < 0.0)] = 0.0
-            return f
-
-        # Evaluate function and find centroid
-        y = func(x)
-        
-        # added for NaN-debugging
-        y_sum = np.sum(y)
-        #if y_sum==0:
-        #    print('Sum of lsf is 0. Setting to 1e-4.')
-        #    print(y)
-        #    y_sum = 1e-4
-        
-        # Calculate centroid and re-center the LSF
-        offset = np.sum(x * y) / y_sum #np.sum(y)  # TODO: Is this the correct way of weighting?
-        y = func(x + offset)
-        
-        # added for NaN-debugging
-        if any(np.isnan(y)):
-            print('NaN value detected in un-normalized lsf function.')
-        y_sum = np.sum(y)
-        #if y_sum==0:
-        #    print('Sum of lsf is 0. Setting to 1e-4.')
-        #    y_sum = 1e-4
-        
-        y = y / y_sum
-        if any(np.isnan(y)):
-            print('NaN value detected in lsf function.')
-            print('Sum of y: ', y_sum)
-            print(params)
-        
-        return y
-
-    @staticmethod
-    def guess_params(chunk):
-        # These are the median parameters from the cf of rs15.31
-        # 0.4    0.0820768    0.0557928     0.167839     0.417223     0.453222
-        #        0.400129     0.390609     0.138321    0.0599234    0.0588782
-        return ParameterSet(
-            left_5=0.1, left_4=0.2, left_3=0.3, left_2=0.5, left_1=0.7,
-            right1=0.7, right2=0.5, right3=0.3, right4=0.2, right5=0.1
-        )  # FIXME: Make a better guess
-    
-    @staticmethod
-    def name():
-        return __class__.__name__
-
-
 class MultiGaussian(LSFModel, StaticModel):
     """The LSF model of a Multi Gaussian
     
@@ -351,13 +250,13 @@ class MultiGaussian(LSFModel, StaticModel):
     
     pars_dict = {
             'positions': np.array([
-                    -2.4, -2.1, -1.6, -1.1, -0.6,
-                    0.0,
-                    0.6, 1.1, 1.6, 2.1, 2.4]),
+                    -2.9, -2.5, -1.9, -1.4, -1.0, 
+                    0.0, 
+                    1.0, 1.4, 1.9, 2.5, 2.9]),
             'sigmas': np.array([
-                    0.3, 0.3, 0.3, 0.3, 0.3,
-                    0.4,
-                    0.3, 0.3, 0.3, 0.3, 0.3])
+                    0.9, 0.9, 0.9, 0.9, 0.9, 
+                    0.6, 
+                    0.9, 0.9, 0.9, 0.9, 0.9])
             }
     
     # Setup the logging if not existent yet
@@ -477,44 +376,107 @@ class MultiGaussian(LSFModel, StaticModel):
 
 class MultiGaussian_Lick(LSFModel, StaticModel):
     """The LSF model of a Multi Gaussian as used in Lick (algorithm employed
-    as in dop code)
+    as in dop code, no re-centering of the LSF)
     
-    10 free parameters: Amplitudes of the Satellite Gaussians (5 left, 5 right).
+    The model consists of a central, completely fixed Gaussian, and 5 satellite
+    Gaussian both to the left and right. The positions and sigmas of the 
+    satellites are fixed, but their amplitudes are the 10 free parameters.
+    
+    This class cannot be initialized and all its methods are static or class 
+    methods. The positions and sigmas of all Gaussians are build in as class
+    variables and can be changed through dedicated methods. This allows the 
+    model to be adapted to different instruments.
     """
+    
     param_names = [
         'left_5', 'left_4', 'left_3', 'left_2', 'left_1', 
         'right1', 'right2', 'right3', 'right4', 'right5'
         ]
     
-    @staticmethod
-    def eval(x, params):
-        # Temporary hack. Static methods can't see the rest of the class
-        param_names = [
-            'left_5', 'left_4', 'left_3', 'left_2', 'left_1', 
-            'right1', 'right2', 'right3', 'right4', 'right5'
-            ]
-        # convert input dict to list (nope, this is not pretty..)
-        params = np.array([params[k] for k in param_names])
+    # These are the median parameters from the cf of rs15.31
+    # 0.4    0.0820768    0.0557928     0.167839     0.417223     0.453222
+    #        0.400129     0.390609     0.138321    0.0599234    0.0588782
+    param_guess = np.array([
+        0.1, 0.2, 0.3, 0.4, 0.5,
+        0.5, 0.4, 0.3, 0.2, 0.1
+    ])
+    
+    pars_dict = {
+            'positions': np.array([
+                    -2.4, -2.1, -1.6, -1.1, -0.6,
+                    0.0,
+                    0.6, 1.1, 1.6, 2.1, 2.4]),
+            'sigmas': np.array([
+                    0.3, 0.3, 0.3, 0.3, 0.3,
+                    0.4,
+                    0.3, 0.3, 0.3, 0.3, 0.3])
+            }
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
+    @classmethod
+    def adapt_LSF(cls, pars_dict):
+        """Adapt the LSF setup to different instruments
+        
+        This method allows to change the positions and sigmas of all Gaussians
+        by handing in a dictionary with desired values.
+        
+        :param pars_dict: A dictionary with keys 'positions' and/or 'sigmas' 
+            (for both: length-11 list, tuple, or ndarray).
+        :type pars_dict: dict
+        """
+        if isinstance(pars_dict, dict):
+            
+            # Update the positions in the parameter dictionary
+            if 'positions' in pars_dict.keys() and \
+            isinstance(pars_dict['positions'], (list,tuple,np.ndarray)) and \
+            len(pars_dict['positions']) == 11:
+                if isinstance(pars_dict['positions'], (list,tuple)):
+                    cls.pars_dict['positions'] = np.array(pars_dict['positions'])
+                else:
+                    cls.pars_dict['positions'] = pars_dict['positions']
+            
+            # Update the sigmas in the parameter dictionary
+            if 'sigmas' in pars_dict.keys() and \
+            isinstance(pars_dict['sigmas'], (list,tuple,np.ndarray)) and \
+            len(pars_dict['sigmas']) == 11:
+                if isinstance(pars_dict['sigmas'], (list,tuple)):
+                    cls.pars_dict['sigmas'] = np.array(pars_dict['sigmas'])
+                else:
+                    cls.pars_dict['sigmas'] = pars_dict['sigmas']
+        else:
+            logging.error(pars_dict)
+            raise ValueError('Make sure you supply a dictionary with positions' + 
+                             ' and/or sigmas, in list, tuple or ndarray of length 11!')
+    
+    @classmethod
+    def eval(cls, x, params):
+        """Evaluate the LSF
+        
+        :param x: The pixel vector over which to evaluate the LSF.
+        :type x: ndarray
+        :param params: The LSF parameters.
+        :type params: :class:`ParameterSet`
+        
+        :return: The normalized LSF.
+        :rtype: ndarray
+        """
+        # Convert input dict to list
+        params = np.array([params[k] for k in cls.param_names])
 
         # Set up parameter vectors, including central gaussian
         a = np.array([
             params[0], params[1], params[2], params[3], params[4],
             1.0,
-            params[5], params[6], params[7], params[8], params[9]
-            ])
+            params[5], params[6], params[7], params[8], params[9],
+        ])
         # In Butler 1996: Gaussians placed at 0.5 pixels apart
         # This is from the cf's
-        b = np.array([
-            -2.4, -2.1, -1.6, -1.1, -0.6,
-            0.0,
-            0.6, 1.1, 1.6, 2.1, 2.4
-            ])
-        c = np.array([
-            0.3, 0.3, 0.3, 0.3, 0.3,
-            0.4,
-            0.3, 0.3, 0.3, 0.3, 0.3
-            ])
-        #n = 11
+        b = cls.pars_dict['positions']
+        c = cls.pars_dict['sigmas']
 
         # Gaussian function, computed as in Lick dop code
         def func(x, cntr=None):
@@ -568,19 +530,29 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
                 #print('New: ', x[np.argmax(y)])
         """
         return y
-
-    @staticmethod
-    def guess_params(chunk):
-        # These are the median parameters from the cf of rs15.31
-        # 0.4    0.0820768    0.0557928     0.167839     0.417223     0.453222
-        #        0.400129     0.390609     0.138321    0.0599234    0.0588782
+    
+    @classmethod
+    def guess_params(cls, chunk):
+        """Guess the LSF parameters for a given chunk
+        
+        This method returns just fixed values, independent of the chunk.
+        
+        :param chunk: The chunk for which to make the guess.
+        :type: :class:`Chunk`
+        
+        :return: The guessed LSF parameters.
+        :rtype: :class:`ParameterSet`
+        """
         return ParameterSet(
-            left_5=0.1, left_4=0.2, left_3=0.3, left_2=0.4, left_1=0.5,
-            right1=0.5, right2=0.4, right3=0.3, right4=0.2, right5=0.1
-        )  # FIXME: Make a better guess
+                {name: guess for name, guess in zip(cls.param_names, cls.param_guess)})
     
     @staticmethod
     def name():
+        """The name of the LSF as a string
+        
+        :return: The LSF name.
+        :rtype: str
+        """
         return __class__.__name__
 
 
@@ -648,10 +620,10 @@ class FixedLSF(LSFModel, StaticModel):
 model_index = {
         'SingleGaussian': SingleGaussian,
         'SuperGaussian': SuperGaussian,
-        'MultiGaussian_SONG': MultiGaussian_SONG,
         'MultiGaussian': MultiGaussian,
         'MultiGaussian_Lick': MultiGaussian_Lick,
-        'FixedLSF': FixedLSF}
+        'FixedLSF': FixedLSF
+        }
 
 
 class LSF_Array:
