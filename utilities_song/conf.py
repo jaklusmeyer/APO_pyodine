@@ -2,7 +2,7 @@ from pyodine.components import Instrument
 
 import os
 
-i2_dir_path = '/home/pheeren/pyodine/iodine_atlas'
+i2_dir_path = '/home/paul/pyodine/iodine_atlas'
 
 # Used by get_instrument below...  # TODO: Make a settings file
 my_instruments = {

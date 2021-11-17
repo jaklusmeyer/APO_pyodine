@@ -331,8 +331,8 @@ class Instrument:
     :type longitude: float, or None
     :param latitude: Latitude in degrees.
     :type latitude: float, or None
-    :param altitude: Altitude in mete
-    
+    :param altitude: Altitude in meters.
+    type altitude: float, or None
     """
     def __init__(self, name, longitude=None, latitude=None, altitude=None):
         self.name = name
@@ -348,7 +348,7 @@ class Star:
     :type name: str
     :param coordinates: The sky coordinates of the star.
     :type coordinates: :class:`SkyCoord`, or None
-    :param proper_motion: Proper motion in (RA, DEC) in degrees/year.
+    :param proper_motion: Proper motion in (RA, DEC) in mas/year.
     :type proper_motion: tuple(float,float), or None
     
     """

@@ -40,12 +40,23 @@ def create_results_dict(fit_results):
     obs = fit_results[0].chunk.observation
     res_dict['observation'] = {
             'instrument_name': obs.instrument.name.encode('utf8', 'replace'),
+            'instrument_long': obs.instrument.longitude,
+            'instrument_lat': obs.instrument.latitude,
+            'instrument_alt': obs.instrument.altitude,
             'star_name': obs.star.name.encode('utf8', 'replace'),
             'orig_header': obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
             'time_start': obs.time_start.isot.encode('utf8', 'replace'),
             'bary_date': obs.bary_date,
             'bary_vel_corr': obs.bary_vel_corr
             }
+    
+    # Additional star information if available
+    if obs.star.coordinates is not None:
+        res_dict['observation']['star_ra']  = obs.star.coordinates.ra.deg
+        res_dict['observation']['star_dec'] = obs.star.coordinates.dec.deg
+    if obs.star.proper_motion[0] is not None:
+        res_dict['observation']['star_pmra']  = obs.star.proper_motion[0]
+        res_dict['observation']['star_pmdec'] = obs.star.proper_motion[1]
     
     # Collect modelling info, and the original filename(s) of the modelled 
     # observation(s)

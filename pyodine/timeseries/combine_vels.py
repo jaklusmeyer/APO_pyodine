@@ -185,6 +185,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
             'mdvel': np.zeros(nr_obs),          # The simple observation median (after correcting 
                                                 # for chunk timeseries offsets)
             'rv_err': np.zeros(nr_obs),         # The theoretical measurement uncertainty
+            'rv_err2': np.zeros(nr_obs),
             'c2c_scatter': np.zeros(nr_obs),    # The chunk-to-chunk velocity scatter in each observation
             }
     if isinstance(wavelengths, (list,tuple,np.ndarray)):
@@ -192,7 +193,7 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         rv_dict['crx_err'] = np.zeros(nr_obs)       # The fit errors of the chromatic indices
         rv_dict['RV_wave'] = np.zeros(nr_obs)       # The effect. wavelengths at the weighted RVs
         rv_dict['RV_wave_err'] = np.zeros(nr_obs)   # The fit errors of the effect. wavelengths
-        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits\
+        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits
         
     
     chunk_weights = np.zeros((nr_obs,nr_chunks))    # The corrected weights for each individual chunk 
@@ -230,6 +231,13 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
         rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i])) #(dev[i]/sig)**2))#
+        
+        n1 = len(np.where(chunk_weights > 1.)[0])
+        print(n1)
+        
+        rv_dict['rv_err2'][i] = np.nansum(
+                chunk_weights[i] * (chunk_vels_corr - rv_dict['rv'][i])**2) / \
+                ((n1-1)* np.nansum(chunk_weights)/ n1)
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
@@ -403,7 +411,7 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
     return crx_dict
 
 
-_lick_pars = {
+_lick_weighting_pars = {
         'percentile': 0.997,
         'maxchi': 100000000.,
         'min_counts': 1000.,
@@ -412,15 +420,58 @@ _lick_pars = {
         }
 
 
-def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2, 
-                                  medcnts, bvc=None):
+def combine_chunk_velocities_dop(velocities, redchi2, medcnts, 
+                                  wavelengths=None, bvc=None,
+                                  weighting_pars=None):
+    """Weight and combine the chunk velocities of a modelled timeseries
+    
+    This routine follows the algorithm used in the dop code (D. Fischer, based
+    on Butler code).
+    ToDo: Check the plausibility of the final RV uncertainties!
+    Added here: The chromatic index (slope of the modelled velocities with
+    wavelength) is computed if an array of wavelength zero points for each
+    chunk in each observation is supplied.
+    
+    :param velocities: The modelled velocities for each chunk in each 
+        observation of the timeseries.
+    :type velocities: ndarray[nr_obs,nr_chunks]
+    :param nr_chunks_order: Number of chunks per order.
+    :type nr_chunks_order: int
+    :param bvc: If barycentric velocity corrections are supplied for all 
+        observations, the output also contains bvc-corrected RVs.
+    :type bvc: list, ndarray[nr_obs], or None
+    :param wavelengths: If an array of wavelength zeropoints for each chunk
+        in each observation is supplied, the chromatic indices (crx) of the 
+        observations are modelled.
+    :type wavelength: ndarray[nr_obs,nr_chunks], or None
+    :param weighting_pars: A dictionary of parameters used in the weighting 
+        algorithm. If None is supplied, a dictionary of default values is used.
+    :type weighting_pars: dict, or None
+    
+    :return: A dictionary of results: RVs ('rvs'), BVC-corrected RVs 
+        ('rvs_bc', optionally), simple median velocity timeseries ('mdvels'),
+        RV uncertainties ('rv_errs'), chunk-to-chunk scatter within each
+        observation ('c2c_scatters'), the chromatic index of each observation 
+        ('crxs', optional), the uncertainty of the chromatic indices 
+        ('crx_errs', optional).
+    :rtype: dict
+    :return: A dictionary of auxiliary results: The chunk timeseries sigmas 
+        ('chunk_sigma'), individual chunk deviations ('chunk_dev'), chunk 
+        timeseries offsets from observation medians ('chunk_offsets'), 
+        corrected chunk weights ('chunk_weights'), and measures of the achieved 
+        RV precision of the timeseries ('RV_precision1', 'RV_precision2').
+    :rtype: dict
+    """
     
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')
     
-    pars = _lick_pars
+    if not isinstance(weighting_pars, dict):
+        pars = _lick_weighting_pars
+    else:
+        pars = weighting_pars.copy()
     
     logging.info('---------------------------------------------------')
     logging.info('- Pyodine chunk combination (based on Lick code)  -')
@@ -515,7 +566,7 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2,
     for k in range(nr_chunks):
         igd = np.where(weight[:,k] > 0.)
         if len(igd[0]) > 3:
-            sig[k] = np.std(res_vel[igd[0],k])
+            sig[k] = np.nanstd(res_vel[igd[0],k])
         else:
             sig[k] = default_sig
     
@@ -550,7 +601,7 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2,
     logging.info('')
     logging.info('Final velocity rejection percentile limit: {}'.format(percentile2))
     
-    all_gd = np.zeros((nr_obs, nr_chunks))
+    all_gd = np.zeros((nr_obs, nr_chunks))    
     
     # Prepare the output dicts
     rv_dict = {
@@ -559,12 +610,21 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2,
             'mdvel': np.zeros(nr_obs),          # The simple observation median (after correcting 
                                                 # for chunk timeseries offsets)
             'rv_err': np.zeros(nr_obs),         # The theoretical measurement uncertainty
+            'c2c_scatter': np.zeros(nr_obs),    # The chunk-to-chunk velocity scatter in each observation
             }
+    if isinstance(wavelengths, (list,tuple,np.ndarray)):
+        rv_dict['crx'] = np.zeros(nr_obs)           # The chromatic index in each observation
+        rv_dict['crx_err'] = np.zeros(nr_obs)       # The fit errors of the chromatic indices
+        rv_dict['RV_wave'] = np.zeros(nr_obs)       # The effect. wavelengths at the weighted RVs
+        rv_dict['RV_wave_err'] = np.zeros(nr_obs)   # The fit errors of the effect. wavelengths
+        rv_dict['crx_redchi'] = np.zeros(nr_obs)    # The red. Chi**2 of the crx fits
+    
     
     auxiliary_dict = {
             'chunk_sigma': sig,
             'chunk_weight': np.zeros((nr_obs,nr_chunks))
             }
+    
     
     for i in range(nr_obs):
         # Identify indices of chunks with good weights and low scatter
@@ -586,7 +646,22 @@ def combine_chunk_velocities_lick(velocities, nr_chunks_order, redchi2,
         rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
         rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
         rv_dict['rv_err'][i] = 1./np.sqrt(np.nansum(wt))
-    
-    
+        
+        # The chunk-to-chunk velocity scatter is the robust std of the 
+        # corrected chunk velocities
+        rv_dict['c2c_scatter'][i] = robust_std(velobs)
+        
+        # Compute the chromatic index in the observation, which is the slope
+        # of the chunk velocities over chunk wavelengths
+        # ToDo: Use the corrected chunk velocities or the raw ones?!
+        # ToDo: Use weights?!
+        if isinstance(wavelengths, (list,tuple,np.ndarray)):
+            crx_dict = chromatic_index_observation(
+                    #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                    #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=wt)
+            
+            for key, value in crx_dict.items():
+                rv_dict[key][i] = value    
     
     return rv_dict, auxiliary_dict
