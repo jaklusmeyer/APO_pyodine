@@ -232,12 +232,12 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         # square-root of the sum of all weights
         rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i])) #(dev[i]/sig)**2))#
         
-        n1 = len(np.where(chunk_weights > 1.)[0])
-        print(n1)
+        n1 = len(chunk_weights[i]) #len(np.where(chunk_weights > 1.)[0])
+        #print(n1)
         
         rv_dict['rv_err2'][i] = np.nansum(
                 chunk_weights[i] * (chunk_vels_corr - rv_dict['rv'][i])**2) / \
-                ((n1-1)* np.nansum(chunk_weights)/ n1)
+                ((n1-1) * np.nansum(chunk_weights[i])/ n1)
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
@@ -350,7 +350,7 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         if len(np.where(np.isnan(velocities_fit))[0]) > 0:
             print(velocities_fit)
         if isinstance(weights, (list,np.ndarray)):
-            return (velocities_fit - velocities) * np.sqrt(np.abs(weights))
+            return (velocities_fit - velocities) * np.abs(weights)
         else:
             return velocities_fit - velocities
     
@@ -370,6 +370,14 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         velocities = velocities[v_fin_inds]
         if isinstance(weights, (list,np.ndarray)):
             weights = weights[v_fin_inds]
+    
+    w_nan_inds = np.where(np.isnan(weights))
+    if len(w_nan_inds[0]) > 0:
+        w_fin_inds = np.where(np.isfinite(weights))
+        wavelengths = wavelengths[w_fin_inds]
+        velocities = velocities[w_fin_inds]
+        if isinstance(weights, (list,np.ndarray)):
+            weights = weights[w_fin_inds]
     
     # Now do the parameter starting guesses
     # For the effective wavelength of the modelled RV:
@@ -659,9 +667,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
             crx_dict = chromatic_index_observation(
                     #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
                     #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
-                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=wt)
+                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=weight[i])
             
             for key, value in crx_dict.items():
                 rv_dict[key][i] = value    
     
-    return rv_dict, auxiliary_dict
+    return rv_dict, auxiliary_dict, pars

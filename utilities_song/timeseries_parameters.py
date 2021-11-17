@@ -9,7 +9,7 @@ import logging
 import os
 
 
-master_dir_path = '/home/pheeren/pyodine'
+master_dir_path = '/home/paul/pyodine'
 
 class Timeseries_Parameters:
     
@@ -24,7 +24,7 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
-        self.compute_bvc = True
+        self.compute_bvc = False
         self.use_hip_for_bvc = True
         
         self.weighting_algorithm = 'song'
