@@ -13,6 +13,7 @@ This wrapper makes some functions easily accessible for the pyodine package.
 
 import logging
 import sys
+import numpy as np
 
 from barycorrpy.barycorrpy import get_BC_vel
 from barycorrpy.barycorrpy import utc_tdb
@@ -67,6 +68,10 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         dec   = timeseries_dict['star_dec'][0]
         pmra  = timeseries_dict['star_pmra'][0]
         pmdec = timeseries_dict['star_pmdec'][0]
+        if not np.isfinite(pmra):
+            pmra = 0.
+        if not np.isfinite(pmdec):
+            pmdec = 0.
         
         logging.info('BVC through coordinates:')
         logging.info('RA, DEC:       {}, {} (deg)'.format(ra, dec))
