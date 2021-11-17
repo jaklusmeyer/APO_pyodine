@@ -166,7 +166,9 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         if not normalizer:
             normalizer = pyodine.template.normalize.SimpleNormalizer(reference=Pars.ref_spectrum)
         
-        ref_velocity = normalizer.guess_velocity(obs[Pars.velgues_order_range[0]:Pars.velgues_order_range[1]])
+        ref_velocity = normalizer.guess_velocity(
+                obs[Pars.velgues_order_range[0]:Pars.velgues_order_range[1]],
+                delta_v=Pars.delta_v, maxlag=Pars.maxlag)
         obs_velocity = ref_velocity - template.velocity_offset
         logging.info('')
         logging.info('Measured velocity rel. to reference spectrum: {0:.3f} km/s'.format(ref_velocity*1e-3))

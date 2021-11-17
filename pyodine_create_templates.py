@@ -174,7 +174,9 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         # (observed velocity, no barycentric correction)
         normalizer = pyodine.template.normalize.SimpleNormalizer(reference=Pars.ref_spectrum)
         
-        temp_velocity = normalizer.guess_velocity(temp_obs[Pars.velgues_order_range[0]:Pars.velgues_order_range[1]])
+        temp_velocity = normalizer.guess_velocity(
+                temp_obs[Pars.velgues_order_range[0]:Pars.velgues_order_range[1]],
+                delta_v=Pars.delta_v, maxlag=Pars.maxlag)
         bary_v = temp_obs.observations[0].bary_vel_corr
         logging.info('')
         logging.info('Velocity guess: {0:.3f} km/s'.format(temp_velocity*1e-3))
