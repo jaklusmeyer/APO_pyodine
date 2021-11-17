@@ -132,7 +132,7 @@ class Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
+                 'lsf_model': models.lsf.MultiGaussian_Lick,     # LSF model to use (this is absolutely neccessary)
                  'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
