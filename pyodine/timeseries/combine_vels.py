@@ -352,12 +352,16 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         w_fin_inds = np.where(np.isfinite(wavelengths))
         wavelengths = wavelengths[w_fin_inds]
         velocities = velocities[w_fin_inds]
+        if isinstance(weights, (list,np.ndarray)):
+            weights = weights[w_fin_inds]
         
     v_nan_inds = np.where(np.isnan(velocities))
     if len(v_nan_inds[0]) > 0:
         v_fin_inds = np.where(np.isfinite(velocities))
         wavelengths = wavelengths[v_fin_inds]
         velocities = velocities[v_fin_inds]
+        if isinstance(weights, (list,np.ndarray)):
+            weights = weights[v_fin_inds]
     
     # Now do the parameter starting guesses
     # For the effective wavelength of the modelled RV:
@@ -380,7 +384,13 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
     lmfit_params.add('crx', value=crx_guess)
     
     # And fit
-    lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
+    try:
+        lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
+    except Exception as e:
+        logging.error('Length of velocities: {}'.format(len(velocities)))
+        logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
+        logging.error('Length of weights: {}'.format(len(weights)))
+        raise e
     
     crx_dict = {
             'crx': lmfit_result.params['crx'].value,
