@@ -6,6 +6,9 @@
 """
 
 import logging
+import os
+
+master_dir_path = '/home/pheeren/pyodine'
 
 
 class Timeseries_Parameters:
@@ -13,7 +16,7 @@ class Timeseries_Parameters:
     def __init__(self):       
         
         # Logging options
-        self.log_config_file = '/home/paul/pyodine/utilities_song/logging.json'   # The logging config file
+        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         # If you hand a list of filenames to reject, are these the names of the
