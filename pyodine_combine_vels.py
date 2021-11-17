@@ -133,14 +133,23 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         ## parameter input file
         ###########################################################################
         
+        # Possibly first throw out bad observations
         if isinstance(reject_names, (list,tuple)):
             if Pars.reject_type == 'obs_names':
                 Results.remove_observations(obs_names=reject_names)
             else:
                 Results.remove_observations(res_names=reject_names)
         
-        Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
-                                  do_crx=Pars.do_crx)
+        # First compute the barycentric velocities using barycorrpy?
+        if Pars.compute_bvc:
+            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc)
+        
+        if Pars.weighting_algorithm == 'song':
+            Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
+                                      do_crx=Pars.do_crx)
+        elif Pars.weighting_algorithm == 'lick':
+            Results.create_timeseries_dop(weighting_pars=Pars.weighting_pars, 
+                                          do_crx=Pars.do_crx)
         
         if isinstance(vels_out, str):
             Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 

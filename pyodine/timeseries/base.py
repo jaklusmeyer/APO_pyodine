@@ -7,7 +7,8 @@ import sys
 from .. import fitters
 from ..lib import h5quick
 from ..lib.misc import return_existing_files
-from .combine_vels import combine_chunk_velocities, combine_chunk_velocities_lick
+from .combine_vels import combine_chunk_velocities, combine_chunk_velocities_dop
+from .bary_vel_corr import bvc_wrapper
 
 
 
@@ -41,6 +42,23 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
+    def compute_bvcs(self, use_hip=True):
+        """Compute barycentric velocities, using a wrapper function for the
+        barycorrpy package
+        
+        :param use_hip: Whether to use the built-in hip catalogue to find 
+            the star's coordinates; otherwise fall back to coordinates from the
+            timeseries dictionary. Defaults to True.
+        :type use_hip: bool
+        """
+        
+        bvcs, bjds = bvc_wrapper(self.info, self.timeseries, use_hip=use_hip)
+        
+        self.timeseries['bary_vel_corr'] = bvcs
+        self.timeseries['bary_date'] = bjds
+        self.fill_timeseries_attributes()
+    
+    
     def create_timeseries(self, weighting_pars=None, do_crx=True):
         """Create the timeseries data (weighted and unweighted RVs with 
         uncertainties, chunk-to-chunk scatter, RV precision measures, and
@@ -63,13 +81,38 @@ class CombinedResults():
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities(
                 velocities, self.nr_chunks_order, bvc=bvc, 
                 wavelengths=wavelengths, weighting_pars=weighting_pars)
-        """
-        tseries, self.auxiliary = combine_chunk_velocities_lick(
-                velocities, self.nr_chunks_order, self.redchi2, self.medcnts, 
-                bvc=bvc)
-        """
+        
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()
+    
+    
+    def create_timeseries_dop(self, weighting_pars=None, do_crx=True):
+        """Create the timeseries data, using the algorithm as deployed in the
+        dop code (weighted and unweighted RVs with 
+        uncertainties, chunk-to-chunk scatter, RV precision measures, and
+        optionally chromatic indices with uncertainties)
+        
+        :param weighting_pars: A dictionary of weighting parameter values 
+            needed in the weighting algorithm. If None, a dictionary of 
+            default values is used there.
+        :type weighting_pars: dict, or None
+        :param do_crx: Whether to also compute chromatic indices of the 
+            observations. Defaults to True.
+        :type do_crx: bool
+        """
+        
+        velocities = self.params['velocity']
+        bvc = self.timeseries['bary_vel_corr']
+        wavelengths = None
+        if do_crx:
+            wavelengths = self.params['wave_intercept']
+        tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities_dop(
+                velocities, self.redchi2, self.medcnts, wavelengths=wavelengths,
+                bvc=bvc, weighting_pars=weighting_pars)
+        
+        self.timeseries.update(tseries)
+        self.fill_timeseries_attributes()
+        
     
     
     def fill_timeseries_attributes(self):
@@ -155,10 +198,17 @@ class CombinedResults():
         
         self.param_names = [k for k in result['params'].keys()]
         self.chunk_names = [k for k in result['chunks'].keys()]
+        
+        # General info
         self.info = {
                 'star_name': result['observation']['star_name'].decode(),
-                'instrument_name': result['observation']['instrument_name'].decode()
+                'instrument_name': result['observation']['instrument_name'].decode(),
+                'instrument_long': result['observation']['instrument_long'],
+                'instrument_lat': result['observation']['instrument_lat'],
+                'instrument_alt': result['observation']['instrument_alt']
                 }
+        
+        # Model info
         if 'model' in result.keys() and result['model'] != None:
             self.info['lsf_model'] = result['model']['lsf_model'].decode()
             self.info['stellar_template'] = result['model']['stellar_template'].decode()
@@ -173,11 +223,15 @@ class CombinedResults():
         
         # Allocate arrays
         self.timeseries = {
-            #'time_start': np.zeros(nfiles, dtype='S23'),
             'bary_date': np.zeros(self.nr_files),
             'bary_vel_corr': np.zeros(self.nr_files),
-            'orig_filename': [''] * self.nr_files
+            'orig_filename': [''] * self.nr_files,
+            'star_ra': np.zeros(self.nr_files),
+            'star_dec': np.zeros(self.nr_files),
+            'star_pmra': np.zeros(self.nr_files),
+            'star_pmdec': np.zeros(self.nr_files)
         }
+        
         self.params = {k: np.zeros((self.nr_files, self.nr_chunks)) for k in self.param_names}
         self.errors = {k: np.zeros((self.nr_files, self.nr_chunks)) for k in self.param_names}
         self.chunks = {k: np.zeros((self.nr_files, self.nr_chunks)) for k in self.chunk_names}
@@ -196,7 +250,7 @@ class CombinedResults():
                 result = fitters.results_io.create_results_dict(result)
             
             for k in self.timeseries.keys():
-                self.timeseries[k][i] = result['observation'][k]
+                self.timeseries[k][i] = result['observation'][k] if k in result['observation'] else np.nan
                 if k == 'orig_filename':
                     self.timeseries[k][i] = self.timeseries[k][i].decode()
             for k in self.param_names:
@@ -281,7 +335,7 @@ class CombinedResults():
             self.medcnts = h5quick.h5data(h['medcnts'])
             #self.res_filenames = [f.decode() for f in h5quick.h5data(h['res_filenames'])]
             
-        self.nr_chunks = self.chunks['order'].shape[0]
+        self.nr_chunks = self.chunks['order'].shape[1]
         self.orders = np.unique(self.chunks['order'][0])
         self.nr_orders = len(self.orders)
         self.nr_chunks_order = self.nr_chunks / self.nr_orders

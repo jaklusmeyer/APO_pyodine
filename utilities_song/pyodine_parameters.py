@@ -12,7 +12,7 @@ import os
 import sys
 
 
-master_dir_path = '/home/pheeren/pyodine'
+master_dir_path = '/home/paul/pyodine'
 
 ###############################################################################
 ## Here we define the instrument-specific setup of the LSFs. These values can #

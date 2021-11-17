@@ -24,6 +24,11 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
+        self.compute_bvc = True
+        self.use_hip_for_bvc = True
+        
+        self.weighting_algorithm = 'song'
+        
         # This dictionary defines the parameters used in the weighting
         # algorithm: 
         # - 'good_chunks' and 'good_orders' define which chunks to use in the

@@ -16,13 +16,18 @@ class Timeseries_Parameters:
     def __init__(self):       
         
         # Logging options
-        self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
+        self.log_config_file = os.path.join(master_dir_path, 'utilities_lick/logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         # If you hand a list of filenames to reject, are these the names of the
         # individual modelling results ('res_files') or of the original 
         # observations ('obs_files')?
         self.reject_type = 'res_files'
+        
+        self.compute_bvc = True
+        self.use_hip_for_bvc = True
+        
+        self.weighting_algorithm = 'song'
         
         # This dictionary defines the parameters used in the weighting
         # algorithm: 
