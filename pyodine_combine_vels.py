@@ -148,7 +148,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
                                       do_crx=Pars.do_crx)
         elif Pars.weighting_algorithm == 'lick':
-            Results.create_timeseries_dop(weighting_pars=Pars.weighting_pars, 
+            Results.create_timeseries_dop(#weighting_pars=Pars.weighting_pars, 
                                           do_crx=Pars.do_crx)
         
         if isinstance(vels_out, str):

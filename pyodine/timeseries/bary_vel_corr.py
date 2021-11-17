@@ -18,7 +18,7 @@ from barycorrpy.barycorrpy import get_BC_vel
 from barycorrpy.barycorrpy import utc_tdb
 
 
-def bvc_wrapper(info_dict, timeseries_dict, use_hip=True):
+def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
     """A simple function to get the barycentric velocities for given 
     observation times, for a star and instrument, all defined in the 
     dictionaries of the CombinedResults object, as well as the correct time 
@@ -31,10 +31,11 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True):
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')    
     
-    if use_hip is True and 'star_name' in info_dict['star_name'] and \
-    'hip' in info_dict['star_name'].lower():
+    if use_hip is True and (('star_name' in info_dict['star_name'] and 
+    'hip' in info_dict['star_name'].lower()) or isinstance(hip_nr, int)):
         
-        hip_nr = hip_from_name(info_dict['star_name'])
+        if not isinstance(hip_nr, int):
+            hip_nr = hip_from_name(info_dict['star_name'])
         
         logging.info('BVC through HIP number: ', hip_nr)
         

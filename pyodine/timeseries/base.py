@@ -42,7 +42,7 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
-    def compute_bvcs(self, use_hip=True):
+    def compute_bvcs(self, use_hip=True, hip_nr=None):
         """Compute barycentric velocities, using a wrapper function for the
         barycorrpy package
         
@@ -52,7 +52,8 @@ class CombinedResults():
         :type use_hip: bool
         """
         
-        bvcs, bjds = bvc_wrapper(self.info, self.timeseries, use_hip=use_hip)
+        bvcs, bjds = bvc_wrapper(self.info, self.timeseries, use_hip=use_hip,
+                                 hip_nr=hip_nr)
         
         self.timeseries['bary_vel_corr'] = bvcs
         self.timeseries['bary_date'] = bjds
