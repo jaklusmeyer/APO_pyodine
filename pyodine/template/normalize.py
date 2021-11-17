@@ -149,7 +149,7 @@ class SimpleNormalizer(Normalizer):
 
             raise ValueError('Solar comparison failed - could not fit.')
 
-    def guess_velocity(self, spec, normalize=True):
+    def guess_velocity(self, spec, normalize=True, delta_v=1000., maxlag=500):
         """Re-bin a spectrum to constant velocity spacing and cross-correlate
         with the solar spectrum to find the relative velocity offset.
         If given an observation or a list of spectra, vguess will return a
@@ -163,11 +163,16 @@ class SimpleNormalizer(Normalizer):
         :param normalize: Whether the input spectrum should be normalized. 
             Default is True.
         :type normalize: bool
+        :param delta_v: The velocity step size (in m/s).
+        :type delta_v: float
+        :param maxlag: The number of steps to each side in the cross-correlation.
+        :type maxlag: int
         
         :return: The velocity offset.
         :rtype: float
         """
-        return get_velocity_offset(spec, self.reference, normalize)
+        return get_velocity_offset(spec, self.reference, normalize=normalize, 
+                                   delta_v=delta_v, maxlag=maxlag)
 
 
 # Shared tools:  # TODO: Move somewhere else..
@@ -235,7 +240,8 @@ def top(flux, deg=2, max_iter=40, eps=0.001) -> np.ndarray:
     return t * (fmax - fmin) + fmin
 
 
-def get_velocity_offset(spectrum, reference, normalize=True):
+def get_velocity_offset(spectrum, reference, normalize=True, delta_v=1000., 
+                        maxlag=500):
     """Find the velocity offset (m/s) between spectrum and reference
     
     If spectrum is an observation or a list of spectra, return value will
@@ -251,15 +257,19 @@ def get_velocity_offset(spectrum, reference, normalize=True):
     :type reference: :class:`Spectrum`
     :param normalize: Whether to normalize the input spectrum. Defaults to True.
     :type normalize: bool
+    :param delta_v: The velocity step size (in m/s).
+    :type delta_v: float
+    :param maxlag: The number of steps to each side in the cross-correlation.
+    :type maxlag: int
     
     :return: The velocity offset.
     :rtype: float
     """
 
     # Settings  # TODO: Add keywords for these
-    deltav = 1000.0  # m/s #1000
+    #delta_v = 1000.0  # m/s #1000
     # How large does this have to be?
-    maxlag = 500  # Used to be 150 # Number of steps to each side in the cross-correlation
+    #maxlag = 500  # Used to be 150 # Number of steps to each side in the cross-correlation
 
     # If first input argument is a list of spectra, do recursion
     if isinstance(spectrum, list) or isinstance(spectrum, MultiOrderSpectrum):
@@ -292,7 +302,7 @@ def get_velocity_offset(spectrum, reference, normalize=True):
     # and a wide vector with a difference in length corresponding to 2*maxlag
 
     # Number of points in the narrow vector
-    n = int(np.log(wave[-1] / wave[0]) / np.log(1.0 + deltav / _c))
+    n = int(np.log(wave[-1] / wave[0]) / np.log(1.0 + delta_v / _c))
     # The actual velocity step size
     deltav = (np.power(10.0, np.log10(wave[-1] / wave[0]) / n) - 1.0) * _c
     # Create wavelength vectors with logarithmic steps
