@@ -239,11 +239,18 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/home/paul/pyodine/&#39;</span><span class="p">)</span>  <span class="c1"># Put in the pyodine path on your machine here!</span>
 
 <span class="kn">import</span> <span class="nn">pyodine</span>
 <span class="kn">import</span> <span class="nn">pyodine_combine_vels</span>             <span class="c1"># &lt;- the velocity combination routine</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
 </pre></div>
 </div>
 </div>
@@ -292,7 +299,18 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+Weighting and combining velocities
+
+Star: HD185144
+
+Barycentric velocity computation...
+BVC through coordinates:
+RA, DEC:       293.08995833333336, 69.661175 (deg)
+PM_RA, PM_DEC: 598.07, -1738.4 (mas/yr)
+
+Velocity weighting and combination...
+---------------------------------------------------
 - Pyodine chunk combination (based on iSONG code) -
 ---------------------------------------------------
 
@@ -318,17 +336,18 @@ Median: 48.36 +- 35.31
 RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.73882 m/s
 RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.73882 m/s
 
-Saving results to:
-	/home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
+Writing results to txt file: /home/paul/data_song2/data_res/sigdra_combined/sigdra.vels
+
 Saving combined results to /home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
 
-Creating and saving analysis plots to
-	/home/paul/data_song2/data_res/sigdra_combined:
+Creating and saving analysis plots to:
+	/home/paul/data_song2/data_res/sigdra_combined
 
 Observations with outlier RVs:
 /home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-05T04-33-08_ext/sigdra_res1.h5
 /home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-06T03-54-42_ext/sigdra_res1.h5
-All done! Full work time: 4.9361412525177
+
+All done! Full work time: 5.473022699356079
 </pre></div>
 </div>
 </div>
@@ -354,7 +373,9 @@ All done! Full work time: 4.9361412525177
 
 <span class="c1"># And plot</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">rv_bc</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">rv_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">rv_bc</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">rv_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> +- </span><span class="si">{:.2f}</span><span class="s1"> m/s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rv_bc</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">rv_bc</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: RV timeseries&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
@@ -370,8 +391,13 @@ All done! Full work time: 4.9361412525177
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crx</span>     <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span>
+<span class="n">crx_err</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">crx</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">crx_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> +- </span><span class="si">{:.2f}</span><span class="s1"> (m/s)/Np&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">crx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">crx</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Chromatic index [(m/s)/Np]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chromatix index variation&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
@@ -387,8 +413,12 @@ All done! Full work time: 4.9361412525177
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">Results</span><span class="o">.</span><span class="n">c2c_scatter</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c2c_scatter</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">c2c_scatter</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">c2c_scatter</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> +- </span><span class="si">{:.2f}</span><span class="s1"> m/s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk velocity scatter in observations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>

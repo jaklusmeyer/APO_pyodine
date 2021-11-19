@@ -50,7 +50,7 @@ class Parameters:
         # General parameters:
         self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
-        self.number_cores = 12                  # Number of processor cores for multiprocessing
+        self.number_cores = 4                   # Number of processor cores for multiprocessing
         
         self.log_config_file = os.path.join(master_dir_path, 'utilities_song/logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file

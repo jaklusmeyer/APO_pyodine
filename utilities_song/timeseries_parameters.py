@@ -24,7 +24,7 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
-        self.compute_bvc = False
+        self.compute_bvc = True
         self.use_hip_for_bvc = True
         
         self.weighting_algorithm = 'song'
@@ -56,11 +56,11 @@ class Timeseries_Parameters:
         self.do_crx = True
         
         # For writing timeseries results to a text-file:
-        self.txt_outkeys = ['bary_date', 'rv', 'rv_err']    # Write these results
-        self.txt_delimiter = '\t'                           # Delimiter to use
-        self.txt_header = ''                                # Header line
-        self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']   # Output format (make sure
-                                                            # this matches the keys!)
+        self.txt_outkeys = ['bary_date', 'rv_bc', 'rv_err']     # Write these results
+        self.txt_delimiter = '\t'                               # Delimiter to use
+        self.txt_header = ''                                    # Header line
+        self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']       # Output format (make sure
+                                                                # this matches the keys!)
         
         # Save the final results to file?
         self.save_comb_res = True
