@@ -45,7 +45,7 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
                 
                 # Create directory structure if non-existent yet
                 error_log_dir = os.path.dirname(error_log)
-                if not os.path.exists(error_log_dir):
+                if error_log_dir != '' and not os.path.exists(error_log_dir):
                     os.makedirs(error_log_dir)
                 
                 config['handlers']['error_file_handler']['filename'] = error_log
@@ -58,7 +58,7 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
                 
                 # Create directory structure if non-existent yet
                 info_log_dir = os.path.dirname(info_log)
-                if not os.path.exists(info_log_dir):
+                if info_log_dir != '' and not os.path.exists(info_log_dir):
                     os.makedirs(info_log_dir)
                 
                 config['handlers']['info_file_handler']['filename'] = info_log
@@ -67,12 +67,14 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
             else:
                 del config['handlers']['info_file_handler']
             
-            # If you want info printed
+            # If you want info printed or not 
+            # (if not, errors will still be printed!)
             if quiet:
-                del config['handlers']['console']
+                #del config['handlers']['console']
+                config['handlers']['console']['level'] = logging.ERROR
             else:
                 config['handlers']['console']['level'] = level
-                log_handlers.append('console')
+            log_handlers.append('console')
             
             config['root']['handlers'] = log_handlers
             config['root']['level'] = level
@@ -84,7 +86,10 @@ def setup_logging(config_file=None, level=logging.INFO, error_log=None,
             logging.error('Logger could not be configured from config file', 
                           exc_info=True)
     else:
-        logging.basicConfig(level=level)
+        if not quiet:
+            logging.basicConfig(level=level)
+        else:
+            logging.basicConfig(level=logging.ERROR)
         logging.warning('No config file supplied or config file not found.')
 
 

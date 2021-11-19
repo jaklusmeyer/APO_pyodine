@@ -143,10 +143,15 @@ class CombinedResults():
         :type outformat: str, list, or None
         """
         
+        logging.info('Writing results to txt file: {}'.format(filename))
+        
         if not isinstance(outkeys, (str,list,tuple)):
             outkeys = ['bary_date', 'rv', 'rv_err']
         elif isinstance(outkeys, str):
             outkeys = [outkeys]
+        
+        logging.debug('Keys:')
+        logging.debug(outkeys)
         
         out_data = []
         data_types = []

@@ -83,7 +83,7 @@ for obs_file in obs_files:
 
 # And with that done, we can model the first observation to get an idea of what's going on. For that, we use the function `model_single_observation`, and only hand in the first entry of all the created pathname arrays above:
 
-# In[5]:
+# In[4]:
 
 
 pyodine_model_observations.model_single_observation(
@@ -96,7 +96,7 @@ pyodine_model_observations.model_single_observation(
 # 
 # - In the beginning, an 'order correction' of -1 is reported - this tells us that with regard to the observation that the deconvolved template was constructed from, the extracted Echelle orders seem to have shifted by one position.
 # 
-# - Next, the velocity guess of the observation with respect to a reference spectrum (cross-correlation with Arcturus or Sun spectrum), along with the reference velocity of the stellar template, and the relative velocity between both - this serves as first guess of the model velocity $v$.
+# - Next, the velocity guess of the observation with respect to a reference spectrum (cross-correlation with Arcturus or Sun spectrum) is printed, along with the reference velocity of the stellar template, and the relative velocity between both - this serves as first guess of the model velocity $v$.
 # 
 # - Also, the barycentric velocities of the observation and stellar template are printed (taken from the original `fits`-headers) - the difference between both is used to find the chunk positions in the observation spectrum.
 # 
@@ -108,7 +108,7 @@ pyodine_model_observations.model_single_observation(
 
 # Now let's quickly take a look at the results of the second run (RUN 1) for this observation:
 
-# In[6]:
+# In[5]:
 
 
 # Restore the RUN 1 fit results for the first observation
@@ -118,7 +118,7 @@ chunks, fit_results = pyodine.fitters.results_io.restore_results_object(
 
 # We again plot the data and best-fit model for one chunk - this time setting `template=True` in the function, to also display the stellar template data of that chunk:
 
-# In[7]:
+# In[6]:
 
 
 # Chunk index
@@ -130,7 +130,7 @@ pyodine.plot_lib.plot_chunkmodel(fit_results, chunks, chunk_ind, template=True,
 
 # Great, and let's also check out the residuals of all chunks:
 
-# In[8]:
+# In[7]:
 
 
 # Plot the histogram of residuals
@@ -143,7 +143,7 @@ pyodine.plot_lib.plot_chunk_scatter(scatter=residuals, ylabel='Chunk residuals [
 
 # Finally, it would be interesting to see the best-fit velocity results for all chunks, wouldn't it?
 
-# In[10]:
+# In[8]:
 
 
 # Fetch observation info
@@ -174,12 +174,13 @@ pyodine.plot_lib.plot_chunk_scatter(
 
 # We have seen now how to model a single observation, and what the results look like. For a timeseries however we need multiple observations, and to model these you can use the function `model_multi_observations` - it parallelizes the tasks to accelerate the whole procedure. With the attribute `number_cores` of your parameter object `Pars` you can control how many separate processes are created - right now it is set to 4, but better check your computing power before you run the code!
 
-# In[12]:
+# In[9]:
 
 
 pyodine_model_observations.model_multi_observations(
     utilities, Pars, obs_files, temp_files, 
-    plot_dirs=plot_dirs, res_files=res_files, quiet=True)
+    plot_dirs=plot_dirs, res_files=res_files, 
+    error_files=error_files, info_files=info_files, quiet=True)
 
 
 # In[ ]:

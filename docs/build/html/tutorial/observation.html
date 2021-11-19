@@ -385,7 +385,7 @@ Chunks with nan velocities: []
 Chunks with nan velocity errors: []
 Velocity error at percentile 80: 179.32221159275576
 
-Time to model this observation: 146.57042503356934
+Time to model this observation: 130.9861171245575
 </pre></div>
 </div>
 </div>
@@ -393,7 +393,7 @@ Time to model this observation: 146.57042503356934
 <p>Great, let’s again have a look at the output:</p>
 <ul class="simple">
 <li><p>In the beginning, an ‘order correction’ of -1 is reported - this tells us that with regard to the observation that the deconvolved template was constructed from, the extracted Echelle orders seem to have shifted by one position.</p></li>
-<li><p>Next, the velocity guess of the observation with respect to a reference spectrum (cross-correlation with Arcturus or Sun spectrum), along with the reference velocity of the stellar template, and the relative velocity between both - this serves as first guess of the model velocity <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p>Next, the velocity guess of the observation with respect to a reference spectrum (cross-correlation with Arcturus or Sun spectrum) is printed, along with the reference velocity of the stellar template, and the relative velocity between both - this serves as first guess of the model velocity <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
 <li><p>Also, the barycentric velocities of the observation and stellar template are printed (taken from the original <code class="docutils literal notranslate"><span class="pre">fits</span></code>-headers) - the difference between both is used to find the chunk positions in the observation spectrum.</p></li>
 <li><p>The next print outputs are very much the same as in the <a class="reference internal" href="template.html"><span class="doc std std-doc">template creation routine</span></a>.</p></li>
 <li><p>Finally, some information about the best-fit results for the chunk velocities (<span class="math notranslate nohighlight">\(v\)</span>) is given.</p></li>
@@ -494,7 +494,13 @@ Number of created chunks per order: 22
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_multi_observations</span><span class="p">(</span>
     <span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
-    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> 
+    <span class="n">error_files</span><span class="o">=</span><span class="n">error_files</span><span class="p">,</span> <span class="n">info_files</span><span class="o">=</span><span class="n">info_files</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  1348.209439754486
 </pre></div>
 </div>
 </div>

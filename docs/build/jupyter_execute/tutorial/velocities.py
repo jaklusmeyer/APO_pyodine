@@ -13,7 +13,7 @@
 
 # First of, as before, we set up the path structure and import the velocity combination routine:
 
-# In[1]:
+# In[25]:
 
 
 # Automatic reloading of imports
@@ -23,6 +23,7 @@ get_ipython().run_line_magic('autoreload', '2')
 import sys
 import os
 import matplotlib.pyplot as plt
+import numpy as np
 
 sys.path.append('/home/paul/pyodine/')  # Put in the pyodine path on your machine here!
 
@@ -32,7 +33,7 @@ import pyodine_combine_vels             # <- the velocity combination routine
 
 # Again we load an object which contains all the important parameters for the velocity combination - this is the `Timeseries_Parameters` object:
 
-# In[2]:
+# In[18]:
 
 
 import utilities_song as utilities
@@ -42,7 +43,7 @@ Pars = utilities.timeseries_parameters.Timeseries_Parameters()
 
 # Next, we need to specify the pathnames for the saved model results to use. We can also define pathnames for a directory where to save analysis plots, for a log-file with diagnosis information, and a text-file where to save the RV timeseries results in a human-readable format. Also, the combined model results (including best-fit results for all observations and chunks, and the RV timeseries along with additional information), represented as a `CombinedResults` object, can be saved to a HDF5-file whose pathname we also specify below.
 
-# In[3]:
+# In[19]:
 
 
 # Individual result files to use
@@ -66,7 +67,7 @@ info_file  = os.path.join(plot_dir, 'info.log')
 
 # Finally, we run the velocity combination routine, which loads all the individual model results from file, computes the RV timeseries, and saves the `CombinedResults` object as well as some analysis plots and additional data as specified above. In the end the `CombinedResults` object is returned:
 
-# In[4]:
+# In[22]:
 
 
 Results = pyodine_combine_vels.combine_velocity_results(
@@ -86,7 +87,7 @@ Results = pyodine_combine_vels.combine_velocity_results(
 
 # Now finally, after all this modelling, we can plot our RV timeseries:
 
-# In[5]:
+# In[29]:
 
 
 # The barycentric date, RV with barycentric correction, and RV uncertainty
@@ -98,7 +99,9 @@ star_name = Results.info['star_name']     # the star name
 
 # And plot
 fig = plt.figure(figsize=(10,6))
-plt.errorbar(bary_date, rv_bc, yerr=rv_err, fmt='o', alpha=0.7)
+plt.errorbar(bary_date, rv_bc, yerr=rv_err, fmt='o', alpha=0.7,
+            label='{:.2f} +- {:.2f} m/s'.format(np.mean(rv_bc), np.std(rv_bc)))
+plt.legend()
 plt.xlabel('Time [JD]')
 plt.ylabel('Velocity [m/s]')
 plt.title('{}: RV timeseries'.format(star_name))
@@ -110,11 +113,16 @@ plt.title('{}: RV timeseries'.format(star_name))
 
 
 
-# In[6]:
+# In[31]:
 
+
+crx     = Results.crx
+crx_err = Results.crx_err
 
 fig = plt.figure(figsize=(10,6))
-plt.errorbar(bary_date, Results.crx, yerr=Results.crx_err, fmt='o', alpha=0.7)
+plt.errorbar(bary_date, crx, yerr=crx_err, fmt='o', alpha=0.7,
+            label='{:.2f} +- {:.2f} (m/s)/Np'.format(np.mean(crx), np.std(crx)))
+plt.legend()
 plt.xlabel('Time [JD]')
 plt.ylabel('Chromatic index [(m/s)/Np]')
 plt.title('{}: Chromatix index variation'.format(star_name))
@@ -126,11 +134,15 @@ plt.title('{}: Chromatix index variation'.format(star_name))
 
 
 
-# In[7]:
+# In[33]:
 
+
+c2c_scatter = Results.c2c_scatter
 
 fig = plt.figure(figsize=(10,6))
-plt.plot(Results.bary_date, Results.c2c_scatter, 'o', alpha=0.7)
+plt.plot(Results.bary_date, c2c_scatter, 'o', alpha=0.7,
+        label='{:.2f} +- {:.2f} m/s'.format(np.mean(c2c_scatter), np.std(c2c_scatter)))
+plt.legend()
 plt.xlabel('Time [JD]')
 plt.ylabel('Velocity [m/s]')
 plt.title('{}: Chunk velocity scatter in observations'.format(star_name))
@@ -142,7 +154,7 @@ plt.title('{}: Chunk velocity scatter in observations'.format(star_name))
 
 
 
-# In[11]:
+# In[34]:
 
 
 obs_ind = 10

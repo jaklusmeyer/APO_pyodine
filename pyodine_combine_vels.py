@@ -72,6 +72,10 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # Start timer
         start_t = time.time()
         
+        logging.info('')
+        logging.info('---------------------------')
+        logging.info('Weighting and combining velocities')
+        
         ###########################################################################
         ## Set up the environment, and load all neccessary data and parameters
         ###########################################################################
@@ -133,8 +137,13 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         ## parameter input file
         ###########################################################################
         
+        logging.info('')
+        logging.info('Star: {}'.format(Results.info['star_name']))
+        
         # Possibly first throw out bad observations
         if isinstance(reject_names, (list,tuple)):
+            logging.info('')
+            logging.info('Rejecting files...')
             if Pars.reject_type == 'obs_names':
                 Results.remove_observations(obs_names=reject_names)
             else:
@@ -142,7 +151,12 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         
         # First compute the barycentric velocities using barycorrpy?
         if Pars.compute_bvc:
+            logging.info('')
+            logging.info('Barycentric velocity computation...')
             Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc)
+        
+        logging.info('')
+        logging.info('Velocity weighting and combination...')
         
         if Pars.weighting_algorithm == 'song':
             Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
@@ -152,6 +166,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
                                           do_crx=Pars.do_crx)
         
         if isinstance(vels_out, str):
+            logging.info('')
             Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
                                    delimiter=Pars.txt_delimiter, 
                                    header=Pars.txt_header,
@@ -162,11 +177,13 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         ###########################################################################
         
         if Pars.save_comb_res and isinstance(comb_res_out, str):
-            print('\nSaving results to:\n\t{}'.format(comb_res_out))
+            logging.info('')
             Results.save_combined(comb_res_out)
         
         if Pars.plot_analysis and isinstance(plot_dir, str):
-            print('\nCreating and saving analysis plots to\n\t{}:'.format(plot_dir))
+            logging.info('')
+            logging.info('Creating and saving analysis plots to:')
+            logging.info('\t{}'.format(plot_dir))
             
             # Plot velocity results
             fig = plt.figure(figsize=(10,6))
@@ -310,6 +327,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         ###########################################################################
         
         work_time = time.time() - start_t
+        logging.info('')
         logging.info('All done! Full work time: {}'.format(work_time))
         
         return Results

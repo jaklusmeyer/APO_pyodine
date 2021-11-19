@@ -340,7 +340,7 @@ RUN 0
 Constraining parameters for RUN 0
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:16 Time:  0:00:16
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:18 Time:  0:00:18
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -369,7 +369,7 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:30 Time:  0:01:30
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:37 Time:  0:01:37
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -384,24 +384,24 @@ Deconvolve: /home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:01 Time:  0:02:01
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:13 Time:  0:02:13
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving deconvolved template to /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
 
-Done, full working time: 266.37124514579773
+Done, full working time: 290.8336617946625
 </pre></div>
 </div>
 </div>
 </div>
 <p>Great, everything went fine! Let’s have a look at the printed output:</p>
 <ul class="simple">
-<li><p>2nd row from top, a velocity guess is reported. This has been found by cross-correlation of the template observation spectrum with a reference spectrum (Arcturus or Sun), and in the end this velocity guess is saved as meta-information to the deconvolved stellar template. Later, when modelling an observation, a first guess of the relative velocity shift between observation and template is found by taking the difference between the observation velocity guess (again relative to the same reference spectrum) and the template velocity guess.</p></li>
-<li><p>4th row from top a warning is reported. In our parameter file we define to create 22 chunks per order, but given the desired chunk parameters (width, padding, pixel offset) the padding region of the last chunk within each order would extend over the order edges. We do not need to worry though, as the algorithm automatically reduces the padding size of the last chunks to make it fit (the last chunk then only has a padding of 17 pixels instead of 25)!</p></li>
-<li><p>We then see that RUN 0, where we use a Single-Gaussian LSF model, looped quite quickly through all chunks of the O/B-star spectrum. We get some information about fitting success, and you would have to worry if chunks with ‘nan fitted red. Chi2’ was larger than 0, this would mean that the fitting had failed for some chunks.</p></li>
+<li><p>3rd row from top, a velocity guess is reported. This has been found by cross-correlation of the template observation spectrum with a reference spectrum (Arcturus or Sun), and in the end this velocity guess (<span class="math notranslate nohighlight">\(v_\mathrm{temp}^\mathrm{ref}\)</span>) is saved as meta-information to the deconvolved stellar template. Later, when modelling an observation, a first guess of the relative velocity shift between observation and template is found through <span class="math notranslate nohighlight">\(v_\mathrm{guess} = v_\mathrm{obs}^\mathrm{ref} - v_\mathrm{temp}^\mathrm{ref}\)</span> (where <span class="math notranslate nohighlight">\(v_\mathrm{obs}^\mathrm{ref}\)</span> is the observation velocity guess with respect to the same reference spectrum).</p></li>
+<li><p>5th row from top, a warning is reported. In our parameter file we define to create 22 chunks per order, but given the desired chunk parameters (width, padding, pixel offset), the padding region of the last chunk within each order would extend past the order edges. We do not need to worry though, as the algorithm automatically reduces the padding size of the last chunks to make it fit (the last chunk then only has a padding of 17 pixels instead of 25 as defined in the parameter file)!</p></li>
+<li><p>We then see that RUN 0, where we use a Single-Gaussian LSF model, looped quite quickly through all chunks of the O/B-star spectrum. We get some information about fitting success, and you would have to worry if chunks with ‘nan fitted red. Chi2’ was larger than 0 - this would mean that the fitting had failed for some chunks.</p></li>
 <li><p>In RUN 1, we use a Multi-Gaussian LSF model, and to receive good starting parameters for it we fit a Single-Gaussian model, constructed from the median of the RUN 0 best-fit results from all chunks, with the Multi-Gaussian model - the result of that fit is printed under ‘Fitted LSF parameters’.</p></li>
 <li><p>RUN 1 then takes a bit longer to loop over all chunks than RUN 0 (no wonder due to the more complex model). Again, we see that for no chunks the fitting failed (this is absolutely necessary, as the best-fit results from this run are used in the deconvolution).</p></li>
-<li><p>Finally, the deconvolution of the stellar template observation begins, which again takes some time.</p></li>
+<li><p>Finally, the deconvolution of the stellar template observation begins, which again takes some time. The deconvolved stellar template is then saved as defined in the input to the function.</p></li>
 </ul>
 </div>
 <div class="section" id="inspecting-the-fit-results">
@@ -432,7 +432,7 @@ Done, full working time: 266.37124514579773
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks/fit results: 528
 
 Object structure of each fit result:
-{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7f1762353460&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7f176332f9d0&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7f176332f640&gt;, &#39;chunk_ind&#39;: 0}
+{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7f8e78187160&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7f8e78eeef40&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7f8e78eee160&gt;, &#39;chunk_ind&#39;: 0}
 </pre></div>
 </div>
 </div>
@@ -589,7 +589,7 @@ The first chunk of the template:
 <p>We want to compare it to the original stellar template observations that it was deconvolved from, so let’s load these observations also:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First the individual observations into a list</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load the individual observations into a list</span>
 <span class="n">temp_obs_specs</span> <span class="o">=</span> <span class="p">[</span><span class="n">utilities</span><span class="o">.</span><span class="n">load_pyodine</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temp_files</span><span class="p">]</span>
 
 <span class="c1"># Now create the summed observation from all individual ones</span>

@@ -99,17 +99,17 @@ pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_file
 
 # Great, everything went fine! Let's have a look at the printed output:
 # 
-# - 2nd row from top, a velocity guess is reported. This has been found by cross-correlation of the template observation spectrum with a reference spectrum (Arcturus or Sun), and in the end this velocity guess is saved as meta-information to the deconvolved stellar template. Later, when modelling an observation, a first guess of the relative velocity shift between observation and template is found by taking the difference between the observation velocity guess (again relative to the same reference spectrum) and the template velocity guess.
+# - 3rd row from top, a velocity guess is reported. This has been found by cross-correlation of the template observation spectrum with a reference spectrum (Arcturus or Sun), and in the end this velocity guess ($v_\mathrm{temp}^\mathrm{ref}$) is saved as meta-information to the deconvolved stellar template. Later, when modelling an observation, a first guess of the relative velocity shift between observation and template is found through $v_\mathrm{guess} = v_\mathrm{obs}^\mathrm{ref} - v_\mathrm{temp}^\mathrm{ref}$ (where $v_\mathrm{obs}^\mathrm{ref}$ is the observation velocity guess with respect to the same reference spectrum).
 # 
-# - 4th row from top a warning is reported. In our parameter file we define to create 22 chunks per order, but given the desired chunk parameters (width, padding, pixel offset) the padding region of the last chunk within each order would extend over the order edges. We do not need to worry though, as the algorithm automatically reduces the padding size of the last chunks to make it fit (the last chunk then only has a padding of 17 pixels instead of 25)!
+# - 5th row from top, a warning is reported. In our parameter file we define to create 22 chunks per order, but given the desired chunk parameters (width, padding, pixel offset), the padding region of the last chunk within each order would extend past the order edges. We do not need to worry though, as the algorithm automatically reduces the padding size of the last chunks to make it fit (the last chunk then only has a padding of 17 pixels instead of 25 as defined in the parameter file)!
 # 
-# - We then see that RUN 0, where we use a Single-Gaussian LSF model, looped quite quickly through all chunks of the O/B-star spectrum. We get some information about fitting success, and you would have to worry if chunks with 'nan fitted red. Chi2' was larger than 0, this would mean that the fitting had failed for some chunks.
+# - We then see that RUN 0, where we use a Single-Gaussian LSF model, looped quite quickly through all chunks of the O/B-star spectrum. We get some information about fitting success, and you would have to worry if chunks with 'nan fitted red. Chi2' was larger than 0 - this would mean that the fitting had failed for some chunks.
 # 
 # - In RUN 1, we use a Multi-Gaussian LSF model, and to receive good starting parameters for it we fit a Single-Gaussian model, constructed from the median of the RUN 0 best-fit results from all chunks, with the Multi-Gaussian model - the result of that fit is printed under 'Fitted LSF parameters'.
 # 
 # - RUN 1 then takes a bit longer to loop over all chunks than RUN 0 (no wonder due to the more complex model). Again, we see that for no chunks the fitting failed (this is absolutely necessary, as the best-fit results from this run are used in the deconvolution).
 # 
-# - Finally, the deconvolution of the stellar template observation begins, which again takes some time.
+# - Finally, the deconvolution of the stellar template observation begins, which again takes some time. The deconvolved stellar template is then saved as defined in the input to the function.
 
 # ## Inspecting the fit results
 
@@ -257,10 +257,10 @@ print('\nThe first chunk of the template:\n', template[0])
 # 
 # We want to compare it to the original stellar template observations that it was deconvolved from, so let's load these observations also:
 
-# In[16]:
+# In[18]:
 
 
-# First the individual observations into a list
+# First load the individual observations into a list
 temp_obs_specs = [utilities.load_pyodine.ObservationWrapper(t) for t in temp_files]
 
 # Now create the summed observation from all individual ones
@@ -269,7 +269,7 @@ temp_obs = pyodine.components.SummedObservation(*temp_obs_specs)
 
 # And now let us plot a chunk of both - for the summed observation we obviously need to extract exactly the part which corresponds to the template chunk:
 
-# In[17]:
+# In[19]:
 
 
 # Chunk index
