@@ -298,13 +298,13 @@
 <span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5&#39;</span>
 
 <span class="c1"># Output directory for plots and pathnames for modelling results</span>
-<span class="n">plot_dir</span>  <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/&#39;</span>
-<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/sigdra_res1.pkl&#39;</span><span class="p">]</span>
+<span class="n">plot_dir</span>  <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_temp/&#39;</span>
+<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_2018-05-16_res0.h5&#39;</span><span class="p">),</span>
+             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_2018-05-16_res1.pkl&#39;</span><span class="p">)]</span>
 
 <span class="c1"># Log files</span>
-<span class="n">error_file</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/error.log&#39;</span>
-<span class="n">info_file</span>  <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra/info.log&#39;</span>
+<span class="n">error_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;error.log&#39;</span><span class="p">)</span>
+<span class="n">info_file</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;info.log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -340,7 +340,7 @@ RUN 0
 Constraining parameters for RUN 0
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:18 Time:  0:00:18
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:17 Time:  0:00:17
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -369,7 +369,7 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:37 Time:  0:01:37
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:32 Time:  0:01:32
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -384,12 +384,12 @@ Deconvolve: /home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:13 Time:  0:02:13
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:06 Time:  0:02:06
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving deconvolved template to /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
 
-Done, full working time: 290.8336617946625
+Done, full working time: 272.31387662887573
 </pre></div>
 </div>
 </div>
@@ -432,7 +432,7 @@ Done, full working time: 290.8336617946625
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks/fit results: 528
 
 Object structure of each fit result:
-{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7f8e78187160&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7f8e78eeef40&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7f8e78eee160&gt;, &#39;chunk_ind&#39;: 0}
+{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7fb15c51c190&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7fb15d0359a0&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7fb15d035ee0&gt;, &#39;chunk_ind&#39;: 0}
 </pre></div>
 </div>
 </div>
