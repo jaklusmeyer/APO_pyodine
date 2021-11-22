@@ -77,8 +77,8 @@ for obs_file in obs_files:
     info_files  += [os.path.join(plot_dirs[-1], 'info.log')]
     
     # Result files
-    res_files.append([os.path.join(plot_dirs[-1], 'sigdra_res0.h5'), 
-                      os.path.join(plot_dirs[-1], 'sigdra_res1.h5')])
+    res_files.append([os.path.join(plot_dirs[-1], plot_dir_base + '_res0.h5'), 
+                      os.path.join(plot_dirs[-1], plot_dir_base + '_res1.h5')])
 
 
 # And with that done, we can model the first observation to get an idea of what's going on. For that, we use the function `model_single_observation`, and only hand in the first entry of all the created pathname arrays above:
@@ -173,14 +173,16 @@ pyodine.plot_lib.plot_chunk_scatter(
 # ## Run the code on many observations
 
 # We have seen now how to model a single observation, and what the results look like. For a timeseries however we need multiple observations, and to model these you can use the function `model_multi_observations` - it parallelizes the tasks to accelerate the whole procedure. With the attribute `number_cores` of your parameter object `Pars` you can control how many separate processes are created - right now it is set to 4, but better check your computing power before you run the code!
+# 
+# With that said, let's model the remaining observations (but in quiet mode, without terminal output).
 
 # In[9]:
 
 
 pyodine_model_observations.model_multi_observations(
-    utilities, Pars, obs_files, temp_files, 
-    plot_dirs=plot_dirs, res_files=res_files, 
-    error_files=error_files, info_files=info_files, quiet=True)
+    utilities, Pars, obs_files[1:], temp_files[1:], 
+    plot_dirs=plot_dirs[1:], res_files=res_files[1:], 
+    error_files=error_files[1:], info_files=info_files[1:], quiet=True)
 
 
 # In[ ]:

@@ -298,8 +298,8 @@
     <span class="n">info_files</span>  <span class="o">+=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;info.log&#39;</span><span class="p">)]</span>
     
     <span class="c1"># Result files</span>
-    <span class="n">res_files</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;sigdra_res0.h5&#39;</span><span class="p">),</span> 
-                      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;sigdra_res1.h5&#39;</span><span class="p">)])</span>
+    <span class="n">res_files</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_dir_base</span> <span class="o">+</span> <span class="s1">&#39;_res0.h5&#39;</span><span class="p">),</span> 
+                      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_dir_base</span> <span class="o">+</span> <span class="s1">&#39;_res1.h5&#39;</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -385,7 +385,7 @@ Chunks with nan velocities: []
 Chunks with nan velocity errors: []
 Velocity error at percentile 80: 179.32221159275576
 
-Time to model this observation: 130.9861171245575
+Time to model this observation: 138.64827060699463
 </pre></div>
 </div>
 </div>
@@ -490,17 +490,18 @@ Number of created chunks per order: 22
 <div class="section" id="run-the-code-on-many-observations">
 <h2>Run the code on many observations<a class="headerlink" href="#run-the-code-on-many-observations" title="Permalink to this headline">¶</a></h2>
 <p>We have seen now how to model a single observation, and what the results look like. For a timeseries however we need multiple observations, and to model these you can use the function <code class="docutils literal notranslate"><span class="pre">model_multi_observations</span></code> - it parallelizes the tasks to accelerate the whole procedure. With the attribute <code class="docutils literal notranslate"><span class="pre">number_cores</span></code> of your parameter object <code class="docutils literal notranslate"><span class="pre">Pars</span></code> you can control how many separate processes are created - right now it is set to 4, but better check your computing power before you run the code!</p>
+<p>With that said, let’s model the remaining observations (but in quiet mode, without terminal output).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_model_observations</span><span class="o">.</span><span class="n">model_multi_observations</span><span class="p">(</span>
-    <span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
-    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> 
-    <span class="n">error_files</span><span class="o">=</span><span class="n">error_files</span><span class="p">,</span> <span class="n">info_files</span><span class="o">=</span><span class="n">info_files</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">obs_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">temp_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> 
+    <span class="n">plot_dirs</span><span class="o">=</span><span class="n">plot_dirs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> 
+    <span class="n">error_files</span><span class="o">=</span><span class="n">error_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">info_files</span><span class="o">=</span><span class="n">info_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  1348.209439754486
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  1313.1052544116974
 </pre></div>
 </div>
 </div>

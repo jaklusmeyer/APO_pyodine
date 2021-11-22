@@ -78,13 +78,13 @@ temp_files.sort()
 temp_outname = '/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5'
 
 # Output directory for plots and pathnames for modelling results
-plot_dir  = '/home/paul/data_song2/data_res/sigdra/'
-res_files = ['/home/paul/data_song2/data_res/sigdra/sigdra_res0.h5',
-             '/home/paul/data_song2/data_res/sigdra/sigdra_res1.pkl']
+plot_dir  = '/home/paul/data_song2/data_res/sigdra_temp/'
+res_files = [os.path.join(plot_dir, 'sigdra_2018-05-16_res0.h5'),
+             os.path.join(plot_dir, 'sigdra_2018-05-16_res1.pkl')]
 
 # Log files
-error_file = '/home/paul/data_song2/data_res/sigdra/error.log'
-info_file  = '/home/paul/data_song2/data_res/sigdra/info.log'
+error_file = os.path.join(plot_dir, 'error.log')
+info_file  = os.path.join(plot_dir, 'info.log')
 
 
 # And now, we can kick off the template creation:
@@ -257,7 +257,7 @@ print('\nThe first chunk of the template:\n', template[0])
 # 
 # We want to compare it to the original stellar template observations that it was deconvolved from, so let's load these observations also:
 
-# In[18]:
+# In[16]:
 
 
 # First load the individual observations into a list
@@ -269,7 +269,7 @@ temp_obs = pyodine.components.SummedObservation(*temp_obs_specs)
 
 # And now let us plot a chunk of both - for the summed observation we obviously need to extract exactly the part which corresponds to the template chunk:
 
-# In[19]:
+# In[17]:
 
 
 # Chunk index

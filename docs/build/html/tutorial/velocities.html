@@ -248,12 +248,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre></div>
-</div>
-</div>
 </div>
 <p>Again we load an object which contains all the important parameters for the velocity combination - this is the <code class="docutils literal notranslate"><span class="pre">Timeseries_Parameters</span></code> object:</p>
 <div class="cell docutils container">
@@ -270,17 +264,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Individual result files to use</span>
 <span class="n">parent_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs/&#39;</span>
-<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="s1">&#39;sigdra_res1.h5&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)]</span>
+<span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="o">+</span><span class="s1">&#39;_res1.h5&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)]</span>
 <span class="n">res_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># The directory for analysis plots</span>
 <span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_combined&#39;</span>
 
 <span class="c1"># The output name of the CombinedResults object</span>
-<span class="n">comb_res_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_combined.h5&#39;</span><span class="p">)</span>
+<span class="n">comb_res_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_tutorial_comb.h5&#39;</span><span class="p">)</span>
 
 <span class="c1"># The output name of the velocity results text file</span>
-<span class="n">vels_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra.vels&#39;</span><span class="p">)</span>
+<span class="n">vels_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_tutorial.vels&#39;</span><span class="p">)</span>
 
 <span class="c1"># Log files</span>
 <span class="n">error_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;error.log&#39;</span><span class="p">)</span>
@@ -336,32 +330,33 @@ Median: 48.36 +- 35.31
 RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.73882 m/s
 RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.73882 m/s
 
-Writing results to txt file: /home/paul/data_song2/data_res/sigdra_combined/sigdra.vels
+Writing results to txt file: /home/paul/data_song2/data_res/sigdra_combined/sigdra_tutorial.vels
 
-Saving combined results to /home/paul/data_song2/data_res/sigdra_combined/sigdra_combined.h5
+Saving combined results to /home/paul/data_song2/data_res/sigdra_combined/sigdra_tutorial_comb.h5
 
 Creating and saving analysis plots to:
 	/home/paul/data_song2/data_res/sigdra_combined
 
 Observations with outlier RVs:
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-05T04-33-08_ext/sigdra_res1.h5
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-06T03-54-42_ext/sigdra_res1.h5
+/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-05T04-33-08_ext/s1_2015-05-05T04-33-08_ext_res1.h5
+/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-06T03-54-42_ext/s1_2015-05-06T03-54-42_ext_res1.h5
 
-All done! Full work time: 5.473022699356079
+All done! Full work time: 12.073258638381958
 </pre></div>
 </div>
 </div>
 </div>
 <p>Great, and again some print output to explain:</p>
 <ul class="simple">
-<li><p>In the beginning, the weighting parameters used in the velocity combination (and supplied through the <code class="docutils literal notranslate"><span class="pre">Timeseries_Parameters</span></code> object) are printed. Also the code reports about the number of observations and chunks that it found in the results.</p></li>
+<li><p>First up, after the individual model results are loaded, barycentric velocities are computed for each observation. This is done with the Python package <a class="reference external" href="https://github.com/shbhuk/barycorrpy">barycorrpy</a>, and using the stellar coordinates supplied by the first observation in the timeseries (they have been taken from the respective Fits-header and saved in the individual results file).</p></li>
+<li><p>Then, the weighting parameters used in the velocity combination (and supplied through the <code class="docutils literal notranslate"><span class="pre">Timeseries_Parameters</span></code> object) are printed. Also the code reports about the number of observations and chunks that it found in the results.</p></li>
 <li><p>Next, the (robust) mean and standard deviation (std) of the offsets of chunk timeseries from observation means are printed. Below, the mean and std of the velocity scatter within each chunk timeseries is reported (‘Chunk sigmas’). The sigmas are used to weight the chunk velocities when computing the RV timeseries.</p></li>
 <li><p>Finally, two ‘quality factors’ for the velocity weighting are reported. They should always be very similar, and as they basically represent the RV precision achieved in this timeseries, you would want them to be as small as possible.</p></li>
 </ul>
 </div>
 <div class="section" id="inspect-the-results">
 <h2>Inspect the results<a class="headerlink" href="#inspect-the-results" title="Permalink to this headline">¶</a></h2>
-<p>Now finally, after all this modelling, we can plot our RV timeseries:</p>
+<p>Now finally, after all this modelling, we can plot our RV timeseries. The barycentric dates, corrected RVs and uncertainties are available as attributes of the <code class="docutils literal notranslate"><span class="pre">CombinedResults</span></code> object called ‘Results’:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The barycentric date, RV with barycentric correction, and RV uncertainty</span>
@@ -389,6 +384,55 @@ All done! Full work time: 5.473022699356079
 <img alt="../_images/velocities_15_1.png" src="../_images/velocities_15_1.png" />
 </div>
 </div>
+<p>In addition to the RV timeseries, the ‘Results’ object contains meta-information from the velocity weighting algorithm, that can help us to evaluate the trustworthyness of the results. For example, we can look at the scatter of individual chunk velocities (i.e. the robust standard deviation) for each observation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c2c_scatter</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">c2c_scatter</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">c2c_scatter</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> +- </span><span class="si">{:.2f}</span><span class="s1"> m/s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk velocity scatter in observations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chunk velocity scatter in observations&#39;)
+</pre></div>
+</div>
+<img alt="../_images/velocities_17_1.png" src="../_images/velocities_17_1.png" />
+</div>
+</div>
+<p>Even more: We can plot the chunk sigmas (velocity scatter within each chunk timeseries) over the mean counts of each chunk timeseries. We expect a downward correlation, where chunks with higher counts have smaller sigmas (as they should deliver a better estimate of the true RV in each observation):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the median counts (medcnts) of each chunk in each observation, and average them over the observations</span>
+<span class="n">medcnts_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">medcnts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Extract the chunk sigmas</span>
+<span class="n">chunk_sigma</span>  <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">auxiliary</span><span class="p">[</span><span class="s1">&#39;chunk_sigma&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">medcnts_mean</span><span class="p">,</span> <span class="n">chunk_sigma</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of chunk fluxes [ADU]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Chunk sigma [m/s]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk sigmas over mean chunk fluxes&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chunk sigmas over mean chunk fluxes&#39;)
+</pre></div>
+</div>
+<img alt="../_images/velocities_19_1.png" src="../_images/velocities_19_1.png" />
+</div>
+</div>
+<p>The correlation is just there, but so are a lot of outliers - most of which are chunks at redder wavelengths, where tellurics and the fringing effect negatively impact the model.</p>
+<p>In addition to the RV timeseries, the velocity weighting algorithm computes the so-called Chromatic Index for each observation - a measure of the slope of Doppler velocity over wavelength. It can be used as an activity indicator, as a varying Chromatic Index can be a sign of stellar spots leading to a RV variation (see e.g. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2010ApJ...710..432R/abstract">Reiners +2010</a> for a physical description, and <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018A%26A...609A..12Z/abstract">Zechmeister +2017</a> for a code implementation and exemplary results).</p>
+<p><em>Note</em>: This is still very experimental - we do not know how significant the Chromatic Index results from I2 cell codes are, and certainly need to test this more!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crx</span>     <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span>
@@ -408,55 +452,59 @@ All done! Full work time: 5.473022699356079
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chromatix index variation&#39;)
 </pre></div>
 </div>
-<img alt="../_images/velocities_17_1.png" src="../_images/velocities_17_1.png" />
+<img alt="../_images/velocities_21_1.png" src="../_images/velocities_21_1.png" />
 </div>
 </div>
+<p>Looks quite stable! And to give you an idea of what is measured by the Chromatic Index, let’s plot the individual chunk velocities for one observation and overplot the fitted Chromatic Index model, which looks like:</p>
+<div class="math notranslate nohighlight">
+\[
+    v_\mathrm{fit} (\lambda) = RV + \beta \ln \frac{\lambda_\mathrm{RV}}{\lambda} \quad ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(RV\)</span> is the weighted RV of the observation, <span class="math notranslate nohighlight">\(\beta\)</span> is the Chromatic Index, and <span class="math notranslate nohighlight">\(\lambda_\mathrm{RV}\)</span> is the effective wavelength of the weighted RV.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c2c_scatter</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">c2c_scatter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs_ind</span> <span class="o">=</span> <span class="mi">10</span>     <span class="c1"># observation index</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">bary_date</span><span class="p">,</span> <span class="n">c2c_scatter</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1"> +- </span><span class="si">{:.2f}</span><span class="s1"> m/s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">c2c_scatter</span><span class="p">)))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [JD]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity [m/s]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: Chunk velocity scatter in observations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144: Chunk velocity scatter in observations&#39;)
-</pre></div>
-</div>
-<img alt="../_images/velocities_19_1.png" src="../_images/velocities_19_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs_ind</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># The chunk wavelength intercepts of the observation</span>
+<span class="n">wave_int</span>     <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="c1"># The chunk velocities of the observation</span>
+<span class="n">velocity</span>     <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="c1"># The weighted RV of the observation</span>
+<span class="n">rv_obs</span>       <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="c1"># The CRX model effective wavelength of the RV (and error)</span>
+<span class="n">RV_wave</span>      <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">RV_wave</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="n">RV_wave_err</span>  <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">RV_wave_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="c1"># The CRX model chromatic index (and error)</span>
+<span class="n">crx_obs</span>      <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span>
+<span class="n">crx_obs_err</span>  <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span>
+
+<span class="c1"># Compute the velocities from the CRX model, along with upper and lower uncertainty</span>
 <span class="n">velocities_fit</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">combine_vels</span><span class="o">.</span><span class="n">velocity_from_chromatic_index</span><span class="p">(</span>
-    <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">RV_wave</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">])</span>
+    <span class="n">wave_int</span><span class="p">,</span> <span class="n">rv_obs</span><span class="p">,</span> <span class="n">RV_wave</span><span class="p">,</span> <span class="n">crx_obs</span><span class="p">)</span>
 <span class="n">velocities_fit_lower</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">combine_vels</span><span class="o">.</span><span class="n">velocity_from_chromatic_index</span><span class="p">(</span>
-    <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">-</span><span class="n">Results</span><span class="o">.</span><span class="n">rv_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> 
-    <span class="n">Results</span><span class="o">.</span><span class="n">RV_wave</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">-</span><span class="n">Results</span><span class="o">.</span><span class="n">RV_wave_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">-</span><span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">])</span>
+    <span class="n">wave_int</span><span class="p">,</span> <span class="n">rv_obs</span><span class="o">-</span><span class="n">rv_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">RV_wave</span><span class="o">-</span><span class="n">RV_wave_err</span><span class="p">,</span> <span class="n">crx_obs</span><span class="o">-</span><span class="n">crx_obs_err</span><span class="p">)</span>
 <span class="n">velocities_fit_upper</span> <span class="o">=</span> <span class="n">pyodine</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">combine_vels</span><span class="o">.</span><span class="n">velocity_from_chromatic_index</span><span class="p">(</span>
-    <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">rv</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">+</span><span class="n">Results</span><span class="o">.</span><span class="n">rv_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> 
-    <span class="n">Results</span><span class="o">.</span><span class="n">RV_wave</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">+</span><span class="n">Results</span><span class="o">.</span><span class="n">RV_wave_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">crx</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">]</span><span class="o">+</span><span class="n">Results</span><span class="o">.</span><span class="n">crx_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">])</span>
+    <span class="n">wave_int</span><span class="p">,</span> <span class="n">rv_obs</span><span class="o">+</span><span class="n">rv_err</span><span class="p">[</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">RV_wave</span><span class="o">+</span><span class="n">RV_wave_err</span><span class="p">,</span> <span class="n">crx_obs</span><span class="o">+</span><span class="n">crx_obs_err</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit_lower</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;wave_intercept&#39;</span><span class="p">][</span><span class="n">obs_ind</span><span class="p">],</span> <span class="n">velocities_fit_upper</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">1600.</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave_int</span><span class="p">,</span> <span class="n">velocity</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Chunk velocities&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave_int</span><span class="p">,</span> <span class="n">velocities_fit</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CRX model</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> 
+         <span class="sa">r</span><span class="s1">&#39;$\beta=</span><span class="si">{:.1f}</span><span class="s1">\pm</span><span class="si">{:.1f}</span><span class="s1">$ (m/s)/Np&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">crx_obs</span><span class="p">,</span> <span class="n">crx_obs_err</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave_int</span><span class="p">,</span> <span class="n">velocities_fit_lower</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave_int</span><span class="p">,</span> <span class="n">velocities_fit_upper</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength [$\AA$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Chunk velocities [m/s]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">400.</span><span class="p">,</span> <span class="mf">1600.</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, observation </span><span class="si">{}</span><span class="s1">: Chunk velocities and CRX model&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star_name</span><span class="p">,</span> <span class="n">obs_ind</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/velocities_21_0.png" src="../_images/velocities_21_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;HD185144, observation 10: Chunk velocities and CRX model&#39;)
+</pre></div>
+</div>
+<img alt="../_images/velocities_23_1.png" src="../_images/velocities_23_1.png" />
 </div>
 </div>
 </div>
