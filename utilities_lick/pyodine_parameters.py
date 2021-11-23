@@ -12,7 +12,7 @@ import os
 import sys
 
 
-master_dir_path = '/home/pheeren/pyodine'
+utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
 
 ###############################################################################
 ## Here we define the instrument-specific setup of the LSFs. These values can #
@@ -54,7 +54,7 @@ class Parameters:
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         self.number_cores = 12                  # Number of processor cores for multiprocessing
         
-        self.log_config_file = os.path.join(master_dir_path, 'utilities_lick/logging.json')   # The logging config file
+        self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         self.use_progressbar = False            # Use a progressbar during chunk modelling?
@@ -384,7 +384,7 @@ class Template_Parameters:
         self.osample_obs = 4                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         
-        self.log_config_file = os.path.join(master_dir_path, 'utilities_lick/logging.json')   # The logging config file
+        self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
         self.use_progressbar = True             # Use a progressbar during chunk modelling?

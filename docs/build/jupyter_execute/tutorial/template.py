@@ -25,7 +25,7 @@
 
 # But **pyodine** allows you to create the template without having to know exactly how it works. First, we need to set up the path and import the required pyodine modules:
 
-# In[1]:
+# In[6]:
 
 
 # Automatic reloading of imports
@@ -45,7 +45,7 @@ import pyodine_create_templates         # <- the template creation routines
 
 # Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from `fits`-format along with useful information from the `fits`-headers. Upon import we call the SONG-specific ``utilities_song`` simply ``utilities``:
 
-# In[2]:
+# In[7]:
 
 
 import utilities_song as utilities
@@ -53,7 +53,7 @@ import utilities_song as utilities
 
 # Additionally, a parameter input object of type ``Template_Parameters`` is needed. It contains all the instrument-specific parameters such as oversampling used in the modelling, how to chunk up the spectra, and also the exact definition of the workflow for the analysis routine. By default, there should be a module called ``pyodine_parameters`` within each ``utilities`` module, but you could also create a different one and import it if you wish to experiment with changing parameters. However, we will stick with the well-tested default parameters for SONG here:
 
-# In[3]:
+# In[8]:
 
 
 Pars = utilities.pyodine_parameters.Template_Parameters()
@@ -61,7 +61,7 @@ Pars = utilities.pyodine_parameters.Template_Parameters()
 
 # Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the directory name where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as '.h5' (HDF5 format), the second as '.pkl' (through the **dill** Python package).
 
-# In[4]:
+# In[9]:
 
 
 # O-star observations to use for the modelling
@@ -89,7 +89,7 @@ info_file  = os.path.join(plot_dir, 'info.log')
 
 # And now, we can kick off the template creation:
 
-# In[5]:
+# In[10]:
 
 
 pyodine_create_templates.create_template(utilities, Pars, ostar_files, temp_files, 
