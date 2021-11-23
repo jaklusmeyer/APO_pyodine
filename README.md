@@ -4,7 +4,7 @@ An I2 analysis code for the determination of precise radial velocities from extr
 
 ## Documentation
 
-Please refer to [pyodine.readthedocs.io](http://pyodine.readthedocs.io/){:target="_blank"}.
+Please refer to [pyodine.readthedocs.io](http://pyodine.readthedocs.io/).
 
 ## Developer
 
