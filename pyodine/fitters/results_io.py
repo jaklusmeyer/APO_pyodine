@@ -158,7 +158,7 @@ def check_filename_format(filename, filetype, correct=True):
         if file_ext[1] not in _fileformats[filetype]:
             logging.warning('The extension {} does not match the filetype {}.'.format(
                     file_ext[1], filetype))
-            logging.warning('It should be one of: ', _fileformats[filetype])
+            logging.warning('It should be one of: {}'.format(_fileformats[filetype]))
             
             # Possibly correct
             if correct:
