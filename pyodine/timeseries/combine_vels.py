@@ -230,14 +230,16 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         
         # The theoretical measurement uncertainty should be the inverse 
         # square-root of the sum of all weights
-        rv_dict['rv_err'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i])) #(dev[i]/sig)**2))#
+        # Update: This is not the best way to compute it. Use the formula
+        # as below instead (corresponding to Equ. 15 in Zechmeister +2017)
+        rv_dict['rv_err2'][i] = 1. / np.sqrt(np.nansum(chunk_weights[i]))
         
-        n1 = len(chunk_weights[i]) #len(np.where(chunk_weights > 1.)[0])
-        #print(n1)
+        #n1 = len(np.where(chunk_weights[i] > 0.)[0]) #len(np.where(chunk_weights > 1.)[0])
+        n_v = len(np.where(np.isnan(chunk_vels_corr))[0])
         
-        rv_dict['rv_err2'][i] = np.nansum(
-                chunk_weights[i] * (chunk_vels_corr - rv_dict['rv'][i])**2) / \
-                ((n1-1) * np.nansum(chunk_weights[i])/ n1)
+        rv_dict['rv_err'][i] = np.sqrt(
+                np.nansum( chunk_weights[i] * (chunk_vels_corr - rv_dict['rv'][i])**2 ) / \
+                (np.nansum(chunk_weights[i]) * (nr_chunks-n_v-1)))
         
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities

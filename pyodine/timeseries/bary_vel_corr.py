@@ -38,7 +38,7 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         if not isinstance(hip_nr, int):
             hip_nr = hip_from_name(info_dict['star_name'])
         
-        logging.info('BVC through HIP number: ', hip_nr)
+        logging.info('BVC through HIP number: {}'.format(hip_nr))
         
         # Calculate barycentric correction
         bcvel, warn0, stat0 = get_BC_vel(

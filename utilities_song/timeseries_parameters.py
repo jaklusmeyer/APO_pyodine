@@ -24,9 +24,14 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
+        # Should barycentric velocities be computed here using barycorrpy?
         self.compute_bvc = True
+        # Whether the code should aim to use the HIP-Nr. from the star_name
+        # (otherwise coordinates)
         self.use_hip_for_bvc = True
         
+        # Which weighting algorithm should be used? Either 'song' or 'lick'.
+        # The latter is not tested very well yet.
         self.weighting_algorithm = 'song'
         
         # This dictionary defines the parameters used in the weighting
