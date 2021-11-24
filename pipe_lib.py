@@ -24,7 +24,7 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
     :params chunks: The chunks of the observation to model.
     :type chunks: :class:`ChunkArray`
     :param chunk_weight: The weights array for the chunks.
-    :type chunk_weight: ndarray[nr_chunks,nr_pix]
+    :type chunk_weight: list #ndarray[nr_chunks,nr_pix]
     :param fitter: The fitter instance to use.
     :type fitter: :class:`LmfitWrapper`
     :param lmfit_params: A list of :class:`lmfit.Parameters` objects for the 
@@ -45,7 +45,7 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
     :return: The best-fit results of the modelled chunks.
     :rtype: list[:class:`LmfitResult`]
     :return: An array with updated chunk weights.
-    :rtype: ndarray[nr_chunks,nr_pix]
+    :rtype: list #ndarray[nr_chunks,nr_pix]
     :return: A list of chunk indices where the fitting failed.
     :rtype: list
     :return: A list of chunk indices where the Chauvenet criterion took effect.
@@ -68,7 +68,7 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
         red_chi_sq = np.zeros((len(chunks)))
     else:
         red_chi_sq = None
-    chunk_w = np.ones((chunk_weight.shape))
+    chunk_w = [] #np.ones((chunk_weight.shape))
     
     # Use a progressbar?
     if use_progressbar:
@@ -121,7 +121,7 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
             else:
                 rchi2 = 0.
             red_chi_sq[i] = rchi2**0.5
-        chunk_w[i] = ch_w
+        chunk_w.append(ch_w) #[i] = ch_w
         
         # Update the progressbar
         if use_progressbar:

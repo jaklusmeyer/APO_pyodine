@@ -144,7 +144,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         if isinstance(reject_names, (list,tuple)):
             logging.info('')
             logging.info('Rejecting files...')
-            if Pars.reject_type == 'obs_names':
+            if Pars.reject_type == 'obs_files':
                 Results.remove_observations(obs_names=reject_names)
             else:
                 Results.remove_observations(res_names=reject_names)
