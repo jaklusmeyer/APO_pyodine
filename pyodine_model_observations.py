@@ -204,7 +204,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         chunk_weight = []
         for chunk in obs_chunks:
             chunk_weight.append(np.array(weight[chunk.order, chunk.abspix[0]:chunk.abspix[-1]+1]))
-        chunk_weight = np.array(chunk_weight)
+        #chunk_weight = np.array(chunk_weight)
         
         ###########################################################################
         ## Build and fit the model in as many runs as specified in the 
@@ -224,7 +224,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                     'results': [],
                     'fitting_failed': [],
                     'red_chi_sq': np.zeros((nr_chunks_total)),
-                    'chunk_w': np.ones((chunk_weight.shape)),
+                    'chunk_w': [], #np.ones((chunk_weight.shape)),
                     'median_pars': pyodine.models.base.ParameterSet(),
                     'std_pars': pyodine.models.base.ParameterSet()
                     }

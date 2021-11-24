@@ -220,7 +220,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         chunk_weight = []
         for chunk in ostar_chunks:
             chunk_weight.append(weight[chunk.order, chunk.abspix[0]:chunk.abspix[-1]+1])
-        chunk_weight = np.array(chunk_weight)
+        #chunk_weight = np.array(chunk_weight)
         
         ###########################################################################
         ## Build and fit the model in as many runs as specified in the 
@@ -238,7 +238,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                     'results': [],
                     'fitting_failed': [],
                     'red_chi_sq': np.zeros((nr_chunks_total)),
-                    'chunk_w': np.ones((chunk_weight.shape)),
+                    'chunk_w': [], #np.ones((chunk_weight.shape)),
                     'median_pars': pyodine.models.base.ParameterSet(),
                     'std_pars': pyodine.models.base.ParameterSet()
                     }
