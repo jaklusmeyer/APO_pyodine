@@ -198,7 +198,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         logging.info('')
         logging.info('Number of chunks: {}'.format(nr_chunks_total))
         logging.info('In lowest order: {}'.format(nr_chunks_order))
-        logging.info('Orders: {}'.format(obs_chunks[0].order, ' - ', obs_chunks[-1].order))
+        logging.info('Orders: {} - {}'.format(obs_chunks[0].order, obs_chunks[-1].order))
         
         # Produce the chunk weight array
         chunk_weight = []
