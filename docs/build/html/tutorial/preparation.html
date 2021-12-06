@@ -229,15 +229,15 @@
 </div>
 </div>
 </div>
-<p>In the following tutorial, we will use <strong>pyodine</strong> to compute RVs from SONG spectra for the star !!!!XYZ!!!! This includes three basic steps:</p>
+<p>In the following tutorial, we will use <strong>pyodine</strong> to compute RVs from SONG spectra for the star <span class="math notranslate nohighlight">\(\sigma\)</span>~Draconis. This includes three basic steps:</p>
 <ul class="simple">
 <li><p>using I2-free observations of the star, plus B-star spectra <em>with</em> the I2 cell, to <a class="reference internal" href="template.html"><span class="doc std std-doc">create a deconvolved stellar template</span></a>;</p></li>
 <li><p>with that template, <a class="reference internal" href="observation.html"><span class="doc std std-doc">modelling the I2 observations</span></a> of the star to arrive at best-fit parameters (including, most importantly, the chunk velocities);</p></li>
 <li><p><a class="reference internal" href="velocities.html"><span class="doc std std-doc">weighting and combining the chunk velocities</span></a> to compute the RV timeseries of the observations.</p></li>
 </ul>
 <p>In each of these steps, we will present how to use built-in methods of <strong>pyodine</strong> to visualize and analyze the results.</p>
-<p>But, first of all, we need to prepare everything.</p>
-<p>One possibility to use <strong>pyodine</strong> from any location in your filesystem is by appending its root path to the Python system path, and then importing like this:</p>
+<p>But, first of all, we will take a quick look at some basic modules of <strong>pyodine</strong> and its usage to develop a better understanding.</p>
+<p>One possibility to use <strong>pyodine</strong> from any location in your filesystem is by appending its root path to the Python system path, and then import it like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -252,12 +252,12 @@
 <p>In the following, we will use some capabilities of <strong>pyodine</strong> to examine the I2 atlas and the utilities module.</p>
 <div class="section" id="the-i2-atlas">
 <h2>The I2 atlas<a class="headerlink" href="#the-i2-atlas" title="Permalink to this headline">¶</a></h2>
-<p>-&gt; if you have your own, bring it into the correct hdf5-format (find out more about <a class="reference external" href="http://www.h5py.org/">HDF5/h5py</a>)</p>
-<p>-&gt; here, we just use the one by SONG</p>
+<p>The I2 atlasses in <strong>pyodine</strong> are stored as HDF5 files. If you want to use pyodine for your own project with a new I2 atlas, you need to bring it into the correct HDF5-format (find out more about <a class="reference external" href="http://www.h5py.org/">HDF5/h5py</a>). Here, we will have a look at the SONG I2 atlas to see how it is built up.</p>
 <p>We use functions contained in <code class="docutils literal notranslate"><span class="pre">pyodine.lib.h5quick</span></code> to print information about the I2 atlas: <code class="docutils literal notranslate"><span class="pre">h5print</span></code> to show the structure of the HDF5 file/h5py object, and <code class="docutils literal notranslate"><span class="pre">h5data</span></code> to load the wavelength and flux vectors needed in the later modelling.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyodine.lib.h5quick</span> <span class="kn">import</span> <span class="n">h5print</span><span class="p">,</span> <span class="n">h5data</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 
 <span class="n">I2_path</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_lick/iodine_atlas/song_iodine_cell_01_65C.h5&#39;</span>
 
@@ -268,7 +268,7 @@
 <span class="n">wavelength_air</span>  <span class="o">=</span> <span class="n">h5data</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;wavelength_air&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Length of the wavelength/flux vectors:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelength_air</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Full wavelength range (air): </span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1"> Angstrom&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Full wavelength range (air): </span><span class="si">{:.3f}</span><span class="s1"> - </span><span class="si">{:.3f}</span><span class="s1"> Angstrom&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="n">wavelength_air</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wavelength_air</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 </pre></div>
 </div>
@@ -282,19 +282,24 @@
 └ wavenumber
 
 Length of the wavelength/flux vectors: 618003
-\\nFull wavelength range (air): 4988.607249459516 - 6498.199513520377 $\AA$
+
+Full wavelength range (air): 4988.607 - 6498.200 Angstrom
 </pre></div>
 </div>
 </div>
 </div>
-<p>As you can see, the I2 atlas contains the wavelength range between roughly 4989 and 6498 Å.</p>
+<p>As you can see, the I2 atlas contains the wavelength range between roughly 4989 and 6498 Å - that is in air, which is used in the SONG implementation (in vacuum the wavelengths would be slightly different).</p>
+<p>Now let’s plot the normalized flux of the I2 atlas, over the whole range and in a subset to make the many narrow lines visible:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Required packages</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="c1"># Subset wavelengths</span>
 <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">wavelength_air</span><span class="o">&gt;</span><span class="mf">5500.</span><span class="p">,</span> <span class="n">wavelength_air</span><span class="o">&lt;</span><span class="mf">5505.</span><span class="p">))</span>
 
+<span class="c1"># Plot</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;I2 atlas&#39;</span><span class="p">)</span>
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_air</span><span class="p">,</span> <span class="n">flux_normalized</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
@@ -315,8 +320,174 @@ Length of the wavelength/flux vectors: 618003
 </div>
 <div class="section" id="the-utilities-module">
 <h2>The utilities module<a class="headerlink" href="#the-utilities-module" title="Permalink to this headline">¶</a></h2>
-<p>-&gt; prepare all instrument-specific code, such as I/O of spectra, modelling parameters etc.</p>
-<p>-&gt; again, we just use the existing <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> module</p>
+<p>All instrument- or user-specific code is contained within the utilities modules - e.g. <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> or <code class="docutils literal notranslate"><span class="pre">utilities_lick</span></code> for the SONG and Lick instrument, respectively. Here sits code that defines e.g. how to load spectra from the disc, or that contains the important run parameters for the I2 cell code.</p>
+<p>Again, we just use the existing <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> module to understand it: Let’s import the <code class="docutils literal notranslate"><span class="pre">utilities_song.pyodine_parameters</span></code> module and see what is inside:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song.pyodine_parameters</span> <span class="k">as</span> <span class="nn">pyodine_parameters</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">pyodine_parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on module utilities_song.pyodine_parameters in utilities_song:
+
+NAME
+    utilities_song.pyodine_parameters
+
+DESCRIPTION
+    Set here all the important parameters for the I2 reduction pipeline, both
+    modeling of individual observations as well as the template creation.
+    
+    Paul Heeren, 3/02/2021
+
+CLASSES
+    builtins.object
+        Parameters
+        Template_Parameters
+    
+    class Parameters(builtins.object)
+     |  The control commands for the main routine
+     |  
+     |  The exact details of the algorithm are defined entirely by the parameters
+     |  in this class: Parameters for chunk creation, general model parameters,
+     |  and details about how many runs are used in the modelling and which LSF
+     |  models are employed (and more).
+     |  
+     |  Furthermore, in the class method :method:`constrain_parameters` you can
+     |  specify and alter input parameter descriptions for the model, e.g. set
+     |  bounds or fix parameters.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self)
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  constrain_parameters(self, lmfit_params, run_id, run_results, fitter)
+     |      Constrain the lmfit_parameters for the models, however you wish!
+     |      
+     |      :params lmfit_params: A list of :class:&#39;lmfit.Parameters&#39; objects
+     |          for each chunk.
+     |      :type lmfit_params: list[:class:`lmfit.Parameters`]
+     |      :params run_id: The current run_id, to allow different definitions
+     |          from run to run.
+     |      :type run_id: int
+     |      :params run_results: Dictionary with important observation info and
+     |          results from previous modelling runs.
+     |      :type run_results: dict
+     |      :params fitter: The fitter used in the modelling.
+     |      :type fitter: :class:`LmfitWrapper`
+     |      
+     |      :return: The updated list of :class:`lmfit.Parameters` objects.
+     |      :rtype: list[:class:`lmfit.Parameters`]
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Template_Parameters(builtins.object)
+     |  The control commands for the main template creation routine
+     |  
+     |  This is mostly the same as the :class:`Parameters` class, but with some
+     |  extra parameters essential for the deconvolution and template generation.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self)
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  constrain_parameters(self, lmfit_params, run_id, run_results, fitter)
+     |      Constrain the lmfit_parameters for the models, however you wish!
+     |      
+     |      :params lmfit_params: A list of :class:&#39;lmfit.Parameters&#39; objects
+     |          for each chunk.
+     |      :type lmfit_params: list[:class:`lmfit.Parameters`]
+     |      :params run_id: The current run_id, to allow different definitions
+     |          from run to run.
+     |      :type run_id: int
+     |      :params run_results: Dictionary with important observation info and
+     |          results from previous modelling runs.
+     |      :type run_results: dict
+     |      :params fitter: The fitter used in the modelling.
+     |      :type fitter: :class:`LmfitWrapper`
+     |      
+     |      :return: The updated list of :class:`lmfit.Parameters` objects.
+     |      :rtype: list[:class:`lmfit.Parameters`]
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+DATA
+    utilities_dir_path = &#39;/home/paul/pyodine/utilities_song&#39;
+
+FILE
+    /home/paul/pyodine/utilities_song/pyodine_parameters.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, let’s initiate a <code class="docutils literal notranslate"><span class="pre">Template_Parameters</span></code> object. It contains a large number of instance variables, a few of which we will print here (to see all, just open the Python file in an editor):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Pars</span> <span class="o">=</span> <span class="n">pyodine_parameters</span><span class="o">.</span><span class="n">Template_Parameters</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Oversampling of the model: &#39;</span><span class="p">,</span> <span class="n">Pars</span><span class="o">.</span><span class="n">osample_obs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Orders of the spectra to use: &#39;</span><span class="p">,</span> <span class="n">Pars</span><span class="o">.</span><span class="n">temp_order_range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Chunk width: &#39;</span><span class="p">,</span> <span class="n">Pars</span><span class="o">.</span><span class="n">chunk_width</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Model parameters (run 0):</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">Pars</span><span class="o">.</span><span class="n">model_runs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Oversampling of the model:  6
+Orders of the spectra to use:  (18, 41)
+Chunk width:  91
+Model parameters (run 0):
+ {&#39;lsf_model&#39;: &lt;class &#39;pyodine.models.lsf.SingleGaussian&#39;&gt;, &#39;pre_wave_slope_deg&#39;: 3, &#39;pre_wave_intercept_deg&#39;: 3, &#39;use_chauvenet_pixels&#39;: True, &#39;save_result&#39;: True, &#39;save_filetype&#39;: &#39;h5py&#39;, &#39;wave_slope_deg&#39;: 3, &#39;wave_intercept_deg&#39;: 3, &#39;plot_success&#39;: True, &#39;plot_analysis&#39;: True, &#39;plot_chunks&#39;: [150, 250, 400], &#39;plot_lsf_pars&#39;: True, &#39;save_median_pars&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, if you want to adapt <strong>pyodine</strong> to a new instrument, you need to incorporate this module with all required variables. Best is then, you simply copy-paste an existing utilities module - e.g. <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> - and then just change the parameters as needed.</p>
+<p>The same obviously goes for code which defines the loading of spectra from disk - for the SONG instrument, this resides in the module <code class="docutils literal notranslate"><span class="pre">utilities_song.load_pyodine</span></code>. Again you could use the <code class="docutils literal notranslate"><span class="pre">help()</span></code> function to get the full picture of it - here we just look at the most important class there, which is the <code class="docutils literal notranslate"><span class="pre">ObservationWrapper</span></code>. Each and every observation gets loaded from file into an object of this type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">utilities_song.load_pyodine</span> <span class="k">as</span> <span class="nn">load</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">load</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">load</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ObservationWrapper
+A wrapper for the representation of SONG observation spectra
+    
+    :param filename: The filename of the observation to load.
+    :type filename: str
+    :param instrument: The instrument used to obtain the observation. If None,
+        the information is drawn from the Fits-header (default).
+    :type instrument: :class:`Instrument`
+    :param star: The star of the observation. If None, the information is 
+        drawn from the Fits-header (default).
+    :type star: :class:`Star`
+    
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
