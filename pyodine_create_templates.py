@@ -106,6 +106,12 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         # Take the sum of the O-star spectra
         ostar = pyodine.components.SummedObservation(*all_ostar_obs)
         
+        # And log the number of hot star observation(s)
+        logging.info('')
+        logging.info('Hot star observations ({}):'.format(len(ostar_names)))
+        for ostar_name in ostar_names:
+            logging.info(ostar_name)
+        
         # Load the stellar spectra obtained without I2 (stellar template observations)
         if isinstance(temp_files, list):
             temp_names = temp_files
@@ -119,6 +125,17 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Take the sum of the stellar template spectra
         temp_obs = pyodine.components.SummedObservation(*all_temp_obs)
+        
+        # And log the number of stellar template observation(s)
+        logging.info('')
+        logging.info('Stellar template observations ({}):'.format(len(temp_names)))
+        for temp_name in temp_names:
+            logging.info(temp_name)
+        
+        # And log an idea of the flux level of the template observation
+        logging.info('')
+        logging.info('Median flux of the summed stellar template observation: {:.0f}'.format(
+                np.median([np.median(temp_obs[o].flux) for o in temp_obs.orders])))
         
         # Load the iodine atlas from file
         iod = utilities.load_pyodine.IodineTemplate(Pars.i2_to_use)
