@@ -104,6 +104,11 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         #sun = pyodine.components.Star('sun')   # added for solar analysis
         obs = utilities.load_pyodine.ObservationWrapper(obs_file)#, star=sun)    # added for solar analysis
         
+        # And log an idea of the flux level of the observation
+        logging.info('')
+        logging.info('Median flux of the observation: {:.0f}'.format(
+                np.median([np.median(obs[o].flux) for o in obs.orders])))
+        
         # Load the deconvolved stellar template
         template = pyodine.template.base.StellarTemplate_Chunked(temp_file)
         
