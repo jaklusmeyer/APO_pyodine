@@ -32,7 +32,7 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')    
     
-    if use_hip is True and (('star_name' in info_dict['star_name'] and 
+    if use_hip is True and (('star_name' in info_dict and 
     'hip' in info_dict['star_name'].lower()) or isinstance(hip_nr, int)):
         
         if not isinstance(hip_nr, int):
