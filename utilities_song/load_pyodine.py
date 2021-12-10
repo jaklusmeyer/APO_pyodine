@@ -34,7 +34,6 @@ class IodineTemplate(components.IodineAtlas):
             flux = h['flux_normalized'][()]
             wave = h['wavelength_air'][()]    # originally: wavelength_air
         super().__init__(flux, wave)
-        
 
 
 class ObservationWrapper(components.Observation):
@@ -209,7 +208,10 @@ def get_instrument(header) -> components.Instrument:
             return conf.my_instruments['song_1']
         elif 'Node 2' in header['TELESCOP'] and 'Spectrograph' in header['INSTRUM']:
             return conf.my_instruments['song_2']
-        elif 'Hamilton' in header['INSTRUME']:
+        elif 'Waltz' in header['TELESCOP']:
+            return conf.my_instruments['waltz']
+        elif 'Hamilton' in header['INSTRUME'] or 'HAMILTON' in header['PROGRAM'].upper() or \
+        '3M-COUDE' in header['TELESCOP'].upper() or '3M-CAT' in header['PROGRAM'].upper():
             return conf.my_instruments['lick']
     else:
         if 'NEWCAM' in header['PROGRAM'] and 'hamcat' in header['VERSION']:
