@@ -464,16 +464,18 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         
         ###########################################################################
         ## Now all runs are done, do some very basic analysis of the 
-        ## velocity results to provide instant feedback.
+        ## velocity results to provide instant feedback (only if plot_dir
+        ## exists).
         ## Then exit.
         ###########################################################################
         
-        # Default: use results from last run
-        analysis_run_id = list(run_results.keys())[-1]
-        
-        pipe_lib.velocity_results_analysis(
-                run_results[analysis_run_id], plot_dir, 
-                nr_chunks_order, nr_orders, obs.orig_filename)
+        if plot_dir:
+            # Default: use results from last run
+            analysis_run_id = list(run_results.keys())[-1]
+            
+            pipe_lib.velocity_results_analysis(
+                    run_results[analysis_run_id], plot_dir, 
+                    nr_chunks_order, nr_orders, obs.orig_filename)
         
         modelling_time = time.time() - start_t
         logging.info('')
