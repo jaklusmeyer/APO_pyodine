@@ -34,7 +34,6 @@ class IodineTemplate(components.IodineAtlas):
             flux = h['flux_normalized'][()]
             wave = h['wavelength_air'][()]    # originally: wavelength_air
         super().__init__(flux, wave)
-        
 
 
 class ObservationWrapper(components.Observation):
@@ -144,11 +143,7 @@ def load_file(filename) -> components.Observation:
             # Load the file
             h = pyfits.open(filename)
             header = h[0].header
-            # Prepare data
-            #if 'OPT_DONE' in header.keys(): # excluded for Lick
-            #    flux = h[0].data[0] if header['OPT_DONE'] == 'TRUE' else h[0].data[1]  # excluded for Lick
-            #else:  # excluded for Lick
-            #    flux = h[0].data[0] if sum(h[0].data[0]) > 0 else h[0].data[1]   # excluded for Lick
+            
             flux = h[0].data[0]
             cont = h[0].data[2]
             wave = h[0].data[3]
@@ -210,6 +205,8 @@ def get_instrument(header) -> components.Instrument:
             return conf.my_instruments['song_1']
         elif 'Node 1' in header['TELESCOP'] and 'Spectrograph' in header['INSTRUM']:
             return conf.my_instruments['song_2']
+        elif 'Waltz' in header['TELESCOP']:
+            return conf.my_instruments['waltz']
         elif 'Hamilton' in header['INSTRUME'] or 'HAMILTON' in header['PROGRAM'].upper() or \
         '3M-COUDE' in header['TELESCOP'].upper() or '3M-CAT' in header['PROGRAM'].upper():
             return conf.my_instruments['lick']

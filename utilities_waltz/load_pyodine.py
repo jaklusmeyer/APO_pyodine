@@ -15,18 +15,25 @@ class IodineTemplate(components.IodineAtlas):
     """The iodine template class to be used in the modelling
     
     :param iodine_cell_id: The iodine cell ID to identify the I2 template
-        spectrum by in the :module:`conf`.
-    :type iodine_cell_id: int
+        spectrum by in the :module:`conf`, or the direct pathname to the I2
+        template spectrum.
+    :type iodine_cell_id: int or str
     """
-    def __init__(self, iodine_cell_id):
-        if iodine_cell_id in conf.my_iodine_atlases.keys():
-            with h5py.File(conf.my_iodine_atlases[iodine_cell_id], 'r') as h:
-                flux = h['flux_normalized'][()]
-                wave = h['wavelength_air'][()]    # originally: wavelength_air
-            self.orig_filename = conf.my_iodine_atlases[iodine_cell_id]
-            super().__init__(flux, wave)
-        else:
-            raise ValueError('Unknown iodine_cell_id')
+    def __init__(self, iodine_cell):
+        if not isinstance(iodine_cell, (int,str)):
+            raise KeyError('Argument "iodine_cell" must be either int or string!')
+        elif isinstance(iodine_cell, int):
+            if iodine_cell in conf.my_iodine_atlases.keys():
+                self.orig_filename = conf.my_iodine_atlases[iodine_cell]
+            else:
+                raise ValueError('Unknown iodine_cell ID!')
+        elif isinstance(iodine_cell, str):
+            self.orig_filename = iodine_cell
+        
+        with h5py.File(self.orig_filename, 'r') as h:
+            flux = h['flux_normalized'][()]
+            wave = h['wavelength_air'][()]    # originally: wavelength_air
+        super().__init__(flux, wave)
 
 
 class ObservationWrapper(components.Observation):
@@ -81,7 +88,7 @@ class ObservationWrapper(components.Observation):
 
         # Timing
         self.time_start = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
-        self.time_start_bjd = or_none(header, 'DATE-BJD')
+        self.time_weighted = None
 
         self.bary_date = or_none(header, 'OBS-MIDB')#'LICKJD')
         self.bary_vel_corr = or_none(header, 'BVC')#'LICKBVC')#
@@ -137,10 +144,6 @@ def load_file(filename) -> components.Observation:
             h = pyfits.open(filename)
             header = h[0].header
             # Prepare data
-            #if 'OPT_DONE' in header.keys(): # excluded for Lick
-            #    flux = h[0].data[0] if header['OPT_DONE'] == 'TRUE' else h[0].data[1]  # excluded for Lick
-            #else:  # excluded for Lick
-            #    flux = h[0].data[0] if sum(h[0].data[0]) > 0 else h[0].data[1]   # excluded for Lick
             flux = h[0].data[0]
             cont = h[0].data[2]
             wave = h[0].data[3]
@@ -202,6 +205,8 @@ def get_instrument(header) -> components.Instrument:
             return conf.my_instruments['song_1']
         elif 'Node 1' in header['TELESCOP'] and 'Spectrograph' in header['INSTRUM']:
             return conf.my_instruments['song_2']
+        elif 'Waltz' in header['TELESCOP']:
+            return conf.my_instruments['waltz']
         elif 'Hamilton' in header['INSTRUME']:
             return conf.my_instruments['lick']
     else:
