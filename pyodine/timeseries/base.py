@@ -42,7 +42,7 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
-    def compute_bvcs(self, use_hip=True, hip_nr=None):
+    def compute_bvcs(self, use_hip=True, use_bjd=True, bary_dict=None):
         """Compute barycentric velocities, using a wrapper function for the
         barycorrpy package
         
@@ -50,13 +50,24 @@ class CombinedResults():
             the star's coordinates; otherwise fall back to coordinates from the
             timeseries dictionary. Defaults to True.
         :type use_hip: bool
+        :param use_hip: Whether to use the barycentric corrected JD (BJD) from
+            barycorrpy as new date. Defaults to True.
+        :type use_hip: bool
+        :param bary_dict: A dictionary with stellar (and possible observatory) 
+            information that should be used in the computation of barycentric 
+            velocity corrections. If None, the info from the model results is 
+            used.
+        :type bary_dict: dict, or None
         """
         
-        bvcs, bjds = bvc_wrapper(self.info, self.timeseries, use_hip=use_hip,
-                                 hip_nr=hip_nr)
+        bvc_dict = create_bvc_dict(self.info, self.timeseries, 
+                                   bary_dict=bary_dict)
+        
+        bvcs, bjds = bvc_wrapper(bvc_dict, self.timeseries, use_hip=use_hip)
         
         self.timeseries['bary_vel_corr'] = bvcs
-        self.timeseries['bary_date'] = bjds
+        if use_bjd:
+            self.timeseries['bary_date'] = bjds
         self.fill_timeseries_attributes()
     
     
@@ -213,6 +224,10 @@ class CombinedResults():
                 'instrument_lat': result['observation']['instrument_lat'],
                 'instrument_alt': result['observation']['instrument_alt']
                 }
+        
+        # This was added only later, so make it backwards compatible
+        if 'temp_velocity' in result['observation']:
+            self.info['temp_velocity'] = result['observation']['temp_velocity']
         
         # Model info
         if 'model' in result.keys() and result['model'] != None:
@@ -425,5 +440,62 @@ class CombinedResults():
                 inds.append(i)
         
         return inds
-        
-            
+
+
+def create_bvc_dict(info_dict, timeseries_dict, bary_dict=None):
+    """Create a BVC info dict from modelling results and user input dictionary
+    
+    :param info_dict: The info dictionary from a :class:'CombinedResults'
+        object.
+    :type info_dict: dict
+    :param timeseries_dict: The timeseries dictionary from a 
+        :class:'CombinedResults' object.
+    :type timeseries_dict: dict
+    :param bary_dict: A user-supplied dictionary with stellar (and possible 
+        observatory) information that should be used in the computation of 
+        barycentric velocity corrections. If None, the info from the model 
+        results is used.
+    :type bary_dict: dict, or None
+    """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
+    # Setup the BVC info dictionary, first with info from the modelling results.
+    out_dict = {
+            'star_ra': None,
+            'star_dec': None,
+            'star_pmra': None,
+            'star_pmdec': None,
+            'rv0': None,
+            'star_name': info_dict['star_name'],
+            'instrument_lat': info_dict['instrument_lat'],
+            'instrument_long': info_dict['instrument_long'],
+            'instrument_alt': info_dict['instrument_alt']
+            }
+    
+    # For stellar parameters find the first non-NaN entry and use that (just to make sure).
+    for key in ('star_ra', 'star_dec', 'star_pmra', 'star_pmdec'):
+        ind = np.where(np.isfinite(timeseries_dict[key]))
+        if len(ind[0]) > 0:
+            out_dict[key] = timeseries_dict[key][0][0]
+        else:
+            out_dict[key] = np.nan
+    
+    # Now fill the dictionary with the info from the user-supplied bary_dict
+    # (if it exists)
+    if isinstance(bary_dict, dict):
+        logging.info('Using BVC information from user-supplied dictionary...')
+        for key, value in bary_dict.items():
+            if key in out_dict.keys():
+                out_dict[key] = value
+            else:
+                logging.warning('Key {} in user-supplied dictionary is not useful!'.format(key))
+                logging.warning('(Allowed are: {})'.format(out_dict.keys()))
+    
+    return out_dict
+    
+    
+    

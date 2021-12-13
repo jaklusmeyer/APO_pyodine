@@ -21,8 +21,8 @@ import importlib
 
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
                              plot_dir=None, comb_res_out=None, vels_out=None, 
-                             reject_files=None, error_log=None, info_log=None, 
-                             quiet=False):
+                             reject_files=None, bary_dict=None, error_log=None, 
+                             info_log=None, quiet=False):
     """Weight and combine chunk velocities from modelling results
     
     :param Pars: The parameters to use in the routine.
@@ -47,6 +47,15 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         pathnames to individual results. If None, all results are used in the 
         combination algorithm.
     :type reject_files: str, list, tuple, or None
+    :param bary_dict: A dictionary with stellar (and possible observatory) 
+        information that should be used in the computation of barycentric 
+        velocity corrections. If None, the info from the model results is 
+        used.
+        Possible entries: 'star_ra' and 'star_dec' (in deg), 'star_pmra' and 
+            'star_pmdec' (in mas/yr), 'rv0' (in m/s), 'star_name' (e.g. HIPXXX),
+            'instrument_lat' and 'instrument_long' (in deg), 'instrument_alt'
+            (in m).
+    :type bary_dict: dict, or None
     :param error_log: A pathname of a log-file used for error messages. If 
         None, no errors are logged.
     :type error_log: str, or None
@@ -153,7 +162,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         if Pars.compute_bvc:
             logging.info('')
             logging.info('Barycentric velocity computation...')
-            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc)
+            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc, 
+                                 use_bjd=Pars.use_computed_bjd,
+                                 bary_dict=bary_dict)
         
         logging.info('')
         logging.info('Velocity weighting and combination...')

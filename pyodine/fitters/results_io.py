@@ -47,7 +47,8 @@ def create_results_dict(fit_results):
             'orig_header': obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
             'time_start': obs.time_start.isot.encode('utf8', 'replace'),
             'bary_date': obs.bary_date,
-            'bary_vel_corr': obs.bary_vel_corr
+            'bary_vel_corr': obs.bary_vel_corr,
+            'temp_velocity': fit_results[0].model.stellar_template.velocity_offset,
             }
     
     # Additional star information if available

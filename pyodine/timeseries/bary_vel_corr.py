@@ -19,7 +19,7 @@ from barycorrpy.barycorrpy import get_BC_vel
 from barycorrpy.barycorrpy import utc_tdb
 
 
-def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
+def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True):
     """A simple function to get the barycentric velocities for given 
     observation times, for a star and instrument, all defined in the 
     dictionaries of the CombinedResults object, as well as the correct time 
@@ -32,11 +32,10 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')    
     
-    if use_hip is True and (('star_name' in info_dict and 
-    'hip' in info_dict['star_name'].lower()) or isinstance(hip_nr, int)):
+    if use_hip is True and ('star_name' in bvc_dict and 'hip' in 
+                            bvc_dict['star_name'].lower()):
         
-        if not isinstance(hip_nr, int):
-            hip_nr = hip_from_name(info_dict['star_name'])
+        hip_nr = hip_from_name(bvc_dict['star_name'])
         
         logging.info('BVC through HIP number: {}'.format(hip_nr))
         
@@ -44,9 +43,9 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         bcvel, warn0, stat0 = get_BC_vel(
                 JDUTC = timeseries_dict['bary_date'],
                 hip_id = hip_nr,
-                lat = info_dict['instrument_lat'],
-                longi = info_dict['instrument_long'],
-                alt = info_dict['instrument_alt'],
+                lat = bvc_dict['instrument_lat'],
+                longi = bvc_dict['instrument_long'],
+                alt = bvc_dict['instrument_alt'],
                 ephemeris = 'de430',
                 zmeas = 0.0
                 )
@@ -55,19 +54,18 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
         bjdtdb, warn1, stat1 = utc_tdb.JDUTC_to_BJDTDB(
                 JDUTC = timeseries_dict['bary_date'],
                 hip_id = hip_nr,
-                lat = info_dict['instrument_lat'],
-                longi = info_dict['instrument_long'],
-                alt = info_dict['instrument_alt']
+                lat = bvc_dict['instrument_lat'],
+                longi = bvc_dict['instrument_long'],
+                alt = bvc_dict['instrument_alt']
                 )
     
     else:
         
-        # Only use the info from the first observation for now
-        # (FixMe: Maybe change to allow different coordinates for every obs.?!)
-        ra    = timeseries_dict['star_ra'][0]
-        dec   = timeseries_dict['star_dec'][0]
-        pmra  = timeseries_dict['star_pmra'][0]
-        pmdec = timeseries_dict['star_pmdec'][0]
+        ra    = bvc_dict['star_ra']
+        dec   = bvc_dict['star_dec']
+        pmra  = bvc_dict['star_pmra']
+        pmdec = bvc_dict['star_pmdec']
+        rv0   = bvc_dict['rv0']
         if not np.isfinite(pmra):
             pmra = 0.
         if not np.isfinite(pmdec):
@@ -84,9 +82,10 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
                 dec = dec,
                 pmra = pmra,
                 pmdec = pmdec,
-                lat = info_dict['instrument_lat'],
-                longi = info_dict['instrument_long'],
-                alt = info_dict['instrument_alt'],
+                rv = rv0,
+                lat = bvc_dict['instrument_lat'],
+                longi = bvc_dict['instrument_long'],
+                alt = bvc_dict['instrument_alt'],
                 ephemeris = 'de430',
                 zmeas = 0.0
                 )
@@ -98,9 +97,10 @@ def bvc_wrapper(info_dict, timeseries_dict, use_hip=True, hip_nr=None):
                 dec = dec,
                 pmra = pmra,
                 pmdec = pmdec,
-                lat = info_dict['instrument_lat'],
-                longi = info_dict['instrument_long'],
-                alt = info_dict['instrument_alt']
+                rv = rv0,
+                lat = bvc_dict['instrument_lat'],
+                longi = bvc_dict['instrument_long'],
+                alt = bvc_dict['instrument_alt']
                 )
         
     # JDUTC to JDTDB time converter
