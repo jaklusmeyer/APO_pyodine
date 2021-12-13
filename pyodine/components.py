@@ -355,7 +355,7 @@ class Star:
     def __init__(self, name, coordinates=None, proper_motion=(None, None)):
         self.name = name  # Name of the target (e.g. `Sigma Draconis`)
         self.coordinates = coordinates      # As a SkyCoord object (astropy.coordinates)
-        self.proper_motion = proper_motion  # (pm_ra, pm_dec) in degrees/year
+        self.proper_motion = proper_motion  # (pm_ra, pm_dec) in mas/year
 
 
 class NormalizedObservation(Observation):
