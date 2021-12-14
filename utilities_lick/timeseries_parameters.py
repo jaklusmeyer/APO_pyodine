@@ -64,7 +64,7 @@ class Timeseries_Parameters:
         self.do_crx = True
         
         # For writing timeseries results to a text-file:
-        self.txt_outkeys = ['bary_date', 'rv', 'rv_err']    # Write these results
+        self.txt_outkeys = ['bary_date', 'rv_bc', 'rv_err']    # Write these results
         self.txt_delimiter = '\t'                           # Delimiter to use
         self.txt_header = ''                                # Header line
         self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']   # Output format (make sure
