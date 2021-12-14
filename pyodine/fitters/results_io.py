@@ -47,8 +47,7 @@ def create_results_dict(fit_results):
             'orig_header': obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
             'time_start': obs.time_start.isot.encode('utf8', 'replace'),
             'bary_date': obs.bary_date,
-            'bary_vel_corr': obs.bary_vel_corr,
-            'temp_velocity': fit_results[0].model.stellar_template.velocity_offset,
+            'bary_vel_corr': obs.bary_vel_corr
             }
     
     # Additional star information if available
@@ -73,6 +72,7 @@ def create_results_dict(fit_results):
         # Include the template info and the original filename of the observation
         res_dict['model']['stellar_template'] = os.path.abspath(fit_results[0].model.stellar_template.orig_filename).encode('utf8', 'replace')
         res_dict['observation']['orig_filename'] = os.path.abspath(obs.orig_filename).encode('utf8', 'replace')
+        res_dict['observation']['temp_velocity'] = fit_results[0].model.stellar_template.velocity_offset,
     else:
         # Include the original filenames of all modelled O-star observations (if more than one)
         if hasattr(obs, 'all_filenames'):
