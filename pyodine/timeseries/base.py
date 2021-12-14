@@ -192,6 +192,9 @@ class CombinedResults():
         :type filenames: list or tuple 
         """
         
+        # First of all, sort the input list
+        filenames = filenames.sort()
+        
         # First check whether all filenames supplied actually exist,
         # and only use the ones that do
         filenames, bad_files = return_existing_files(filenames)
