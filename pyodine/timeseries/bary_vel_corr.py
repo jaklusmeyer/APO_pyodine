@@ -65,7 +65,7 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True):
         dec   = bvc_dict['star_dec']
         pmra  = bvc_dict['star_pmra']
         pmdec = bvc_dict['star_pmdec']
-        rv0   = bvc_dict['rv0']
+        rv0   = bvc_dict['star_rv0']
         if not np.isfinite(pmra):
             pmra = 0.
         if not np.isfinite(pmdec):

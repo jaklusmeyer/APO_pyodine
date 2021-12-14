@@ -52,9 +52,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         velocity corrections. If None, the info from the model results is 
         used.
         Possible entries: 'star_ra' and 'star_dec' (in deg), 'star_pmra' and 
-            'star_pmdec' (in mas/yr), 'rv0' (in m/s), 'star_name' (e.g. HIPXXX),
-            'instrument_lat' and 'instrument_long' (in deg), 'instrument_alt'
-            (in m).
+            'star_pmdec' (in mas/yr), 'star_rv0' (in m/s), 'star_name' (e.g. 
+            HIPXXX), 'instrument_lat' and 'instrument_long' (in deg), 
+            'instrument_alt' (in m).
     :type bary_dict: dict, or None
     :param error_log: A pathname of a log-file used for error messages. If 
         None, no errors are logged.
