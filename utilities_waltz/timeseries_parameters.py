@@ -8,12 +8,12 @@
 import logging
 import os
 
-
 utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
+
 
 class Timeseries_Parameters:
     
-    def __init__(self):    
+    def __init__(self):       
         
         # Logging options
         self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
@@ -24,9 +24,17 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
+        # Should barycentric velocities be computed here using barycorrpy?
         self.compute_bvc = True
+        # Whether the code should aim to use the HIP-Nr. from the star_name
+        # (otherwise coordinates)
         self.use_hip_for_bvc = True
+        # Whether the barycentric corrected JD (BJD) from barycorrpy should
+        # be used for dates
+        self.use_computed_bjd = True
         
+        # Which weighting algorithm should be used? Either 'song' or 'lick'.
+        # The latter is not tested very well yet.
         self.weighting_algorithm = 'song'
         
         # This dictionary defines the parameters used in the weighting
@@ -41,8 +49,8 @@ class Timeseries_Parameters:
         # - 'weight_correct' is the value that weights of 0 or NaN are 
         #   corrected to.
         self.weighting_pars = {
-                'good_chunks': list(range(3,15)), #(150, 350)
-                'good_orders': list(range(6,14)),
+                'good_chunks': None, #list(range(3,15)), #(150, 350)
+                'good_orders': None, #list(range(6,14)),
                 'sig_limit_low': 4., 
                 'sig_limit_up': 1000.,
                 'sig_correct': 1000.,
@@ -56,11 +64,11 @@ class Timeseries_Parameters:
         self.do_crx = True
         
         # For writing timeseries results to a text-file:
-        self.txt_outkeys = ['bary_date', 'rv_bc', 'rv_err']     # Write these results
-        self.txt_delimiter = '\t'                               # Delimiter to use
-        self.txt_header = ''                                    # Header line
-        self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']       # Output format (make sure
-                                                                # this matches the keys!)
+        self.txt_outkeys = ['bary_date', 'rv', 'rv_err']    # Write these results
+        self.txt_delimiter = '\t'                           # Delimiter to use
+        self.txt_header = ''                                # Header line
+        self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']   # Output format (make sure
+                                                            # this matches the keys!)
         
         # Save the final results to file?
         self.save_comb_res = True

@@ -29,6 +29,9 @@ class Timeseries_Parameters:
         # Whether the code should aim to use the HIP-Nr. from the star_name
         # (otherwise coordinates)
         self.use_hip_for_bvc = True
+        # Whether the barycentric corrected JD (BJD) from barycorrpy should
+        # be used for dates
+        self.use_computed_bjd = True
         
         # Which weighting algorithm should be used? Either 'song' or 'lick'.
         # The latter is not tested very well yet.
