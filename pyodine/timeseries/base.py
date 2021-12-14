@@ -398,16 +398,18 @@ class CombinedResults():
             if isinstance(self.timeseries[key], np.ndarray):
                 self.timeseries[key] = np.delete(self.timeseries[key], inds, axis=0)
             elif isinstance(self.timeseries[key], list):
-                for i in sorted(inds, reverse=True):
-                    del self.timeseries[key][i]
+                self.timeseries[key] = [self.timeseries[key][i] for i in inds]
+                #for i in sorted(inds, reverse=True):
+                #    del self.timeseries[key][i]
         
         # Remove from auxiliary
         for key in self.auxiliary.keys():
             if isinstance(self.auxiliary[key], np.ndarray):
                 self.auxiliary[key] = np.delete(self.auxiliary[key], inds, axis=0)
             elif isinstance(self.auxiliary[key], list):
-                for i in sorted(inds, reverse=True):
-                    del self.auxiliary[key][i]
+                self.auxiliary[key] = [self.auxiliary[key][i] for i in inds]
+                #for i in sorted(inds, reverse=True):
+                #    del self.auxiliary[key][i]
         
         # Remove from params and errors
         for key in self.params.keys():
