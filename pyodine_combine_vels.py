@@ -242,8 +242,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             if Pars.print_outliers:
                 logging.info('')
                 logging.info('Observations with outlier RVs:')
-                for i in range(len(bad_rvs[0])):
-                    logging.info(Results.res_filename[bad_rvs[0][i]])
+                if len(bad_rvs[0]) > 0:
+                    for i in range(len(bad_rvs[0])):
+                        logging.info(Results.res_filename[bad_rvs[0][i]])
             
             # Plot chunk-to-chunk scatter of observations
             fig = plt.figure(figsize=(10,6))
