@@ -469,7 +469,7 @@ def create_bvc_dict(info_dict, timeseries_dict, bary_dict=None):
             'star_dec': None,
             'star_pmra': None,
             'star_pmdec': None,
-            'rv0': None,
+            'star_rv0': None,
             'star_name': info_dict['star_name'],
             'instrument_lat': info_dict['instrument_lat'],
             'instrument_long': info_dict['instrument_long'],
@@ -480,7 +480,7 @@ def create_bvc_dict(info_dict, timeseries_dict, bary_dict=None):
     for key in ('star_ra', 'star_dec', 'star_pmra', 'star_pmdec'):
         ind = np.where(np.isfinite(timeseries_dict[key]))
         if len(ind[0]) > 0:
-            out_dict[key] = timeseries_dict[key][0][0]
+            out_dict[key] = timeseries_dict[key][ind[0][0]]
         else:
             out_dict[key] = np.nan
     
