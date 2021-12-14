@@ -193,7 +193,7 @@ class CombinedResults():
         """
         
         # First of all, sort the input list
-        filenames = filenames.sort()
+        filenames.sort()
         
         # First check whether all filenames supplied actually exist,
         # and only use the ones that do
@@ -385,8 +385,10 @@ class CombinedResults():
         """
         
         if isinstance(res_names, (list,tuple)):
+            res_names.sort()
             inds = self._return_indices_of_filenames(res_names, self.timeseries['res_filename'])
         elif isinstance(obs_names, (list,tuple)):
+            obs_names.sort()
             inds = self._return_indices_of_filenames(obs_names, self.timeseries['orig_filename'])
         else:
             raise KeyError('Either of "res_names" or "obs_names" must be list or tuple!')
