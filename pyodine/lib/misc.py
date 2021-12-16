@@ -343,6 +343,8 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
     chunk_lsfs = []
     for i, chunk in enumerate(chunk_arr):
         chunk_arr_simple += [[chunk.order, chunk.abspix[int(len(chunk)/2.)]]]
+        if lsf_conv_width is None:
+            lsf_conv_width = fit_results[0].model.conv_width
         # Also we already evaluate all individual LSFs here, then we can later
         # simply pick them
         if osample is None:
