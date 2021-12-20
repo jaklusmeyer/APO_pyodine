@@ -84,7 +84,14 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Start timer
         start_t = time.time()
-                
+        
+        # Get git information
+        branch_name = pyodine.lib.git_check.get_git_branch_name()
+        branch_hash = pyodine.lib.git_check.get_git_revision_short_hash()
+        
+        logging.info('')
+        logging.info('Branch: {}'.format(branch_name))
+        logging.info('Hash: {}'.format(branch_hash))
         logging.info('---------------------------')
         logging.info('Aiming to create template: {}'.format(temp_outname))
         
