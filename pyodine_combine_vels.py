@@ -81,7 +81,13 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # Start timer
         start_t = time.time()
         
+        # Get git information
+        branch_name = pyodine.lib.git_check.get_git_branch_name()
+        branch_hash = pyodine.lib.git_check.get_git_revision_short_hash()
+        
         logging.info('')
+        logging.info('Branch: {}'.format(branch_name))
+        logging.info('Hash: {}'.format(branch_hash))
         logging.info('---------------------------')
         logging.info('Weighting and combining velocities')
         
