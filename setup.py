@@ -26,7 +26,6 @@ INSTALL_REQUIRES = [
         'progressbar2 >= 3.37.1',
         'dill >= 0.3.4',
         'scipy >= 1.6.2',
-        'json >= 2.0.9'
         ]
 
 
