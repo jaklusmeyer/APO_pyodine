@@ -39,7 +39,7 @@ extensions = [
 'sphinx.ext.autodoc',
 'sphinx.ext.autosummary',
 'sphinx.ext.mathjax',
-#'myst_nb',
+'myst_nb'
 #'sphinx.ext.pngmath'
 ]
 
@@ -61,7 +61,7 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_book_theme' #'alabaster'
+html_theme = 'alabaster' #'sphinx_book_theme' #'alabaster'
 html_title = 'pyodine'
 
 # Add any paths that contain custom static files (such as style sheets) here,

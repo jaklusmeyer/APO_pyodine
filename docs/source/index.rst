@@ -22,7 +22,6 @@ Check out the :doc:`overview` section for further information, including how to 
    installation
    overview
    code_structure
-   api
 
 .. toctree::
    :maxdepth: 1
