@@ -110,6 +110,6 @@ setup(
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
         'Source': 'https://gitlab.com/Heeren/pyodine',
-    #},
+    },
     license='MIT',
 )
