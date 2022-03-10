@@ -8,9 +8,11 @@ Please refer to [pyodine.readthedocs.io](http://pyodine.readthedocs.io/).
 
 ## Developer
 
-Paul Heeren, LSW Heidelberg; René Tronsgaard-Rasmussen, ...; Frank Grundahl, SAC Aarhus
+Paul Heeren, LSW Heidelberg; René Tronsgaard-Rasmussen, DTU Space; Frank Grundahl, SAC Aarhus
 
 ## Attribution
+
+Tbd - we are in the process of publishing first results from the code.
 
 ## License
 
