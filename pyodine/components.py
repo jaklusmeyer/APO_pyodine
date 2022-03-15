@@ -3,6 +3,8 @@ from astropy.time import TimeDelta
 import logging
 import sys
 
+import pyodine.comp_io as comp_io
+
 
 class NoDataError(BaseException):
     """Use this Exception class to indicate missing data
@@ -316,10 +318,30 @@ class Observation(MultiOrderSpectrum):
     def time_mid(self):
         return self.time_start + TimeDelta(0.5 * self.exp_time, format='sec')
 
-    def save(self, filename: str):
-        """Save observation in a standardized format"""
-        # TODO: Figure out a file format..
-        pass
+    def save(self, filename, data, header=None):
+        """Save observation in fits format
+        
+        :param filename: The filename to save the observation to.
+        :type filename: str
+        :param data: The data array to save. By leaving it as a required input
+            argument here, this needs to be defined downstream in child classes.
+        :type data: ndarray or list
+        :param header: An instance of the original fits header when the data
+            was loaded from file, or a dictionary. If None, try using the
+            property orig_header.
+        :type header: :class:`fits.header`, dict, or None
+        """
+        if not isinstance(filename, str):
+            raise ValueError('No output filename as type string given!')
+        
+        if not isinstance(data, (np.ndarray, list)):
+            raise ValueError('No data as type ndarray or list given!')
+        
+        if header == None:
+            if hasattr(self, 'orig_header'):
+                header = self.orig_header
+        
+        comp_io.save_fits(filename, data, add_header=header)
 
 
 class Instrument:
@@ -367,7 +389,8 @@ class NormalizedObservation(Observation):
         observation ()
     """
     # List of attributes that cannot be overwritten by orig_obs
-    __attrs = ['orders', 'orig_obs', '_flux', '_normalized_orders', '__dir__']
+    __attrs = ['orders', 'orig_obs', '_flux', '_normalized_orders', '__dir__',
+               'save_norm']
 
     def __init__(self, observation):
         """Initialize the class by providing the original observation"""
@@ -420,6 +443,42 @@ class NormalizedObservation(Observation):
             self._normalized_orders.append(order)
         else:
             raise ValueError('Flux vector length does not match observation')
+    
+    def save_norm(self, filename):
+        """Save normalized observation (with original flux, wave and cont) in 
+        fits format
+        
+        :param filename: The filename to save the observation to.
+        :type filename: str
+        """
+        
+        # First get the normalized flux, and the flux, wave and cont data from 
+        # the original observation (all only for normalized orders)
+        norm_flux = np.array([self._flux[i] for i in self._normalized_orders])
+        
+        orig_flux = np.array([self.orig_obs[i].flux for i in self._normalized_orders])
+        
+        if isinstance(self.orig_obs[self._normalized_orders[0]].wave, (np.ndarray, list)):
+            wave = np.array([self.orig_obs[i].wave for i in self._normalized_orders])
+        else:
+            wave = np.zeros(orig_flux.shape)
+        
+        if isinstance(self.orig_obs[self._normalized_orders[0]].cont, (np.ndarray, list)):
+            cont = np.array([self.orig_obs[i].cont for i in self._normalized_orders])
+        else:
+            cont = np.zeros(orig_flux.shape)
+        
+        # Now create the data array which should be saved to fits
+        data = np.array([norm_flux, orig_flux, wave, cont])
+        
+        # Add the original header (if existent)
+        if hasattr(self.orig_obs, 'orig_header'):
+            header = self.orig_obs.orig_header
+        else:
+            header = None
+        
+        # And save, using the method from the parent class
+        super().save(filename, data, header=header)
 
 
 class SummedObservation(Observation):
@@ -502,6 +561,34 @@ class SummedObservation(Observation):
                 (the value of 0.008 is the flatfield noise - should be changed)
                 #self._weight[i] = (1./self._flux[i]) / (1. + self._flux[i] * 0.005**2)
                 self._weight[i] = np.ones(self._flux[i].shape)"""
+    
+    def save(self, filename):
+        """Save summed observation in fits format
+        
+        :param filename: The filename to save the observation to.
+        :type filename: str
+        """
+        
+        # First get the flux, wave and cont data
+        orders = list(self._flux.keys())
+        
+        flux = np.array([self[i].flux for i in orders])
+        
+        if isinstance(self[orders[0]].wave, (np.ndarray, list)):
+            wave = np.array([self[i].wave for i in self.orders])
+        else:
+            wave = np.zeros(flux.shape)
+        
+        if isinstance(self[orders[0]].cont, (np.ndarray, list)):
+            cont = np.array([self[i].cont for i in self.orders])
+        else:
+            cont = np.zeros(flux.shape)
+        
+        # Now create the data array which should be saved to fits
+        data = np.array([flux, wave, cont])
+        
+        # And save, using the method from the parent class
+        super().save(filename, data, header=self.orig_header)
 
 
 class Chunk(Spectrum):

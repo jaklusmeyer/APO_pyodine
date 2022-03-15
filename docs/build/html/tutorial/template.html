@@ -77,12 +77,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre></div>
-</div>
-</div>
 </div>
 <p>Also, we import the utilities module for the instrument we are working with - in this case for SONG. It contains all the instrument-specific code, particularly routines to import the spectra from <code class="docutils literal notranslate"><span class="pre">fits</span></code>-format along with useful information from the <code class="docutils literal notranslate"><span class="pre">fits</span></code>-headers. Upon import we call the SONG-specific <code class="docutils literal notranslate"><span class="pre">utilities_song</span></code> simply <code class="docutils literal notranslate"><span class="pre">utilities</span></code>:</p>
 <div class="cell docutils container">
@@ -100,7 +94,7 @@
 </div>
 </div>
 </div>
-<p>Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the directory name where to save analysis plots, and the output pathnames of the collected results. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as ‘.h5’ (HDF5 format), the second as ‘.pkl’ (through the <strong>dill</strong> Python package).</p>
+<p>Finally, we need to define the pathnames to the observations of the O-star with I2, and to the observations of the star without I2. We simply collect them from the respective directories of the tutorial data. Also, we define the output pathname for the deconvolved template, the directory name where to save analysis plots, the output pathnames of the collected results, and a path where to save the summed up, normalized template observations. In our analysis, we model the O-star data in two runs (first with a Single-Gaussian LSF to establish good parameter guesses, and then with the final Multi-Gaussian LSF), and we save the results from both runs - the first as ‘.h5’ (HDF5 format), the second as ‘.pkl’ (through the <strong>dill</strong> Python package).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># O-star observations to use for the modelling</span>
@@ -112,6 +106,9 @@
 <span class="n">temp_dir</span>   <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp&#39;</span>
 <span class="n">temp_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)]</span>
 <span class="n">temp_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># Output pathname for the summed, normalized template observations</span>
+<span class="n">obs_sum_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_temp/sigdra_2018-05-16_summed.fits&#39;</span>
 
 <span class="c1"># Output pathname for the template</span>
 <span class="n">temp_outname</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5&#39;</span>
@@ -133,18 +130,43 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyodine_create_templates</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="n">utilities</span><span class="p">,</span> <span class="n">Pars</span><span class="p">,</span> <span class="n">ostar_files</span><span class="p">,</span> <span class="n">temp_files</span><span class="p">,</span> 
                                          <span class="n">temp_outname</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> 
-                                         <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span>
+                                         <span class="n">obs_sum_outname</span><span class="o">=</span><span class="n">obs_sum_outname</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> 
+                                         <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Branch: master
+Hash: d915103
+---------------------------
 Aiming to create template: /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
+
+Hot star observations (5):
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar/s1_2018-05-17T03-03-16_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar/s1_2018-05-17T03-05-23_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar/s1_2018-05-17T03-07-28_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar/s1_2018-05-17T03-09-33_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_ostar/s1_2018-05-17T03-11-39_ext.fits
+
+Stellar template observations (7):
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-15-36_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-23-26_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-31-28_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-39-17_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-47-07_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T03-54-55_ext.fits
+/home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1_2018-05-17T04-02-59_ext.fits
+
+Median flux of the summed stellar template observation: 200817
 
 Orders to use: [18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41]
 
 Velocity guess: 25.136 km/s
 Barycentric velocity: 2.026 km/s
+
+Saved summed, normalized template observations to:
+/home/paul/data_song2/data_res/sigdra_temp/sigdra_2018-05-16_summed.fits
+
 Warning! Max. nr. of chunks without cutting down is 21!
 
 Total number of chunks: 528
@@ -159,7 +181,7 @@ RUN 0
 Constraining parameters for RUN 0
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:23 Time:  0:00:23
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:00:22 Time:  0:00:22
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -188,7 +210,7 @@ Fitted LSF parameters:
     right5  =  0.3780894175194895
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:08 Time:  0:02:08
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:01:54 Time:  0:01:54
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks with no uncertainties: 0
@@ -203,12 +225,12 @@ Deconvolve: /home/paul/data_song/data_ext/sigdra_template/2018-05-16/obs_temp/s1
 Deconvolving chunks...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:59 Time:  0:02:59
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100% (528 of 528) |######################| Elapsed Time: 0:02:40 Time:  0:02:40
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving deconvolved template to /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
 
-Done, full working time: 384.5508987903595
+Done, full working time: 345.0825262069702
 </pre></div>
 </div>
 </div>
@@ -251,7 +273,7 @@ Done, full working time: 384.5508987903595
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of chunks/fit results: 528
 
 Object structure of each fit result:
-{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7fb15c51c190&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7fb15d0359a0&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7fb15d035ee0&gt;, &#39;chunk_ind&#39;: 0}
+{&#39;chunk&#39;: &lt;pyodine.components.Chunk object at 0x7f675d88ccd0&gt;, &#39;model&#39;: &lt;pyodine.models.spectrum.SimpleModel object at 0x7f675e56bc40&gt;, &#39;lmfit_result&#39;: &lt;lmfit.minimizer.MinimizerResult object at 0x7f675e56bb20&gt;, &#39;chunk_ind&#39;: 0}
 </pre></div>
 </div>
 </div>
@@ -474,7 +496,6 @@ The first chunk of the template:
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_structure.html">Code structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial</span></p>
 <ul class="current">

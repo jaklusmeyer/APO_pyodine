@@ -21,8 +21,8 @@ import importlib
 
 
 def create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
-                    plot_dir=None, res_files=None, error_log=None, 
-                    info_log=None, quiet=False):
+                    plot_dir=None, res_files=None, obs_sum_outname=None,
+                    error_log=None, info_log=None, quiet=False):
     """Create a deconvolved stellar template
     
     This routine takes a list of hot star observations, which are modelled
@@ -60,6 +60,10 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         exist yet, it will be created in the process. If None is given, no 
         results will be saved (default).
     :type res_files: str or list or None
+    :param obs_sum_outname: A pathname under which to save the sum of the 
+        template observations, both normalized and unnormalized, as fits file.
+        If None is given, this data product is not saved.
+    :type obs_sum_outname: str or None
     :param error_log: A pathname of a log-file used for error messages. If 
         None, no errors are logged.
     :type error_log: str, or None
@@ -209,6 +213,16 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         # Normalize the template observation (this is used as input to the
         # deconvolver later)
         norm_temp_obs = normalizer.normalize_obs(temp_obs, temp_velocity, orders=orders)
+        
+        # If the summed template observation should be saved, do this here
+        # (set up the directory structure if non-existent yet)
+        if isinstance(obs_sum_outname, str):
+            if not os.path.exists(os.path.dirname(obs_sum_outname)):
+                os.makedirs(os.path.dirname(obs_sum_outname))
+            norm_temp_obs.save_norm(obs_sum_outname)
+            logging.info('')
+            logging.info('Saved summed, normalized template observations to:')
+            logging.info(obs_sum_outname)
         
         # Load the tellurics (if desired)
         if Pars.telluric_mask is not None:
@@ -605,6 +619,7 @@ if __name__ == '__main__':
     parser.add_argument('--plot_dir', type=str, help='The directory name where to save plots.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with pathnames under which to save modelling results.')
     parser.add_argument('--par_file', type=str, help='The pathname of the parameter input file to use.')
+    parser.add_argument('--obs_sum_outname', type=str, help='The pathname where to save the summed, normalized template observation (not deconvolved yet).')
     parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
     parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
     parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
@@ -612,16 +627,17 @@ if __name__ == '__main__':
     # Parse the input arguments
     args = parser.parse_args()
     
-    utilities_dir = args.utilities_dir
-    ostar_files   = args.ostar_files
-    temp_files    = args.temp_files
-    temp_outname  = args.temp_outname
-    plot_dir      = args.plot_dir
-    res_files     = args.res_files
-    par_file      = args.par_file
-    error_file     = args.error_file
-    info_file      = args.info_file
-    quiet         = args.quiet
+    utilities_dir   = args.utilities_dir
+    ostar_files     = args.ostar_files
+    temp_files      = args.temp_files
+    temp_outname    = args.temp_outname
+    plot_dir        = args.plot_dir
+    res_files       = args.res_files
+    par_file        = args.par_file
+    obs_sum_outname = args.obs_sum_outname
+    error_file      = args.error_file
+    info_file       = args.info_file
+    quiet           = args.quiet
     
     # Import and load the reduction parameters
     if par_file == None:
@@ -641,4 +657,5 @@ if __name__ == '__main__':
     # And run the template creation routine
     create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
                     plot_dir=plot_dir, res_files=res_files, 
-                    error_log=error_file, info_log=info_file, quiet=quiet)
+                    obs_sum_outname=obs_sum_outname, error_log=error_file, 
+                    info_log=info_file, quiet=quiet)

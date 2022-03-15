@@ -46,7 +46,7 @@
 <p>To create a deconvolved stellar template, you can use the <code class="docutils literal notranslate"><span class="pre">pyodine_create_templates.create_template()</span></code> function:</p>
 <dl class="py function">
 <dt id="pyodine_create_templates.create_template">
-<code class="sig-prename descclassname">pyodine_create_templates.</code><code class="sig-name descname">create_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">ostar_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">temp_outname</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">info_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_create_templates.create_template" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyodine_create_templates.</code><code class="sig-name descname">create_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">utilities</span></em>, <em class="sig-param"><span class="n">Pars</span></em>, <em class="sig-param"><span class="n">ostar_files</span></em>, <em class="sig-param"><span class="n">temp_files</span></em>, <em class="sig-param"><span class="n">temp_outname</span></em>, <em class="sig-param"><span class="n">plot_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">res_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">obs_sum_outname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">info_log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyodine_create_templates.create_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a deconvolved stellar template</p>
 <p>This routine takes a list of hot star observations, which are modelled
 with the I2 template and LSF. The best-fit parameters (mainly LSF) are then
@@ -78,6 +78,9 @@ pathname(s). If you want to save results from multiple runs, you should
 supply pathnames for each run. If the directory structure does not 
 exist yet, it will be created in the process. If None is given, no 
 results will be saved (default).</p></li>
+<li><p><strong>obs_sum_outname</strong> (<em>str</em><em> or </em><em>None</em>) – A pathname under which to save the sum of the 
+template observations, both normalized and unnormalized, as fits file.
+If None is given, this data product is not saved.</p></li>
 <li><p><strong>error_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for error messages. If 
 None, no errors are logged.</p></li>
 <li><p><strong>info_log</strong> (<em>str</em><em>, or </em><em>None</em>) – A pathname of a log-file used for info messages. If 
@@ -253,7 +256,6 @@ to False.</p></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="code_structure.html">Code structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial</span></p>
 <ul>
