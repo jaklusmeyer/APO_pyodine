@@ -1,1 +1,1 @@
-from . import h5quick, misc, robust
+from . import h5quick, misc, robust, git_check

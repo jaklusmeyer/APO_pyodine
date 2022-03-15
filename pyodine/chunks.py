@@ -92,6 +92,7 @@ def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, p
     if chunks_per_order is None:
         chunks_per_order = max_chunks_per_order
     elif chunks_per_order > max_chunks_per_order:
+        logging.info('')
         logging.info('Warning! Max. nr. of chunks without cutting down is {}!'.format(
                 max_chunks_per_order))
 
@@ -251,6 +252,7 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
     else:
         init_dv = (temp.bary_vel_corr - obs.bary_vel_corr)
     init_z  = init_dv / c
+    logging.info('')
     logging.info('Barycentric redshift between template and observation: ')
     logging.info('v = {}, z = {}\n'.format(init_dv, init_z))
     
