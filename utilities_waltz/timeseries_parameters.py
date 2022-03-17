@@ -24,8 +24,9 @@ class Timeseries_Parameters:
         # observations ('obs_files')?
         self.reject_type = 'res_files'
         
-        # Should barycentric velocities be computed here using barycorrpy?
-        self.compute_bvc = True
+        # Should barycentric velocities be computed here using barycorrpy? 
+        # And if so, in the precise or predictive way?
+        self.compute_bvc = 'precise' # 'precise', 'predictive', or 'no'
         # Whether the code should aim to use the HIP-Nr. from the star_name
         # (otherwise coordinates)
         self.use_hip_for_bvc = True

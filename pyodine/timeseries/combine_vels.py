@@ -32,7 +32,7 @@ _weighting_pars = {
         }
 
 
-def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None, 
+def combine_chunk_velocities(velocities, nr_chunks_order, #bvc=None, 
                              wavelengths=None, weighting_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
@@ -246,8 +246,8 @@ def combine_chunk_velocities(velocities, nr_chunks_order, bvc=None,
         rv_dict['c2c_scatter'][i] = robust_std(chunk_vels_corr)
         
         # BV-correction instead through actual z and barycorrpy?!
-        if isinstance(bvc, (list,np.ndarray)):
-            rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
+        #if isinstance(bvc, (list,np.ndarray)):
+        #    rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
         
         # Compute the chromatic index in the observation, which is the slope
         # of the chunk velocities over chunk wavelengths
@@ -431,7 +431,7 @@ _lick_weighting_pars = {
 
 
 def combine_chunk_velocities_dop(velocities, redchi2, medcnts, 
-                                  wavelengths=None, bvc=None,
+                                  wavelengths=None, #bvc=None,
                                   weighting_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
@@ -508,7 +508,7 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     logging.info('')
     
     # Set up the barycentric corrected velocities and the weights array
-    vel_bc = np.transpose(np.transpose(velocities) + bvc)
+    #vel_bc = np.transpose(np.transpose(velocities) + bvc)
     weight = 1./np.ones(velocities.shape)
     
     # First step to reject chunks:
@@ -519,9 +519,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     
     for i in range(nr_obs):
         # Median velocity of that observation
-        medvel = np.nanmedian(vel_bc[i])
+        medvel = np.nanmedian(velocities[i]) #vel_bc[i])
         # Relative offset of chunk velocities from that median (residual velocities)
-        res_vel[i] = vel_bc[i] - medvel
+        res_vel[i] = velocities[i] - medvel #vel_bc[i] - medvel
         # Chauvenet criterion: Reject outliers, set weights to zero and errs to 99
         try:
             mask, good_ind, bad_ind = chauvenet_criterion(res_vel[i])
@@ -654,7 +654,7 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
         
         rv_dict['mdvel'][i] = np.nanmedian(velobs)
         rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
-        rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
+        rv_dict['rv_bc'][i] = 0. #rv_dict['rv'][i] + bvc[i]
         rv_dict['rv_err'][i] = 1./np.sqrt(np.nansum(wt))
         
         # The chunk-to-chunk velocity scatter is the robust std of the 

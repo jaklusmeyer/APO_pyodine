@@ -10,6 +10,8 @@ from ..lib.misc import return_existing_files
 from .combine_vels import combine_chunk_velocities, combine_chunk_velocities_dop
 from .bary_vel_corr import bvc_wrapper
 
+# Speed of light (m/s)
+_c = 299792458.
 
 
 class CombinedResults():
@@ -42,9 +44,17 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
-    def compute_bvcs(self, use_hip=True, use_bjd=True, bary_dict=None):
-        """Compute barycentric velocities, using a wrapper function for the
-        barycorrpy package
+    def compute_bvcs(self, use_hip=True, use_bjd=True, bary_dict=None, 
+                     precise=True, temp_vel=None, ref_vel=None):
+        """Compute barycentric velocities, using a wrapper function 
+        for the barycorrpy package
+        
+        The keyword precise determines whether to use the multiplicative 
+        algorithm, which makes use of the absolute measured Doppler-shift, or
+        the less precise additive "predictive" algorithm. If True, make sure 
+        that the algorithm has all the information needed to compute the 
+        absolute Doppler-shifts (i.e. template velocity and/or velocity of 
+        reference spectrum).
         
         :param use_hip: Whether to use the built-in hip catalogue to find 
             the star's coordinates; otherwise fall back to coordinates from the
@@ -58,16 +68,64 @@ class CombinedResults():
             velocity corrections. If None, the info from the model results is 
             used.
         :type bary_dict: dict, or None
+        :param precise: Whether or not to use the very precise multiplicative
+            algorithm.
+        :type precise: bool
+        :param temp_vel: If precise=True, you may hand a template velocity 
+            offset (in m/s) here to compute the absolute Doppler shifts. If 
+            None is given, the algorithm will try and use the template velocity 
+            of the results file(s).
+        :type temp_vel: float, int, or None
+        :param ref_vel: If precise=True, you may hand a velocity offset of a 
+            reference spectrum (in m/s) here, which was used to compute the 
+            template velocity offset. If None is given, the algorithm will 
+            assume it to be 0.
+        :type ref_vel: float, int, or None
         """
         
         bvc_dict = create_bvc_dict(self.info, self.timeseries, 
                                    bary_dict=bary_dict)
         
-        bvcs, bjds = bvc_wrapper(bvc_dict, self.timeseries, use_hip=use_hip)
+        # If not precise
+        if precise == False:
+            # Compute predictive bvcs
+            bvcs, bjds = bvc_wrapper(bvc_dict, self.timeseries, 
+                                     use_hip=use_hip)
+            
+            # Correct the RVs of the observations (if they exist already)
+            if 'rv' in self.timeseries.keys():
+                self.timeseries['rv_bc'] = self.timeseries['rv'] + bvcs
+                
+            # Update the timeseries dict
+            self.timeseries['bary_vel_corr'] = bvcs
+            if use_bjd:
+                self.timeseries['bary_date'] = bjds
         
-        self.timeseries['bary_vel_corr'] = bvcs
-        if use_bjd:
-            self.timeseries['bary_date'] = bjds
+        # If precise
+        else:
+            # Compute the absolute Doppler shifts for each observation
+            if not isinstance(temp_vel, (float, int)):
+                temp_vel = self.info['temp_velocity']
+            if not isinstance(ref_vel, (float, int)):
+                ref_vel = 0.
+            
+            rv_absolute = np.array(self.timeseries['rv']) + temp_vel + ref_vel
+            z_absolute  = rv_absolute / _c
+            
+            print(rv_absolute)
+            
+            # Correct the RVs of the observations (this is done directly by
+            # barycorrpy in this case)
+            rv_corrected, bjds = bvc_wrapper(bvc_dict, self.timeseries,
+                                             use_hip=use_hip, 
+                                             z_meas=z_absolute)
+            
+            # Update the timeseries dict
+            self.timeseries['rv_bc'] = rv_corrected
+            self.timeseries['bary_vel_corr'] = rv_corrected - rv_absolute
+            if use_bjd:
+                self.timeseries['bary_date'] = bjds
+        
         self.fill_timeseries_attributes()
     
     
@@ -86,12 +144,12 @@ class CombinedResults():
         """
         
         velocities = self.params['velocity']
-        bvc = self.timeseries['bary_vel_corr']
+        #bvc = self.timeseries['bary_vel_corr']
         wavelengths = None
         if do_crx:
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities(
-                velocities, self.nr_chunks_order, bvc=bvc, 
+                velocities, self.nr_chunks_order, #bvc=bvc, 
                 wavelengths=wavelengths, weighting_pars=weighting_pars)
         
         self.timeseries.update(tseries)

@@ -21,7 +21,8 @@ import importlib
 
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
                              plot_dir=None, comb_res_out=None, vels_out=None, 
-                             reject_files=None, bary_dict=None, error_log=None, 
+                             reject_files=None, bary_dict=None, temp_vel=None,
+                             ref_vel=None, error_log=None, 
                              info_log=None, quiet=False):
     """Weight and combine chunk velocities from modelling results
     
@@ -56,6 +57,15 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             HIPXXX), 'instrument_lat' and 'instrument_long' (in deg), 
             'instrument_alt' (in m).
     :type bary_dict: dict, or None
+    :param temp_vel: Velocity offset of the template used in the computation of
+        the observation velocities (required if precise barycentric correction 
+        is performed). If not supplied here, the template velocity from the
+        results file is used.
+    :type temp_vel: float, int, or None
+    :param ref_vel: Velocity offset of the reference spectrum used for the 
+        template velocity estimate (required if precise barycentric correction 
+        is performed). If not supplied here, it will be 0.
+    :type ref_vel: float, int, or None
     :param error_log: A pathname of a log-file used for error messages. If 
         None, no errors are logged.
     :type error_log: str, or None
@@ -164,14 +174,6 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             else:
                 Results.remove_observations(res_names=reject_names)
         
-        # First compute the barycentric velocities using barycorrpy?
-        if Pars.compute_bvc:
-            logging.info('')
-            logging.info('Barycentric velocity computation...')
-            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc, 
-                                 use_bjd=Pars.use_computed_bjd,
-                                 bary_dict=bary_dict)
-        
         logging.info('')
         logging.info('Velocity weighting and combination...')
         
@@ -181,6 +183,26 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         elif Pars.weighting_algorithm == 'lick':
             Results.create_timeseries_dop(#weighting_pars=Pars.weighting_pars, 
                                           do_crx=Pars.do_crx)
+        
+        # Do precise barycentric velocity correction (using the multiplicative
+        # method taking the absolute measured Doppler shift into account)
+        if Pars.compute_bvc == 'precise':
+            logging.info('')
+            logging.info('Doing the precise barycentric velocity correction...')
+            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc,
+                                use_bjd=Pars.use_computed_bjd,
+                                bary_dict=bary_dict, precise=True, 
+                                temp_vel=temp_vel, ref_vel=ref_vel)
+            
+        # Or estimate predictive barycentric velocities using barycorrpy, and
+        # correct RVs using the additive formula? (less precise)
+        elif Pars.compute_bvc == 'predictive':
+            logging.info('')
+            logging.info('Predictive barycentric velocity computation...')
+            Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc, 
+                                 use_bjd=Pars.use_computed_bjd,
+                                 bary_dict=bary_dict, precise=False)
+        
         
         if isinstance(vels_out, str):
             logging.info('')

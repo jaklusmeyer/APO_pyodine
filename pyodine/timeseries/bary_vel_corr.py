@@ -19,18 +19,23 @@ from barycorrpy.barycorrpy import get_BC_vel
 from barycorrpy.barycorrpy import utc_tdb
 
 
-def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True):
+def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True, z_meas=None):
     """A simple function to get the barycentric velocities for given 
     observation times, for a star and instrument, all defined in the 
     dictionaries of the CombinedResults object, as well as the correct time 
     (barycentric julian date in the barycentric dynamical time standard).
     If usehip==True: Use the built-in hip catalogue to find star's coords.
+    If an array of absolute measured redshifts is handed to z_meas, then the
+    precise (multiplicative) algorithm is used (non-predictive).
     """
     
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
-                            format='%(message)s')    
+                            format='%(message)s')
+    
+    if not isinstance(z_meas, (list, np.ndarray, tuple)):
+        z_meas = 0.0
     
     if use_hip is True and ('star_name' in bvc_dict and 'hip' in 
                             bvc_dict['star_name'].lower()):
@@ -47,7 +52,7 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True):
                 longi = bvc_dict['instrument_long'],
                 alt = bvc_dict['instrument_alt'],
                 ephemeris = 'de430',
-                zmeas = 0.0
+                zmeas = z_meas
                 )
         
         # JDUTC to BJDTDB time converter
@@ -87,7 +92,7 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True):
                 longi = bvc_dict['instrument_long'],
                 alt = bvc_dict['instrument_alt'],
                 ephemeris = 'de430',
-                zmeas = 0.0
+                zmeas = z_meas
                 )
         
         # JDUTC to BJDTDB time converter
