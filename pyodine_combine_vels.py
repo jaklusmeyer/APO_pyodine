@@ -391,6 +391,8 @@ if __name__ == '__main__':
     parser.add_argument('--comb_res_out', type=str, help='The pathname where to save the CombinedResults object.')
     parser.add_argument('--vels_out', type=str, help='The pathname of a text-file where to save chosen timeseries results.')
     parser.add_argument('--reject_files', type=str, help='A pathname of a text-file with the pathnames of results to reject.')
+    parser.add_argument('--temp_vel', type=float, help='Optional template velocity offset to use in barycentric correction.')
+    parser.add_argument('--ref_vel', type=float, help='Optional reference velocity offset to use in barycentric correction.')
     parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
     parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
     parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
@@ -398,16 +400,18 @@ if __name__ == '__main__':
     # Parse the input arguments
     args = parser.parse_args()
     
-    par_file = args.par_file
-    res_files = args.res_files
-    comb_res_in = args.comb_res_in
-    plot_dir = args.plot_dir
+    par_file     = args.par_file
+    res_files    = args.res_files
+    comb_res_in  = args.comb_res_in
+    plot_dir     = args.plot_dir
     comb_res_out = args.comb_res_out
-    vels_out = args.vels_out
+    vels_out     = args.vels_out
     reject_files = args.reject_files
-    error_file     = args.error_file
-    info_file      = args.info_file
-    quiet         = args.quiet
+    temp_vel     = args.temp_vel
+    ref_vel      = args.ref_vel
+    error_file   = args.error_file
+    info_file    = args.info_file
+    quiet        = args.quiet
     
     # Import and load the timeseries parameters
     par_file = os.path.splitext(par_file)[0].replace('/', '.')
@@ -418,5 +422,6 @@ if __name__ == '__main__':
     combine_velocity_results(Pars, res_files=res_files, comb_res_in=comb_res_in, 
                              plot_dir=plot_dir, comb_res_out=comb_res_out, 
                              vels_out=vels_out, reject_files=reject_files, 
+                             temp_vel=temp_vel, ref_vel=ref_vel,
                              error_log=error_file, info_log=info_file, 
                              quiet=quiet)
