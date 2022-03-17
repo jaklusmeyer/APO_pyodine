@@ -1,6 +1,6 @@
 # pyodine
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)]-(https://gitlab.com/Heeren/pyodine/-/blob/master/LICENSE)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://gitlab.com/Heeren/pyodine/-/blob/master/LICENSE)
 
 [![Documentation Status](https://readthedocs.org/projects/pyodine/badge/?version=latest)](https://pyodine.readthedocs.io/en/latest/?badge=latest)
 
