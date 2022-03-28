@@ -112,7 +112,7 @@ class CombinedResults():
             rv_absolute = np.array(self.timeseries['rv']) + temp_vel + ref_vel
             z_absolute  = rv_absolute / _c
             
-            print(rv_absolute)
+            #print(rv_absolute)
             
             # Correct the RVs of the observations (this is done directly by
             # barycorrpy in this case)

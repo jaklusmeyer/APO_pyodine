@@ -230,7 +230,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
                          fmt='.', alpha=0.7, label='Weighted velocities:\n{:.2f}+-{:.2f} m/s'.format(
                                  robust_mean(Results.rv_bc),
                                  robust_std(Results.rv_bc)))
-            plt.plot(Results.bary_date, Results.mdvel+Results.bary_vel_corr, 
+            plt.plot(Results.bary_date, Results.mdvel+Results.bary_vel_corr+robust_mean(Results.rv_bc), 
                      '.', alpha=0.5, label='Median velocities:\n{:.2f}+-{:.2f} m/s'.format(
                              robust_mean(Results.mdvel+Results.bary_vel_corr),
                              robust_std(Results.mdvel+Results.bary_vel_corr)))

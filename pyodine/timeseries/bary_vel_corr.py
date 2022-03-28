@@ -34,7 +34,7 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True, z_meas=None):
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')
     
-    if not isinstance(z_meas, (list, np.ndarray, tuple)):
+    if not isinstance(z_meas, (list, np.ndarray, tuple, float, int)):
         z_meas = 0.0
     
     if use_hip is True and ('star_name' in bvc_dict and 'hip' in 
