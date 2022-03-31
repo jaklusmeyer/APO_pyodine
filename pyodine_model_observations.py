@@ -382,7 +382,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                     res_save_name = res_names[0]
                 # Create the directory structure if it does not exist yet
                 res_save_name_dir = os.path.dirname(res_save_name)
-                if not os.path.exists(res_save_name_dir):
+                if not os.path.exists(res_save_name_dir) and res_save_name_dir != '':
                     os.makedirs(res_save_name_dir)
                 # Save it under the correct file type
                 if 'save_filetype' in run_dict.keys() and run_dict['save_filetype'] == 'dill':

@@ -133,18 +133,19 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             if not os.path.exists(plot_dir):
                 os.makedirs(plot_dir)
         
-        # Final output name for the CombinedResults object  (setup the directory 
+        # Final output name for the CombinedResults object (setup the directory 
         # structure if non-existent)
         if isinstance(comb_res_out, str):
             comb_res_dir = os.path.dirname(comb_res_out)
-            if not os.path.exists(comb_res_dir):
+            print(comb_res_dir)
+            if not os.path.exists(comb_res_dir) and comb_res_dir != '':
                 os.makedirs(comb_res_dir)
         
         # Output name for the RV text file (in .vels format or any other defined in
         # the parameter input file) (setup the directory structure if non-existent)
         if isinstance(vels_out, str):
             vels_out_dir = os.path.dirname(vels_out)
-            if not os.path.exists(vels_out_dir):
+            if not os.path.exists(vels_out_dir) and vels_out_dir != '':
                 os.makedirs(vels_out_dir)
         
         # Load a list of files that should be rejected in the timeseries
