@@ -153,7 +153,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Final template output name (setup the directory structure if non-existent)
         temp_outname_dir = os.path.dirname(temp_outname)
-        if not os.path.exists(temp_outname_dir):
+        if not os.path.exists(temp_outname_dir) and temp_outname_dir != '':
             os.makedirs(temp_outname_dir)
         
         # Output directory for plots (setup the directory structure if non-existent)
@@ -217,8 +217,9 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         # If the summed template observation should be saved, do this here
         # (set up the directory structure if non-existent yet)
         if isinstance(obs_sum_outname, str):
-            if not os.path.exists(os.path.dirname(obs_sum_outname)):
-                os.makedirs(os.path.dirname(obs_sum_outname))
+            obs_sum_outname_dir = os.path.dirname(obs_sum_outname)
+            if not os.path.exists(obs_sum_outname_dir) and obs_sum_outname_dir != '':
+                os.makedirs(obs_sum_outname_dir)
             norm_temp_obs.save_norm(obs_sum_outname)
             logging.info('')
             logging.info('Saved summed, normalized template observations to:')
@@ -421,7 +422,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                     res_save_name = res_names[0]
                 # Create the directory structure if it does not exist yet
                 res_save_name_dir = os.path.dirname(res_save_name)
-                if not os.path.exists(res_save_name_dir):
+                if not os.path.exists(res_save_name_dir) and res_save_name_dir != '':
                     os.makedirs(res_save_name_dir)
                 # Save it under the correct file type
                 if 'save_filetype' in run_dict.keys() and run_dict['save_filetype'] == 'dill':
