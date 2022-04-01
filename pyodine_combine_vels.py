@@ -137,7 +137,6 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         # structure if non-existent)
         if isinstance(comb_res_out, str):
             comb_res_dir = os.path.dirname(comb_res_out)
-            print(comb_res_dir)
             if not os.path.exists(comb_res_dir) and comb_res_dir != '':
                 os.makedirs(comb_res_dir)
         
