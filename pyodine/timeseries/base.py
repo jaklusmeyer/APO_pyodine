@@ -99,7 +99,7 @@ class CombinedResults():
             # Update the timeseries dict
             self.timeseries['bary_vel_corr'] = bvcs
             if use_bjd:
-                self.timeseries['bary_date'] = bjds
+                self.timeseries['bary_date_corr'] = bjds
         
         # If precise
         else:
@@ -124,7 +124,7 @@ class CombinedResults():
             self.timeseries['rv_bc'] = rv_corrected
             self.timeseries['bary_vel_corr'] = rv_corrected - rv_absolute
             if use_bjd:
-                self.timeseries['bary_date'] = bjds
+                self.timeseries['bary_date_corr'] = bjds
         
         self.fill_timeseries_attributes()
     
