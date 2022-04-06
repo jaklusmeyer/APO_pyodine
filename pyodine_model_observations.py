@@ -506,7 +506,7 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
     """Model multiple observations at the same time
     
     This function can parallelize the modelling of multiple observations,
-    taking advantage of Python's :class:`multiprocessing.Pool` capabilities.
+    taking advantage of Python's :class:`pathos.multiprocessing.Pool` capabilities.
     The number of parallel processes is defined in the parameter input object.
     
     :param utilities: The utilities module for the instrument used in this 
