@@ -10,7 +10,7 @@ The **pyodine** package helps you to determine precise Radial Velocities (RVs) f
 
 Thus far, we have successfully tested **pyodine** on spectra from two different instruments, the Hamilton spectrograph at Lick observatory and the SONG spectrograph site on Tenerife.
 
-Check out the :doc:`overview` section for further information, including how to :ref:`install <installation>` the project.
+Check out how to :ref:`install <installation>` the project, or take a look at the :doc:`overview` section for a first glimpse into the main routines. In our *Tutorial* you can learn how to use **pyodine** on spectra from the SONG telescope (start with :doc:`tutorial/preparation`).
 
 .. note::
    This project is under active development.

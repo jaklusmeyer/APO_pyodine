@@ -62,7 +62,7 @@ temp_file = '/home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5'
 temp_files = [temp_file] * len(obs_files)
 
 # Output directories for plots, log files, and output pathnames for modelling results
-plot_dir_parent = '/home/paul/data_song2/data_res/sigdra_obs/'
+plot_dir_parent = '/home/paul/data_song2/data_res/sigdra_obs_new/'
 plot_dirs = []
 error_files = []
 info_files = []

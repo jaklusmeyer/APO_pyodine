@@ -47,12 +47,12 @@ Pars = utilities.timeseries_parameters.Timeseries_Parameters()
 
 
 # Individual result files to use
-parent_dir = '/home/paul/data_song2/data_res/sigdra_obs/'
+parent_dir = '/home/paul/data_song2/data_res/sigdra_obs_new/'
 res_files = [os.path.join(parent_dir, f, f+'_res1.h5') for f in os.listdir(parent_dir)]
 res_files.sort()
 
 # The directory for analysis plots
-plot_dir = '/home/paul/data_song2/data_res/sigdra_combined'
+plot_dir = '/home/paul/data_song2/data_res/sigdra_combined_newbvc'
 
 # The output name of the CombinedResults object
 comb_res_out = os.path.join(plot_dir, 'sigdra_tutorial_comb.h5')
@@ -72,7 +72,7 @@ info_file  = os.path.join(plot_dir, 'info.log')
 
 Results = pyodine_combine_vels.combine_velocity_results(
     Pars, res_files=res_files, plot_dir=plot_dir, comb_res_out=comb_res_out, 
-    vels_out=vels_out, error_log=error_file, info_log=info_file)
+    vels_out=vels_out, error_log=error_file, info_log=info_file)#, temp_vel=-25136.)
 
 
 # Great, and again some print output to explain:
@@ -89,7 +89,7 @@ Results = pyodine_combine_vels.combine_velocity_results(
 
 # Now finally, after all this modelling, we can plot our RV timeseries. The barycentric dates, corrected RVs and uncertainties are available as attributes of the `CombinedResults` object called 'Results':
 
-# In[7]:
+# In[5]:
 
 
 # The barycentric date, RV with barycentric correction, and RV uncertainty
@@ -111,7 +111,7 @@ plt.title('{}: RV timeseries'.format(star_name))
 
 # In addition to the RV timeseries, the 'Results' object contains meta-information from the velocity weighting algorithm, that can help us to evaluate the trustworthyness of the results. For example, we can look at the scatter of individual chunk velocities (i.e. the robust standard deviation) for each observation:
 
-# In[8]:
+# In[6]:
 
 
 c2c_scatter = Results.c2c_scatter
@@ -127,7 +127,7 @@ plt.title('{}: Chunk velocity scatter in observations'.format(star_name))
 
 # Even more: We can plot the chunk sigmas (velocity scatter within each chunk timeseries) over the mean counts of each chunk timeseries. We expect a downward correlation, where chunks with higher counts have smaller sigmas (as they should deliver a better estimate of the true RV in each observation):
 
-# In[15]:
+# In[7]:
 
 
 # Extract the median counts (medcnts) of each chunk in each observation, and average them over the observations
@@ -149,7 +149,7 @@ plt.title('{}: Chunk sigmas over mean chunk fluxes'.format(star_name))
 # 
 # *Note*: This is still very experimental - we do not know how significant the Chromatic Index results from I2 cell codes are, and certainly need to test this more!
 
-# In[16]:
+# In[8]:
 
 
 crx     = Results.crx
@@ -172,7 +172,7 @@ plt.title('{}: Chromatix index variation'.format(star_name))
 # 
 # where $RV$ is the weighted RV of the observation, $\beta$ is the Chromatic Index, and $\lambda_\mathrm{RV}$ is the effective wavelength of the weighted RV.
 
-# In[30]:
+# In[9]:
 
 
 obs_ind = 10     # observation index
@@ -209,10 +209,4 @@ plt.xlabel(r'Wavelength [$\AA$]')
 plt.ylabel('Chunk velocities [m/s]')
 plt.ylim(400., 1600.)
 plt.title('{}, observation {}: Chunk velocities and CRX model'.format(star_name, obs_ind))
-
-
-# In[ ]:
-
-
-
 

@@ -6,19 +6,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Model the stellar I2 observations &#8212; pyodine</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <script src="../_static/togglebutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Weight and combine the chunk velocities" href="velocities.html" />
@@ -96,7 +95,7 @@
 <span class="n">temp_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">temp_file</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_files</span><span class="p">)</span>
 
 <span class="c1"># Output directories for plots, log files, and output pathnames for modelling results</span>
-<span class="n">plot_dir_parent</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs/&#39;</span>
+<span class="n">plot_dir_parent</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs_new/&#39;</span>
 <span class="n">plot_dirs</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">error_files</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">info_files</span> <span class="o">=</span> <span class="p">[]</span>
@@ -128,8 +127,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Branch: master
+Hash: 9eb924d
+---------------------------
 Working on: /home/paul/data_song/data_ext/sigdra_obs_tutorial/s1_2015-05-02T03-48-48_ext.fits
+
+Median flux of the observation: 31774
 Loading template from file: /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
 
 Order correction: -1
@@ -141,13 +144,14 @@ Velocity guess: 1.495 km/s (relative to template)
 (Barycentric velocity of observation: 0.894 km/s)
 (Barycentric velocity of template: 2.026 km/s)
 
+
 Barycentric redshift between template and observation: 
 v = 1131.4373999999998, z = 3.7740689260434957e-06
 
 
 Number of chunks: 528
 In lowest order: 22
-Orders: 17
+Orders: 17 - 40
 
 ----------------------
 RUN 0
@@ -198,7 +202,7 @@ Chunks with nan velocities: []
 Chunks with nan velocity errors: []
 Velocity error at percentile 80: 179.32221159275576
 
-Time to model this observation: 138.64827060699463
+Time to model this observation: 150.81961631774902
 </pre></div>
 </div>
 </div>
@@ -226,6 +230,7 @@ Time to model this observation: 138.64827060699463
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading template from file: /home/paul/data_song2/templates/temp_sigdra_2018-05-16.h5
 Order correction: -1
+
 
 Barycentric redshift between template and observation: 
 v = 1131.4373999999998, z = 3.7740689260434957e-06
@@ -314,7 +319,7 @@ Number of created chunks per order: 22
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  1313.1052544116974
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done, full working time:  1398.9041118621826
 </pre></div>
 </div>
 </div>
@@ -339,14 +344,13 @@ Number of created chunks per order: 22
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Quick start</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_structure.html">Code structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="preparation.html">Prepare the environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="template.html">Create a deconvolved stellar template</a></li>
@@ -367,7 +371,7 @@ Number of created chunks per order: 22
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -389,7 +393,7 @@ Number of created chunks per order: 22
       &copy;2021, Heeren, Tronsgaard Rasmussen, Grundahl.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

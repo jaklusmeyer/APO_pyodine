@@ -26,7 +26,10 @@ In many cases you will have more than one single observation of the same star th
 
 .. autofunction:: pyodine_model_observations.model_multi_observations
 
-Plotting
---------
 
-.. autofunction:: pyodine.plot_lib.plot_residual_hist
+Combine chunk velocities to RV timeseries
+-----------------------------------------
+
+When you've modelled a number of observations and saved the fit results, you can use the function ``pyodine_combine_vels.combine_velocity_results()`` to combine the chunk velocities from the observations to a RV timeseries of the star:
+
+.. autofunction:: pyodine_combine_vels.combine_velocity_results

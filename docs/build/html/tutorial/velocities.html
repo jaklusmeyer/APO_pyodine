@@ -6,19 +6,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weight and combine the chunk velocities &#8212; pyodine</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <script src="../_static/togglebutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Model the stellar I2 observations" href="observation.html" />
@@ -81,12 +80,12 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Individual result files to use</span>
-<span class="n">parent_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs/&#39;</span>
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_obs_new/&#39;</span>
 <span class="n">res_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="o">+</span><span class="s1">&#39;_res1.h5&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)]</span>
 <span class="n">res_files</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="c1"># The directory for analysis plots</span>
-<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_combined&#39;</span>
+<span class="n">plot_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/paul/data_song2/data_res/sigdra_combined_newbvc&#39;</span>
 
 <span class="c1"># The output name of the CombinedResults object</span>
 <span class="n">comb_res_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">,</span> <span class="s1">&#39;sigdra_tutorial_comb.h5&#39;</span><span class="p">)</span>
@@ -106,20 +105,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Results</span> <span class="o">=</span> <span class="n">pyodine_combine_vels</span><span class="o">.</span><span class="n">combine_velocity_results</span><span class="p">(</span>
     <span class="n">Pars</span><span class="p">,</span> <span class="n">res_files</span><span class="o">=</span><span class="n">res_files</span><span class="p">,</span> <span class="n">plot_dir</span><span class="o">=</span><span class="n">plot_dir</span><span class="p">,</span> <span class="n">comb_res_out</span><span class="o">=</span><span class="n">comb_res_out</span><span class="p">,</span> 
-    <span class="n">vels_out</span><span class="o">=</span><span class="n">vels_out</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span>
+    <span class="n">vels_out</span><span class="o">=</span><span class="n">vels_out</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">error_file</span><span class="p">,</span> <span class="n">info_log</span><span class="o">=</span><span class="n">info_file</span><span class="p">)</span><span class="c1">#, temp_vel=-25136.)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---------------------------
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Branch: master
+Hash: 9eb924d
+---------------------------
 Weighting and combining velocities
 
 Star: HD185144
-
-Barycentric velocity computation...
-BVC through coordinates:
-RA, DEC:       293.08995833333336, 69.661175 (deg)
-PM_RA, PM_DEC: 598.07, -1738.4 (mas/yr)
 
 Velocity weighting and combination...
 ---------------------------------------------------
@@ -148,18 +144,28 @@ Median: 48.36 +- 35.31
 RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.73882 m/s
 RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.73882 m/s
 
-Writing results to txt file: /home/paul/data_song2/data_res/sigdra_combined/sigdra_tutorial.vels
+Doing the precise barycentric velocity correction...
+[26328.51895816 26331.36446628 26333.99003978 26266.97586437
+ 26268.09632106 26272.02644948 26191.53645638 26197.77983029
+ 26198.02872067 26121.10952546 26122.90733572 26121.652656
+ 26025.85749298 26033.39022369 26036.8197221  25943.15962027
+ 25945.78330238 25952.67230964 25885.03412016 25887.11565705]
+BVC through coordinates:
+RA, DEC:       293.08995833333336, 69.661175 (deg)
+PM_RA, PM_DEC: 598.07, -1738.4 (mas/yr)
 
-Saving combined results to /home/paul/data_song2/data_res/sigdra_combined/sigdra_tutorial_comb.h5
+Writing results to txt file: /home/paul/data_song2/data_res/sigdra_combined_newbvc/sigdra_tutorial.vels
+
+Saving combined results to /home/paul/data_song2/data_res/sigdra_combined_newbvc/sigdra_tutorial_comb.h5
 
 Creating and saving analysis plots to:
-	/home/paul/data_song2/data_res/sigdra_combined
+	/home/paul/data_song2/data_res/sigdra_combined_newbvc
 
 Observations with outlier RVs:
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-05T04-33-08_ext/s1_2015-05-05T04-33-08_ext_res1.h5
-/home/paul/data_song2/data_res/sigdra_obs/s1_2015-05-06T03-54-42_ext/s1_2015-05-06T03-54-42_ext_res1.h5
+/home/paul/data_song2/data_res/sigdra_obs_new/s1_2015-05-05T04-33-08_ext/s1_2015-05-05T04-33-08_ext_res1.h5
+/home/paul/data_song2/data_res/sigdra_obs_new/s1_2015-05-06T03-54-42_ext/s1_2015-05-06T03-54-42_ext_res1.h5
 
-All done! Full work time: 12.073258638381958
+All done! Full work time: 221.35520219802856
 </pre></div>
 </div>
 </div>
@@ -345,14 +351,13 @@ All done! Full work time: 12.073258638381958
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Quick start</span></p>
+<p class="caption" role="heading"><span class="caption-text">Quick start</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_structure.html">Code structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="preparation.html">Prepare the environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="template.html">Create a deconvolved stellar template</a></li>
@@ -372,7 +377,7 @@ All done! Full work time: 12.073258638381958
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -394,7 +399,7 @@ All done! Full work time: 12.073258638381958
       &copy;2021, Heeren, Tronsgaard Rasmussen, Grundahl.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
