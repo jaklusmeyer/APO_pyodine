@@ -44,8 +44,8 @@ class CombinedResults():
                 logging.error('Problem loading combined results:', exc_info=True)
     
     
-    def compute_bvcs(self, use_hip=True, use_bjd=True, bary_dict=None, 
-                     precise=True, temp_vel=None, ref_vel=None):
+    def compute_bvcs(self, use_hip=True, bary_dict=None, precise=True, 
+                     temp_vel=None, ref_vel=None, solar=False):
         """Compute barycentric velocities, using a wrapper function 
         for the barycorrpy package
         
@@ -81,6 +81,9 @@ class CombinedResults():
             template velocity offset. If None is given, the algorithm will 
             assume it to be 0.
         :type ref_vel: float, int, or None
+        :param solar: If True, return the barycentric correction for the Sun as 
+            target. Defaults to False.
+        :type solar: bool
         """
         
         bvc_dict = create_bvc_dict(self.info, self.timeseries, 
@@ -90,7 +93,7 @@ class CombinedResults():
         if precise == False:
             # Compute predictive bvcs
             bvcs, bjds = bvc_wrapper(bvc_dict, self.timeseries, 
-                                     use_hip=use_hip)
+                                     use_hip=use_hip, solar=solar)
             
             # Correct the RVs of the observations (if they exist already)
             if 'rv' in self.timeseries.keys():
@@ -98,8 +101,7 @@ class CombinedResults():
                 
             # Update the timeseries dict
             self.timeseries['bary_vel_corr'] = bvcs
-            if use_bjd:
-                self.timeseries['bary_date_corr'] = bjds
+            self.timeseries['bary_date_corr'] = bjds
         
         # If precise
         else:
@@ -117,14 +119,13 @@ class CombinedResults():
             # Correct the RVs of the observations (this is done directly by
             # barycorrpy in this case)
             rv_corrected, bjds = bvc_wrapper(bvc_dict, self.timeseries,
-                                             use_hip=use_hip, 
-                                             z_meas=z_absolute)
+                                             use_hip=use_hip, z_meas=z_absolute, 
+                                             solar=solar)
             
             # Update the timeseries dict
             self.timeseries['rv_bc'] = rv_corrected
             self.timeseries['bary_vel_corr'] = rv_corrected - rv_absolute
-            if use_bjd:
-                self.timeseries['bary_date_corr'] = bjds
+            self.timeseries['bary_date_corr'] = bjds
         
         self.fill_timeseries_attributes()
     
@@ -521,6 +522,9 @@ def create_bvc_dict(info_dict, timeseries_dict, bary_dict=None):
         barycentric velocity corrections. If None, the info from the model 
         results is used.
     :type bary_dict: dict, or None
+    
+    :return: The BVC dictionary.
+    :rtype: dict
     """
     
     # Setup the logging if not existent yet
