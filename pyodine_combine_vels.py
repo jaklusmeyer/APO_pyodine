@@ -190,9 +190,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             logging.info('')
             logging.info('Doing the precise barycentric velocity correction...')
             Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc,
-                                use_bjd=Pars.use_computed_bjd,
                                 bary_dict=bary_dict, precise=True, 
-                                temp_vel=temp_vel, ref_vel=ref_vel)
+                                temp_vel=temp_vel, ref_vel=ref_vel,
+                                solar=Pars.solar_bvc)
             
         # Or estimate predictive barycentric velocities using barycorrpy, and
         # correct RVs using the additive formula? (less precise)
@@ -200,8 +200,8 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             logging.info('')
             logging.info('Predictive barycentric velocity computation...')
             Results.compute_bvcs(use_hip=Pars.use_hip_for_bvc, 
-                                 use_bjd=Pars.use_computed_bjd,
-                                 bary_dict=bary_dict, precise=False)
+                                 bary_dict=bary_dict, precise=False,
+                                 solar=Pars.solar_bvc)
         
         
         if isinstance(vels_out, str):
