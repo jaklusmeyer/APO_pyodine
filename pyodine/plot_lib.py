@@ -163,6 +163,185 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         logging.error('Chunk could not be plotted', exc_info=True)
 
 
+def live_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics=None, 
+                    weight=None, fig=None, ax=None, lines=None):
+    
+    # Evaluate model
+    try:
+        sp = fit_results[chunk_nr].fitted_spectrum
+        iod = fit_results[chunk_nr].model.iodine_atlas
+        
+        if not fig:
+            if template:
+                fig = plt.figure(figsize=(10,10))
+                nr_axes = 4
+                gs = fig.add_gridspec(4, 1,  height_ratios=(1, 1, 1, 0.5))
+            else:
+                fig = plt.figure(figsize=(10,8.5))
+                gs = fig.add_gridspec(3, 1,  height_ratios=(1, 1, 0.5))
+                nr_axes = 3
+            
+            ax = []
+        
+        if template:
+            # Compute Doppler shift of this chunk
+            beta = fit_results[chunk_nr].params['velocity'] / 299792458.
+            doppler = np.sqrt((1. + beta) / (1. - beta))
+            if isinstance(fit_results[chunk_nr].model.stellar_template, StellarTemplate_Chunked):
+                temp = fit_results[chunk_nr].model.stellar_template[chunk_nr]
+                temp_shifted = fit_results[chunk_nr].model.stellar_template[chunk_nr]
+            else:
+                # Get template range for this chunk, and doppler shifted template
+                temp = fit_results[chunk_nr].model.stellar_template.get_wavelength_range(sp.wave[0], sp.wave[-1])
+                temp_shifted = fit_results[chunk_nr].model.stellar_template.get_wavelength_range(sp.wave[0]/doppler, sp.wave[-1]/doppler)
+            #ax.append(fig.add_subplot(nr_axes,1,1))
+            ax.append(fig.add_subplot(gs[0]))
+            # Plot modeled template
+            ax[-1].plot(temp.wave, temp.flux, drawstyle='steps-mid')
+            ax[-1].plot(temp_shifted.wave*doppler, temp_shifted.flux, drawstyle='steps-mid')
+            ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+            plt.legend(['Template', 'Shifted template (v={})'.format(int(fit_results[chunk_nr].params['velocity']))])
+            ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both', labelbottom=False)
+        
+        #ax.append(fig.add_subplot(nr_axes,1,nr_axes-2))
+        ax.append(fig.add_subplot(gs[nr_axes-3]))
+        # Plot iodine
+        iod_chunk = iod.get_wavelength_range(sp.wave[0], sp.wave[-1])
+        ax[-1].plot(iod_chunk.wave, iod_chunk.flux)
+        ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+        ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both', labelbottom=False)
+        
+        #ax.append(fig.add_subplot(nr_axes,1,nr_axes-1))
+        ax.append(fig.add_subplot(gs[nr_axes-2]))
+        # Plot observation
+        ax[-1].plot(sp.wave, chunk_array[chunk_nr].flux, drawstyle='steps-mid')
+        # Plot model (spectrum and continuum)
+        ax[-1].plot(sp.wave, sp.flux, drawstyle='steps-mid')
+        ax[-1].plot(sp.wave, sp.cont)
+        ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+        plt.legend(['Observation', 'Fitted model', 'Continuum'])
+        ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both', labelbottom=False)
+        
+        #ax.append(fig.add_subplot(nr_axes,1,nr_axes))
+        ax.append(fig.add_subplot(gs[nr_axes-1]))
+        # Residual plot (normalize with mean flux)
+        ax[-1].plot(sp.wave, fit_results[chunk_nr].residuals / sp.flux, drawstyle='steps-mid')
+        ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+        ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both')
+        
+        # If tellurics are given, add them as shaded regions
+        if tellurics is not None:
+            ind = np.where((tellurics.dict_tellurics['wave_stop']>sp.wave[0]) & 
+                           (tellurics.dict_tellurics['wave_start']<sp.wave[-1]))
+            for tell_line in ind[0]:
+                for j in range(len(ax)):
+                    ax[j].axvspan(tellurics.dict_tellurics['wave_start'][tell_line],
+                                tellurics.dict_tellurics['wave_stop'][tell_line], alpha=0.1, color='k')
+        if weight is not None:
+            ind2 = np.where(weight != 0.)
+            ind3 = np.where(weight == 0.)
+            
+            if len(ind3[0]) > 0:
+                ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2),
+                            'Weights = 0',
+                            'rms_c={:.3f}%'.format(
+                                    (robust_std(fit_results[chunk_nr].residuals[ind2]/ \
+                                               sp.flux[ind2])*1e2))])
+            else:
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
+        else:
+            plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
+        
+        fig.subplots_adjust(hspace=0)
+        ax[-1].set_xlabel('Wavelength [$\AA$]')
+        
+        
+        plt.show()
+        
+    except Exception as e:
+        logging.error('Chunk could not be plotted', exc_info=True)
+        
+
+"""
+def update_chunkmodel(fig, ax, lines, fit_results, chunk_array, chunk_nr, 
+                      template=True, tellurics=None, weight=None, title=''):
+    
+    # Evaluate model
+    try:
+        sp = fit_results[chunk_nr].fitted_spectrum
+        iod = fit_results[chunk_nr].model.iodine_atlas
+        
+        nr_axes = 3
+        
+        if template:
+            line_offset = 2
+            nr_axes = 4
+            # Compute Doppler shift of this chunk
+            beta = fit_results[chunk_nr].params['velocity'] / 299792458.
+            doppler = np.sqrt((1. + beta) / (1. - beta))
+            if isinstance(fit_results[chunk_nr].model.stellar_template, StellarTemplate_Chunked):
+                temp = fit_results[chunk_nr].model.stellar_template[chunk_nr]
+                temp_shifted = fit_results[chunk_nr].model.stellar_template[chunk_nr]
+            else:
+                # Get template range for this chunk, and doppler shifted template
+                temp = fit_results[chunk_nr].model.stellar_template.get_wavelength_range(sp.wave[0], sp.wave[-1])
+                temp_shifted = fit_results[chunk_nr].model.stellar_template.get_wavelength_range(sp.wave[0]/doppler, sp.wave[-1]/doppler)
+            # Plot modeled template
+            lines[0].set_xdata(temp.wave)
+            lines[0].set_ydata(temp.flux)
+            lines[1].set_xdata(temp_shifted.wave*doppler)
+            lines[1].set_ydata(temp_shifted.flux)
+            ax[0].legend(['Template', 'Shifted template (v={})'.format(int(fit_results[chunk_nr].params['velocity']))])
+            
+        # Plot iodine
+        iod_chunk = iod.get_wavelength_range(sp.wave[0], sp.wave[-1])
+        lines[line_offset].set_xdata(iod_chunk.wave)
+        lines[line_offset].set_ydata(iod_chunk.flux)
+        
+        # Plot observation
+        lines[line_offset+1].set_xdata(sp.wave)
+        lines[line_offset+1].set_ydata(chunk_array[chunk_nr].flux)
+        # Plot model (spectrum and continuum)
+        lines[line_offset+2].set_xdata(sp.wave)
+        lines[line_offset+2].set_ydata(sp.flux)
+        lines[line_offset+3].set_xdata(sp.wave)
+        lines[line_offset+3].set_ydata(sp.cont)
+        
+        # Residual plot (normalize with mean flux)
+        lines[line_offset+3].set_xdata(sp.wave)
+        lines[line_offset+3].set_ydata(fit_results[chunk_nr].residuals / sp.flux)
+        
+        # If tellurics are given, add them as shaded regions
+        if tellurics is not None:
+            ind = np.where((tellurics.dict_tellurics['wave_stop']>sp.wave[0]) & 
+                           (tellurics.dict_tellurics['wave_start']<sp.wave[-1]))
+            for tell_line in ind[0]:
+                for j in range(len(ax)):
+                    lines.append(ax[j].axvspan(tellurics.dict_tellurics['wave_start'][tell_line],
+                                tellurics.dict_tellurics['wave_stop'][tell_line], alpha=0.1, color='k')[0])
+        if weight is not None:
+            ind2 = np.where(weight != 0.)
+            ind3 = np.where(weight == 0.)
+            
+            if len(ind3[0]) > 0:
+                lines.append(ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)[0])
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2),
+                            'Weights = 0',
+                            'rms_c={:.3f}%'.format(
+                                    (robust_std(fit_results[chunk_nr].residuals[ind2]/ \
+                                               sp.flux[ind2])*1e2))])
+            else:
+                plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
+        else:
+            plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2)])
+        
+        
+        for a in ax:
+            a.set_xlim(sp.wave[0], sp.wave[-1])
+"""
+
+
 def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=True, 
                        title='', savename=None, dpi=300, show_plot=False):
     """Create a histogram of all chunk residuals (in percent)
