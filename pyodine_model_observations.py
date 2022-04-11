@@ -26,7 +26,8 @@ import importlib
 def model_single_observation(utilities, Pars, obs_file, temp_file, 
                              iod=None, orders=None, normalizer=None, 
                              tellurics=None, plot_dir=None, res_names=None, 
-                             error_log=None, info_log=None, quiet=False):
+                             error_log=None, info_log=None, quiet=False,
+                             live=False):
     """Model a single observation
     
     This routine models a stellar observation spectrum with I2, using a stellar
@@ -75,7 +76,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
     :param quiet: Whether or not to print info messages to terminal. Defaults 
         to False (messages are printed).
     :type quiet: bool
-    
+    :param live: If True, then the modelling is performed in live-mode, i.e.
+        each modelled chunk is plotted and the best-fit parameters printed to
+        terminal. Defaults to False.
+    :type live: bool
     """
     
     # Check whether a logger is already setup. If no, setup a new one
@@ -350,7 +354,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             modelling_return = pipe_lib.model_all_chunks(
                     obs_chunks, chunk_weight, fitter, lmfit_params, 
                     tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
-                    use_progressbar=Pars.use_progressbar)
+                    use_progressbar=Pars.use_progressbar, live=live)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
              run_results[run_id]['fitting_failed'], chauvenet_outliers, 

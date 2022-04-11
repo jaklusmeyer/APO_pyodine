@@ -1,0 +1,12 @@
+2022-04-11 14:02:08,848 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/home/paul/pyodine/pyodine/plot_lib.py", line 234, in live_chunkmodel
+    ax[nr_axes-3].plot(iod_chunk.wave, iod_chunk.flux)
+UnboundLocalError: local variable 'nr_axes' referenced before assignment
+2022-04-11 14:02:08,849 - root - ERROR - Something went wrong!
+Traceback (most recent call last):
+  File "/home/paul/pyodine/pyodine_create_templates.py", line 390, in create_template
+    modelling_return = pipe_lib.model_all_chunks(
+  File "/home/paul/pyodine/pipe_lib.py", line 133, in model_all_chunks
+    live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
+TypeError: cannot unpack non-iterable NoneType object

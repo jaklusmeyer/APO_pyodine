@@ -18,7 +18,7 @@ import sys
 
 def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params, 
                      tellurics=None, use_chauvenet=True, compute_redchi2=True, 
-                     use_progressbar=True):
+                     use_progressbar=True, live=False):
     """Loop over all chunks and model them
     
     :params chunks: The chunks of the observation to model.
@@ -41,6 +41,9 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
     :param use_progressbar: Whether to show a progressbar during the modelling. 
         Defaults to True.
     :type use_progressbar: bool
+    :param live: If True, then the modelling is performed in live-mode, i.e.
+        each modelled chunk is plotted.
+    :type live: bool
     
     :return: The best-fit results of the modelled chunks.
     :rtype: list[:class:`LmfitResult`]
@@ -122,6 +125,15 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
                 rchi2 = 0.
             red_chi_sq[i] = rchi2**0.5
         chunk_w.append(ch_w) #[i] = ch_w
+        
+        # If live, plot the chunk and print fit report
+        if live:
+            logging.info(result.report)
+            if i==0:
+                live_fig, live_ax = None, None
+            live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
+                    result, chunks, i, tellurics=tellurics, weight=ch_w, 
+                    fig=live_fig, ax=live_ax)
         
         # Update the progressbar
         if use_progressbar:
