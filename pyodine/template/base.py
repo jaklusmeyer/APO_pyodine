@@ -184,11 +184,10 @@ class StellarTemplate_Chunked:
             try:
                 with h5py.File(observation, 'r') as h:
                     try:
-                        self.orig_filename = h['/orig_filename'][()]
+                        self.orig_filename = h['/orig_filename'][()].decode()
                     except:
                         self.orig_filename = os.path.abspath(observation)
                     self.starname = h['/starname'][()]
-                    self.orig_filename = h['/orig_filename'][()]
                     self.time_start = astropy.time.Time(
                         h['/time_start'][()],
                         format='isot',

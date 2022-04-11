@@ -151,7 +151,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                           wave_intercept_fit=None, wave_slope_fit=None, 
                           plot_lsf_pars=False, uncertainties_failed=None,
                           nan_rchi_fit=None, chauvenet_outliers=None,
-                          lsf_array=None):
+                          lsf_array=None, live=False):
     """Create analysis plots for a modelling run
     
     :param fit_results: A list containing instances of :class:`LmfitResult`
@@ -200,7 +200,9 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
     :param lsf_array: An array of evaluated LSFs to plot some exemplary ones. 
         Defaults to None.
     :type lsf_array: ndarray[nr_chunks, nr_pix], or None
-    
+    :param live: If True, then the modelling is performed in live-mode, i.e.
+        each modelled chunk is plotted.
+    :type live: bool
     """
     
     # Setup the logging if not existent yet
@@ -229,7 +231,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                 fit_results, residual_arr=None, tellurics=tellurics, 
                 title='Histogram of residuals' + run_title_str, 
                 savename=os.path.join(save_dir, run_save_str + 'residuals_hist.png'), 
-                dpi=300, show_plot=False)
+                dpi=300, show_plot=live)
         
         # Plot chunk residuals
         if tellurics:
@@ -240,7 +242,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     nr_chunks_order=nr_chunks_order, nr_orders=nr_orders, 
                     ylabel='Chunk residuals [%]', title='Chunk residuals (outside tellurics)' + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + 'residuals.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
         
         else:
             all_res = hist_result
@@ -250,7 +252,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     nr_chunks_order=nr_chunks_order, nr_orders=nr_orders, 
                     ylabel='Chunk residuals [%]', title='Chunk residuals' + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + 'residuals.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
         
         # Plot red. Chi**2
         fit_red_chi2 = [r.redchi for r in fit_results]
@@ -264,7 +266,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                 nr_chunks_order=nr_chunks_order, nr_orders=nr_orders, 
                 ylabel='log(red. Chi**2)', ylog=True, title='Chunk red. Chi**2' + run_title_str, 
                 savename=os.path.join(save_dir, run_save_str + 'redchi.png'), 
-                dpi=300, show_plot=False)
+                dpi=300, show_plot=live)
         
         # Plot some evaluated chunks
         if isinstance(plot_chunks, (list,tuple,np.ndarray,int)) and chunks:
@@ -277,7 +279,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
             for chunk_id in plot_chunks:
                 pyodine.plot_lib.plot_chunkmodel(
                         fit_results, chunks, chunk_id, template=template, 
-                        tellurics=tellurics, show_plot=False, 
+                        tellurics=tellurics, show_plot=live, 
                         savename=os.path.join(save_dir, run_save_str + 'chunk{}.png'.format(chunk_id)), 
                         weight=chunk_weight[chunk_id])
         
@@ -288,7 +290,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     curve=wave_slope_fit, curve_alpha=0.7, curve_label='Polynomial fit',
                     ylabel=r'Wave slope [$\AA$/pix]', title='Wave slope results' + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + 'wave_slope.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
         
         # Plot the wavelength intercepts and fits, and the residuals between both
         if isinstance(wave_intercept_fit, (np.ndarray, list, tuple)):
@@ -297,13 +299,13 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     curve=wave_intercept_fit, curve_alpha=0.7, curve_label='Polynomial fit',
                     ylabel=r'Wave intercept [$\AA$]', title='Wave intercept results' + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + 'wave_intercept.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
             
             pyodine.plot_lib.plot_chunk_scatter(
                     scatter=params['wave_intercept'] - wave_intercept_fit, scatter_alpha=0.7,
                     ylabel=r'Residuals [$\AA$]', title='Wave intercepts - fit' + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + 'wave_residuals.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
         
         # Plot the lsf parameters
         if plot_lsf_pars:
@@ -315,7 +317,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     nr_chunks_order=nr_chunks_order, nr_orders=nr_orders, 
                     title='{}'.format(k) + run_title_str, 
                     savename=os.path.join(save_dir, run_save_str + '{}.png'.format(k)), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
         
         # Plot where fitting went wrong for chunks
         if (isinstance(uncertainties_failed, (list,tuple,np.ndarray)) and
@@ -339,6 +341,8 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
             
             plt.savefig(os.path.join(save_dir, run_save_str + 'fitting_success.png'),
                         format='png', dpi=300)
+            if live:
+                plt.show()
             plt.close()
         
         # Plot exemplary smoothed LSFs in 9 sectors
@@ -347,7 +351,7 @@ def create_analysis_plots(fit_results, save_dir, run_id=None, tellurics=None,
                     lsf_array, chunks, x_nr=3, y_nr=3, 
                     alpha=0.7, xlim=(12,36), grid=True, 
                     savename=os.path.join(save_dir, run_save_str + 'smoothed_lsfs.png'), 
-                    dpi=300, show_plot=False)
+                    dpi=300, show_plot=live)
     
     except Exception as e:
         logging.error('Run results analysis failed...', exc_info=True)
