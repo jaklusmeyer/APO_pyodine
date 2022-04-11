@@ -44,7 +44,8 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True, z_meas=None,
         performed, without taking measured redshifts into account.
     :type z_meas: np.ndarray, list, tuple, or None
     :param solar: If True, return the barycentric correction for the Sun as 
-        target. Defaults to False.
+        target. Defaults to False. (But even then, if the 'star_name' in 
+            the bvc_dict is 'Sun', the solar BC correction will be done.)
     :type solar: bool
     
     :return: An array with the BC velocities, or the already corrected RVs (if
@@ -62,7 +63,7 @@ def bvc_wrapper(bvc_dict, timeseries_dict, use_hip=True, z_meas=None,
     if not isinstance(z_meas, (list, np.ndarray, tuple, float, int)):
         z_meas = 0.0
     
-    if solar is True:
+    if solar is True or 'sun' in bvc_dict['star_name'].lower():
         logging.info('BVC for the Sun')
         
         # Calculate barycentric correction
