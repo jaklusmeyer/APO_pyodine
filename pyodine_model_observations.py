@@ -465,7 +465,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                         plot_lsf_pars=plot_lsf_pars,
                         uncertainties_failed=uncertainties_failed,
                         nan_rchi_fit=nan_rchi_fit, chauvenet_outliers=chauvenet_outliers,
-                        lsf_array=lsf_smoothed)
+                        lsf_array=lsf_smoothed, live=live)
             
             ###########################################################################
             ## Run finished, proceeding to next run (unless all through)
