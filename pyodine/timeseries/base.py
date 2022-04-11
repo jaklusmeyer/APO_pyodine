@@ -82,7 +82,8 @@ class CombinedResults():
             assume it to be 0.
         :type ref_vel: float, int, or None
         :param solar: If True, return the barycentric correction for the Sun as 
-            target. Defaults to False.
+            target. Defaults to False. (But even then, if the 'star_name' in 
+            the bvc_dict is 'Sun', the solar BC correction will be done.)
         :type solar: bool
         """
         
