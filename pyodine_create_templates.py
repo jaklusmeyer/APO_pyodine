@@ -22,7 +22,7 @@ import importlib
 
 def create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
                     plot_dir=None, res_files=None, obs_sum_outname=None,
-                    error_log=None, info_log=None, quiet=False):
+                    error_log=None, info_log=None, quiet=False, live=False):
     """Create a deconvolved stellar template
     
     This routine takes a list of hot star observations, which are modelled
@@ -73,7 +73,10 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
     :param quiet: Whether or not to print info messages to terminal. Defaults 
         to False (messages are printed).
     :type quiet: bool
-    
+    :param live: If True, then the modelling is performed in live-mode, i.e.
+        each modelled chunk is plotted and the best-fit parameters printed to
+        terminal. Defaults to False.
+    :type live: bool
     """
     
     # Check whether a logger is already setup. If no, setup a new one
@@ -390,7 +393,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             modelling_return = pipe_lib.model_all_chunks(
                     ostar_chunks, chunk_weight, fitter, lmfit_params, 
                     tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
-                    use_progressbar=Pars.use_progressbar)
+                    use_progressbar=Pars.use_progressbar, live=live)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
              run_results[run_id]['fitting_failed'], chauvenet_outliers, 
@@ -624,6 +627,7 @@ if __name__ == '__main__':
     parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
     parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
     parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
+    parser.add_argument('-l', '--live', action='store_true', dest='live', help='Run the code in live mode.')
     
     # Parse the input arguments
     args = parser.parse_args()
@@ -639,6 +643,7 @@ if __name__ == '__main__':
     error_file      = args.error_file
     info_file       = args.info_file
     quiet           = args.quiet
+    live            = args.live
     
     # Import and load the reduction parameters
     if par_file == None:
@@ -659,4 +664,4 @@ if __name__ == '__main__':
     create_template(utilities, Pars, ostar_files, temp_files, temp_outname, 
                     plot_dir=plot_dir, res_files=res_files, 
                     obs_sum_outname=obs_sum_outname, error_log=error_file, 
-                    info_log=info_file, quiet=quiet)
+                    info_log=info_file, quiet=quiet, live=live)
