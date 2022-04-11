@@ -263,7 +263,7 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
             
             shft_wav = temp[i].w0 + init_z * temp[i].w0
             diff = np.abs(shft_wav - obs[o+order_correction].wave)
-            pix_ind = np.argmin(np.abs(diff))#np.where(diff == np.min(diff))[0] # pixel with closest wavelength
+            pix_ind = np.argmin(np.abs(diff)) # pixel with closest wavelength
             
             startpix = round(pix_ind - width // 2)
             endpix = startpix + width
@@ -297,4 +297,68 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
             chunk = Chunk(obs, o+order_correction, pixels, padding2)
             chunks.append(chunk)
     
+    return chunks
+
+
+def user_defined2(obs, wave_dict, padding=0):
+    """An algorithm to create completely user-defined chunks, i.e. start and
+    end wavelengths for all chunks are given by the user
+    
+    :param obs: The observation which will be chunked.
+    :type obs: :class:`Observation`
+    :param wave_dict: A dictionary with start and end wavelengths for all 
+        chunks (arrays under 'start_wave' and 'end_wave').
+    :type wave_dict: dict
+    :param padding: The padding width on either chunk side in pixels. Defaults 
+        to 0 (but you should make it bigger!).
+    :type padding: int
+    
+    :return: The created chunks.
+    :rtype: :class:`ChunkArray`
+    """
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
+    # Unpack dictionary wavelengths
+    start_wavelengths = np.array(wave_dict['start_wave'])
+    end_wavelengths   = np.array(wave_dict['end_wave'])
+    
+    # Make sure that both arrays are of same size
+    if len(start_wavelengths) != len(end_wavelengths):
+        raise ValueError(
+                'Different number of start and end wavelengths supplied: {} and {}!'.format(
+                        len(start_wavelengths), len(end_wavelengths)))
+    
+    chunks = ChunkArray()
+    for start_wave, end_wave in zip(start_wavelengths, end_wavelengths):
+        # Return the order with best wavelength coverage from the observation
+        order, coverage = obs.check_wavelength_range(start_wave, end_wave)
+        
+        # If no valid order could be returned, or wavelength range is not
+        # fully covered, raise an error
+        if order is None or coverage != 1.0:
+            raise ValueError(
+                    'No (complete) coverage for desired wavelength range: {} - {}'.format(
+                            start_wave, end_wave))
+        
+        # Find the corresponding start and end pixels within the order
+        start_pix = np.searchsorted(obs[order].wave, start_wave, side='right') - 1
+        end_pix   = np.searchsorted(obs[order].wave, end_wave, side='left') + 1
+        
+        pixels = np.arange(start_pix, end_pix, dtype='int')
+        
+        # Adapt the padding to not extend past the order edges
+        if start_pix - padding < 0:
+            padding2 = start_pix
+        else:
+            padding2 = padding
+        if end_pix + padding2 > len(obs[order]):
+            padding2 = len(obs[order]) - end_pix
+        
+        chunk = Chunk(obs, order, pixels, padding2)
+        chunks.append(chunk)
+
     return chunks
