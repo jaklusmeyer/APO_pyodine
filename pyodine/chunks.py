@@ -111,7 +111,7 @@ def auto_equal_width(obs, width=91, padding=0, orders=None,
     return chunks
 
 
-def auto_wave_comoving(obs, temp, width=91, padding=0, orders=None, 
+def auto_wave_comoving(obs, temp, padding=0, orders=None, 
                        order_correction=0, delta_v=None):
     """The standard chunking algorithm for the observation modelling
     
@@ -127,10 +127,6 @@ def auto_wave_comoving(obs, temp, width=91, padding=0, orders=None,
     :type obs: :class:`Observation`
     :param temp: The corresponding deconvolved stellar template.
     :type temp: :class:`StellarTemplate_Chunked`
-    :param width: Desired width of the chunks, which needs to correspond to 
-        template chunk width. If None, the template chunk width is chosen 
-        automatically (default).
-    :type width: int, or None
     :param padding: The padding width on either chunk side in pixels. Defaults 
         to 0 (but you should make it bigger!).
     :type padding: int
@@ -185,8 +181,11 @@ def auto_wave_comoving(obs, temp, width=91, padding=0, orders=None,
         order_ind = temp.get_order_indices(o)
         for i in order_ind:
             
-            # width in pixels of this chunks
-            width = len(temp[i].pixel)
+            # Width in pixel for this chunk: First find out the padding of the
+            # original template chunk, then take advantage of the fact that it
+            # is symmetric to find the last (non-padded) pixel and then the width
+            temp_padding = temp[i].pix0 - temp[i].pixel[0]
+            width = temp[i].pixel[-1] - temp_padding - temp[i].pix0 + 1
             
             wave_shifted = temp[i].w0 + init_z * temp[i].w0
             difference = np.abs(wave_shifted - obs[o+order_correction].wave)

@@ -645,6 +645,7 @@ def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0,
                             format='%(message)s')
     
     try:
+        # This will only work properly when nr_chunks_order is equal for all orders!
         nr_chunks_order = len(chunks.get_order(chunks[0].order))
         nr_orders = len(chunks.orders)
         

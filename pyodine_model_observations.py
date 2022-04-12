@@ -206,7 +206,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         # Now create the chunks, using the algorithm (and corresponding parameters) 
         # as defined in the parameter input file
         if Pars.chunking_algorithm == 'auto_wave_comoving':
-            obs_chunks = pyodine.chunks.wave_defined(
+            obs_chunks = pyodine.chunks.auto_wave_comoving(
                     obs, template, orders=orders, padding=Pars.chunk_padding, 
                     order_correction=order_correction, delta_v=Pars.chunk_delta_v)
         else:
@@ -495,6 +495,9 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         if plot_dir and isinstance(Pars.vel_analysis_plots, int):
             if Pars.vel_analysis_plots in list(run_results.keys()) \
             or abs(Pars.vel_analysis_plots) <= len(list(run_results.keys())):
+                
+                run_id = list(run_results.keys())[Pars.vel_analysis_plots]
+                
                 nr_chunks_order, nr_orders = None, None
                 # If all orders are split into equal number of chunks
                 if len(np.unique([len(obs_chunks.get_order(o)) for o in obs_chunks.orders])) == 1:
@@ -502,8 +505,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                     nr_orders = nr_orders_chunks
                     
                 pipe_lib.velocity_results_analysis(
-                        run_results[Pars.vel_analysis_plots], plot_dir, 
-                        nr_chunks_order, nr_orders, obs.orig_filename)
+                        run_results[run_id], plot_dir, nr_chunks_order, nr_orders, obs.orig_filename)
             else:
                 logging.warning('')
                 logging.warning('Desired run id for velocity analysis plots {} not existent!'.format(

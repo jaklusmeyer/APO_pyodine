@@ -393,7 +393,7 @@ class ChunkedDeconvolver():#Deconvolver):
         
         # deconvolved flux, fine wavelength grid, fine pixel grid, wave intercept, dispersion (normal sampling),
         # order, pixel 0 of chunk within order, and chunk weight
-        temp_chunk = TemplateChunk(flux_deconv, wave_fine, pix_fine, w0, w1, order, pix0, chunk_weight)
+        temp_chunk = TemplateChunk(flux_deconv, wave_fine, abspix_fine, w0, w1, order, pix0, chunk_weight)
         return temp_chunk
 
 
