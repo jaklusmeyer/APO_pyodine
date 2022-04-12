@@ -1,0 +1,50 @@
+INFO - 
+INFO - Branch: liveversion
+INFO - Hash: 19620dc
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD185144
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 20, 528
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: 7.27 +- 208.13
+INFO - 
+INFO - Chunk sigmas:
+INFO - Median: 48.10 +- 35.10
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 1.72297 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 1.72297 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 96100
+INFO - 
+INFO - Writing results to txt file: /home/paul/pyodine/tutorial_data/vel_results/sigdra_tutorial.vels
+INFO - 
+INFO - Saving combined results to /home/paul/pyodine/tutorial_data/vel_results/sigdra_tutorial_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/home/paul/pyodine/tutorial_data/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - /home/paul/pyodine/tutorial_data/obs_results/s1_2015-05-06T03-54-42_ext/s1_2015-05-06T03-54-42_ext_res1.h5
+INFO - 
+INFO - All done! Full work time: 6.005094051361084

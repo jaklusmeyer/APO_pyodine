@@ -443,7 +443,7 @@ def smooth_parameters_over_orders(parameters, par_name, chunks, deg=2):
     
     pfits = np.zeros((len(chunks)))
     # Loop over orders that contain chunks
-    for o in range(chunks.orders):
+    for o in chunks.orders:
         chunk_ind = chunks.get_order_indices(o)
         # It only makes sense if there are at least two chunks within that order
         if len(chunk_ind) > 1:

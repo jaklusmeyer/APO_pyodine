@@ -1,0 +1,78 @@
+INFO - 
+INFO - Branch: liveversion
+INFO - Hash: 19620dc
+INFO - ---------------------------
+INFO - Working on: /home/paul/pyodine/tutorial_data/sigdra_obs_tutorial/s1_2015-05-04T04-18-08_ext.fits
+INFO - 
+INFO - Median flux of the observation: 22291
+INFO - Loading template from file: /home/paul/pyodine/tutorial_data/temp_results/temp_sigdra_2018-05-16.h5
+INFO - 
+INFO - Order correction: -1
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: 26.572 km/s
+INFO - Template velocity: 25.136 km/s
+INFO - Velocity guess: 1.436 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 1.030 km/s)
+INFO - (Barycentric velocity of template: 2.026 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = 995.3179999999998, z = 3.320023481044342e-06
+
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 3, 2003
+INFO - Orders: 17 - 40 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+INFO - 
+INFO - Number of chunks with no uncertainties: 0
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 0
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  8.776864391663151
+    left_2  =  -8.9151300766087
+    left_3  =  4.360383048503198
+    left_4  =  -1.5012277402472507
+    left_5  =  0.4068401039867239
+    right1  =  8.776859792450871
+    right2  =  -8.915127445003781
+    right3  =  4.3603820209205395
+    right4  =  -1.501227504840555
+    right5  =  0.40684005780671234
+INFO - 
+INFO - Number of chunks with no uncertainties: 0
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 0
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: 1052.0285090849104
+INFO - Velocity robust std: 224.07844065890512
+INFO - 
+INFO - Velocity error robust mean: 71.931281892373
+INFO - Velocity error robust std: 63.94901904817621
+INFO - 
+INFO - Minimum error: 22.636004216940435 in chunk 81
+INFO - Maximum error: 5132.626071171385 in chunk 479
+INFO - 
+INFO - Chunks with nan velocities: []
+INFO - Chunks with nan velocity errors: []
+INFO - Velocity error at percentile 80: 195.32047604373113
+INFO - 
+INFO - Time to model this observation: 290.6454141139984

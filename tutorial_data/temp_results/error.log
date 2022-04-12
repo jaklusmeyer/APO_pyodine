@@ -1,12 +1,7 @@
-2022-04-11 14:02:08,848 - root - ERROR - Live chunk could not be plotted
+2022-04-12 14:40:49,434 - root - ERROR - Something went wrong!
 Traceback (most recent call last):
-  File "/home/paul/pyodine/pyodine/plot_lib.py", line 234, in live_chunkmodel
-    ax[nr_axes-3].plot(iod_chunk.wave, iod_chunk.flux)
-UnboundLocalError: local variable 'nr_axes' referenced before assignment
-2022-04-11 14:02:08,849 - root - ERROR - Something went wrong!
-Traceback (most recent call last):
-  File "/home/paul/pyodine/pyodine_create_templates.py", line 390, in create_template
-    modelling_return = pipe_lib.model_all_chunks(
-  File "/home/paul/pyodine/pipe_lib.py", line 133, in model_all_chunks
-    live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
-TypeError: cannot unpack non-iterable NoneType object
+  File "/home/paul/pyodine/pyodine_create_templates.py", line 370, in create_template
+    poly_pars = pyodine.lib.misc.smooth_parameters_over_orders(
+  File "/home/paul/pyodine/pyodine/lib/misc.py", line 446, in smooth_parameters_over_orders
+    for o in range(chunks.orders):
+TypeError: only integer scalar arrays can be converted to a scalar index
