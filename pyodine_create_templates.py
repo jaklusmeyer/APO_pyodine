@@ -242,21 +242,32 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                 ostar._flux[o] = (ostar[o].flux / ostar[o].cont / len(all_ostar_obs))
                 #ostar._flux[o] = (ostar[o].flux / pyodine.template.normalize.top(ostar[o].flux, deg=3))
         
-        # Now create the chunks, using the user_defined chunking algorithm by default
-        ostar_chunks = pyodine.chunks.user_defined(
-                ostar, width=Pars.chunk_width, orders=orders, padding=Pars.chunk_padding, 
-                chunks_per_order=Pars.chunks_per_order, pix_offset0=Pars.pix_offset0
-                )
-        nr_chunks_total = len(ostar_chunks)
-        nr_chunks_order = len(ostar_chunks.get_order(orders[0]))
-        nr_orders = len(orders)
+        # Now create the chunks, using the algorithm (and corresponding parameters) 
+        # as defined in the parameter input file
+        if Pars.chunking_algorithm == 'auto_equal_width':
+            ostar_chunks = pyodine.chunks.auto_equal_width(
+                    ostar, width=Pars.chunk_width, orders=orders, padding=Pars.chunk_padding, 
+                    chunks_per_order=Pars.chunks_per_order, pix_offset0=Pars.pix_offset0
+                    )
+        elif Pars.chunking_algorithm == 'wavelength_defined':
+            ostar_chunks = pyodine.chunks.wavelength_defined(
+                    ostar, Pars.wavelength_dict, Pars.chunk_padding
+                    )
+        else:
+            raise KeyError('Algorithm {} not known! (Must be one of auto_equal_width, wavelength_defined)'.format(
+                    Pars.chunking_algorithm))
+        
+        nr_chunks_total  = len(ostar_chunks)
+        nr_chunks_order0 = len(ostar_chunks.get_order(ostar_chunks.orders[0]))
+        nr_orders_chunks = len(ostar_chunks.orders)
         
         logging.info('')
         logging.info('Total number of chunks: {}'.format(nr_chunks_total))
-        logging.info('Chunks per order: {}'.format(nr_chunks_order))
-        logging.info('First and last covered pixel of chunks: {}, {}'.format(
-                ostar_chunks[0].abspix[0], ostar_chunks[nr_chunks_order-1].abspix[-1]))
-        logging.info('Orders: {} - {}'.format(ostar_chunks[0].order, ostar_chunks[-1].order))
+        logging.info('Nr. chunks in order 0: {}'.format(nr_chunks_order0))
+        logging.info('First and last covered pixel of chunks in order 0: {}, {}'.format(
+                ostar_chunks[0].abspix[0], ostar_chunks[nr_chunks_order0-1].abspix[-1]))
+        logging.info('Orders: {} - {} ({} in total)'.format(
+                ostar_chunks[0].order, ostar_chunks[-1].order, nr_orders_chunks))
         
         # Produce the chunk weight array
         chunk_weight = []
@@ -357,16 +368,14 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             # use smoothed wavelength results from previous runs)
             if 'pre_wave_slope_deg' in run_dict.keys() and run_dict['pre_wave_slope_deg'] > 0:
                 poly_pars = pyodine.lib.misc.smooth_parameters_over_orders(
-                        starting_pars, 'wave_slope', ostar_chunks, nr_orders, 
-                        nr_chunks_order, deg=run_dict['pre_wave_slope_deg'])
+                        starting_pars, 'wave_slope', ostar_chunks, deg=run_dict['pre_wave_slope_deg'])
                 # Write the smoothed dispersion into starting_pars
                 for i in range(nr_chunks_total):
                     starting_pars[i]['wave_slope'] = poly_pars[i]
                     
             if 'pre_wave_intercept_deg' in run_dict.keys() and run_dict['pre_wave_intercept_deg'] > 0:
                 poly_pars = pyodine.lib.misc.smooth_parameters_over_orders(
-                        starting_pars, 'wave_intercept', ostar_chunks, nr_orders, 
-                        nr_chunks_order, deg=run_dict['pre_wave_intercept_deg'])
+                        starting_pars, 'wave_intercept', ostar_chunks, deg=run_dict['pre_wave_intercept_deg'])
                 # Write the smoothed intercepts into starting_pars
                 for i in range(nr_chunks_total):
                     starting_pars[i]['wave_intercept'] = poly_pars[i]
@@ -482,6 +491,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                 # and some exemplary smoothed LSFs (if accessible)
                 plot_chunks = None
                 plot_lsf_pars = False
+                nr_chunks_order, nr_orders = None, None
                 if 'plot_chunks' in run_dict.keys() and isinstance(run_dict['plot_chunks'], (list,tuple)):
                     plot_chunks = run_dict['plot_chunks']
                 if 'plot_lsf_pars' in run_dict.keys() and run_dict['plot_lsf_pars']:
@@ -490,6 +500,10 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                     uncertainties_failed = None
                     nan_rchi_fit = None
                     chauvenet_outliers = None
+                # If all orders are split into equal number of chunks
+                if Pars.chunking_algorithm == 'auto_equal_width':
+                    nr_chunks_order = nr_chunks_order0
+                    nr_orders = nr_orders_chunks
                 
                 logging.info('')
                 logging.info('Creating analysis plots...')
