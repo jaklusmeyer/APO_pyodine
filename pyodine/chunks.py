@@ -4,75 +4,41 @@ import sys
 
 from pyodine.components import Chunk, ChunkArray
 
-
-def simple(obs, width=91, padding=0, orders=None, chunks_per_order=None, pix_offset=0):
-    """
-    A simple chunking algorithm that splits the given orders of the
-    observation in a number of fixed-size chunks (pixel space),
-    leaving an equal amount of unused pixels in each end of the order.
-    The chunks are not allowed to overlap, but if padding>0, the padded chunks
-    will extend into their neighbour chunks (necessary for convolution).
-    With chunks_per_order the number of chunks within an order can be 
-    constrained; if it is not given, the maximum possible number of chunks 
-    using the other parameters is generated.
-    """
-
-    # In case no orders were submitted, chunk all orders
-    if orders is None:
-        orders = slice(None)
-    # In case only one order is submitted
-    if type(orders) is int:
-        orders = [orders]
-
-    # Number of chunks per order
-    max_chunks_per_order = int((obs.npix - 2 * padding) / width)
-    if chunks_per_order is None:
-        chunks_per_order = max_chunks_per_order
-    elif chunks_per_order > max_chunks_per_order:
-        raise ValueError('Cannot construct more than {} chunks per order with the given parameters!'.format(
-                max_chunks_per_order))
-
-    # Pixel offset of first chunk
-    offset = int((obs.npix - 2 * padding - chunks_per_order * width) / 2) + int(padding)
-
-    chunks = ChunkArray()
-    for i in orders:
-        for j in range(chunks_per_order):
-            # Create a new chunk and calculate pixels
-            pixels = offset + j * width + np.arange(width, dtype='int')
-            chunk = Chunk(obs, i, pixels, padding)
-            chunks.append(chunk)
-
-    return chunks
+from astropy.constants import c
 
 
-def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, pix_offset0=None):
+def auto_equal_width(obs, width=91, padding=0, orders=None, 
+                     chunks_per_order=None, pix_offset0=None):
     """The standard chunking algorithm for template creation
     
-    A simple chunking algorithm that splits the given orders of the
-    observation in a number of fixed-size chunks (pixel space),
-    leaving an equal amount of unused pixels in each end of the order.
-    The chunks are not allowed to overlap, but if padding>0, the padded chunks
-    will extend into their neighbour chunks (necessary for convolution).
-    With chunks_per_order the number of chunks within an order can be 
+    A chunking algorithm that splits the given orders of the observation in a 
+    number of equal-size chunks (pixel space). The chunks are not allowed to 
+    overlap, but if padding>0, the padded chunks will extend into their 
+    neighbour chunks (necessary for convolution).
+    With chunks_per_order, the number of chunks within an order can be 
     constrained; if it is not given, the maximum possible number of chunks 
     using the other parameters is generated.
     
-    Args:
-        obs (:class:'Observation'): The observation which will be chunked.
-        width (Optional[int]): The chunk width in pixels. Defaults to 91.
-        padding (Optional[int]): The padding width on either chunk side in
-            pixels. Defaults to 0 (but you should make it bigger!).
-        orders (Optional[int,list]): The order(s) which should be used. If None,
-            all orders of the observation are used (default). (?!)
-        chunks_per_order (Optional[int]): The number of chunks per order. If
-            None, the maximum number of chunks of given width fitting into the
-            order is used (default).
-        pix_offset0 (Optional[int]): From which pixel to start the first chunk.
-            If None, the chunking region is centered within the order (default).
+    :param obs: The observation which will be chunked.
+    :type obs: :class:`Observation`
+    :param width: The chunk width in pixels. Defaults to 91.
+    :type width: int
+    :param padding: The padding width on either chunk side in pixels. Defaults 
+        to 0 (but you should make it bigger!).
+    :type padding: int
+    :param orders: The order(s) which should be used. If None, all orders of 
+        the observation are used (default).
+    :type orders: int, list, np.ndarray, or None
+    :param chunks_per_order: The number of chunks per order. If None, the 
+        maximum number of chunks of given width fitting into the order is used 
+        (default).
+    :type chunks_per_order: int, or None
+    :param pix_offset0: From which pixel to start the first chunk. If None, the 
+        chunking region is centered within the order (default).
+    :type pix_offset0: int, or None
     
-    Return:
-        :class:'ChunkArray': The created chunks.
+    :return: The created chunks.
+    :rtype: :class:`ChunkArray`
     """
     
     # Setup the logging if not existent yet
@@ -145,93 +111,51 @@ def user_defined(obs, width=91, padding=0, orders=None, chunks_per_order=None, p
     return chunks
 
 
-def edge_to_edge(obs, width=91, padding=0, orders=None, chunks_per_order=None):
-    """
-        A variation of the "simple" algorithm. Instead of leaving unused pixels
-        at the order edges, it allows chunks to overlap. The number of pixels
-        defined by the "padding" keyword will still be left at the ends.
-
-        Useful for generating templates.
-    """
-
-    # In case no orders were submitted, chunk all orders
-    if orders is None:
-        orders = slice(None)
-    # In case only one order is submitted
-    if type(orders) is int:
-        orders = [orders]
-
-    # Number of chunks per order
-    if chunks_per_order is None:
-        chunks_per_order = int(np.ceil((obs.npix - 2 * padding) / width))
-
-    # Starting pixels of the chunks
-    startpix = np.linspace(
-        padding,
-        obs.npix - padding - width,
-        chunks_per_order,
-        dtype='int'
-    )
-
-    chunks = ChunkArray()
-    for i in orders:
-        for j in range(chunks_per_order):
-            # Create a new chunk and calculate pixels
-            pixels = startpix[j] + np.arange(width, dtype='int')
-            chunk = Chunk(obs, i, pixels, padding)
-            chunks.append(chunk)
-
-    return chunks
-
-
-def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0,
-                 delta_v=None):
+def auto_wave_comoving(obs, temp, width=91, padding=0, orders=None, 
+                       order_correction=0, delta_v=None):
     """The standard chunking algorithm for the observation modelling
     
     Chunk the observation to defined wavelength sections, corresponding
     to template chunks, using the relative barycentric velocity of 
     observation to template. This way chunks of a series of observations will
-    always hold the same wavelength information (apart from the RV shift).
+    be comoving in wavelength space and always hold roughly the same spectral 
+    information (apart from the RV shift).
     
-    Built similarly as the chunking algorithm in the dop code package.
+    Inspired by the chunking algorithm in the dop code package.
     
-    Args:
-        obs (:class:'Observation'): The observation which will be chunked.
-        temp (:class:'StellarTemplate_Chunked'): The corresponding deconvolved
-            stellar template.
-        width (Optional[int]): Desired width of the chunks, which needs to 
-            correspond to template chunk width. If None, the template chunk
-            width is chosen automatically (default).
-        padding (Optional[int]): The padding width on either chunk side in
-            pixels. Defaults to 0 (but you should make it bigger!).
-        orders (Optional[int, list]): The order(s) which should be used. If None,
-            the same orders as in the template are used (default).
-        order_correction (Optional[int]): In case of a change of the zeroth 
-            extracted order over time, this mismatch between template and 
-            observation can be corrected (obs_orders + order_correction = 
-            template_orders). Defaults to 0.
-        delta_v (Optional[float]): If supplied, this will be used as relative 
-            velocity between template and observation instead of the relative
-            barycentric velocity. Defaults to None.
+    :param obs: The observation which will be chunked.
+    :type obs: :class:`Observation`
+    :param temp: The corresponding deconvolved stellar template.
+    :type temp: :class:`StellarTemplate_Chunked`
+    :param width: Desired width of the chunks, which needs to correspond to 
+        template chunk width. If None, the template chunk width is chosen 
+        automatically (default).
+    :type width: int, or None
+    :param padding: The padding width on either chunk side in pixels. Defaults 
+        to 0 (but you should make it bigger!).
+    :type padding: int
+    :param orders: The order(s) which should be used. If None, the same orders 
+        as in the template are used (default).
+    :type orders: int, list, np.ndarray, or None
+    :param order_correction: In case of a change of the zeroth extracted order 
+        over time, this mismatch between template and observation can be 
+        corrected (obs_orders + order_correction = template_orders). Defaults 
+        to 0.
+    :type order_correction: int
+    :param delta_v: If supplied, this will be used as relative velocity between 
+        template and observation instead of the relative barycentric velocity. 
+        Defaults to None.
+    :type delta_v: float, int, or None
     
-    Return:
-        :class:'ChunkArray': The created chunks.
+    :return: The created chunks.
+    :rtype: :class:`ChunkArray`
     """
     
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')
-    
-    # Check if desired chunk width corresponds to template chunk width
-    temp_width = temp[1].pix0 - temp[0].pix0
-    if width == None:
-        width = temp_width
-    if width != temp_width:
-        raise ValueError(
-                'Desired chunk width does not correspond to template chunk width: {}'.format(
-                        temp_width))
-    c = 299792458.0
+    #c = 299792458.0
     
     # Template orders
     temp_orders = temp.orders_unique
@@ -251,7 +175,7 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
         init_dv = delta_v
     else:
         init_dv = (temp.bary_vel_corr - obs.bary_vel_corr)
-    init_z  = init_dv / c
+    init_z  = init_dv / c.value
     logging.info('')
     logging.info('Barycentric redshift between template and observation: ')
     logging.info('v = {}, z = {}\n'.format(init_dv, init_z))
@@ -261,9 +185,12 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
         order_ind = temp.get_order_indices(o)
         for i in order_ind:
             
-            shft_wav = temp[i].w0 + init_z * temp[i].w0
-            diff = np.abs(shft_wav - obs[o+order_correction].wave)
-            pix_ind = np.argmin(np.abs(diff)) # pixel with closest wavelength
+            # width in pixels of this chunks
+            width = len(temp[i].pixel)
+            
+            wave_shifted = temp[i].w0 + init_z * temp[i].w0
+            difference = np.abs(wave_shifted - obs[o+order_correction].wave)
+            pix_ind = np.argmin(np.abs(difference)) # pixel with closest wavelength
             
             startpix = round(pix_ind - width // 2)
             endpix = startpix + width
@@ -300,7 +227,7 @@ def wave_defined(obs, temp, width=91, padding=0, orders=None, order_correction=0
     return chunks
 
 
-def user_defined2(obs, wave_dict, padding=0):
+def wavelength_defined(obs, wave_dict, padding=0):
     """An algorithm to create completely user-defined chunks, i.e. start and
     end wavelengths for all chunks are given by the user
     
@@ -362,3 +289,86 @@ def user_defined2(obs, wave_dict, padding=0):
         chunks.append(chunk)
 
     return chunks
+
+
+# Below are the old chunking algorithms
+'''
+def simple(obs, width=91, padding=0, orders=None, chunks_per_order=None, pix_offset=0):
+    """
+    A simple chunking algorithm that splits the given orders of the
+    observation in a number of fixed-size chunks (pixel space),
+    leaving an equal amount of unused pixels in each end of the order.
+    The chunks are not allowed to overlap, but if padding>0, the padded chunks
+    will extend into their neighbour chunks (necessary for convolution).
+    With chunks_per_order the number of chunks within an order can be 
+    constrained; if it is not given, the maximum possible number of chunks 
+    using the other parameters is generated.
+    """
+
+    # In case no orders were submitted, chunk all orders
+    if orders is None:
+        orders = slice(None)
+    # In case only one order is submitted
+    if type(orders) is int:
+        orders = [orders]
+
+    # Number of chunks per order
+    max_chunks_per_order = int((obs.npix - 2 * padding) / width)
+    if chunks_per_order is None:
+        chunks_per_order = max_chunks_per_order
+    elif chunks_per_order > max_chunks_per_order:
+        raise ValueError('Cannot construct more than {} chunks per order with the given parameters!'.format(
+                max_chunks_per_order))
+
+    # Pixel offset of first chunk
+    offset = int((obs.npix - 2 * padding - chunks_per_order * width) / 2) + int(padding)
+
+    chunks = ChunkArray()
+    for i in orders:
+        for j in range(chunks_per_order):
+            # Create a new chunk and calculate pixels
+            pixels = offset + j * width + np.arange(width, dtype='int')
+            chunk = Chunk(obs, i, pixels, padding)
+            chunks.append(chunk)
+
+    return chunks
+
+
+def edge_to_edge(obs, width=91, padding=0, orders=None, chunks_per_order=None):
+    """
+        A variation of the "simple" algorithm. Instead of leaving unused pixels
+        at the order edges, it allows chunks to overlap. The number of pixels
+        defined by the "padding" keyword will still be left at the ends.
+
+        Useful for generating templates.
+    """
+
+    # In case no orders were submitted, chunk all orders
+    if orders is None:
+        orders = slice(None)
+    # In case only one order is submitted
+    if type(orders) is int:
+        orders = [orders]
+
+    # Number of chunks per order
+    if chunks_per_order is None:
+        chunks_per_order = int(np.ceil((obs.npix - 2 * padding) / width))
+
+    # Starting pixels of the chunks
+    startpix = np.linspace(
+        padding,
+        obs.npix - padding - width,
+        chunks_per_order,
+        dtype='int'
+    )
+
+    chunks = ChunkArray()
+    for i in orders:
+        for j in range(chunks_per_order):
+            # Create a new chunk and calculate pixels
+            pixels = startpix[j] + np.arange(width, dtype='int')
+            chunk = Chunk(obs, i, pixels, padding)
+            chunks.append(chunk)
+
+    return chunks
+'''

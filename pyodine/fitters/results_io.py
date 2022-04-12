@@ -5,11 +5,10 @@ import dill
 import os
 
 from ..lib import h5quick
-from ..components import ChunkArray, SummedObservation
+from ..components import ChunkArray, Chunk, SummedObservation
 from ..template.base import StellarTemplate_Chunked
 from ..models import lsf, wave, cont, spectrum
 from ..fitters.lmfit_wrapper import LmfitWrapper
-from .. import chunks
 
 _group_keys = ('observation', 'chunks', 'params', 'errors', 'model')
 _array_keys = ('reports', 'redchi2', 'residuals', 'medcnts')
@@ -353,9 +352,6 @@ def restore_results_object(utilities, filename):
         # padding of the chunks (these are constructed from implicit 
         # information in the res_chunks dictionary)
         orders  = np.unique(np.array([o for o in res_chunks['order']]))
-        # Chunk 2 should really not be affected by order edge effects
-        width   = abs(res_chunks['lastpix'][2]-res_chunks['firstpix'][2])+1
-        padding = res_chunks['padding'][2]
         
         # Load the observation data (either single one or multiple summed up)
         all_obs = [utilities.load_pyodine.ObservationWrapper(f) for f in obs_path]
@@ -387,7 +383,7 @@ def restore_results_object(utilities, filename):
         
         # Initialize the fitter object
         fitter = LmfitWrapper(model)
-        
+        """
         # Build the chunk array: If a template is given, use the wave_defined
         # algorithm, otherwise the user_defined function (default functions
         # in the standard pyodine distribution)
@@ -409,14 +405,16 @@ def restore_results_object(utilities, filename):
             obs_chunks = chunks.user_defined(obs, width=width, orders=orders, 
                                              padding=padding, chunks_per_order=chunks_per_order, 
                                              pix_offset0=pix_offset0)
+        """
+        obs_chunks = build_chunk_array(obs, res_chunks)
         
-        # The total number of chunks, and the number of chunks per order
-        nr_chunks_total = len(obs_chunks)
-        nr_chunks       = len(obs_chunks.get_order(orders[0]))
+        # The total number of chunks, and the number of chunks in order 0
+        nr_chunks_total  = len(obs_chunks)
+        nr_chunks_order0 = len(obs_chunks.get_order(orders[0]))
         
         logging.info('Total number of created chunks: {} (in result file: {})'.format(
                 nr_chunks_total, len(res_chunks['order'])))
-        logging.info('Number of created chunks per order: {}'.format(nr_chunks))
+        logging.info('Number of created chunks in order 0: {}'.format(nr_chunks_order0))
         
         # Loop over the chunks to build the fit_result object
         fit_results = []
@@ -442,4 +440,20 @@ def restore_results_object(utilities, filename):
                 fit_results[-1].lmfit_result.params[key].stderr = res_errors[key][i]
         
         return obs_chunks, fit_results
+
+
+def build_chunk_array(obs, chunk_dict):
+    
+    chunks = ChunkArray()
+    
+    for i in range(len(chunk_dict['order'])):
         
+        order   = chunk_dict['order'][i]
+        pixels  = np.arange(chunk_dict['firstpix'][i], chunk_dict['lastpix'][i]+1, dtype='int')
+        padding = chunk_dict['padding'][i]
+        
+        chunk = Chunk(obs, order, pixels, padding)
+        chunks.append(chunk)
+    
+    return chunks
+    

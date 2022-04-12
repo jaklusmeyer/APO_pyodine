@@ -32,7 +32,7 @@ _weighting_pars = {
         }
 
 
-def combine_chunk_velocities(velocities, nr_chunks_order, #bvc=None, 
+def combine_chunk_velocities(velocities, nr_orders, #bvc=None, 
                              wavelengths=None, weighting_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
@@ -46,8 +46,8 @@ def combine_chunk_velocities(velocities, nr_chunks_order, #bvc=None,
     :param velocities: The modelled velocities for each chunk in each 
         observation of the timeseries.
     :type velocities: ndarray[nr_obs,nr_chunks]
-    :param nr_chunks_order: Number of chunks per order.
-    :type nr_chunks_order: int
+    :param nr_orders: Number of orders with chunks.
+    :type nr_orders: int
     :param bvc: If barycentric velocity corrections are supplied for all 
         observations, the output also contains bvc-corrected RVs.
     :type bvc: list, ndarray[nr_obs], or None
@@ -121,6 +121,13 @@ def combine_chunk_velocities(velocities, nr_chunks_order, #bvc=None,
     # (parameters 'good_chunks' & 'good_orders', if available):
     if isinstance(pars['good_orders'], (list,tuple,np.ndarray)) and \
     isinstance(pars['good_chunks'], (list,tuple,np.ndarray)):
+        # This only works if equal number of chunks in every order!
+        nr_chunks_order = nr_chunks / int(nr_orders)
+        if int(nr_chunks_order) != nr_chunks_order:
+            raise ValueError('Unequal nr. of chunks per order - cannot compute good chunk indices!')
+        
+        nr_chunks_order = int(nr_chunks_order)
+        
         good_ind = []
         for o in range(pars['good_orders'][0], pars['good_orders'][-1]+1):
             good_ind += [int(i + nr_chunks_order*o) for i in range(pars['good_chunks'][0], pars['good_chunks'][-1]+1)]
@@ -445,8 +452,6 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     :param velocities: The modelled velocities for each chunk in each 
         observation of the timeseries.
     :type velocities: ndarray[nr_obs,nr_chunks]
-    :param nr_chunks_order: Number of chunks per order.
-    :type nr_chunks_order: int
     :param bvc: If barycentric velocity corrections are supplied for all 
         observations, the output also contains bvc-corrected RVs.
     :type bvc: list, ndarray[nr_obs], or None

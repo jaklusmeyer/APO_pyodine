@@ -63,13 +63,16 @@ class Parameters:
         self.tell_wave_range = (None,6500)      # Load tellurics only within this wavelength range
         self.tell_dispersion = 0.002            # Dispersion (i.e. wavelength grid) of telluric mask
         
-        # Chunking:
-        # The wave_defined chunking algorithm is used by default, where the chunks are shifted with
+        # Chunking: Which algorithm to use?
+        # (currently supported: 'auto_wave_comoving')
+        self.chunking_algorithm = 'auto_wave_comoving'
+        # If the auto_wave_comoving algorithm is used, the chunks are shifted in wavelengths with
         # respect to the template chunks to account for the change in barycentric velocity. Supply a
         # different value to delta_v in order to define the shift yourself (e.g. 0 for solar observations).
         self.order_range = (None,None)          # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses automatically the same as in the template
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
+        # The chunk width is now determined by the template chunks
+        #self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
         self.chunk_padding = 6                  # Padding (left and right) of the chunks in pixels
         self.chunks_per_order = None            # Maximum number of chunks per order (optional)
         self.chunk_delta_v = None               # Velocity shift between template and observation 
@@ -93,6 +96,10 @@ class Parameters:
         # I2 atlas:
         self.i2_to_use = 1                      # Index of I2 FTS to use (see archive/conf.py)
         self.wavelength_scale = 'air'           # Which wavelength scale to use ('air' or 'vacuum' - should always be the first)
+        
+        # If you want to create and save velocity analysis plots, put in the desired
+        # run number here (these results will be plotted) - else put to None
+        self.vel_analysis_plots = -1            # -1 corresponds to the last run
         
         # Now to the run info: For each modelling run, define a new entry in the following dictionary
         # with all the neccessary information needed
@@ -392,9 +399,11 @@ class Template_Parameters:
         self.tell_wave_range = (None,6500)      # Load tellurics only within this wavelength range
         self.tell_dispersion = 0.002            # Dispersion (i.e. wavelength grid) of telluric mask
         
-        # Chunking:
-        # The user_defined chunking algorithm is used by default, so the chunks are defined by the user
-        # through their width, padding, number of chunks per order, and pixel offset of the first chunk.
+        # Chunking: Which algorithm to use?
+        # (currently supported: 'auto_equal_width' or 'wavelength_defined')
+        self.chunking_algorithm = 'auto_equal_width'
+        # If the auto_equal_width chunking algorithm is used, the chunks are defined by the user
+        # through their width, padding, number of chunks per order, and pixel offset of the first chunk:
         self.temp_order_range = (18,41)         # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses all orders
         self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
@@ -402,6 +411,9 @@ class Template_Parameters:
         self.chunks_per_order = 22              # Maximum number of chunks per order (optional)
         self.pix_offset0 = 30                   # The starting pixel of the first chunk within each order
                                                 # (None: the chunks will be centered within orders)
+        # Otherwise, if the wavelength_defined chunking algorithm is chosen, make sure you have
+        # added a dictionary with start and end wavelengths for each chunk (see below constrain_parameters())
+        self.wavelength_dict = self.chunk_wavelengths
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
@@ -723,3 +735,10 @@ class Template_Parameters:
                 lmfit_params[i]['lsf_amplitude'].vary = False
         """
         return lmfit_params
+
+    # Start and end wavelengths of chunks if wave_defined chunking algorithm is used
+    # in template creation
+    chunk_wavelengths = {
+            'start_wave': [],
+            'end_wave': []
+            }

@@ -426,8 +426,7 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
     return lsfs_smoothed
 
 
-def smooth_parameters_over_orders(parameters, par_name, chunks, 
-                                   nr_orders, nr_chunks_order, deg=2):
+def smooth_parameters_over_orders(parameters, par_name, chunks, deg=2):
     """For a given parameter (par_name) in a list of :class:'ParameterSet'
     objects, fit a polynomial of given degree over the central chunk pixels 
     within each order and return the evaluated results.
@@ -436,25 +435,29 @@ def smooth_parameters_over_orders(parameters, par_name, chunks,
         parameters (list): A list of :class:'ParameterSet' objects.
         par_name (str): Parameter key to smooth.
         chunks (:class:'ChunkArray'): The chunks of the observation.
-        nr_orders (int): The number of orders.
-        nr_chunks_order (int): The number of chunks in each order.
         deg (Optional[int]): Degree of the polynomial (default: 2).
     
     Return:
         ndarray[nr_chunks]: A flattened array with the fit results of all chunks.
     """
     
-    pfits = []
-    for o in range(nr_orders):
-        par_data = np.array([parameters[i][par_name] \
-                             for i in range(o*nr_chunks_order,(o+1)*nr_chunks_order)])
-        ch_pix = np.array([chunks[i].abspix[0] + (len(chunks[i]) // 2) \
-                           for i in range(o*nr_chunks_order,(o+1)*nr_chunks_order)])
+    pfits = np.zeros((len(chunks)))
+    # Loop over orders that contain chunks
+    for o in range(chunks.orders):
+        chunk_ind = chunks.get_order_indices(o)
+        # It only makes sense if there are at least two chunks within that order
+        if len(chunk_ind) > 1:
+            par_data = np.array([parameters[i][par_name] for i in chunk_ind])
+            ch_pix = np.array([chunks[i].abspix[0] + (len(chunks[i]) // 2) \
+                               for i in chunk_ind])
+            
+            # fit_polynomial returns fitted y-values and coefficients - only use the first
+            pfits[chunk_ind] = fit_polynomial(ch_pix, par_data, deg=deg)[0]
+        # If only one chunk within the order, use the original value
+        else:
+            pfits[chunk_ind[0]] = parameters[chunk_ind[0]][par_name]
         
-        # fit_polynomial returns fitted y-values and coefficients - only use the first
-        pfits.append(fit_polynomial(ch_pix, par_data, deg=deg)[0])
-        
-    return np.array(pfits).flatten()
+    return pfits
 
 
 def smooth_fitresult_over_orders(fit_result, par_name, deg=2):
@@ -468,24 +471,34 @@ def smooth_fitresult_over_orders(fit_result, par_name, deg=2):
         deg (Optional[int]): Degree of the polynomial (default: 2).
     
     Return:
-        ndarray[nr_chunks]: A flattened array with the fit results of all chunks.
+        ndarray[nr_chunks]: An array with the smoothed fit results of all chunks.
     """
-    pfits = []
-    for o in range(fit_result[0].chunk.order, fit_result[-1].chunk.order+1):
+    
+    pfits = np.zeros((len(fit_result)))
+    # Loop over orders that contain chunks
+    chunk_orders = np.unique([res.chunk.order for res in fit_result])
+    for o in chunk_orders:
         par_result_o = []
         ch_pix_o = []
+        chunk_ind = []
         for i, res in enumerate(fit_result):
             if res.chunk.order == o:
                 par_result_o.append(res.params[par_name])
                 ch_pix_o.append(res.chunk.abspix[0] + (len(res.chunk) // 2))
+                chunk_ind.append(i)
         
         par_result_o = np.array(par_result_o)
         ch_pix_o = np.array(ch_pix_o)
         
-        # fit_polynomial returns fitted y-values and coefficients - only use the first
-        pfits.append(fit_polynomial(ch_pix_o, par_result_o, deg=deg)[0])
+        # It only makes sense if there are at least two chunks within that order
+        if len(par_result_o) > 1:
+            # fit_polynomial returns fitted y-values and coefficients - only use the first
+            pfits[chunk_ind] = fit_polynomial(ch_pix_o, par_result_o, deg=deg)[0]
+        # If only one chunk within the order, use the original value
+        else:
+            pfits[chunk_ind[0]] = par_result_o[0]
     
-    return np.array(pfits).flatten()
+    return pfits
 
 
 def fit_polynomial(x_data, y_data, deg=2):
