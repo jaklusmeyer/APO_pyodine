@@ -165,6 +165,33 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
 
 def live_chunkmodel(fit_result, chunk_array, chunk_nr, tellurics=None, 
                     weight=None, fig=None, ax=None):
+    """Same as :func:`plot_chunkmodel`, but this is used if live-mode is 
+    activated (it replots new chunks into the same display).
+    
+    :param fit_result: A single fit result for the chunk to be plotted.
+    :type fit_result: :class:`LmfitResult`
+    :param chunk_array: The chunks of the observation.
+    :type chunk_array: :class:`ChunkArray`
+    :param chunk_nr: The index of the chunk to plot.
+    :type chunk_nr: int
+    :param tellurics: An instance of tellurics. If None, they are not included 
+        (default).
+    :type tellurics: :class:`SimpleTellurics` or None
+    :param weight:An array of pixel weights, to display which pixels were 
+        excluded in the modelling. Defaults to None.
+    :type weight: ndarray or None
+    :param fig: If a figure already exists, it can be passed here so that new
+        data is plotted into the same one. Else, a new one is created.
+    :type fig: :class:`matplotlib.pyplot.figure`, or None
+    :param ax: If a list of axes already exist, it can be passed here so that 
+        new data is plotted into the same ones. Else, new axes are created.
+    :type ax: list, or None
+    
+    :return: The created figure.
+    :rtype: :class:`matplotlib.pyplot.figure`
+    :return: The created axes list.
+    :rtype: list
+    """
     
     # Evaluate model
     try:

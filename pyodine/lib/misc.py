@@ -10,11 +10,14 @@ _c = 299792458  # m/s
 
 
 def printLog(filename=None, *args):
-    """Function to print to the terminal and at the same time to a specified file
+    """Function to print to the terminal and at the same time to a specified 
+    file (not needed anymore in the latest version)
     
-    Args:
-        filename (str): The name of the file to print to.
-        *args (str): String argument(s) to print.
+    :param filename: The name of the file to print to (if None, just print to
+        terminal).
+    :type filename: str, or None
+    :param args: String argument(s) to print.
+    :type args: str, or None
     """
     print(*args)
     if isinstance(filename, str) and filename != '':
@@ -27,8 +30,24 @@ def printLog(filename=None, *args):
 
 def setup_logging(config_file=None, level=logging.INFO, error_log=None,
                   info_log=None, quiet=False):
-    """Setup logging configuration
+    """Setup logging configuration, following
     https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
+    
+    :param config_file: Pathname to a logging configuration file, in json-
+        format. If None is given, fall back on the basic logging configuration.
+    :type config_file: str, or None
+    :param level: The logging level, e.g. logging.DEBUG or logging.WARNING. 
+        Defaults to logging.INFO.
+    :type level: logging level
+    :param error_log: Pathname to a file where to log errors. Defaults to None
+        (no logging to file).
+    :type error_log: str, or None
+    :param info_log:Pathname to a file where to log info. Defaults to None
+        (no logging to file).
+    :type info_log: str, or None
+    :param quiet: Whether or not to print info to the terminal (errors will 
+        always be printed). Defaults to False.
+    :type quiet: bool
     """
     
     log_handlers = []
@@ -118,6 +137,8 @@ def return_existing_files(filenames):
 
 
 def findwave(multiorder, wavelength):
+    """I think this is also not required anymore.
+    """
     for i, spec in enumerate(multiorder):
         if spec.wave[0] < wavelength < spec.wave[-1]:
             return i
@@ -136,12 +157,13 @@ def findwave(multiorder, wavelength):
 def osample(x, factor):
     """Linear oversampling of a vector
     
-    Args:
-        x (ndarray[nr_pix_in]): Input vector.
-        factor (int): Oversampling factor.
+    :param x: Input vector.
+    :type x: ndarray[nr_pix_in]
+    :param factor: Oversampling factor.
+    :type factor: int
     
-    Return:
-        ndarray[nr_pix_out]: Resulting oversampled vector.
+    :return: Resulting oversampled vector.
+    :rtype: ndarray[nr_pix_out]
     """
     n = int(np.round(factor * (len(x) - 1) + 1))
     return np.linspace(x[0], x[-1], n)
@@ -150,12 +172,13 @@ def osample(x, factor):
 def normgauss(x, fwhm):
     """A normalized Gaussian, defined by its FWHM
     
-    Args:
-        x (ndarray[nr_pix]): Input vector to sample over.
-        fwhm (float): Full-width half-maximum of the Gaussian.
+    :param x: Input vector to sample over.
+    :type x: ndarray[nr_pix]
+    :param fwhm: Full-width half-maximum of the Gaussian.
+    :type fwhm: float
     
-    Return:
-        ndarray[nr_pix]: The normalized Gaussian.
+    :return: The normalized Gaussian.
+    :rtype: ndarray[nr_pix]
     """
     y = np.exp(-2.77258872223978123768 * x**2 / fwhm**2)
     # Make sure that the sum equals one
@@ -180,13 +203,15 @@ def rebin(wold, sold, wnew):
     ; Nov01 DAF eliminated call_external code; now use internal idl fspline
     ; 2008: FG replaced fspline with spline
     
-    Args:
-        wold (ndarray[nr_pix_in]): Input wavelength vector.
-        sold (ndarray[nr_pix_in]): Input spectrum to be binned.
-        wnew (ndarray[nr_pix_out]): New wavelength vector to bin to.
+    :param wold: Input wavelength vector.
+    :type wold: ndarray[nr_pix_in]
+    :param sold: Input spectrum to be binned.
+    :type sold: ndarray[nr_pix_in]
+    :param wnew: New wavelength vector to bin to.
+    :type wnew: ndarray[nr_pix_out]
     
-    Return:
-        ndarray[nr_pix_out]: Newly binned spectrum.
+    :return: Newly binned spectrum.
+    :rtype: ndarray[nr_pix_out]
     """
 
     def idl_rebin(a, shape):
@@ -263,52 +288,48 @@ def chauvenet_criterion(residuals, iterate=True):
     Find elements that lie too far away from the others.
     Updated: nan-values in the residuals are immediately marked as bad ones.
     
-    Args:
-        residuals (ndarray[nr_pix]): Input vector with residuals to analyze.
-        iterate (Optional[bool]): Iteratively continue to throw out elements?
-            Defaults to True.
+    :param residuals: Input vector with residuals to analyze.
+    :type residuals: ndarray[nr_pix]
+    :param iterate: Iteratively continue to throw out elements? Defaults to 
+        True.
+    :type iterate: bool
     
-    Return:
-        ndarray[nr_pix]: A mask of same length as input residuals array, with 
-            ones where the criterion was passed, and zeros where it failed.
-        ndarray[nr_good]: An array with the indices where mask is True.
-        ndarray[nr_bad]: An array with the indices where mask is False.
+    :return: A mask of same length as input residuals array, with ones where 
+        the criterion was passed, and zeros where it failed.
+    :rtype: ndarray[nr_pix]
+    :return:  An array with the indices where mask is True.
+    :rtype: ndarray[nr_good]
+    :return:  An array with the indices where mask is False.
+    :rtype: ndarray[nr_bad]
     """
-    # WE ONLY CARE ABOUT FINITE VALUES...
+    # Find the finite values
     fin = np.where(np.isfinite(residuals))
     N = len(fin[0])
     if N == 0:
         raise ValueError('No finite values in the residuals!')
-    # CHECK FOR CASE WHERE THERE'S ONLY ONE DATUM...
-    # MAKE USER THINK ABOUT DREADFUL MISTAKE...
+    # This only makes sense if there's at least two data points
     if N == 1:
-        raise ValueError('Chauvenets criterion cant be applied to only one datum!')
+        raise ValueError('Chauvenets criterion cant be applied to only one datapoint!')
     
-    #mean = np.mean(residuals[fin])
-    #rms  = np.std(residuals[fin])
     mean = np.nanmean(residuals)
     rms  = np.nanstd(residuals)
     
-    # FIND INVERSE ERROR FUNCTION OF (1 - 0.5/N)...
-    # MAKE A MASK OF POINTS THAT PASSED CHAUVENET'S CRITERION...
-    #mask = np.abs(residuals[fin]-mean) < 1.05*rms*erfinv(1. - 0.5/N)
-    #mask = np.abs(residuals[fin]-mean) < 1.4142135623730950488*rms*erfinv(1. - 0.5/N)
+    # Create a mask of points that pass Chauvenet's criterion
+    # (inverse error function of (1 - 0.5/N))
     mask = np.abs(residuals-mean) < 1.4142135623730950488*rms*erfinv(1. - 0.5/N)
 
-    # DO YOU REALLY WANT TO ITERATE...
-    # BEVINGTON AND TAYLOR SAY YOU SHOULDN'T...
+    # Iterate if desired, and throw out points until criterion is satisfied
     if iterate == True:
         indx = np.where(mask == True)
         if len(indx[0]) == 0:
-            raise ValueError('All data have failed Chauvenets criterion.',
-                             'Check that your model is appropriate for these data.')
+            raise ValueError('All data have failed Chauvenets criterion - ' + \
+                             'check that your model is appropriate for these data.')
 
         if len(indx[0]) < N:
             #iter_mask, iter_mask_true, iter_mask_false = chauvenet_criterion(residuals[fin][indx])
             iter_mask, iter_mask_true, iter_mask_false = chauvenet_criterion(residuals[indx])
             mask[indx] = mask[indx] & iter_mask
-
-    # RETURN THE INDICES WHERE YOU'VE PASSED CHAUVENET'S CRITERION... 
+            
     return mask, np.where(mask == True), np.where(mask == False)
 
 
@@ -319,23 +340,32 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
     LSFs are weighted by red. Chi2 values of modeled chunks.
     Implemented with great parallels to the dop IDL code dop_psf_smooth.pro.
     
-    Args:
-        chunk_arr (:class:'ChunkArray'): An array of chunks.
-        pixel_avg (int): Pixels to smooth over in dispersion direction.
-        order_avg (int): Orders to smooth over in cross-dispersion direction.
-        order_dist (int): Approximate pixel distance between orders.
-        fit_results (:class:'LmfitResult'): The fit result which holds the LSFs 
-            to smooth over and red. Chi2s.
-        redchi2 (Optional[ndarray[nr_chunks]]): An array of red. Chi2 values
-            to use instead of the ones from the fit result.
-        osample (Optional[int]): Oversampling to use; if not given, use the one 
-            from the fit results model.
-        lsf_conv_width (Optional[int]): Number of pixels to evaluate the LSF on
-            (towards either side).
+    NOTE: This currently only works if chunks are evenly distributed, i.e. same
+    number of chunks within each order!!!
     
-    Return:
-        ndarray[nr_chunks, nr_pix]: An array with the smoothed LSFs for all
-            chunks.
+    :param chunk_arr: An array of chunks.
+    :type chunk_arr: :class:`ChunkArray`
+    :param pixel_avg: Pixels to smooth over in dispersion direction.
+    :type pixel_avg: int
+    :param order_avg: Orders to smooth over in cross-dispersion direction.
+    :type order_avg: int
+    :param order_dist: Approximate pixel distance between orders.
+    :type order_dist: int
+    :param fit_results: The fit result which holds the LSFs to smooth over and 
+        red. Chi2s.
+    :type fit_results: :class:`LmfitResult`
+    :param redchi2: An array of red. Chi2 values to use instead of the ones 
+        from the fit result.
+    :type redchi2: ndarray[nr_chunks], or None
+    :param osample: Oversampling to use; if not given, use the one from the fit 
+        results model (default).
+    :type osample: int, or None
+    :param lsf_conv_width: Number of pixels to evaluate the LSF on (towards 
+        either side). If None, use the one from the fit results model (default).
+    :type lsf_conf_width: int, or None
+    
+    :return: An array with the smoothed LSFs for all chunks.
+    :rtype: ndarray[nr_chunks, nr_pix]
     """
     # First we set up an easy chunk numpy-array with orders and center pixels
     # to find relevant smoothing indices for each chunk later
@@ -427,18 +457,21 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
 
 
 def smooth_parameters_over_orders(parameters, par_name, chunks, deg=2):
-    """For a given parameter (par_name) in a list of :class:'ParameterSet'
+    """For a given parameter (par_name) in a list of :class:`ParameterSet`
     objects, fit a polynomial of given degree over the central chunk pixels 
     within each order and return the evaluated results.
     
-    Args:
-        parameters (list): A list of :class:'ParameterSet' objects.
-        par_name (str): Parameter key to smooth.
-        chunks (:class:'ChunkArray'): The chunks of the observation.
-        deg (Optional[int]): Degree of the polynomial (default: 2).
+    :param parameters: A list of :class:`ParameterSet` objects.
+    :type parameters: list
+    :param par_name: Parameter key to smooth.
+    :type par_name: str
+    :param chunks: The chunks of the observation.
+    :type chunks: :class:`ChunkArray`
+    :param deg: Degree of the polynomial (default: 2).
+    :type deg: int
     
-    Return:
-        ndarray[nr_chunks]: A flattened array with the fit results of all chunks.
+    :return: A flattened array with the fit results of all chunks.
+    :rtype: ndarray[nr_chunks]
     """
     
     pfits = np.zeros((len(chunks)))
@@ -465,13 +498,15 @@ def smooth_fitresult_over_orders(fit_result, par_name, deg=2):
     given degree over the central chunk pixels within each order and 
     return the evaluated results.
     
-    Args:
-        fit_result (list): A list of :class:'LmfitResult' objects from the fit.
-        par_name (str): Parameter key to smooth.
-        deg (Optional[int]): Degree of the polynomial (default: 2).
+    :param fit_result: A list of :class:`LmfitResult` objects from the fit.
+    :type fit_result: list
+    :param par_name: Parameter key to smooth.
+    :type par_name: str
+    :param deg: Degree of the polynomial (default: 2).
+    :type deg: int
     
-    Return:
-        ndarray[nr_chunks]: An array with the smoothed fit results of all chunks.
+    :return: An array with the smoothed fit results of all chunks.
+    :rtype: ndarray[nr_chunks]
     """
     
     pfits = np.zeros((len(fit_result)))
@@ -507,14 +542,16 @@ def fit_polynomial(x_data, y_data, deg=2):
     This routine masks out NaNs from the fit, and returns the input data
     if something goes wrong.
     
-    Args:
-        x_data (np.ndarray, list): The input x-data.
-        y_data (np.ndarray, list): The input y-data to be modelled.
-        deg (Optional[int]): Degree of the polynomial (default: 2).
+    :param x_data: The input x-data.
+    :type x_data: ndarray, list
+    :param y_data: The input y-data to be modelled.
+    :type y_data: ndarray, list
+    :param deg: Degree of the polynomial (default: 2).
+    :type deg: int
     
-    Return:
-        ndarray: The fitted polynomial data, or the input y-data if something
-            went wrong.
+    :return: The fitted polynomial data, or the input y-data if something went 
+        wrong.
+    :rtype: ndarray
     """
     try:
         if isinstance(x_data, list):
@@ -541,13 +578,15 @@ def analytic_chunk_weights(chunk_flux, wave_intercept, wave_slope):
     Implemented with great parallels to the dop IDL code dsst_m.pro, of the part
     based on equations in Bulter&Marcy (1996): sigma(mean) = 1./sqrt(sum(1/sig^2)).
     
-    Args:
-        chunk_flux (ndarray[nr_pix]): Flux values of the pixels in a chunk.
-        wave_intercept (float): The wavelength intercept w0 of that chunk.
-        wave_slope (float): The wavelength dispersion w1 of that chunk.
+    :param chunk_flux: Flux values of the pixels in a chunk.
+    :type chunk_flux: ndarray[nr_pix]
+    :param wave_intercept: The wavelength intercept w0 of that chunk.
+    :type wave_intercept: float
+    :param wave_slope: The wavelength dispersion w1 of that chunk.
+    :type wave_slope: float
     
-    Return:
-        float: The weight of the chunk, representing its RV content.
+    :return: The weight of the chunk, representing its RV content.
+    :rtype: float
     """
     eps = np.sqrt(chunk_flux[:-1])
     # slope: dI/d(pix)
