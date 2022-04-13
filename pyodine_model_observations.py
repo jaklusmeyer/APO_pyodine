@@ -26,7 +26,8 @@ import importlib
 def model_single_observation(utilities, Pars, obs_file, temp_file, 
                              iod=None, orders=None, normalizer=None, 
                              tellurics=None, plot_dir=None, res_names=None, 
-                             error_log=None, info_log=None, quiet=False):
+                             error_log=None, info_log=None, quiet=False,
+                             live=False):
     """Model a single observation
     
     This routine models a stellar observation spectrum with I2, using a stellar
@@ -75,7 +76,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
     :param quiet: Whether or not to print info messages to terminal. Defaults 
         to False (messages are printed).
     :type quiet: bool
-    
+    :param live: If True, then the modelling is performed in live-mode, i.e.
+        each modelled chunk is plotted and the best-fit parameters printed to
+        terminal. Defaults to False.
+    :type live: bool
     """
     
     # Check whether a logger is already setup. If no, setup a new one
@@ -199,17 +203,27 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             for o in obs.orders:
                 obs._flux[o] = (obs[o].flux / obs[o].cont)
         
-        # Now create the chunks, using the wave_defined chunking algorithm by default
-        obs_chunks = pyodine.chunks.wave_defined(obs, template, width=Pars.chunk_width, orders=orders, 
-                                                 padding=Pars.chunk_padding, order_correction=order_correction,
-                                                 delta_v=Pars.chunk_delta_v)
-        nr_chunks_total = len(obs_chunks)
-        nr_chunks_order = len(obs_chunks.get_order(orders[0]+order_correction))
-        nr_orders = len(orders)
+        # Now create the chunks, using the algorithm (and corresponding parameters) 
+        # as defined in the parameter input file
+        if Pars.chunking_algorithm == 'auto_wave_comoving':
+            obs_chunks = pyodine.chunks.auto_wave_comoving(
+                    obs, template, orders=orders, padding=Pars.chunk_padding, 
+                    order_correction=order_correction, delta_v=Pars.chunk_delta_v)
+        else:
+            raise KeyError('Algorithm {} not known! (Only option right now: auto_wave_comoving)'.format(
+                    Pars.chunking_algorithm))
+            
+        nr_chunks_total  = len(obs_chunks)
+        nr_chunks_order0 = len(obs_chunks.get_order(obs_chunks.orders[0]))
+        nr_orders_chunks = len(obs_chunks.orders)
+        
         logging.info('')
-        logging.info('Number of chunks: {}'.format(nr_chunks_total))
-        logging.info('In lowest order: {}'.format(nr_chunks_order))
-        logging.info('Orders: {} - {}'.format(obs_chunks[0].order, obs_chunks[-1].order))
+        logging.info('Total number of chunks: {}'.format(nr_chunks_total))
+        logging.info('Nr. chunks in order 0: {}'.format(nr_chunks_order0))
+        logging.info('First and last covered pixel of chunks in order 0: {}, {}'.format(
+                obs_chunks[0].abspix[0], obs_chunks[nr_chunks_order0-1].abspix[-1]))
+        logging.info('Orders: {} - {} ({} in total)'.format(
+                obs_chunks[0].order, obs_chunks[-1].order, nr_orders_chunks))
         
         # Produce the chunk weight array
         chunk_weight = []
@@ -314,16 +328,14 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             # use smoothed wavelength results from previous runs)
             if 'pre_wave_slope_deg' in run_dict.keys() and run_dict['pre_wave_slope_deg'] > 0:
                 poly_pars = pyodine.lib.misc.smooth_parameters_over_orders(
-                        starting_pars, 'wave_slope', obs_chunks, nr_orders, 
-                        nr_chunks_order, deg=run_dict['pre_wave_slope_deg'])
+                        starting_pars, 'wave_slope', obs_chunks, deg=run_dict['pre_wave_slope_deg'])
                 # Write the smoothed dispersion into starting_pars
                 for i in range(nr_chunks_total):
                     starting_pars[i]['wave_slope'] = poly_pars[i]
                     
             if 'pre_wave_intercept_deg' in run_dict.keys() and run_dict['pre_wave_intercept_deg'] > 0:
                 poly_pars = pyodine.lib.misc.smooth_parameters_over_orders(
-                        starting_pars, 'wave_intercept', obs_chunks, nr_orders, 
-                        nr_chunks_order, deg=run_dict['pre_wave_intercept_deg'])
+                        starting_pars, 'wave_intercept', obs_chunks, deg=run_dict['pre_wave_intercept_deg'])
                 # Write the smoothed intercepts into starting_pars
                 for i in range(nr_chunks_total):
                     starting_pars[i]['wave_intercept'] = poly_pars[i]
@@ -350,7 +362,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             modelling_return = pipe_lib.model_all_chunks(
                     obs_chunks, chunk_weight, fitter, lmfit_params, 
                     tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
-                    use_progressbar=Pars.use_progressbar)
+                    use_progressbar=Pars.use_progressbar, live=live)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
              run_results[run_id]['fitting_failed'], chauvenet_outliers, 
@@ -439,6 +451,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                 # and some exemplary smoothed LSFs (if accessible)
                 plot_chunks = None
                 plot_lsf_pars = False
+                nr_chunks_order, nr_orders = None, None
                 if 'plot_chunks' in run_dict.keys() and isinstance(run_dict['plot_chunks'], (list,tuple)):
                     plot_chunks = run_dict['plot_chunks']
                 if 'plot_lsf_pars' in run_dict.keys() and run_dict['plot_lsf_pars']:
@@ -447,6 +460,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                     uncertainties_failed = None
                     nan_rchi_fit = None
                     chauvenet_outliers = None
+                # If all orders are split into equal number of chunks
+                if len(np.unique([len(obs_chunks.get_order(o)) for o in obs_chunks.orders])) == 1:
+                    nr_chunks_order = nr_chunks_order0
+                    nr_orders = nr_orders_chunks
                 
                 logging.info('')
                 logging.info('Creating analysis plots...')
@@ -461,7 +478,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
                         plot_lsf_pars=plot_lsf_pars,
                         uncertainties_failed=uncertainties_failed,
                         nan_rchi_fit=nan_rchi_fit, chauvenet_outliers=chauvenet_outliers,
-                        lsf_array=lsf_smoothed)
+                        lsf_array=lsf_smoothed, live=live)
             
             ###########################################################################
             ## Run finished, proceeding to next run (unless all through)
@@ -475,13 +492,24 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         ## Then exit.
         ###########################################################################
         
-        if plot_dir:
-            # Default: use results from last run
-            analysis_run_id = list(run_results.keys())[-1]
-            
-            pipe_lib.velocity_results_analysis(
-                    run_results[analysis_run_id], plot_dir, 
-                    nr_chunks_order, nr_orders, obs.orig_filename)
+        if plot_dir and isinstance(Pars.vel_analysis_plots, int):
+            if Pars.vel_analysis_plots in list(run_results.keys()) \
+            or abs(Pars.vel_analysis_plots) <= len(list(run_results.keys())):
+                
+                run_id = list(run_results.keys())[Pars.vel_analysis_plots]
+                
+                nr_chunks_order, nr_orders = None, None
+                # If all orders are split into equal number of chunks
+                if len(np.unique([len(obs_chunks.get_order(o)) for o in obs_chunks.orders])) == 1:
+                    nr_chunks_order = nr_chunks_order0
+                    nr_orders = nr_orders_chunks
+                    
+                pipe_lib.velocity_results_analysis(
+                        run_results[run_id], plot_dir, nr_chunks_order, nr_orders, obs.orig_filename)
+            else:
+                logging.warning('')
+                logging.warning('Desired run id for velocity analysis plots {} not existent!'.format(
+                        Pars.vel_analysis_plots))
         
         modelling_time = time.time() - start_t
         logging.info('')

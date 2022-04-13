@@ -163,6 +163,159 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         logging.error('Chunk could not be plotted', exc_info=True)
 
 
+def live_chunkmodel(fit_result, chunk_array, chunk_nr, tellurics=None, 
+                    weight=None, fig=None, ax=None):
+    """Same as :func:`plot_chunkmodel`, but this is used if live-mode is 
+    activated (it replots new chunks into the same display).
+    
+    :param fit_result: A single fit result for the chunk to be plotted.
+    :type fit_result: :class:`LmfitResult`
+    :param chunk_array: The chunks of the observation.
+    :type chunk_array: :class:`ChunkArray`
+    :param chunk_nr: The index of the chunk to plot.
+    :type chunk_nr: int
+    :param tellurics: An instance of tellurics. If None, they are not included 
+        (default).
+    :type tellurics: :class:`SimpleTellurics` or None
+    :param weight:An array of pixel weights, to display which pixels were 
+        excluded in the modelling. Defaults to None.
+    :type weight: ndarray or None
+    :param fig: If a figure already exists, it can be passed here so that new
+        data is plotted into the same one. Else, a new one is created.
+    :type fig: :class:`matplotlib.pyplot.figure`, or None
+    :param ax: If a list of axes already exist, it can be passed here so that 
+        new data is plotted into the same ones. Else, new axes are created.
+    :type ax: list, or None
+    
+    :return: The created figure.
+    :rtype: :class:`matplotlib.pyplot.figure`
+    :return: The created axes list.
+    :rtype: list
+    """
+    
+    # Evaluate model
+    try:
+        sp = fit_result.fitted_spectrum
+        iod = fit_result.model.iodine_atlas
+        
+        # Figure out whether template exists (otherwise hot-star modelling)
+        if fit_result.model.stellar_template:
+            template = True
+        else:
+            template = False
+        
+        # If a figure is supplied, then a qt plot already exists and just
+        # needs to be updated
+        if fig:
+            already_live = True
+            nr_axes = len(ax)
+            # Clear the old axes data
+            for a in ax:
+                a.clear()
+                a.set_xlim((sp.wave[0], sp.wave[-1]))
+            ax[-1].set_xlabel('Wavelength [$\AA$]')
+            
+        # If a figure is not supplied, the qt plot needs to be build from scratch
+        else:
+            already_live = False
+            plt.ion()
+            
+            # Set up the figure and gridspec
+            if template:
+                fig = plt.figure(figsize=(8,8))
+                nr_axes = 4
+                gs = fig.add_gridspec(4, 1,  height_ratios=(1, 1, 1, 0.5))
+            else:
+                fig = plt.figure(figsize=(8,6.5))
+                gs = fig.add_gridspec(3, 1,  height_ratios=(1, 1, 0.5))
+                nr_axes = 3
+            fig.subplots_adjust(hspace=0)
+            
+            # Set up the axes
+            ax = []
+            for j in range(nr_axes):
+                ax.append(fig.add_subplot(gs[j]))
+                ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+                if j != nr_axes-1:
+                    ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both', labelbottom=False)
+                else:
+                    ax[-1].tick_params(axis='both', top=True, right=True, direction='in', which='both')
+                    ax[-1].set_xlabel('Wavelength [$\AA$]')
+        
+        title = 'Chunk: {}, Order: {}, Pixels: {} - {}'.format(
+                chunk_nr, chunk_array[chunk_nr].order,
+                chunk_array[chunk_nr].abspix[0], chunk_array[chunk_nr].abspix[-1])
+        ax[0].set_title(title)
+        
+        if template:
+            # Compute Doppler shift of this chunk
+            beta = fit_result.params['velocity'] / 299792458.
+            doppler = np.sqrt((1. + beta) / (1. - beta))
+            if isinstance(fit_result.model.stellar_template, StellarTemplate_Chunked):
+                temp = fit_result.model.stellar_template[chunk_nr]
+                temp_shifted = fit_result.model.stellar_template[chunk_nr]
+            else:
+                # Get template range for this chunk, and doppler shifted template
+                temp = fit_result.model.stellar_template.get_wavelength_range(sp.wave[0], sp.wave[-1])
+                temp_shifted = fit_result.model.stellar_template.get_wavelength_range(sp.wave[0]/doppler, sp.wave[-1]/doppler)
+            
+            # Plot modeled template
+            ax[0].plot(temp.wave, temp.flux, drawstyle='steps-mid')
+            ax[0].plot(temp_shifted.wave*doppler, temp_shifted.flux, drawstyle='steps-mid')
+            ax[0].legend(['Template', 'Shifted template (v={})'.format(int(fit_result.params['velocity']))])
+        
+        # Plot iodine
+        iod_chunk = iod.get_wavelength_range(sp.wave[0], sp.wave[-1])
+        ax[nr_axes-3].plot(iod_chunk.wave, iod_chunk.flux)
+        ax[nr_axes-3].set_xlim((sp.wave[0], sp.wave[-1]))
+        
+        # Plot observation
+        ax[nr_axes-2].plot(sp.wave, chunk_array[chunk_nr].flux, drawstyle='steps-mid')
+        # Plot model (spectrum and continuum)
+        ax[nr_axes-2].plot(sp.wave, sp.flux, drawstyle='steps-mid')
+        ax[nr_axes-2].plot(sp.wave, sp.cont)
+        ax[nr_axes-2].legend(['Observation', 'Fitted model', 'Continuum'])
+        
+        # Residual plot (normalize with mean flux)
+        ax[-1].plot(sp.wave, fit_result.residuals / sp.flux, drawstyle='steps-mid')
+        
+        # If tellurics are given, add them as shaded regions
+        if tellurics is not None:
+            ind = np.where((tellurics.dict_tellurics['wave_stop']>sp.wave[0]) & 
+                           (tellurics.dict_tellurics['wave_start']<sp.wave[-1]))
+            for tell_line in ind[0]:
+                for j in range(len(ax)):
+                    ax[j].axvspan(tellurics.dict_tellurics['wave_start'][tell_line],
+                                tellurics.dict_tellurics['wave_stop'][tell_line], alpha=0.1, color='k')
+        if weight is not None:
+            ind2 = np.where(weight != 0.)
+            ind3 = np.where(weight == 0.)
+            
+            if len(ind3[0]) > 0:
+                ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)
+                ax[-1].legend(['rms={:.3f}%'.format(fit_result.rel_residuals_rms()*1e2),
+                  'Weights = 0',
+                  'rms_c={:.3f}%'.format(
+                          (robust_std(fit_result.residuals[ind2]/ \
+                                      sp.flux[ind2])*1e2))])
+            else:
+                ax[-1].legend(['rms={:.3f}%'.format(fit_result.rel_residuals_rms()*1e2)])
+        else:
+            ax[-1].legend(['rms={:.3f}%'.format(fit_result.rel_residuals_rms()*1e2)])
+        
+        if already_live:
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+        else:
+            plt.show()
+        
+        return fig, ax
+        
+    except Exception as e:
+        logging.error('Live chunk could not be plotted', exc_info=True)
+
+
+
 def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=True, 
                        title='', savename=None, dpi=300, show_plot=False):
     """Create a histogram of all chunk residuals (in percent)
@@ -519,6 +672,7 @@ def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0,
                             format='%(message)s')
     
     try:
+        # This will only work properly when nr_chunks_order is equal for all orders!
         nr_chunks_order = len(chunks.get_order(chunks[0].order))
         nr_orders = len(chunks.orders)
         
