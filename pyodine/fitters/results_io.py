@@ -443,6 +443,18 @@ def restore_results_object(utilities, filename):
 
 
 def build_chunk_array(obs, chunk_dict):
+    """Build a chunk array, using the order, pixel and padding information
+    contained in a dictionary that was loaded from a saved results file
+    
+    :param obs: The observation to chunk.
+    :type obs: :class:`ObservationWrapper` or :class:`SummedObservation`
+    :param chunk_dict: A dictionary with orders ('order'), pixels ('firstpix'
+        and 'lastpix'), and padding ('padding') information for each chunk.
+    :type chunk_dict: dict
+    
+    :return: The built chunk array.
+    :rtype: :class:`ChunkArray`
+    """
     
     chunks = ChunkArray()
     
