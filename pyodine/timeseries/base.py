@@ -151,7 +151,7 @@ class CombinedResults():
         if do_crx:
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities(
-                velocities, self.nr_chunks_order, #bvc=bvc, 
+                velocities, self.nr_orders, #bvc=bvc, 
                 wavelengths=wavelengths, weighting_pars=weighting_pars)
         
         self.timeseries.update(tseries)
@@ -303,7 +303,6 @@ class CombinedResults():
         self.nr_chunks = len(result['chunks'][self.chunk_names[0]])
         self.orders = np.unique(result['chunks']['order'])
         self.nr_orders = len(self.orders)
-        self.nr_chunks_order = self.nr_chunks / self.nr_orders
         
         # Allocate arrays
         self.timeseries = {
@@ -422,7 +421,6 @@ class CombinedResults():
         self.nr_chunks = self.chunks['order'].shape[1]
         self.orders = np.unique(self.chunks['order'][0])
         self.nr_orders = len(self.orders)
-        self.nr_chunks_order = self.nr_chunks / self.nr_orders
         
         self.param_names = [k for k in self.params.keys()]
         self.chunk_names = [k for k in self.chunks.keys()]
