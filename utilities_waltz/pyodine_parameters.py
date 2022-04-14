@@ -107,6 +107,10 @@ class Parameters:
                 0:
                 {# First define the LSF
                  'lsf_model': models.lsf.SingleGaussian,    # LSF model to use (this is absolutely neccessary)
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -140,6 +144,10 @@ class Parameters:
                 {# First define the LSF
                  'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
                  'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -183,6 +191,11 @@ class Parameters:
                                                             # (otherwise: the lmfit redchi2)
                  'smooth_osample': 0,                       # Oversampling to use in smoothing 
                                                             # (None or 0: use the oversampling from the model)
+                 
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -468,6 +481,10 @@ class Template_Parameters:
                 0:
                 {# First define the LSF
                  'lsf_model': models.lsf.SingleGaussian,    # LSF model to use (this is absolutely neccessary)
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -501,6 +518,10 @@ class Template_Parameters:
                 {# First define the LSF
                  'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
                  'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)
@@ -544,6 +565,11 @@ class Template_Parameters:
                                                             # (otherwise: the lmfit redchi2)
                  'smooth_osample': 0,                       # Oversampling to use in smoothing 
                                                             # (None or 0: use the oversampling from the model)
+                
+                 # Then define the wavelength model
+                 'wave_model': models.wave.LinearWaveModel,
+                 # And define the continuum model
+                 'cont_model': models.cont.LinearContinuumModel,
                  
                  # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
                  # over the orders with polynomials (in order to use the smoothed values as input for the run)

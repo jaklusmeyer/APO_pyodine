@@ -131,9 +131,12 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
             logging.info(result.report)
             if i==0:
                 live_fig, live_ax = None, None
-            live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
-                    result, chunks, i, tellurics=tellurics, weight=ch_w, 
-                    fig=live_fig, ax=live_ax)
+            try:
+                live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
+                        result, chunks, i, tellurics=tellurics, weight=ch_w, 
+                        fig=live_fig, ax=live_ax)
+            except Exception as e:
+                logging.warning(e)
         
         # Update the progressbar
         if use_progressbar:
@@ -459,21 +462,22 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
             plt.close()
         
         # Plot velocities phased over orders
-        fig = plt.figure(figsize=(12,6))
-        for i in range(nr_orders):
-            plt.plot(np.arange(nr_chunks_order), velocities[i*nr_chunks_order:(i+1)*nr_chunks_order]*1e-3, 
-                     #yerr=vel_errors[i*nr_chunks_order:(i+1)*nr_chunks_order]*1e-3, fmt='.-', alpha=0.5)
-                     '-', alpha=0.5)
-        
-        plt.xlabel('Chunk # within order')
-        plt.ylabel('Velocity [km/s]')
-        plt.minorticks_on()
-        plt.ylim((velocity_robust_mean-5.*velocity_robust_std)*1e-3, 
-                 (velocity_robust_mean+5.*velocity_robust_std)*1e-3)
-        plt.title('Velocities within orders')
-        plt.savefig(os.path.join(save_dir, 'vel_orders_{}.png'.format(os.path.splitext(os.path.basename(obs_filename))[0])),
-                                 format='png', dpi=300)
-        plt.close()
+        if isinstance(nr_orders, int):
+            fig = plt.figure(figsize=(12,6))
+            for i in range(nr_orders):
+                plt.plot(np.arange(nr_chunks_order), velocities[i*nr_chunks_order:(i+1)*nr_chunks_order]*1e-3, 
+                         #yerr=vel_errors[i*nr_chunks_order:(i+1)*nr_chunks_order]*1e-3, fmt='.-', alpha=0.5)
+                         '-', alpha=0.5)
+            
+            plt.xlabel('Chunk # within order')
+            plt.ylabel('Velocity [km/s]')
+            plt.minorticks_on()
+            plt.ylim((velocity_robust_mean-5.*velocity_robust_std)*1e-3, 
+                     (velocity_robust_mean+5.*velocity_robust_std)*1e-3)
+            plt.title('Velocities within orders')
+            plt.savefig(os.path.join(save_dir, 'vel_orders_{}.png'.format(os.path.splitext(os.path.basename(obs_filename))[0])),
+                                     format='png', dpi=300)
+            plt.close()
         
         # Plot distribution of velocities
         fig = plt.figure(figsize=(12,6))
@@ -490,21 +494,22 @@ def velocity_results_analysis(run_result, save_dir, nr_chunks_order,
                                  format='png', dpi=300)
         plt.close()
         
-        # Wavelengths (residuals to fit) phase-folded over orders        
-        fig = plt.figure(figsize=(12,6))
-        for i in range(nr_orders):
-            plt.plot(np.arange(nr_chunks_order), 
-                     [obs_params[j]['wave_intercept'] for j in range(i*nr_chunks_order,(i+1)*nr_chunks_order)] - \
-                     run_result['wave_intercept_fit'][i*nr_chunks_order:(i+1)*nr_chunks_order],
-                     '-', alpha=0.5)
-        plt.ylim(-0.02,0.02)
-        plt.xlabel('Chunk # within order')
-        plt.ylabel(r'Wavelength residuals [$\AA$]')
-        plt.minorticks_on()
-        plt.title('Wavelength residuals within orders')
-        plt.savefig(os.path.join(save_dir, 'wave_res_orders_{}.png'.format(os.path.splitext(os.path.basename(obs_filename))[0])),
-                                 format='png', dpi=300)
-        plt.close()
+        # Wavelengths (residuals to fit) phase-folded over orders 
+        if isinstance(nr_orders, int):
+            fig = plt.figure(figsize=(12,6))
+            for i in range(nr_orders):
+                plt.plot(np.arange(nr_chunks_order), 
+                         [obs_params[j]['wave_intercept'] for j in range(i*nr_chunks_order,(i+1)*nr_chunks_order)] - \
+                         run_result['wave_intercept_fit'][i*nr_chunks_order:(i+1)*nr_chunks_order],
+                         '-', alpha=0.5)
+            plt.ylim(-0.02,0.02)
+            plt.xlabel('Chunk # within order')
+            plt.ylabel(r'Wavelength residuals [$\AA$]')
+            plt.minorticks_on()
+            plt.title('Wavelength residuals within orders')
+            plt.savefig(os.path.join(save_dir, 'wave_res_orders_{}.png'.format(os.path.splitext(os.path.basename(obs_filename))[0])),
+                                     format='png', dpi=300)
+            plt.close()
     
     except Exception as e:
         logging.error('Velocity results analysis failed...', exc_info=True)

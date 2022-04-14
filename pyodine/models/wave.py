@@ -17,6 +17,15 @@ class LinearWaveModel(LinearStaticModel):
         """
         p = np.polyfit(chunk.pix, chunk.wave, 1)
         return ParameterSet(intercept=p[1], slope=p[0])
+    
+    @staticmethod
+    def name():
+        """The name of the wave model as a string
+        
+        :return: The wave model name.
+        :rtype: str
+        """
+        return __class__.__name__
 
 
 class ParabolicWaveModel(ParabolicStaticModel):
@@ -32,4 +41,19 @@ class ParabolicWaveModel(ParabolicStaticModel):
         :rtype: :class:`ParameterSet`
         """
         p = np.polyfit(chunk.pix, chunk.wave, 2)
-        return ParameterSet(p0=p[0], p1=p[1], p2=p[2])
+        return ParameterSet(intercept=p[2], slope=p[1], curvature=p[0])
+    
+    @staticmethod
+    def name():
+        """The name of the wave model as a string
+        
+        :return: The wave model name.
+        :rtype: str
+        """
+        return __class__.__name__
+
+
+model_index = {
+        'LinearWaveModel': LinearWaveModel,
+        'ParabolicWaveModel': ParabolicWaveModel
+        }

@@ -24,10 +24,10 @@ import importlib
 
 
 def model_single_observation(utilities, Pars, obs_file, temp_file, 
-                             iod=None, orders=None, normalizer=None, 
-                             tellurics=None, plot_dir=None, res_names=None, 
-                             error_log=None, info_log=None, quiet=False,
-                             live=False):
+                             iod=None, orders=None, order_correction=None, 
+                             normalizer=None, tellurics=None, plot_dir=None, 
+                             res_names=None, error_log=None, info_log=None, 
+                             quiet=False, live=False):
     """Model a single observation
     
     This routine models a stellar observation spectrum with I2, using a stellar
@@ -51,6 +51,9 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
     :param orders: The orders of the observation to work on. If None, they are 
         defined as specified by the template and the parameter input object.
     :type orders: list, ndarray, or None
+    :param order_correction: Possible order shift between template and 
+        observation. If not given, the order shift is estimated in the code.
+    :type order_correction: int, or None
     :param normalizer: The normalizer to use. If None, it is created as 
         specified in the parameter input object.
     :type normalizer: :class:`SimpleNormalizer`, or None
@@ -111,8 +114,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         ###########################################################################
         
         # Load observation
-        #sun = pyodine.components.Star('sun')   # added for solar analysis
-        obs = utilities.load_pyodine.ObservationWrapper(obs_file)#, star=sun)    # added for solar analysis
+        obs = utilities.load_pyodine.ObservationWrapper(obs_file)
         
         # And log an idea of the flux level of the observation
         logging.info('')
@@ -153,10 +155,11 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         
         # Compute possible order shifts between template and observation,
         # by searching for the best coverage of first template order in
-        # observation
-        obs_order_min, min_coverage = obs.check_wavelength_range(
-                template[0].w0, template[len(template.get_order_indices(template.orders_unique[0]))-1].w0)
-        order_correction = obs_order_min - template.orders_unique[0]
+        # observation (if not supplied in the top)
+        if not isinstance(order_correction, int):
+            obs_order_min, min_coverage = obs.check_wavelength_range(
+                    template[0].w0, template[len(template.get_order_indices(template.orders_unique[0]))-1].w0)
+            order_correction = obs_order_min - template.orders_unique[0]
         logging.info('')
         logging.info('Order correction: {}'.format(order_correction))
         
@@ -267,8 +270,8 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
             if 'lsf_setup_dict' in run_dict.keys() and isinstance(run_dict['lsf_setup_dict'], dict):
                 lsf_model.adapt_LSF(run_dict['lsf_setup_dict'])
             
-            wave_model = pyodine.models.wave.LinearWaveModel
-            cont_model = pyodine.models.cont.LinearContinuumModel
+            wave_model = run_dict['wave_model'] #pyodine.models.wave.LinearWaveModel
+            cont_model = run_dict['cont_model'] #pyodine.models.cont.LinearContinuumModel
             
             # If the LSF model is a fixed LSF, try and smooth LSF results from
             # an earlier run
@@ -529,8 +532,9 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
 
 
 def model_multi_observations(utilities, Pars, obs_files, temp_files, 
-                             plot_dirs=None, res_files=None, error_files=None, 
-                             info_files=None, quiet=False):
+                             order_corrections=None, plot_dirs=None, 
+                             res_files=None, error_files=None, info_files=None, 
+                             quiet=False):
     """Model multiple observations at the same time
     
     This function can parallelize the modelling of multiple observations,
@@ -550,6 +554,11 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
         deconvolved stellar templates to use for each of the observations, or, 
         alternatively, a list with the pathnames.
     :type temp_files: str or list
+    :param order_corrections: A pathname to a text-file with possible order 
+        shifts between templates and observations, or, alternatively, a list
+        with the order shifts. If not given, the order shifts are estimated in 
+        the code.
+    :type order_corrections: str, list, or None
     :param plot_dirs: A pathname to a text-file with directory names for each 
         observation where to save plots, or, alternatively, a list with the 
         directory names. If the directory structure does not exist yet, it will 
@@ -665,6 +674,17 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
     else:
         info_logs = [None] * len(obs_names)
     
+    # Order corrections
+    if isinstance(order_corrections, list):
+        order_shifts = order_corrections
+    elif isinstance(order_corrections, str):
+        order_shifts = []
+        with open(order_corrections, 'r') as f:
+            for l in f.readlines():
+                order_shifts.append(int(l.strip()))
+    else:
+        order_shifts = [None] * len(obs_names)
+    
     
     ###########################################################################
     ## Now parallelize the modelling of the observations, by initializing the
@@ -680,11 +700,12 @@ def model_multi_observations(utilities, Pars, obs_files, temp_files,
     # Prepare the keyword arguments list for all the jobs (corresponding
     # to the keywords of the function model_single_observation)
     input_keywords  = [
-            {'iod': iod, 'normalizer': normalizer, 'tellurics': tellurics, 
+            {'iod': iod, 'order_correction': order_shift,
+             'normalizer': normalizer, 'tellurics': tellurics, 
              'plot_dir': plot_dir_name, 'res_names': res_name,
              'error_log': error_log, 'info_log': info_log, 'quiet': quiet
-             } for plot_dir_name, res_name, error_log, info_log in zip(
-             plot_dir_names, res_names, error_logs, info_logs)]
+             } for plot_dir_name, res_name, error_log, info_log, order_shift in zip(
+             plot_dir_names, res_names, error_logs, info_logs, order_shifts)]
     
     # Setup the Pool object, distribute the arguments and start the jobs
     with Pool(Pars.number_cores) as p:
@@ -720,6 +741,7 @@ if __name__ == '__main__':
     parser.add_argument('utilities_dir', type=str, help='The pathname to the utilities directory for this instrument.')
     parser.add_argument('obs_files', type=str, help='A pathname to a text-file with pathnames of stellar observations for the modelling.')
     parser.add_argument('temp_files', type=str, help='A pathname to a text-file with pathnames of deconvolved stellar templates to use.')
+    parser.add_argument('--order_corrections', type=str, help='A pathname to a text-file with order corrections between observations and templates.')
     parser.add_argument('--plot_dirs', type=str, help='A pathname to a text-file with directory names for each observation where to save analysis plots.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with pathnames under which to save modelling results.')
     parser.add_argument('--par_file', type=str, help='The pathname of the parameter input file to use.')
@@ -733,6 +755,7 @@ if __name__ == '__main__':
     utilities_dir = args.utilities_dir
     obs_files     = args.obs_files
     temp_files    = args.temp_files
+    order_corrections = args.order_corrections
     plot_dirs     = args.plot_dirs
     res_files     = args.res_files
     par_file      = args.par_file
@@ -757,6 +780,7 @@ if __name__ == '__main__':
     
     # And run the multiprocessing observation modelling routine
     model_multi_observations(utilities, Pars, obs_files, temp_files, 
+                             order_corrections=order_corrections,
                              plot_dirs=plot_dirs, res_files=res_files,
                              error_files=error_files, info_files=info_files, 
                              quiet=quiet)

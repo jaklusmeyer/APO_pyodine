@@ -5,7 +5,7 @@ import dill
 import os
 
 from ..lib import h5quick
-from ..components import ChunkArray, Chunk, SummedObservation
+from ..components import ChunkArray, Chunk, SummedObservation #, Star
 from ..template.base import StellarTemplate_Chunked
 from ..models import lsf, wave, cont, spectrum
 from ..fitters.lmfit_wrapper import LmfitWrapper
@@ -62,6 +62,8 @@ def create_results_dict(fit_results):
     res_dict['model'] = {
             'lsf_model': fit_results[0].model.lsf_model.name().encode('utf8', 'replace'),
             'lsf_pars_dict': fit_results[0].model.lsf_model.pars_dict,
+            'wave_model': fit_results[0].model.wave_model.name().encode('utf8', 'replace'),
+            'cont_model': fit_results[0].model.cont_model.name().encode('utf8', 'replace'),
             'iodine_file': os.path.abspath(fit_results[0].model.iodine_atlas.orig_filename).encode('utf8', 'replace'),
             'osample_factor': fit_results[0].model.osample_factor,
             'lsf_conv_width': fit_results[0].model.conv_width
@@ -344,6 +346,8 @@ def restore_results_object(utilities, filename):
         lsf_conv_width = results['model']['lsf_conv_width']
         lsf_name       = results['model']['lsf_model'].decode()
         lsf_pars_dict  = results['model']['lsf_pars_dict']
+        wave_name      = results['model']['wave_model'].decode()
+        cont_name      = results['model']['cont_model'].decode()
         res_chunks     = results['chunks']
         res_params     = results['params']
         res_errors     = results['errors']
@@ -375,8 +379,8 @@ def restore_results_object(utilities, filename):
         # Adapt the LSF setup to the instrument
         lsf_model.adapt_LSF(lsf_pars_dict)
         
-        wave_model = wave.LinearWaveModel
-        cont_model = cont.LinearContinuumModel
+        wave_model = wave.model_index[wave_name]
+        cont_model = cont.model_index[cont_name]
         model      = spectrum.SimpleModel(
                 lsf_model, wave_model, cont_model, iod, stellar_template=temp, 
                 osample_factor=osample, conv_width=lsf_conv_width)
