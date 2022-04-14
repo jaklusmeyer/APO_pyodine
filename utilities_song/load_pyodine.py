@@ -181,13 +181,13 @@ def get_star(header) -> components.Star:
             header['OBJ-RA'].strip() + ' ' + header['OBJ-DEC'].strip(),
             unit=(u.hourangle, u.deg)
         )
-    except KeyError:
+    except Exception as e:
         # TODO: Log this event
         coordinates = None
     # Get the proper motion vector
     try:
         proper_motion = (header['S-PM-RA'], header['S-PM-DEC'])
-    except KeyError:
+    except Exception as e:
         # TODO: Log this event
         proper_motion = (None, None)
 

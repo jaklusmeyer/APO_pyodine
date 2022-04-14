@@ -309,8 +309,8 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             if 'lsf_setup_dict' in run_dict.keys() and isinstance(run_dict['lsf_setup_dict'], dict):
                 lsf_model.adapt_LSF(run_dict['lsf_setup_dict'])
             
-            wave_model = pyodine.models.wave.LinearWaveModel
-            cont_model = pyodine.models.cont.LinearContinuumModel
+            wave_model = run_dict['wave_model'] #pyodine.models.wave.LinearWaveModel
+            cont_model = run_dict['cont_model'] #pyodine.models.cont.LinearContinuumModel
             
             # If the LSF model is a fixed LSF, try and smooth LSF results from
             # an earlier run
@@ -570,8 +570,8 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             
             # Build the desired model for deconvolution
             lsf_model = Pars.model_runs[Pars.jansson_run_model]['lsf_model']
-            wave_model = pyodine.models.wave.LinearWaveModel
-            cont_model = pyodine.models.cont.LinearContinuumModel
+            wave_model = Pars.model_runs[Pars.jansson_run_model]['wave_model'] #pyodine.models.wave.LinearWaveModel
+            cont_model = Pars.model_runs[Pars.jansson_run_model]['cont_model'] #pyodine.models.cont.LinearContinuumModel
             
             ostar_model = pyodine.models.spectrum.SimpleModel(
                     lsf_model, wave_model, cont_model, iod, lsf_array=LSFarr,
@@ -591,8 +591,8 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         else:
             # Build the desired model for deconvolution
             lsf_model = Pars.model_runs[Pars.jansson_run_model]['lsf_model']
-            wave_model = pyodine.models.wave.LinearWaveModel
-            cont_model = pyodine.models.cont.LinearContinuumModel
+            wave_model = Pars.model_runs[Pars.jansson_run_model]['wave_model'] #pyodine.models.wave.LinearWaveModel
+            cont_model = Pars.model_runs[Pars.jansson_run_model]['cont_model'] #pyodine.models.cont.LinearContinuumModel
             
             ostar_model = pyodine.models.spectrum.SimpleModel(
                     lsf_model, wave_model, cont_model, iod,
