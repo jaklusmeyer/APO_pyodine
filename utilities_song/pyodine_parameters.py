@@ -35,7 +35,7 @@ class Parameters:
     and details about how many runs are used in the modelling and which LSF
     models are employed (and more).
     
-    Furthermore, in the class method :method:`constrain_parameters` you can
+    Furthermore, in the class method :func:`self.constrain_parameters` you can
     specify and alter input parameter descriptions for the model, e.g. set
     bounds or fix parameters.
     """
@@ -177,71 +177,71 @@ class Parameters:
                  # Median parameter results
                  'save_median_pars': True,                  # Save median results to text file (None: False)
                  }}
-        """,
-                
-                2:
-                {# First define the LSF
-                 'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
-                 # For fixed lsf consisting of smoothed lsf results from previous runs,
-                 # define the smoothing parameters here:
-                 'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
-                 'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
-                 'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
-                 'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
-                 'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
-                                                            # (otherwise: the lmfit redchi2)
-                 'smooth_osample': 0,                       # Oversampling to use in smoothing 
-                                                            # (None or 0: use the oversampling from the model)
-                
-                 # Then define the wavelength model
-                 'wave_model': models.wave.LinearWaveModel,
-                 # And define the continuum model
-                 'cont_model': models.cont.LinearContinuumModel,
-                 
-                 # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
-                 # over the orders with polynomials (in order to use the smoothed values as input for the run)
-                 # (probably only makes sense before first run, later use smoothed results from previous runs):
-                 'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
-                 'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
-                 # Fitting keywords
-                 'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
-                 
-                 # Save the fit results from this run?
-                 # You can also define the filetype:
-                 #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
-                 #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
-                 'save_result': True,                       # Save the result of this run (None: True)
-                 'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
-                 # After the chunks have been modeled, you can model the wavelength results for the chunks
-                 # over the orders with polynomials (in order to use the smoothed values as input for next run):
-                 'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
-                 'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
-                 # Plotting keywords
-                 'plot_success': True,                      # Create plot of fitting success (None: False)
-                 'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
-                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
-                 'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
-                 
-                 # Median parameter results
-                 'save_median_pars': True,                  # Save median results to text file (None: False)
-                 }
-                
-        }"""
+#        ,
+#                
+#                2:
+#                {# First define the LSF
+#                 'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
+#                 # For fixed lsf consisting of smoothed lsf results from previous runs,
+#                 # define the smoothing parameters here:
+#                 'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
+#                 'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
+#                 'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
+#                 'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
+#                 'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
+#                                                            # (otherwise: the lmfit redchi2)
+#                 'smooth_osample': 0,                       # Oversampling to use in smoothing 
+#                                                            # (None or 0: use the oversampling from the model)
+#                
+#                 # Then define the wavelength model
+#                 'wave_model': models.wave.LinearWaveModel,
+#                 # And define the continuum model
+#                 'cont_model': models.cont.LinearContinuumModel,
+#                 
+#                 # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
+#                 # over the orders with polynomials (in order to use the smoothed values as input for the run)
+#                 # (probably only makes sense before first run, later use smoothed results from previous runs):
+#                 'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
+#                 'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
+#                 # Fitting keywords
+#                 'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
+#                 
+#                 # Save the fit results from this run?
+#                 # You can also define the filetype:
+#                 #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
+#                 #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
+#                 'save_result': True,                       # Save the result of this run (None: True)
+#                 'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
+#                 # After the chunks have been modeled, you can model the wavelength results for the chunks
+#                 # over the orders with polynomials (in order to use the smoothed values as input for next run):
+#                 'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
+#                 'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
+#                 # Plotting keywords
+#                 'plot_success': True,                      # Create plot of fitting success (None: False)
+#                 'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
+#                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+#                 'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
+#                 
+#                 # Median parameter results
+#                 'save_median_pars': True,                  # Save median results to text file (None: False)
+#                 }
+#                
+#        }
         
 
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
         """Constrain the lmfit_parameters for the models, however you wish!
         
-        :params lmfit_params: A list of :class:'lmfit.Parameters' objects
+        :param lmfit_params: A list of :class:`lmfit.Parameters` objects
             for each chunk.
         :type lmfit_params: list[:class:`lmfit.Parameters`]
-        :params run_id: The current run_id, to allow different definitions
+        :param run_id: The current run_id, to allow different definitions
             from run to run.
         :type run_id: int
-        :params run_results: Dictionary with important observation info and
+        :param run_results: Dictionary with important observation info and
             results from previous modelling runs.
         :type run_results: dict
-        :params fitter: The fitter used in the modelling.
+        :param fitter: The fitter used in the modelling.
         :type fitter: :class:`LmfitWrapper`
         
         :return: The updated list of :class:`lmfit.Parameters` objects.
@@ -551,71 +551,71 @@ class Template_Parameters:
                  # Median parameter results
                  'save_median_pars': True,                  # Save median results to text file (None: False)
                  }}
-        """,
-                
-                2:
-                {# First define the LSF
-                 'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
-                 # For fixed lsf consisting of smoothed lsf results from previous runs,
-                 # define the smoothing parameters here:
-                 'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
-                 'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
-                 'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
-                 'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
-                 'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
-                                                            # (otherwise: the lmfit redchi2)
-                 'smooth_osample': 0,                       # Oversampling to use in smoothing 
-                                                            # (None or 0: use the oversampling from the model)
-                
-                 # Then define the wavelength model
-                 'wave_model': models.wave.LinearWaveModel,
-                 # And define the continuum model
-                 'cont_model': models.cont.LinearContinuumModel,
-                 
-                 # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
-                 # over the orders with polynomials (in order to use the smoothed values as input for the run)
-                 # (probably only makes sense before first run, later use smoothed results from previous runs):
-                 'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
-                 'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
-                 # Fitting keywords
-                 'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
-                 
-                 # Save the fit results from this run?
-                 # You can also define the filetype:
-                 #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
-                 #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
-                 'save_result': True,                       # Save the result of this run (None: True)
-                 'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
-                 # After the chunks have been modeled, you can model the wavelength results for the chunks
-                 # over the orders with polynomials (in order to use the smoothed values as input for next run):
-                 'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
-                 'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
-                 # Plotting keywords
-                 'plot_success': True,                      # Create plot of fitting success (None: False)
-                 'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
-                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
-                 'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
-                 
-                 # Median parameter results
-                 'save_median_pars': True,                  # Save median results to text file (None: False)
-                 }
-                
-        }"""
+        #,
+        #        
+        #        2:
+        #        {# First define the LSF
+        #         'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
+        #         # For fixed lsf consisting of smoothed lsf results from previous runs,
+        #         # define the smoothing parameters here:
+        #         'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
+        #         'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
+        #         'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
+        #         'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
+        #         'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
+        #                                                    # (otherwise: the lmfit redchi2)
+        #         'smooth_osample': 0,                       # Oversampling to use in smoothing 
+        #                                                    # (None or 0: use the oversampling from the model)
+        #        
+        #         # Then define the wavelength model
+        #         'wave_model': models.wave.LinearWaveModel,
+        #         # And define the continuum model
+        #         'cont_model': models.cont.LinearContinuumModel,
+        #         
+        #         # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
+        #         # over the orders with polynomials (in order to use the smoothed values as input for the run)
+        #         # (probably only makes sense before first run, later use smoothed results from previous runs):
+        #         'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
+        #         'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
+        #         # Fitting keywords
+        #         'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
+        #         
+        #         # Save the fit results from this run?
+        #         # You can also define the filetype:
+        #         #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
+        #         #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
+        #         'save_result': True,                       # Save the result of this run (None: True)
+        #         'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
+        #         # After the chunks have been modeled, you can model the wavelength results for the chunks
+        #         # over the orders with polynomials (in order to use the smoothed values as input for next run):
+        #         'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
+        #         'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
+        #         # Plotting keywords
+        #         'plot_success': True,                      # Create plot of fitting success (None: False)
+        #         'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
+        #         'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+        #         'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
+        #         
+        #         # Median parameter results
+        #         'save_median_pars': True,                  # Save median results to text file (None: False)
+        #         }
+        #        
+        #}
         
 
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
         """Constrain the lmfit_parameters for the models, however you wish!
         
-        :params lmfit_params: A list of :class:'lmfit.Parameters' objects
+        :param lmfit_params: A list of :class:`lmfit.Parameters` objects
             for each chunk.
         :type lmfit_params: list[:class:`lmfit.Parameters`]
-        :params run_id: The current run_id, to allow different definitions
+        :param run_id: The current run_id, to allow different definitions
             from run to run.
         :type run_id: int
-        :params run_results: Dictionary with important observation info and
+        :param run_results: Dictionary with important observation info and
             results from previous modelling runs.
         :type run_results: dict
-        :params fitter: The fitter used in the modelling.
+        :param fitter: The fitter used in the modelling.
         :type fitter: :class:`LmfitWrapper`
         
         :return: The updated list of :class:`lmfit.Parameters` objects.

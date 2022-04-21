@@ -10,12 +10,14 @@ from pyodine import components
 
 from utilities_song import conf
 
+__all__ = ["IodineTemplate", "ObservationWrapper"]
+
 
 class IodineTemplate(components.IodineAtlas):
     """The iodine template class to be used in the modelling
     
     :param iodine_cell_id: The iodine cell ID to identify the I2 template
-        spectrum by in the :module:`conf`, or the direct pathname to the I2
+        spectrum by in the :ref:`overview_utilities_conf`, or the direct pathname to the I2
         template spectrum.
     :type iodine_cell_id: int or str
     """
@@ -37,16 +39,17 @@ class IodineTemplate(components.IodineAtlas):
 
 
 class ObservationWrapper(components.Observation):
-    """A wrapper for the representation of SONG observation spectra
+    """A wrapper for the representation of SONG observation spectra, based
+    on the parent class :class:`pyodine.components.Observation`
     
     :param filename: The filename of the observation to load.
     :type filename: str
     :param instrument: The instrument used to obtain the observation. If None,
         the information is drawn from the Fits-header (default).
-    :type instrument: :class:`Instrument`
+    :type instrument: :class:`components.Instrument`
     :param star: The star of the observation. If None, the information is 
         drawn from the Fits-header (default).
-    :type star: :class:`Star`
+    :type star: :class:`components.Star`
     """
 
     # Custom properties
