@@ -36,7 +36,7 @@ class Parameters:
     and details about how many runs are used in the modelling and which LSF
     models are employed (and more).
     
-    Furthermore, in the class method :method:'constrain_parameters' you can
+    Furthermore, in the class method :func:`self.constrain_parameters` you can
     specify and alter input parameter descriptions for the model, e.g. set
     bounds or fix parameters.
     """
@@ -233,16 +233,16 @@ class Parameters:
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
         """Constrain the lmfit_parameters for the models, however you wish!
         
-        :params lmfit_params: A list of :class:'lmfit.Parameters' objects
+        :param lmfit_params: A list of :class:`lmfit.Parameters` objects
             for each chunk.
         :type lmfit_params: list[:class:`lmfit.Parameters`]
-        :params run_id: The current run_id, to allow different definitions
+        :param run_id: The current run_id, to allow different definitions
             from run to run.
         :type run_id: int
-        :params run_results: Dictionary with important observation info and
+        :param run_results: Dictionary with important observation info and
             results from previous modelling runs.
         :type run_results: dict
-        :params fitter: The fitter used in the modelling.
+        :param fitter: The fitter used in the modelling.
         :type fitter: :class:`LmfitWrapper`
         
         :return: The updated list of :class:`lmfit.Parameters` objects.
@@ -608,16 +608,16 @@ class Template_Parameters:
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
         """Constrain the lmfit_parameters for the models, however you wish!
         
-        :params lmfit_params: A list of :class:'lmfit.Parameters' objects
+        :param lmfit_params: A list of :class:`lmfit.Parameters` objects
             for each chunk.
         :type lmfit_params: list[:class:`lmfit.Parameters`]
-        :params run_id: The current run_id, to allow different definitions
+        :param run_id: The current run_id, to allow different definitions
             from run to run.
         :type run_id: int
-        :params run_results: Dictionary with important observation info and
+        :param run_results: Dictionary with important observation info and
             results from previous modelling runs.
         :type run_results: dict
-        :params fitter: The fitter used in the modelling.
+        :param fitter: The fitter used in the modelling.
         :type fitter: :class:`LmfitWrapper`
         
         :return: The updated list of :class:`lmfit.Parameters` objects.

@@ -31,14 +31,17 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     :param res_files: A pathname to a text-file with pathnames of individual 
         results to load for the combination, or, alternatively, a list of 
         pathnames to individual results. If this is None, hand an existing 
-        saved CombinedResults object to 'comb_res_in'!
+        saved :class:`pyodine.timeseries.base.CombinedResults` object to 
+        'comb_res_in'!
     :type res_files: str, list, tuple, or None
-    :param comb_res_in: A pathname to a saved CombinedResults object to load. 
+    :param comb_res_in: A pathname to a saved 
+        :class:`pyodine.timeseries.base.CombinedResults` object to load. 
         If this is None, hand individual results to 'res_files'!
     :type comb_res_in: str, or None
     :type plot_dir: str, or None
-    :param comb_res_out: The pathname where to save the final CombinedResults 
-        object into. If None, the results are not saved.
+    :param comb_res_out: The pathname where to save the final 
+        :class:`pyodine.timeseries.base.CombinedResults` object into. If None, 
+        the results are not saved.
     :type comb_res_out: str, or None
     :param vels_out: The pathname of a text-file to write chosen timeseries 
         results into. If None, no results are written.
@@ -77,9 +80,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         to False (messages are printed).
     :type quiet: bool
     
-    :return: The final CombinedResults object, containing the timeseries 
-        results.
-    :rtype: :class:`CombinedResults`
+    :return: The final :class:`pyodine.timeseries.base.CombinedResults` object, 
+        containing the timeseries results.
+    :rtype: :class:`pyodine.timeseries.base.CombinedResults`
     """
     
     # Check whether a logger is already setup. If no, setup a new one

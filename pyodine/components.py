@@ -5,6 +5,10 @@ import sys
 
 import pyodine.comp_io as comp_io
 
+__all__ = ["Spectrum", "MultiOrderSpectrum", "Observation", "Instrument", "Star",
+           "NormalizedObservation", "SummedObservation", "Chunk", "ChunkArray",
+           "TemplateChunk"]
+
 
 class NoDataError(BaseException):
     """Use this Exception class to indicate missing data
@@ -354,7 +358,7 @@ class Instrument:
     :param latitude: Latitude in degrees.
     :type latitude: float, or None
     :param altitude: Altitude in meters.
-    type altitude: float, or None
+    :type altitude: float, or None
     """
     def __init__(self, name, longitude=None, latitude=None, altitude=None):
         self.name = name

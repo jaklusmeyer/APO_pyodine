@@ -12,6 +12,13 @@ import os
 utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class Timeseries_Parameters:
+    """The control parameters for the chunk velocity combination
+    
+    In this class you can define details for the chunk velocity combination: 
+    Should barycentric velocities be computed, and if so how? Which weighting
+    algorithm should be used, with which parameters, and what outputs should be
+    generated?
+    """
     
     def __init__(self):    
         

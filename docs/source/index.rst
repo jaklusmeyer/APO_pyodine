@@ -21,6 +21,9 @@ Check out how to :ref:`install <installation>` the project, or take a look at th
 
    installation
    overview
+   overview_utilities
+   data_classes
+   model_classes
    code_structure
 
 .. toctree::
@@ -31,6 +34,13 @@ Check out how to :ref:`install <installation>` the project, or take a look at th
    tutorial/template
    tutorial/observation
    tutorial/velocities
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Set up a new instrument
+
+   new_instrument/i2atlas
+   new_instrument/utilities
 
 
 Indices and tables

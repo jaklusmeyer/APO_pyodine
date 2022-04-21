@@ -8,7 +8,7 @@ from .base import DynamicModel, ParameterSet
 
 
 class SimpleModel(DynamicModel):
-    """A working implementation of a :class:'DynamicModel'
+    """A working implementation of a :class:`DynamicModel`
     
     This child class incorporates methods to guess fitting parameters for each
     chunk and build a model spectrum.
