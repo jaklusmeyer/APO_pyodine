@@ -346,8 +346,13 @@ def restore_results_object(utilities, filename):
         lsf_conv_width = results['model']['lsf_conv_width']
         lsf_name       = results['model']['lsf_model'].decode()
         lsf_pars_dict  = results['model']['lsf_pars_dict']
-        wave_name      = results['model']['wave_model'].decode()
-        cont_name      = results['model']['cont_model'].decode()
+        # For backward compatability: Check
+        if 'wave_model' in results['model'].keys():
+            wave_name      = results['model']['wave_model'].decode()
+            cont_name      = results['model']['cont_model'].decode()
+        else:
+            wave_name = 'LinearWaveModel'
+            cont_name = 'LinearContinuumModel'
         res_chunks     = results['chunks']
         res_params     = results['params']
         res_errors     = results['errors']
@@ -441,7 +446,8 @@ def restore_results_object(utilities, filename):
             
             # And add the correct errors from the dictionary
             for key in res_errors.keys():
-                fit_results[-1].lmfit_result.params[key].stderr = res_errors[key][i]
+                if fit_results[-1].lmfit_result:
+                    fit_results[-1].lmfit_result.params[key].stderr = res_errors[key][i]
         
         return obs_chunks, fit_results
 
