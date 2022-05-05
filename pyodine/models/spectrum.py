@@ -163,6 +163,9 @@ class SimpleModel(DynamicModel):
         
         if any(np.isnan(spec_fine)):
             logging.error('NaN value detected in oversampled model function.')
+            logging.error(params)
+            logging.error('Evaluated LSF:')
+            logging.error(lsf)
         
         # Resample back to original grid, given by wavelength
         spec_obs = rebin(wave_fine, spec_fine, wave_obs)

@@ -339,9 +339,16 @@ class MultiGaussian(LSFModel, StaticModel):
             
             # Make sure that the sum equals one
             y_sum = np.sum(y)
-            y = y / y_sum
+            y_norm = y / y_sum
             
-            return y
+            if len(np.where(np.isnan(y))[0]) > 0:
+                logging.debug('NaNs detected in LSF. Parameters:')
+                logging.debug(params)
+                logging.debug('Sum of un-normalized LSF: {}'.format(y_sum))
+                logging.debug('Unnormalized LSF:')
+                logging.debug(y)
+            
+            return y_norm
         except Exception as e:
             logging.error('LSF evaluation failed. Parameters:')
             logging.error(params)
