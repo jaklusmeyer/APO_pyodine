@@ -1,6 +1,6 @@
 import numpy as np
 from .base import ParameterSet
-from .shapes import LinearStaticModel, ParabolicStaticModel
+from .shapes import LinearStaticModel, QuadraticStaticModel
 
 
 class LinearContinuumModel(LinearStaticModel):
@@ -36,7 +36,7 @@ class LinearContinuumModel(LinearStaticModel):
         return __class__.__name__
 
 
-class ParabolicContinuumModel(ParabolicStaticModel):
+class QuadraticContinuumModel(QuadraticStaticModel):
     """A 2nd degree polynomial continuum model"""
     @staticmethod
     def guess_params(chunk):
@@ -69,5 +69,5 @@ class ParabolicContinuumModel(ParabolicStaticModel):
 
 model_index = {
         'LinearContinuumModel': LinearContinuumModel,
-        'ParabolicContinuumModel': ParabolicContinuumModel
+        'QuadraticContinuumModel': QuadraticContinuumModel
         }

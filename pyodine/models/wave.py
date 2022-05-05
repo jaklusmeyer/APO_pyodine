@@ -1,6 +1,6 @@
 import numpy as np
 from .base import ParameterSet
-from .shapes import LinearStaticModel, ParabolicStaticModel
+from .shapes import LinearStaticModel, QuadraticStaticModel
 
 
 class LinearWaveModel(LinearStaticModel):
@@ -28,7 +28,7 @@ class LinearWaveModel(LinearStaticModel):
         return __class__.__name__
 
 
-class ParabolicWaveModel(ParabolicStaticModel):
+class QuadraticWaveModel(QuadraticStaticModel):
     """A 2nd degree polynomial wavelength model"""
     @staticmethod
     def guess_params(chunk):
@@ -55,5 +55,5 @@ class ParabolicWaveModel(ParabolicStaticModel):
 
 model_index = {
         'LinearWaveModel': LinearWaveModel,
-        'ParabolicWaveModel': ParabolicWaveModel
+        'QuadraticWaveModel': QuadraticWaveModel
         }

@@ -13,7 +13,7 @@ class LinearStaticModel(StaticModel):
         raise NotImplementedError
 
 
-class ParabolicStaticModel(StaticModel):
+class QuadraticStaticModel(StaticModel):
     param_names = ['intercept', 'slope', 'curvature']
     
     @staticmethod
