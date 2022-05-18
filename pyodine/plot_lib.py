@@ -134,8 +134,7 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
             if len(ind3[0]) > 0:
                 ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)
                 plt.legend(['rms={:.3f}%'.format(fit_results[chunk_nr].rel_residuals_rms()*1e2),
-                            'Weights = 0',
-                            'rms_c={:.3f}%'.format(
+                            'Weights = 0\nrms_c={:.3f}%'.format(
                                     (robust_std(fit_results[chunk_nr].residuals[ind2]/ \
                                                sp.flux[ind2])*1e2))])
             else:
@@ -294,8 +293,7 @@ def live_chunkmodel(fit_result, chunk_array, chunk_nr, tellurics=None,
             if len(ind3[0]) > 0:
                 ax[-1].plot(sp.wave[ind3], np.zeros(len(ind3[0])), 'P', color='r', alpha=0.5)
                 ax[-1].legend(['rms={:.3f}%'.format(fit_result.rel_residuals_rms()*1e2),
-                  'Weights = 0',
-                  'rms_c={:.3f}%'.format(
+                  'Weights = 0\nrms_c={:.3f}%'.format(
                           (robust_std(fit_result.residuals[ind2]/ \
                                       sp.flux[ind2])*1e2))])
             else:
