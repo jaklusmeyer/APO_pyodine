@@ -285,7 +285,8 @@ def load_results(filename, filetype='h5py', force=True):
                 filename, filetype))
     
 
-def restore_results_object(utilities, filename):
+def restore_results_object(utilities, filename, temp_path=None, obs_path=None,
+                           iod_path=None):
     """A wrapper function to restore saved results as 
     :class:`LmfitWrapper.LmfitResult` objects
     
@@ -295,11 +296,23 @@ def restore_results_object(utilities, filename):
     contained in the saved dictionary. IMPORTANT: This only works if all 
     pathnames of the input files (observation spectra, I2 atlas, templates) 
     have not changed!
+    UPGRADE: Now the template and/or observation and/or I2 atlas pathnames
+    can be handed as optional arguments, in case they DO have changed.
     
     :param utilities: The utilities module for the instrument used.
     :type utilities: library
     :param filename: The filename of the saved results.
     :type filename: str
+    :param temp_path: An alternative pathname to the stellar template (optional,
+        in case the pathname has changed).
+    :type temp_path: str, or None
+    :param obs_path: An alternative pathname to the observation (optional,
+        in case the pathname has changed). If more than one observation,
+        this should be a list of pathnames.
+    :type obs_path: str, list, or None
+    :param iod_path: An alternative pathname to the I2 atlas (optional,
+        in case the pathname has changed).
+    :type iod_path: str, or None
     
     :return: The chunks of the modelled observation.
     :rtype: :class:`ChunkArray`
@@ -326,22 +339,33 @@ def restore_results_object(utilities, filename):
         
         # First get the names of the observation(s) (this could be more than
         # one, in case several observation spectra were summed up)
-        if isinstance(results['observation']['orig_filename'], (list,np.ndarray)):
-            obs_path = [f.decode() for f in results['observation']['orig_filename']]
+        # (first check if pathnames(s) were handed as argument)
+        if isinstance(obs_path, (list, tuple, str)):
+            if isinstance(obs_path, str):
+                obs_path = [obs_path]
+            elif isinstance(obs_path, tuple):
+                obs_path = list(obs_path)
         else:
-            obs_path = [results['observation']['orig_filename'].decode()]
+            if isinstance(results['observation']['orig_filename'], (list,np.ndarray)):
+                obs_path = [f.decode() for f in results['observation']['orig_filename']]
+            else:
+                obs_path = [results['observation']['orig_filename'].decode()]
         
         # Now the stellar template name (if any - for hot star modelling during
         # template creation this is None)
-        if 'stellar_template' in results['model'].keys():
-            temp_path = results['model']['stellar_template'].decode()
-        else:
-            temp_path = None
+        # (only if pathname was NOT handed as argument)
+        if not isinstance(temp_path, str):
+            if 'stellar_template' in results['model'].keys():
+                temp_path = results['model']['stellar_template'].decode()
+            else:
+                temp_path = None
         
         # Now other important information: The pathname to the I2 atlas, the
         # used oversampling factor, the LSF convolution width, the name of the 
         # used LSF, and info about the chunks and best-fit parameters
-        iod_path       = results['model']['iodine_file'].decode()
+        # (I2 atlas: check if it was handed as argument)
+        if not isinstance(iod_path, str):
+            iod_path   = results['model']['iodine_file'].decode()
         osample        = results['model']['osample_factor']
         lsf_conv_width = results['model']['lsf_conv_width']
         lsf_name       = results['model']['lsf_model'].decode()

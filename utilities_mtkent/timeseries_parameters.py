@@ -57,15 +57,15 @@ class Timeseries_Parameters:
         # - 'weight_correct' is the value that weights of 0 or NaN are 
         #   corrected to.
         self.weighting_pars = {
-                'good_chunks': list(range(3,15)), #(150, 350) # chunk indices within orders
-                'good_orders': list(range(6,14)),
-                'sig_limit_low': 4., 
-                'sig_limit_up': 1000.,
-                'sig_correct': 1000.,
+                'good_chunks': list(range(8,23)), #(150, 350) # chunk indices within orders
+                'good_orders': list(range(8,16)),
+                'sig_limit_low': 4.,
+                'sig_limit_up': 4000.,
+                'sig_correct': 10000.,
                 'reweight_alpha': 1.8,
                 'reweight_beta': 8.0,
                 'reweight_sigma': 2.0,
-                'weight_correct': 0.01,
+                'weight_correct': 0.0001,
                 }
         
         # Do chromatic index computation?
