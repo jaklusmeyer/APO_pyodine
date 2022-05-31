@@ -154,9 +154,10 @@ def plot_chunkmodel(fit_results, chunk_array, chunk_nr, template=True, tellurics
         if savename is not None:
             fmt = path.splitext(savename)[1][1:]
             plt.savefig(savename, format=fmt, dpi=dpi)
+            plt.close()
         if show_plot:
             plt.show()
-        plt.close()
+        #plt.close()
         
     except Exception as e:
         logging.error('Chunk could not be plotted', exc_info=True)
@@ -401,9 +402,10 @@ def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=Tr
         if savename is not None:
             fmt = path.splitext(savename)[1][1:]
             plt.savefig(savename, format=fmt, dpi=dpi)
+            plt.close()
         if show_plot:
             plt.show()
-        plt.close()
+        #plt.close()
         
         if sub_res is not None:
             return all_res, sub_res
@@ -616,9 +618,10 @@ def plot_chunk_scatter(scatter=None, scatter_fmt='o', scatter_alpha=1.,
         if savename is not None:
             fmt = path.splitext(savename)[1][1:]
             plt.savefig(savename, format=fmt, dpi=dpi)
+            plt.close()
         if show_plot:
             plt.show()
-        plt.close()
+        #plt.close()
     
     except Exception as e:
         logging.error('Residuals could not be plotted', exc_info=True)
@@ -699,9 +702,10 @@ def plot_lsfs_grid(lsf_array, chunks, x_lsf=None, x_nr=3, y_nr=3, alpha=1.0,
         if savename is not None:
             fmt = path.splitext(savename)[1][1:]
             plt.savefig(savename, format=fmt, dpi=dpi)
+            plt.close()
         if show_plot:
             plt.show()
-        plt.close()
+        #plt.close()
         
     except Exception as e:
         logging.error('LSFs could not be plotted', exc_info=True)
