@@ -35,5 +35,7 @@ my_instruments = {
 # List of iodine atlas locations
 my_iodine_atlases = {
     1: os.path.join(i2_dir_path, 'song_iodine_cell_01_65C.h5'),
-    2: os.path.join(i2_dir_path, 'ftslick05_norm_new.h5')
+    2: os.path.join(i2_dir_path, 'ftslick05_norm_new.h5'),
+    3: os.path.join(i2_dir_path, 'Fischer_Cell_May2022_downsampled3.h5'),
+    4: os.path.join(i2_dir_path, 'Butler_Cell1.h5')
 }

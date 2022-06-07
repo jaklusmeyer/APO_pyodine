@@ -84,18 +84,20 @@ class SimpleModel(DynamicModel):
             wave_fine[-1],
             require=require
         )
+        
         # Ensure "normalization" to mean value 1.0
         # FIXME: Normalization might depend on selected wavelength range?
         flux_iod = iod.flux / np.mean(iod.flux)
-
+        
         # Scale depth of iodine atlas
         flux_iod = params['iod_depth'] * (flux_iod - 1.0) + 1.0
-
+        
         # Interpolate iodine atlas to the fine grid
         # (Extrapolation may happen, but if keyword `require` is set to 'full',
         #  the iodine atlas will only load if it covers the full wavelength range)
         tck = splrep(iod.wave, flux_iod, s=0)
         iod_fine = splev(wave_fine, tck, der=0)
+        
         if any(np.isnan(iod_fine)):
                 logging.error('NaN value detected in iodine function.')
 

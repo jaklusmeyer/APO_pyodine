@@ -270,12 +270,13 @@ def get_velocity_offset(spectrum, reference, normalize=True, delta_v=1000.,
     #delta_v = 1000.0  # m/s #1000
     # How large does this have to be?
     #maxlag = 500  # Used to be 150 # Number of steps to each side in the cross-correlation
-
+    
     # If first input argument is a list of spectra, do recursion
     if isinstance(spectrum, list) or isinstance(spectrum, MultiOrderSpectrum):
         results = []
         for s in spectrum:
-            results.append(get_velocity_offset(s, reference))
+            results.append(get_velocity_offset(s, reference, normalize=normalize,
+                                               delta_v=delta_v, maxlag=maxlag))
         return np.median(results)
 
     # Unpack input spectrum, normalize unless keyword is set to False

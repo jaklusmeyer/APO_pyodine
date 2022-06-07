@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 import logging
 import sys
+from progressbar import ProgressBar
 
 from .. import fitters
 from ..lib import h5quick
@@ -322,6 +323,9 @@ class CombinedResults():
         self.residuals = np.zeros((self.nr_files, self.nr_chunks))
         self.medcnts = np.zeros((self.nr_files, self.nr_chunks))
         
+        # Set up progressbar
+        bar = ProgressBar(max_value=self.nr_files, redirect_stdout=True)
+        bar.update(0)
         # Now load the results from all files and fill up the object properties,
         # again making sure about the file formats
         for i, file in enumerate(filenames):
@@ -344,10 +348,15 @@ class CombinedResults():
             self.redchi2[i] = result['redchi2']
             self.residuals[i] = result['residuals']
             self.medcnts[i] = result['medcnts']
+            # Update progressbar
+            bar.update(i+1)
         
         self.timeseries['res_filename'] = [os.path.abspath(f) for f in filenames]
         
         self.fill_timeseries_attributes()
+        
+        # Finish progressbar
+        bar.finish()
         
         # Initiate an empty auxiliary and weighting pars attribute
         self.auxiliary = {}

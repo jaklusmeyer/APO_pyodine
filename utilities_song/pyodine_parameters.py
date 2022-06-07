@@ -10,6 +10,7 @@ from pyodine import models
 import logging
 import os
 import sys
+import numpy as np
 
 
 utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -260,8 +261,13 @@ class Parameters:
             # Loop over the chunks
             for i in range(len(lmfit_params)):
                 # Set velocity to velocity guess (from the reference spectrum)
-                lmfit_params[i]['velocity'].set(
-                        value=run_results[run_id]['velocity_guess'])
+                # (unless smaller 10, then to fixed value in order to avoid non-variation in fit)
+                if abs(run_results[run_id]['velocity_guess']) < 10.:
+                    lmfit_params[i]['velocity'].set(
+                            value=np.sign(run_results[run_id]['velocity_guess']) * 10.)
+                else:
+                    lmfit_params[i]['velocity'].set(
+                            value=run_results[run_id]['velocity_guess'])
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
@@ -295,9 +301,14 @@ class Parameters:
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
-                # Set velocity to median velocity from last run
-                lmfit_params[i]['velocity'].set(
-                        value=run_results[0]['median_pars']['velocity']) #run_results[run_id]['velocity_guess'])
+                # Set velocity to result from last run
+                # (unless smaller 10, then to fixed value in order to avoid non-variation in fit)
+                if abs(run_results[0]['results'][i].params['velocity']) < 10.:
+                    lmfit_params[i]['velocity'].set(
+                            value=np.sign(run_results[0]['results'][i].params['velocity']) * 10.)
+                else:
+                    lmfit_params[i]['velocity'].set(
+                            value=run_results[0]['results'][i].params['velocity']) #['median_pars']['velocity']) #run_results[run_id]['velocity_guess'])
                 # Set iodine and template depth to median results from last run
                 lmfit_params[i]['iod_depth'].set(
                         value=run_results[0]['median_pars']['iod_depth'])
