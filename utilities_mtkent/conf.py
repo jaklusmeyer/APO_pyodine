@@ -18,6 +18,12 @@ my_instruments = {
             longitude=97.73167,  # East longitude
             altitude=3200.    # From https://arxiv.org/pdf/1602.00838
     ),
+    'song_3': Instrument(
+            'SONG Australia (Mt. Kent)',
+            latitude=-27.79793,
+            longitude=151.85555,
+            altitude=800.
+    ),
     'lick': Instrument(
             'Hamilton spectrograph (Lick observatory)',
             latitude=37.34139,
@@ -36,6 +42,5 @@ my_instruments = {
 my_iodine_atlases = {
     1: os.path.join(i2_dir_path, 'song_iodine_cell_01_65C.h5'),
     2: os.path.join(i2_dir_path, 'ftslick05_norm_new.h5'),
-    3: os.path.join(i2_dir_path, 'Fischer_Cell_May2022_downsampled3.h5'),
-    4: os.path.join(i2_dir_path, 'Butler_Cell1.h5')
+    3: os.path.join(i2_dir_path, 'Fischer_Cell_May2022_downsampled3.h5')
 }
