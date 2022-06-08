@@ -42,6 +42,12 @@ Check out how to :ref:`install <installation>` the project, or take a look at th
    new_instrument/i2atlas
    new_instrument/utilities
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Notes and issues
+
+   issues/important
+
 
 Indices and tables
 ==================
