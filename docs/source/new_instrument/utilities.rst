@@ -3,7 +3,7 @@
 Setup your instrument's ``utilities`` module
 ============================================
 
-In the development of **pyodine** we really wanted to make the software highly flexible - we have therefore tried to strictly separate all universally valid routines from code that might be different between instruments. Each instrument therefore comes with its own ``utilities`` module (e.g. ``utilities_song`` and ``utilities_lick``), which contains interchangeable code and instrument-specific parameters (see :ref:`overview_utilities`); so, when you adapt **pyodine** to your own project (let's call it *TANGO* for *Tricky Acronym of a New Great Observatory*), you should add your own module ``utilities_tango``. This is probably easiest done by
+In the development of **pyodine** we really wanted to make the software highly flexible - we have therefore tried to strictly separate all universally valid routines from code that might be different between instruments. Each instrument comes with its own ``utilities`` module (e.g. ``utilities_song`` and ``utilities_lick``), which contains interchangeable code and instrument-specific parameters (see :ref:`overview_utilities`); so, when you adapt **pyodine** to your own project (let's call it *TANGO* for *Tricky Acronym of a New Great Observatory*), you should add your own module ``utilities_tango``. This is probably easiest done by
 
 1. copy-pasting another ``utilities`` module (e.g. ``utilities_song`` to ``utilities_tango``), and then
 
@@ -53,12 +53,31 @@ The second class :class:`ObservationWrapper` is used to store the observations a
 
 Usually, observations are saved in FITS format, in which case the spectral data is loaded from the FITS data unit, and the supplementary information from the FITS header. Both for Lick and SONG, we use several helper functions (also defined in ``load_pyodine.py``) to correctly extract the required data, so best is you have a look and adapt it as needed for your own instrument!
 
+.. _new_utilities_pyodine_parameters:
+
 Adapt ``pyodine_parameters.py``
 -------------------------------
 
+Now we come to the ``pyodine_parameters.py``, which should contain (at least) two object classes called :class:`Parameters` and :class:`Template_Parameters`. These hold all the important parameters for modelling observations and creating deconvolved templates, such as: 
 
+* oversampling factor;
+
+* chunking method and parameters (width, padding, etc.);
+
+* which orders and which reference spectrum to use for the cross-correlation velocity guess;
+
+* in how many runs to model the spectra and which submodels (LSF, wavelength, continuum) to use in each run;
+
+* many more settings for plotting, result saving, wavelength smoothing, etc.
+
+What you should look out for: Throughout the literature usually chunk widths of roughly 2 Angstrom are used, so computing the equivalent pixel number for your instrument and setting that in :class:`Template_Parameters` should be a good start.
+
+Furthermore, both object classes come with a method called ``constrain_parameters()``, which lets you define fitting parameters precisely before each modelling run: you can set initial guesses, upper and lower bounds, or even set parameters to stay fixed. E.g. for SONG, we generally use a Single-Gaussian LSF in a first modelling run and use the results from that as input for a second run with the more complex Multi-Gaussian LSF. To find proper starting parameters for the Multi-Gaussian LSF, we take a median of the best-fit Single-Gaussian LSF from the first run and fit the Multi-Gaussian to it. Also we are using bounds to prevent too crazy results. However, adapting all this to a new instrument is in many ways a method of trial and error!
+
+.. _new_utilities_timeseries_parameters:
 
 Adapt ``timeseries_parameters.py``
 ----------------------------------
 
+Finally, there's a file called ``timeseries_parameters.py`` which contains an object class :class:`Timeseries_Parameters`. Here, all the settings and parameters for the RV timeseries computation are defined, e.g. if and how to correct for barycentric velocities, parameters for the velocity weighting, and settings concerning plotting/results saving. Mostly, you should be able to simply use the existing settings - except of the definition of "good_chunks" and "good_orders" in the dictionary ``weighting_pars``: For SONG, these are the orders with typically lowest velocity scatter amongst chunks, and the middle chunks within these orders - all of these are used in the beginning of the velocity combination for offset-correction. You should be fine to just set those two to ``None`` in the beginning, and maybe over time you're able to figure out some good numbers for your own instrument!
 
