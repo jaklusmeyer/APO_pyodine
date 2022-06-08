@@ -69,5 +69,5 @@ html_title = 'pyodine'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-jupyter_execute_notebooks = "off"
-execution_timeout = -1
+#jupyter_execute_notebooks = "off"
+#execution_timeout = -1
