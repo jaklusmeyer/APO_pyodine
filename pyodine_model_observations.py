@@ -22,7 +22,6 @@ import argparse
 import importlib
 
 
-
 def model_single_observation(utilities, Pars, obs_file, temp_file, 
                              iod=None, orders=None, order_correction=None, 
                              normalizer=None, tellurics=None, plot_dir=None, 
@@ -176,7 +175,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         
         # Correct spectrum at weight == 0 if desired
         if Pars.correct_obs is True:
-            obs = pyodine.lib.correct_spec.correct_spectrum(obs, weight)
+            obs = pyodine.bad_pixels.correct_spec.correct_spectrum(obs, weight, orders)
         
         # Initialize Normalizer with reference spectrum, then cross-correlate 
         # to obtain the velocity guess of the observation relative to the
