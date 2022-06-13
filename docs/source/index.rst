@@ -47,6 +47,7 @@ Check out how to :ref:`install <installation>` the project, or take a look at th
    :caption: Notes and issues
 
    issues/important
+   issues/acknowledgements
 
 
 Indices and tables
