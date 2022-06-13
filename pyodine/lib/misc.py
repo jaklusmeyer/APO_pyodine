@@ -9,25 +9,6 @@ import logging.config
 _c = 299792458  # m/s
 
 
-def printLog(filename=None, *args):
-    """Function to print to the terminal and at the same time to a specified 
-    file (not needed anymore in the latest version)
-    
-    :param filename: The name of the file to print to (if None, just print to
-        terminal).
-    :type filename: str, or None
-    :param args: String argument(s) to print.
-    :type args: str, or None
-    """
-    print(*args)
-    if isinstance(filename, str) and filename != '':
-        try:
-            with open(filename, 'a') as f:
-                print(*args, file=f)
-        except Exception as e:
-            print(e)
-
-
 def setup_logging(config_file=None, level=logging.INFO, error_log=None,
                   info_log=None, quiet=False):
     """Setup logging configuration, following
@@ -143,15 +124,6 @@ def findwave(multiorder, wavelength):
         if spec.wave[0] < wavelength < spec.wave[-1]:
             return i
     raise ValueError('Could not find a corresponding order for wavelength %s Å' % wavelength)
-
-
-# def sp_resample(deltav, wave):
-#     """
-#         Return a vector of wavelengths between `wl_start` and `wl_end` with
-#         constant velocity spacing `deltav` (m/s)
-#     """
-#     npt = int(np.log(wave[-1] / wave[0]) / np.log(1.0 + deltav / _c))
-#     return wave[0] * (1.0 + deltav / _c)**np.arange(npt, dtype='float')
 
 
 def osample(x, factor):
@@ -283,8 +255,8 @@ def rebin(wold, sold, wnew):
 
 # Chauvenet criterion, as implemented in dop code
 def chauvenet_criterion(residuals, iterate=True):
-    """Chauvenet's criterion, as implemented in dop code (from the Kgiant server
-    of the Landessternwarte Heidelberg):
+    """Chauvenet's criterion, as implemented in dop-code by D. Fisher (Yale
+    University):
     Find elements that lie too far away from the others.
     Updated: nan-values in the residuals are immediately marked as bad ones.
     
@@ -316,7 +288,7 @@ def chauvenet_criterion(residuals, iterate=True):
     
     # Create a mask of points that pass Chauvenet's criterion
     # (inverse error function of (1 - 0.5/N))
-    mask = np.abs(residuals-mean) < 1.4142135623730950488*rms*erfinv(1. - 0.5/N)
+    mask = np.abs(residuals-mean) < 1.41421356 * rms * erfinv(1. - 0.5/N)
 
     # Iterate if desired, and throw out points until criterion is satisfied
     if iterate == True:
@@ -326,7 +298,6 @@ def chauvenet_criterion(residuals, iterate=True):
                              'check that your model is appropriate for these data.')
 
         if len(indx[0]) < N:
-            #iter_mask, iter_mask_true, iter_mask_false = chauvenet_criterion(residuals[fin][indx])
             iter_mask, iter_mask_true, iter_mask_false = chauvenet_criterion(residuals[indx])
             mask[indx] = mask[indx] & iter_mask
             
@@ -338,7 +309,8 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
                osample=None, lsf_conv_width=None):
     """Smooth over all chunk LSFs, with given 'radii' in orders & order pixels. 
     LSFs are weighted by red. Chi2 values of modeled chunks.
-    Implemented with great parallels to the dop IDL code dop_psf_smooth.pro.
+    Implemented with great parallels to the dop-code routine dop_psf_smooth.pro
+    (D. Fisher, Yale University).
     
     NOTE: This currently only works if chunks are evenly distributed, i.e. same
     number of chunks within each order!!!
@@ -403,7 +375,6 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
                         (chunk_arr_simple[:,0] >= chunk.order - order_avg) &
                         (chunk_arr_simple[:,1] <= chunk.abspix[int(len(chunk)/2.)] + pixel_avg) &
                         (chunk_arr_simple[:,1] >= chunk.abspix[int(len(chunk)/2.)] - pixel_avg))
-        #print(xsm)
         
         if len(xsm[0]) == 0:
             logging.warning('Chunk {}: No chunks to smooth over. Using input chunk.'.format(i))
@@ -416,15 +387,13 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
             ord_wt = 1. / np.sqrt(1. * ord_sep/len(chunk) + 1.)
             pix_sep = np.abs(chunk_arr_simple[xsm[0],1] - chunk.abspix[int(len(chunk)/2.)])
             pix_wt = 1. / np.sqrt(pix_sep/len(chunk) + 1.)
-            #print(ord_sep, ord_wt, pix_sep, pix_wt)
+            
             wt = 1. / redchi2[xsm[0]]
             wt = ord_wt * pix_wt * wt
-            #print(redchi2[xsm[0]])
-            #print(wt)
+            
             # Check for nans
             nan_ind = np.argwhere(np.isnan(wt))
             if len(nan_ind) > 0:
-                #print('Chunk {}, subchunk {}: nan wt'.format(i, xsm[0][nan_ind]))
                 wt[nan_ind] = 0.
             
             # Now get all the lsfs
@@ -443,11 +412,6 @@ def smooth_lsf(chunk_arr, pixel_avg, order_avg, order_dist, fit_results, redchi2
             
             lsf_array = np.array(lsf_array)        
             lsf_av = np.median(lsf_array, axis=0)
-            """
-            if osample is None:
-                lsf_av = fit_results[i].model.osample_factor * lsf_av / np.sum(lsf_av)
-            else:
-                lsf_av = osample * lsf_av / np.sum(lsf_av)"""
             lsf_av = lsf_av / np.sum(lsf_av) # we use a different normalization -> change that?!
             lsfs_smoothed.append(lsf_av)\
     
@@ -575,8 +539,9 @@ def fit_polynomial(x_data, y_data, deg=2):
 def analytic_chunk_weights(chunk_flux, wave_intercept, wave_slope):
     """Calculate analytic weight of a chunk, based on its spectral content
     
-    Implemented with great parallels to the dop IDL code dsst_m.pro, of the part
-    based on equations in Bulter&Marcy (1996): sigma(mean) = 1./sqrt(sum(1/sig^2)).
+    Implemented with great parallels to the dop-code routine dsst_m.pro 
+    (D. Fisher, Yale University), based on equations in Bulter&Marcy (1996): 
+    sigma(mean) = 1./sqrt(sum(1/sig^2)).
     
     :param chunk_flux: Flux values of the pixels in a chunk.
     :type chunk_flux: ndarray[nr_pix]

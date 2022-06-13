@@ -20,7 +20,6 @@ class LSFModel:
         :return: The evaluated pixel vector.
         :rtype: ndarray
         """
-        #return np.linspace(-4.0, 4.0, 8 * osample_factor + 1)
         return np.linspace(-conv_width, conv_width, 
                            int(2*conv_width) * int(osample_factor) + 1)
 
@@ -383,7 +382,7 @@ class MultiGaussian(LSFModel, StaticModel):
 
 class MultiGaussian_Lick(LSFModel, StaticModel):
     """The LSF model of a Multi Gaussian as used in Lick (algorithm employed
-    as in dop code, no re-centering of the LSF)
+    as in dop-code by D. Fisher, Yale University, no re-centering of the LSF)
     
     The model consists of a central, completely fixed Gaussian, and 5 satellite
     Gaussian both to the left and right. The positions and sigmas of the 
@@ -400,9 +399,6 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
         'right1', 'right2', 'right3', 'right4', 'right5'
         ]
     
-    # These are the median parameters from the cf of rs15.31
-    # 0.4    0.0820768    0.0557928     0.167839     0.417223     0.453222
-    #        0.400129     0.390609     0.138321    0.0599234    0.0588782
     param_guess = np.array([
         0.1, 0.2, 0.3, 0.4, 0.5,
         0.5, 0.4, 0.3, 0.2, 0.1
@@ -480,7 +476,6 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
             1.0,
             params[5], params[6], params[7], params[8], params[9],
         ])
-        # In Butler 1996: Gaussians placed at 0.5 pixels apart
         # This is from the cf's
         b = cls.pars_dict['positions']
         c = cls.pars_dict['sigmas']
@@ -491,14 +486,14 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
             if cntr is None:
                 cntr = 0.0
             cen = 0. - cntr
-            # First central Gaussian
+            # First the central Gaussian
             cent_wid = c[5] * 5.
             if cent_wid < 2.:
                 cent_wid = 2.  # define the central gaussian over this restricted pixel interval
             xx = np.where((x >= cen-cent_wid) & (x <= cen+cent_wid))
             y[xx] = np.exp(-0.5 * ((x[xx] - cen) / c[5])**2.)
             
-            # Now surrounding Gaussians
+            # Now the satellite Gaussians
             for i in range(len(a)):
                 if i != 5:
                     cen = b[i] - cntr
@@ -511,9 +506,9 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
             
             return y / np.sum(y) #(dx * np.sum(y))
 
-        # Evaluate function and find centroid
+        # Evaluate the function
         y = func(x)
-        # SHIFT TO CENTER - CHECK THIS - MAY WANT TO ELIMINATE!
+        # Shift to Center? Not doing it gives better results for Lick spectra!
         """
         fwhm = 0.5 * np.max(y)
         x2 = np.where((y >= fwhm) & (np.abs(x) < 6.)) # peak points +/- from center

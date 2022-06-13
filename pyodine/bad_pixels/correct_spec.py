@@ -40,8 +40,6 @@ def correct_spectrum(spec, weights, orders):
             end_pix.append(ind[-1]+1)
             
             for j in range(len(start_pix)):
-                #spec_order.flux[start_pix[j]:end_pix[j]+1] = np.linspace(
-                #    spec_order.flux[start_pix[j]], spec_order.flux[end_pix[j]], end_pix[j]-start_pix[j]+1)
                 spec_order.flux = interpolate_spec_region(spec_order.wave, spec_order.flux, start_pix[j], end_pix[j])
             
             if isinstance(spec, NormalizedObservation):

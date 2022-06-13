@@ -163,7 +163,7 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         logging.info('Order correction: {}'.format(order_correction))
         
         # Compute weights array
-        weight = obs.compute_weight(weight_type=Pars.weight_type)
+        weight = obs.compute_weight(weight_type=Pars.weight_type, rel_noise=Pars.rel_noise)
         # Pixels 1001 - 1004 in Lick orders 31 - 60 are corrupted -> set weights to zero there
         #for i in range(len(orders)):
         #    weight[1001:1005] = 0.

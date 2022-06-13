@@ -104,7 +104,6 @@ class LmfitWrapper(Fitter):
             params = self.convert_params(lmfit_params, from_lmfit=True)
             self.model.eval(chunk, params, require='full', chunk_ind=chunk_ind)
             # Carry out the fit
-            # Add-on: pixel weights in the fitting function, as used in dop code
             lmfit_result = lmfit.minimize(func, lmfit_params, args=[chunk.pix, weight, chunk_ind]) #, xtol=1.e-7)
             # Make sure that the fitted parameters are consistent with
             # template and iodine atlas coverage
@@ -126,7 +125,7 @@ class LmfitWrapper(Fitter):
         :type model: :class:`SimpleModel`
         :param lmfit_result: The best-fit results from the modelling. None if 
             it failed.
-        :type lmfit_result: :class:'lmfit.MinimizerResult'
+        :type lmfit_result: :class:`lmfit.MinimizerResult`
         :param chunk_ind: The index of the modelled chunk. Defaults to None.
         :type chunk_ind: int, or None
         """

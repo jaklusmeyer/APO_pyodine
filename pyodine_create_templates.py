@@ -188,7 +188,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         logging.info('Orders to use: {}'.format(orders))
         
         # Compute weights array for the combined hot star observation
-        weight = ostar.compute_weight(weight_type=Pars.weight_type)
+        weight = ostar.compute_weight(weight_type=Pars.weight_type, rel_noise=Pars.rel_noise)
         
         # Potentially compute a bad pixel mask, using the stellar template observation
         if Pars.bad_pixel_mask is True:

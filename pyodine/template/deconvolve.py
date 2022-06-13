@@ -9,12 +9,15 @@ from ..lib import misc
 
 
 class SimpleDeconvolver():
-    """Deconvolver to create a :class:'StellarTemplate' with stitched chunks
+    """Deconvolver to create a :class:`StellarTemplate` with stitched chunks
     
     A simple deconvolver, that deconvolves all chunks of a stellar spectrum
     with the help of a LSF (either directly from the O-star model, or handed in 
     manually with lsf_fixed), stitches the deconvolved chunks together and thus
     produces a 2D template (orders and pixels).
+    
+    NOTE: THIS HAS NOT BEEN USED OR TESTED IN THE LATER DEVELOPMENT STAGES OF
+    THE SOFTWARE!
     
     :param ostar_chunks: Chunks of the modelled O-star observation.
     :type ostar_chunks: :class:`ChunkArray`
@@ -215,7 +218,7 @@ class SimpleDeconvolver():
         return Spectrum(full_flux[ii], full_wave[ii])
 
 
-class ChunkedDeconvolver():#Deconvolver):
+class ChunkedDeconvolver():
     """Deconvolver to create a :class:`StellarTemplate_Chunked`
     
     A deconvolver, that deconvolves all chunks of a stellar spectrum
@@ -400,7 +403,8 @@ class ChunkedDeconvolver():#Deconvolver):
 def jansson(observed, lsf, niter, a=0.0, b=1.0, delta=0.1, chi_change=1e-8):
     """Jansson deconvolution algorithm
     
-    P. Heeren: Added chi_change (inspired by Lick dop code)
+    Added chi_change parameter to better control convergence (inspired by dop-
+    code, D. Fisher, Yale University)
     
     :param observed: The flux values of the observed spectrum.
     :type observed: ndarray[nr_pix]
