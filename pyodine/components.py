@@ -37,22 +37,12 @@ class Spectrum:
     :type cont: ndarray[nr_pix], or None
     
     """
-    def __init__(self, flux, wave=None, cont=None):#, weight=None):
+    def __init__(self, flux, wave=None, cont=None):
         if not any(flux):
             raise NoDataError('Invalid flux vector!')
         self.flux = flux
         self.wave = wave
         self.cont = cont
-        
-        """ Weights added. Using this formula from dop code for now
-            (the value of 0.008 is the flatfield noise - should be changed)
-        if weight is None:# or len(weight) is not len(self.flux):
-            #self.weight = (1./self.flux) / (1. + self.flux * 0.008**2)
-            self.weight = np.ones(self.flux.shape)
-            self.weight[np.where(self.flux<=0.)] = 0.
-        else:
-            self.weight = weight
-            self.weight[np.where(self.weight<0.)] = 0."""
 
     def __len__(self):
         """The dedicated length-method
@@ -75,8 +65,7 @@ class Spectrum:
         flux = self.flux[pixels]
         wave = self.wave[pixels] if self.wave is not None else None
         cont = self.cont[pixels] if self.cont is not None else None
-        #weight = self.weight[pixels]
-        return Spectrum(flux, wave=wave, cont=cont)#, weight=weight)
+        return Spectrum(flux, wave=wave, cont=cont)
 
     def check_wavelength_range(self, wave_start, wave_stop):
         """Check the fraction of wavelength range as supplied by the input
@@ -163,13 +152,21 @@ class Spectrum:
         else:
             return '<Spectrum ({} pixels)>'.format(len(self))
     
-    def compute_weight(self, weight_type='flat'):
+    def compute_weight(self, weight_type='flat', rel_noise=0.008):
         """Compute and return pixel weights for the spectrum
         
+        If weight_type='inverse' is used, the pixel weights are estimated from
+        the flux values, with lower flux (-> absorption lines) receiving higher 
+        weights. This has been included in analogy to the dop-code by D. Fisher,
+        but it is not well-tested here!
+        
         :param weight_type: The type of weights to compute. Either 'flat' for 
-            flat weights (all ones, default), or 'lick' for weighted by flux 
-            (as in dop code, D. Fisher).
+            flat weights (all ones, default), or 'inverse' for inversely 
+            weighted by flux (as in dop-code, D. Fisher, Yale University).
         :type weight_type: str
+        :param rel_noise: The relative noise as measured in a flatfield. Only
+            required if using weight_type='inverse'.
+        :type rel_noise: float
         
         :return: The computed weights array.
         :rtype: ndarray[nr_pix]
@@ -177,10 +174,10 @@ class Spectrum:
         """
         if weight_type == 'flat':
             return np.ones(self.flux.shape)
-        elif weight_type == 'lick':
-            return (1./self.flux) / (1. + self.flux * 0.008**2)
+        elif weight_type == 'inverse':
+            return 1./(self.flux * (1. + self.flux * rel_noise**2))
         else:
-            raise NotImplementedError('Choose one of: "flat", "lick"')
+            raise NotImplementedError('Choose one of: "flat", "inverse"')
 
 
 class MultiOrderSpectrum:
@@ -277,12 +274,12 @@ class MultiOrderSpectrum:
             wave_start, wave_stop, require=require
         )
     
-    def compute_weight(self, weight_type='flat'):
+    def compute_weight(self, weight_type='flat', rel_noise=0.008):
         """Loop through orders and compute pixel weights for the spectrum
         """
         weight = []
         for i in self.orders:
-            weight.append(self[i].compute_weight(weight_type))
+            weight.append(self[i].compute_weight(weight_type, rel_noise))
         return np.array(weight)
 
 
@@ -504,7 +501,6 @@ class SummedObservation(Observation):
 
         self.observations = []
         self._flux = {}  # Dict with the summed flux in each order
-        #self._weight = {}   # Added the weight again
         self.exp_time = 0.0  # Sum of exposure times
         self.time_start = observations[0].time_start
         self.iodine_in_spectrum = observations[0].iodine_in_spectrum
@@ -526,7 +522,6 @@ class SummedObservation(Observation):
             flux = self._flux[order]
             wave = self.observations[0][order].wave
             cont = self.observations[0][order].cont
-            #weight = self._weight[order]
             return Spectrum(flux, wave=wave, cont=cont)
         elif type(order) is list:
             return [self.__getitem__(int(i)) for i in order]  # Return MultiOrderSpectrum instead?
@@ -561,10 +556,6 @@ class SummedObservation(Observation):
             # Add the flux from each order
             for i in obs.orders:
                 self._flux[i] += obs[i].flux
-                """ Weights added. Using this formula from dop code for now
-                (the value of 0.008 is the flatfield noise - should be changed)
-                #self._weight[i] = (1./self._flux[i]) / (1. + self._flux[i] * 0.005**2)
-                self._weight[i] = np.ones(self._flux[i].shape)"""
     
     def save(self, filename):
         """Save summed observation in fits format
@@ -730,7 +721,7 @@ class TemplateChunk(Spectrum):
     """
 
     def __init__(self, flux, wave, pixel, w0, w1, order, pix0, weight):
-        super().__init__(flux, wave=wave, cont=None)#, weight=spec.weight)
+        super().__init__(flux, wave=wave, cont=None)
         self.pixel = pixel
         self.w0 = w0
         self.w1 = w1
@@ -748,16 +739,3 @@ class TemplateChunk(Spectrum):
         """
         n = len(self)
         return np.arange(-(n // 2), n - n // 2)
-    """
-    @property
-    def padded(self):
-        if self.padding == 0:
-            return self
-        first = self.abspix[0] - self.padding
-        last = self.abspix[-1] + self.padding
-        pixels = np.arange(first, last + 1, dtype='int')
-        return Chunk(self.observation, self.order, pixels)
-    
-    def __str__(self):
-        return '<Chunk (order:{} ; pixels:{}-{})>'.format(self.order, *self.abspix[[0, -1]])
-    """

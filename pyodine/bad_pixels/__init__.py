@@ -4,7 +4,7 @@
 Created on Mon Aug  3 15:12:20 2020
 
 Additional code for the pyodine package by René Tronsgaard Rasmussen,
-to cosmics and bad pixels in the spectra and return a bad pixel mask.
+to find cosmics and bad pixels in the spectra and return a bad pixel mask.
 
 @author: Paul Heeren
 """
@@ -43,7 +43,7 @@ class BadPixelMask:
     
     def compute_mask(self, spec):
         """Check for cosmics and bad pixels.
-        Based on 'find_cosmic.pro' from the kgiants server.
+        Based on 'find_cosmic.pro' (written by S. Reffert, LSW Heidelberg).
         The cutoff controls the behaviour of the bad_pixel finding algorithm: 
         values of 0.15--0.2 seem appropriate (lower values make it more 
         sensitive to little wobbles in the spectrum, and with values higher 

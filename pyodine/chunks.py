@@ -151,7 +151,6 @@ def auto_wave_comoving(obs, temp, padding=0, orders=None,
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
                             format='%(message)s')
-    #c = 299792458.0
     
     # Template orders
     temp_orders = temp.orders_unique
@@ -288,86 +287,3 @@ def wavelength_defined(obs, wave_dict, padding=0):
         chunks.append(chunk)
 
     return chunks
-
-
-# Below are the old chunking algorithms
-'''
-def simple(obs, width=91, padding=0, orders=None, chunks_per_order=None, pix_offset=0):
-    """
-    A simple chunking algorithm that splits the given orders of the
-    observation in a number of fixed-size chunks (pixel space),
-    leaving an equal amount of unused pixels in each end of the order.
-    The chunks are not allowed to overlap, but if padding>0, the padded chunks
-    will extend into their neighbour chunks (necessary for convolution).
-    With chunks_per_order the number of chunks within an order can be 
-    constrained; if it is not given, the maximum possible number of chunks 
-    using the other parameters is generated.
-    """
-
-    # In case no orders were submitted, chunk all orders
-    if orders is None:
-        orders = slice(None)
-    # In case only one order is submitted
-    if type(orders) is int:
-        orders = [orders]
-
-    # Number of chunks per order
-    max_chunks_per_order = int((obs.npix - 2 * padding) / width)
-    if chunks_per_order is None:
-        chunks_per_order = max_chunks_per_order
-    elif chunks_per_order > max_chunks_per_order:
-        raise ValueError('Cannot construct more than {} chunks per order with the given parameters!'.format(
-                max_chunks_per_order))
-
-    # Pixel offset of first chunk
-    offset = int((obs.npix - 2 * padding - chunks_per_order * width) / 2) + int(padding)
-
-    chunks = ChunkArray()
-    for i in orders:
-        for j in range(chunks_per_order):
-            # Create a new chunk and calculate pixels
-            pixels = offset + j * width + np.arange(width, dtype='int')
-            chunk = Chunk(obs, i, pixels, padding)
-            chunks.append(chunk)
-
-    return chunks
-
-
-def edge_to_edge(obs, width=91, padding=0, orders=None, chunks_per_order=None):
-    """
-        A variation of the "simple" algorithm. Instead of leaving unused pixels
-        at the order edges, it allows chunks to overlap. The number of pixels
-        defined by the "padding" keyword will still be left at the ends.
-
-        Useful for generating templates.
-    """
-
-    # In case no orders were submitted, chunk all orders
-    if orders is None:
-        orders = slice(None)
-    # In case only one order is submitted
-    if type(orders) is int:
-        orders = [orders]
-
-    # Number of chunks per order
-    if chunks_per_order is None:
-        chunks_per_order = int(np.ceil((obs.npix - 2 * padding) / width))
-
-    # Starting pixels of the chunks
-    startpix = np.linspace(
-        padding,
-        obs.npix - padding - width,
-        chunks_per_order,
-        dtype='int'
-    )
-
-    chunks = ChunkArray()
-    for i in orders:
-        for j in range(chunks_per_order):
-            # Create a new chunk and calculate pixels
-            pixels = startpix[j] + np.arange(width, dtype='int')
-            chunk = Chunk(obs, i, pixels, padding)
-            chunks.append(chunk)
-
-    return chunks
-'''

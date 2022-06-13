@@ -138,7 +138,7 @@ def combine_chunk_velocities(velocities, nr_orders, #bvc=None,
     
     vel_offset_corrected = np.zeros((nr_obs, nr_chunks))
     for i in range(nr_obs):
-        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(velocities[i,good_ind]) #pars['good_chunks'][0]:pars['good_chunks'][1]])
+        vel_offset_corrected[i,:] = velocities[i,:] - robust_mean(velocities[i,good_ind])
     
     # Calculate the mean offset of each individual chunk timeseries from
     # the observation means by taking the robust mean along the 
@@ -251,10 +251,6 @@ def combine_chunk_velocities(velocities, nr_orders, #bvc=None,
         # The chunk-to-chunk velocity scatter is the robust std of the 
         # corrected chunk velocities
         rv_dict['c2c_scatter'][i] = robust_std(chunk_vels_corr)
-        
-        # BV-correction instead through actual z and barycorrpy?!
-        #if isinstance(bvc, (list,np.ndarray)):
-        #    rv_dict['rv_bc'][i] = rv_dict['rv'][i] + bvc[i]
         
         # Compute the chromatic index in the observation, which is the slope
         # of the chunk velocities over chunk wavelengths
@@ -442,8 +438,8 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
                                   weighting_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
-    This routine follows the algorithm used in the dop code (D. Fischer, based
-    on Butler code).
+    This routine follows the algorithm used in the dop-code (D. Fischer, Yale
+    University).
     ToDo: Check the plausibility of the final RV uncertainties!
     Added here: The chromatic index (slope of the modelled velocities with
     wavelength) is computed if an array of wavelength zero points for each

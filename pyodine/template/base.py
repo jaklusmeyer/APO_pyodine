@@ -16,6 +16,9 @@ class StellarTemplate(MultiOrderSpectrum):
     To be subclassed together with either :class:`Spectrum` or 
     :class:`MultiOrderSpectrum`.
     
+    NOTE: THIS HAS NOT BEEN USED OR TESTED IN THE LATER STAGES OF DEVELOPMENT
+    OF THE SOFTWARE!
+    
     :param observation: Hand a :class:`Observation` object upon template 
         creation. Otherwise, if a pathname is given, the 
         :class:`StellarTemplate` is loaded from there.
@@ -216,7 +219,6 @@ class StellarTemplate_Chunked:
             self.orig_filename = None
             self.velocity_offset = velocity_offset
             self.starname = observation.star.name
-            #self.orig_filename = observation.orig_filename
             self.time_start = observation.time_start  # Start time of the observation <astropy.time.Time>
             self.bary_vel_corr = bary_vel_corr
             if self.bary_vel_corr is None:
@@ -387,7 +389,6 @@ class StellarTemplate_Chunked:
         with h5py.File(filename, 'w') as h:
             h.create_dataset('/orig_filename', data=os.path.abspath(filename))
             h.create_dataset('/starname', data=self.starname)
-            #h.create_dataset('/orig_filename', data=self.orig_filename)
             h.create_dataset('/time_start', data=self.time_start.isot)
             h.create_dataset('/velocity_offset', data=self.velocity_offset)
             h.create_dataset('/bary_vel_corr', data=self.bary_vel_corr)
