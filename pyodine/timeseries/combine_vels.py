@@ -10,6 +10,7 @@ import numpy as np
 import lmfit
 import logging
 import sys
+from astropy.stats import sigma_clip
 
 from .misc import robust_mean, robust_std, reweight
 from ..lib.misc import chauvenet_criterion
@@ -306,7 +307,8 @@ def velocity_from_chromatic_index(wavelengths, RV, RV_wave, crx):
     
 
 
-def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
+def chromatic_index_observation(velocities, wavelengths, RV, weights=None,
+                                sigma=5., iterative=True, max_iters=10):
     """Model the chromatic index (crx) of an observation
     
     This follows the idea as implemented in SERVAL (Zechmeister et al., 2018; 
@@ -384,6 +386,14 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         if isinstance(weights, (list,np.ndarray)):
             weights = weights[w_fin_inds]
     
+    # Check if sigma-clipping of outliers is desired. If so, start clipping here
+    if sigma != 0.:
+        mask = sigma_clip(velocities, sigma=sigma, maxiters=10)
+        mask_ind = np.where(mask.mask == False)
+        velocities  = velocities[mask_ind]
+        wavelengths = wavelengths[mask_ind]
+        weights     = weights[mask_ind]
+    
     # Now do the parameter starting guesses
     # For the effective wavelength of the modelled RV:
     # Median of all wavelengths
@@ -404,14 +414,43 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
                      max=np.max(wavelengths))
     lmfit_params.add('crx', value=crx_guess)
     
-    # And fit
-    try:
-        lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
-    except Exception as e:
-        logging.error('Length of velocities: {}'.format(len(velocities)))
-        logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
-        logging.error('Length of weights: {}'.format(len(weights)))
-        raise e
+    # Now, if iterative is True, fit iteratively and throw out outliers
+    # (otherwise the while loop is immediately interrupted after the first fit)
+    loop_counter = 0
+    while loop_counter < max_iters:
+        
+        # And fit
+        try:
+            lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
+        except Exception as e:
+            logging.error('Length of velocities: {}'.format(len(velocities)))
+            logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
+            logging.error('Length of weights: {}'.format(len(weights)))
+            raise e
+        
+        if iterative:
+            # Evalute the CRX model
+            crx_model = velocity_from_chromatic_index(
+                    wavelengths, RV, lmfit_result.params['RV_wave'].value, 
+                    lmfit_result.params['crx'].value)
+            
+            # Now sigma-clip points which fall far from the model
+            mask = sigma_clip(velocities-crx_model, sigma=sigma, maxiters=10)
+            mask_ind = np.where(mask.mask == False)
+            # If no outliers, stop here
+            if len(mask_ind)[0] == len(velocities):
+                loop_counter = max_iters
+            else:
+                velocities  = velocities[mask_ind]
+                wavelengths = wavelengths[mask_ind]
+                weights     = weights[mask_ind]
+                lmfit_params['crx'].value     = lmfit_result.params['crx'].value
+                lmfit_params['RV_wave'].value = lmfit_result.params['RV_wave'].value
+                # Increas the loop counter
+                loop_counter += 1
+        
+        else:
+            loop_counter = max_iters
     
     crx_dict = {
             'crx': lmfit_result.params['crx'].value,
