@@ -34,6 +34,7 @@ Check out how to :ref:`install <installation>` the project, or take a look at th
    tutorial/template
    tutorial/observation
    tutorial/velocities
+   tutorial/template_from_reference
 
 .. toctree::
    :maxdepth: 1
