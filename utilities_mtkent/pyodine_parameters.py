@@ -50,7 +50,7 @@ class Parameters:
                                 format='%(message)s')
         
         # General parameters:
-        self.osample_obs = 4                    # Oversample factor for the observation modeling
+        self.osample_obs = 6                    # Oversample factor for the observation modeling
         self.lsf_conv_width = 6.                # LSF is evaluated over this many pixels (times 2)
         self.number_cores = 4                   # Number of processor cores for multiprocessing
         
