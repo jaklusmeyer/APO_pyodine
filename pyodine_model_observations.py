@@ -156,9 +156,10 @@ def model_single_observation(utilities, Pars, obs_file, temp_file,
         # by searching for the best coverage of first template order in
         # observation (if not supplied in the top)
         if not isinstance(order_correction, int):
+            template_ind = template.get_order_indices(template[0].order)
             obs_order_min, min_coverage = obs.check_wavelength_range(
-                    template[0].w0, template[len(template.get_order_indices(template.orders_unique[0]))-1].w0)
-            order_correction = obs_order_min - template.orders_unique[0]
+                    template[template_ind[0]].w0, template[template_ind[-1]].w0)
+            order_correction = obs_order_min - template[template_ind[0]].order
         logging.info('')
         logging.info('Order correction: {}'.format(order_correction))
         

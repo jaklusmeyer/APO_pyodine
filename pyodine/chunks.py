@@ -175,6 +175,53 @@ def auto_wave_comoving(obs, temp, padding=0, orders=None,
     logging.info('Barycentric redshift between template and observation: ')
     logging.info('v = {}, z = {}\n'.format(init_dv, init_z))
     
+    # One chunk at a time
+    for i in range(len(temp)):
+        o = temp[i].order
+        if o in orders:
+            # Width in pixel for this chunk: First find out the padding of the
+            # original template chunk, then take advantage of the fact that it
+            # is symmetric to find the last (non-padded) pixel and then the width
+            temp_padding = temp[i].pix0 - temp[i].pixel[0]
+            width = temp[i].pixel[-1] - temp_padding - temp[i].pix0 + 1
+            
+            wave_shifted = temp[i].w0 + init_z * temp[i].w0
+            difference = np.abs(wave_shifted - obs[o+order_correction].wave)
+            pix_ind = np.argmin(np.abs(difference)) # pixel with closest wavelength
+            
+            startpix = round(pix_ind - width // 2)
+            endpix = startpix + width
+            # Make sure that chunks do not extend past the order edges
+            if startpix < 0:
+                logging.info('Startpixel (order {}, chunk {}): {}'.format(
+                        o, i, startpix))
+                logging.info('-> Correcting to 0.')
+                startpix2 = 0
+                width2 = width + startpix
+            elif endpix > len(obs[o+order_correction]):
+                logging.info('Endpixel (order {}, chunk {}): {}'.format(
+                        o, i, endpix))
+                logging.info('-> Correcting to maximum pixel in order.')
+                startpix2 = startpix
+                width2 = width - (endpix - len(obs[o+order_correction]))
+            else:
+                startpix2 = startpix
+                width2 = width
+            
+            # Adapt the padding to not extend past the order edges
+            if startpix2 - padding < 0:
+                padding2 = startpix2
+            else:
+                padding2 = padding
+            if startpix2 + width2 + padding2 > len(obs[o+order_correction]):
+                padding2 = len(obs[o+order_correction]) - (startpix2 + width2)
+            
+            # Create a new chunk and calculate pixels
+            pixels = startpix2 + np.arange(width2, dtype='int')
+            chunk = Chunk(obs, o+order_correction, pixels, padding2)
+            chunks.append(chunk)
+    
+    """
     # One order at a time
     for o in orders:
         order_ind = temp.get_order_indices(o)
@@ -221,7 +268,7 @@ def auto_wave_comoving(obs, temp, padding=0, orders=None,
             pixels = startpix2 + np.arange(width2, dtype='int')
             chunk = Chunk(obs, o+order_correction, pixels, padding2)
             chunks.append(chunk)
-    
+    """
     return chunks
 
 
