@@ -183,10 +183,11 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         
         if Pars.weighting_algorithm == 'song':
             Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
-                                      do_crx=Pars.do_crx)
+                                      do_crx=Pars.do_crx, crx_pars=Pars.crx_pars)
         elif Pars.weighting_algorithm == 'lick':
             Results.create_timeseries_dop(#weighting_pars=Pars.weighting_pars, 
-                                          do_crx=Pars.do_crx)
+                                          do_crx=Pars.do_crx, 
+                                          crx_pars=Pars.crx_pars)
         
         # Do precise barycentric velocity correction (using the multiplicative
         # method taking the absolute measured Doppler shift into account)

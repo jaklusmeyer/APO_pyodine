@@ -132,7 +132,7 @@ class CombinedResults():
         self.fill_timeseries_attributes()
     
     
-    def create_timeseries(self, weighting_pars=None, do_crx=True):
+    def create_timeseries(self, weighting_pars=None, do_crx=True, crx_pars=None):
         """Create the timeseries data (weighted and unweighted RVs with 
         uncertainties, chunk-to-chunk scatter, RV precision measures, and
         optionally chromatic indices with uncertainties)
@@ -152,14 +152,14 @@ class CombinedResults():
         if do_crx:
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities(
-                velocities, self.nr_orders, #bvc=bvc, 
-                wavelengths=wavelengths, weighting_pars=weighting_pars)
+                velocities, self.nr_orders, wavelengths=wavelengths, 
+                weighting_pars=weighting_pars, crx_pars=crx_pars)
         
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()
     
     
-    def create_timeseries_dop(self, weighting_pars=None, do_crx=True):
+    def create_timeseries_dop(self, weighting_pars=None, do_crx=True, crx_pars=None):
         """Create the timeseries data, using the algorithm as deployed in the
         dop code (weighted and unweighted RVs with 
         uncertainties, chunk-to-chunk scatter, RV precision measures, and
@@ -181,7 +181,7 @@ class CombinedResults():
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities_dop(
                 velocities, self.redchi2, self.medcnts, wavelengths=wavelengths,
-                bvc=bvc, weighting_pars=weighting_pars)
+                bvc=bvc, weighting_pars=weighting_pars, crx_pars=crx_pars)
         
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()

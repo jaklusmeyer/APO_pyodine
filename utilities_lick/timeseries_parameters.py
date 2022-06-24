@@ -63,6 +63,19 @@ class Timeseries_Parameters:
         
         # Do chromatic index computation?
         self.do_crx = True
+        # This dictionary defines the parameters used in the crx modelling:
+        # - crx_sigma: If this is not 0, perform sigma-clipping of chunk 
+        #   velocities within each observation. Defaults to 0., so no 
+        #   sigma-clipping.
+        # - crx_iterative: If True, then velocity outliers from the CRX model 
+        #   are sigma-clipped iteratively. Defaults to False.
+        # - max_iters: If iterative=True, this gives the maximum number of 
+        #   iterations to perform in the CRX modelling. Defaults to 10.
+        self.crx_pars = {
+                'crx_sigma': 0.,
+                'crx_iterative': False,
+                'crx_max_iters': 10
+                }
         
         # For writing timeseries results to a text-file:
         self.txt_outkeys = ['bary_date', 'rv_bc', 'rv_err']    # Write these results
