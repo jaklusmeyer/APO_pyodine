@@ -10,6 +10,7 @@ import numpy as np
 import lmfit
 import logging
 import sys
+from astropy.stats import sigma_clip
 
 from .misc import robust_mean, robust_std, reweight
 from ..lib.misc import chauvenet_criterion
@@ -31,9 +32,23 @@ _weighting_pars = {
         'good_orders': None #(6,14)
         }
 
+"""The default _crx_pars dictionary for CRX modelling:
+    - crx_sigma: If this is not 0, perform sigma-clipping of chunk velocities 
+      within each observation. Defaults to 0., so no sigma-clipping.
+    - crx_iterative: If True, then velocity outliers from the CRX model are 
+      sigma-clipped iteratively. Defaults to False.
+    - max_iters: If iterative=True, this gives the maximum number of 
+      iterations to perform in the CRX modelling. Defaults to 10.
+"""
+_crx_pars = {
+        'crx_sigma': 0.,
+        'crx_iterative': False,
+        'crx_max_iters': 10
+        }
 
-def combine_chunk_velocities(velocities, nr_orders, #bvc=None, 
-                             wavelengths=None, weighting_pars=None):
+
+def combine_chunk_velocities(velocities, nr_orders, wavelengths=None, 
+                             weighting_pars=None, crx_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
     This routine follows the algorithm used in the original iSONG pipeline 
@@ -58,6 +73,9 @@ def combine_chunk_velocities(velocities, nr_orders, #bvc=None,
     :param weighting_pars: A dictionary of parameters used in the weighting 
         algorithm. If None is supplied, a dictionary of default values is used.
     :type weighting_pars: dict, or None
+    :param crx_pars: A dictionary of parameters used in the crx modelling. If 
+        None is supplied, a dictionary of default values is used.
+    :type crx_pars: dict, or None
     
     :return: A dictionary of results: RVs ('rvs'), BVC-corrected RVs 
         ('rvs_bc', optionally), simple median velocity timeseries ('mdvels'),
@@ -260,7 +278,8 @@ def combine_chunk_velocities(velocities, nr_orders, #bvc=None,
             crx_dict = chromatic_index_observation(
                     #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
                     #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
-                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i], 
+                    crx_pars=crx_pars)
             
             for key, value in crx_dict.items():
                 rv_dict[key][i] = value
@@ -306,7 +325,8 @@ def velocity_from_chromatic_index(wavelengths, RV, RV_wave, crx):
     
 
 
-def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
+def chromatic_index_observation(velocities, wavelengths, RV, weights=None,
+                                crx_pars=None):
     """Model the chromatic index (crx) of an observation
     
     This follows the idea as implemented in SERVAL (Zechmeister et al., 2018; 
@@ -323,6 +343,9 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         of the crx (e.g. to downweight chunks which are inherently bad). If 
         None, no weights are used in the fitting.
     :type weights: ndarray[nr_chunks], or None
+    :param crx_pars: A dictionary of parameters used in the crx modelling. If 
+        None is supplied, a dictionary of default values is used.
+    :type crx_pars: dict, or None
     
     :return: A dictionary of results: chromatic index ('crx') and its model
         uncertainty ('crx_err'), the effective wavelength at the weighted RV
@@ -359,6 +382,12 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         else:
             return velocities_fit - velocities
     
+    # If no crx_pars dictionary is supplied, load the default one
+    if not isinstance(crx_pars, dict):
+        pars = _crx_pars
+    else:
+        pars = crx_pars.copy()
+    
     # Take care of NaNs in the wavelengths or velocities arrays: Exclude them
     w_nan_inds = np.where(np.isnan(wavelengths))
     if len(w_nan_inds[0]) > 0:
@@ -384,6 +413,14 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
         if isinstance(weights, (list,np.ndarray)):
             weights = weights[w_fin_inds]
     
+    # Check if sigma-clipping of outliers is desired. If so, start clipping here
+    if pars['crx_sigma'] != 0.:
+        mask = sigma_clip(velocities, sigma=pars['crx_sigma'], maxiters=10)
+        mask_ind = np.where(mask.mask == False)
+        velocities  = velocities[mask_ind]
+        wavelengths = wavelengths[mask_ind]
+        weights     = weights[mask_ind]
+    
     # Now do the parameter starting guesses
     # For the effective wavelength of the modelled RV:
     # Median of all wavelengths
@@ -404,14 +441,43 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None):
                      max=np.max(wavelengths))
     lmfit_params.add('crx', value=crx_guess)
     
-    # And fit
-    try:
-        lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
-    except Exception as e:
-        logging.error('Length of velocities: {}'.format(len(velocities)))
-        logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
-        logging.error('Length of weights: {}'.format(len(weights)))
-        raise e
+    # Now, if iterative is True, fit iteratively and throw out outliers
+    # (otherwise the while loop is immediately interrupted after the first fit)
+    loop_counter = 0
+    while loop_counter < pars['crx_max_iters']:
+        
+        # And fit
+        try:
+            lmfit_result = lmfit.minimize(func, lmfit_params, args=[wavelengths, velocities, RV, weights])
+        except Exception as e:
+            logging.error('Length of velocities: {}'.format(len(velocities)))
+            logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
+            logging.error('Length of weights: {}'.format(len(weights)))
+            raise e
+        
+        if pars['crx_iterative']:
+            # Evalute the CRX model
+            crx_model = velocity_from_chromatic_index(
+                    wavelengths, RV, lmfit_result.params['RV_wave'].value, 
+                    lmfit_result.params['crx'].value)
+            
+            # Now sigma-clip points which fall far from the model
+            mask = sigma_clip(velocities-crx_model, sigma=pars['crx_sigma'], maxiters=10)
+            mask_ind = np.where(mask.mask == False)
+            # If no outliers, stop here
+            if len(mask_ind[0]) == len(velocities):
+                loop_counter = pars['crx_max_iters']
+            else:
+                velocities  = velocities[mask_ind]
+                wavelengths = wavelengths[mask_ind]
+                weights     = weights[mask_ind]
+                lmfit_params['crx'].value     = lmfit_result.params['crx'].value
+                lmfit_params['RV_wave'].value = lmfit_result.params['RV_wave'].value
+                # Increas the loop counter
+                loop_counter += 1
+        
+        else:
+            loop_counter = pars['crx_max_iters']
     
     crx_dict = {
             'crx': lmfit_result.params['crx'].value,
@@ -434,8 +500,8 @@ _lick_weighting_pars = {
 
 
 def combine_chunk_velocities_dop(velocities, redchi2, medcnts, 
-                                  wavelengths=None, #bvc=None,
-                                  weighting_pars=None):
+                                  wavelengths=None, weighting_pars=None,
+                                  crx_pars=None):
     """Weight and combine the chunk velocities of a modelled timeseries
     
     This routine follows the algorithm used in the dop-code (D. Fischer, Yale
@@ -448,9 +514,10 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     :param velocities: The modelled velocities for each chunk in each 
         observation of the timeseries.
     :type velocities: ndarray[nr_obs,nr_chunks]
-    :param bvc: If barycentric velocity corrections are supplied for all 
-        observations, the output also contains bvc-corrected RVs.
-    :type bvc: list, ndarray[nr_obs], or None
+    :param redchi2: The red. Chi^2 for each chunk of each observation.
+    :type redchi2: ndarray[nr_obs,nr_chunks]
+    :param medcnts: The median counts for each chunk of each observation.
+    :type medcnts: ndarray[nr_obs,nr_chunks]
     :param wavelengths: If an array of wavelength zeropoints for each chunk
         in each observation is supplied, the chromatic indices (crx) of the 
         observations are modelled.
@@ -458,6 +525,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     :param weighting_pars: A dictionary of parameters used in the weighting 
         algorithm. If None is supplied, a dictionary of default values is used.
     :type weighting_pars: dict, or None
+    :param crx_pars: A dictionary of parameters used in the crx modelling. If 
+        None is supplied, a dictionary of default values is used.
+    :type crx_pars: dict, or None
     
     :return: A dictionary of results: RVs ('rvs'), BVC-corrected RVs 
         ('rvs_bc', optionally), simple median velocity timeseries ('mdvels'),
@@ -670,7 +740,8 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
             crx_dict = chromatic_index_observation(
                     #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
                     #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
-                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=weight[i])
+                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=weight[i],
+                    crx_pars=crx_pars)
             
             for key, value in crx_dict.items():
                 rv_dict[key][i] = value    
