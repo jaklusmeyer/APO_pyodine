@@ -233,7 +233,7 @@ class CombinedResults():
         if detailed:
             outkeys = ['orig_filename', 'bary_date', 'bary_date_corr',
                        'rv', 'rv_bc', 'c2c_scatter', 'rv_err', 'medcnts']
-            outformat = ['%30s', '%20.8f', '%20.8f',
+            outformat = ['%50s', '%20.8f', '%20.8f',
                          '%14.4f', '%14.4f', '%14.4f', '%14.4f', '%14.1f']
             delimiter = '\t'
             header = ' Instrument: {}\n'.format(self.info['instrument_name']) + \
@@ -267,7 +267,7 @@ class CombinedResults():
             if key in self.timeseries.keys():
                 out_data.append(self.timeseries[key])
                 if isinstance(self.timeseries[key][0], str):
-                    data_types += ['U6']
+                    data_types += ['U100']
                 else:
                     data_types += [type(self.timeseries[key][0])]
         
