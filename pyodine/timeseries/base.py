@@ -130,6 +130,10 @@ class CombinedResults():
             self.timeseries['bary_date_corr'] = bjds
         
         self.fill_timeseries_attributes()
+        
+        # And write the bvc_dict items into the info dictionary
+        for key in ['star_ra', 'star_dec', 'star_pmra', 'star_pmdec', 'star_rv0', 'star_name']:
+            self.info[key] = bvc_dict[key]
     
     
     def create_timeseries(self, weighting_pars=None, do_crx=True, crx_pars=None):
@@ -197,12 +201,12 @@ class CombinedResults():
     
     
     def results_to_txt(self, filename, outkeys=None, delimiter='\t', 
-                       header='', outformat=None):
+                       header='', outformat=None, detailed=False, flux_chunk=None):
         """Write timeseries results to a txt-file
         
         :param filename: The output filepath.
         :type filename: str
-        :param outkeys: Which of the self._tseries items to write to file. If
+        :param outkeys: Which of the self.timeseries items to write to file. If
             None, write the 'bary_date', 'rv' and 'rv_err' entries by default.
         :type outkeys: str, list, tuple, or None
         :param delimiter: The delimiter used in the txt-file. Defaults to '\t'.
@@ -213,17 +217,49 @@ class CombinedResults():
         :param outformat: The output format of each column. Make sure that this
             matches the data types (particularly for strings)!
         :type outformat: str, list, or None
+        :param detailed: If True, ignore all other settings of keys etc. and 
+            write a detailed results file with star info, filenames, dates 
+            (uncorrected and corrected), RVs (uncorrected and corrected), chunk
+            scatters, RV uncertainties, and flux measures.
+        :type detailed: bool
+        :param flux_chunk: A chunk index (or list of indices) which to use for
+            the median flux estimate (if detailed=True). If None, then the 
+            chunk closest to 5500 Angstrom is used (default).
+        :type flux_chunk: list, tuple, int, or None
         """
         
         logging.info('Writing results to txt file: {}'.format(filename))
         
-        if not isinstance(outkeys, (str,list,tuple)):
-            outkeys = ['bary_date', 'rv', 'rv_err']
-        elif isinstance(outkeys, str):
-            outkeys = [outkeys]
-        
-        logging.debug('Keys:')
-        logging.debug(outkeys)
+        if detailed:
+            outkeys = ['orig_filename', 'bary_date', 'bary_date_corr',
+                       'rv', 'rv_bc', 'c2c_scatter', 'rv_err', 'medcnts']
+            outformat = ['%30s', '%20.8f', '%20.8f',
+                         '%14.4f', '%14.4f', '%14.4f', '%14.4f', '%14.1f']
+            delimiter = '\t'
+            header = ' Instrument: {}\n'.format(self.info['instrument_name']) + \
+                     ' Star = {}\n'.format(self.info['star_name']) + \
+                     ' RA (ICRS,deg) = {}\n'.format(self.info['star_ra']) + \
+                     ' DEC (ICRS,deg) = {}\n'.format(self.info['star_dec']) + \
+                     ' pmRA (mas/yr) = {}\n'.format(self.info['star_pmra']) + \
+                     ' pmDEC (mas/yr) = {}\n'.format(self.info['star_pmdec']) + \
+                     ' parallax (mas) = {}\n'.format('?') + \
+                     ' Vrad (km/s) = {}\n'.format(self.info['star_rv0']) + \
+                     ' Vtemplate (km/s) = {}\n'.format(self.info['temp_velocity']) + \
+                     '-' * 130 + '\n' + \
+                     '    Filename          JD_MID           BJD_MID ' + \
+                     '         RV_raw        RV_bc        c2c_scatter        RV_err          Flux\n' + \
+                     '                      [days]           [days]  ' + \
+                     '         [m/s]         [m/s]           [m/s]            [m/s]          [ADU]\n' + \
+                     '-' * 130
+            logging.debug('Detailed output.')
+        else:
+            if not isinstance(outkeys, (str,list,tuple)):
+                outkeys = ['bary_date', 'rv', 'rv_err']
+            elif isinstance(outkeys, str):
+                outkeys = [outkeys]
+            
+            logging.debug('Keys:')
+            logging.debug(outkeys)
         
         out_data = []
         data_types = []
@@ -234,6 +270,20 @@ class CombinedResults():
                     data_types += ['U6']
                 else:
                     data_types += [type(self.timeseries[key][0])]
+        
+        if detailed:
+            # Omit the path of the filenames (just the basename)
+            for i in range(len(out_data[0])):
+                out_data[0][i] = os.path.basename(out_data[0][i])
+            # Include the median flux around wavelength 5500 Angstrom (roughly)
+            # (or at the desired chunk indices)
+            if not isinstance(flux_chunk, (int, list, tuple)):
+                flux_chunk = np.argmin(np.abs(5500 - np.median(self.params['wave_intercept'], axis=0)))
+            if isinstance(flux_chunk, int):
+                out_data.append(self.medcnts[:,flux_chunk])
+            else:
+                out_data.append(np.median(self.medcnts[:,flux_chunk], axis=1))
+            data_types += [type(out_data[-1][0])]
         
         out_array = np.zeros(len(out_data[0]), 
                              dtype=[('v{}'.format(i), data_types[i]) for i in range(len(data_types))])
