@@ -214,7 +214,9 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             Results.results_to_txt(vels_out, outkeys=Pars.txt_outkeys, 
                                    delimiter=Pars.txt_delimiter, 
                                    header=Pars.txt_header,
-                                   outformat=Pars.txt_outformat)
+                                   outformat=Pars.txt_outformat,
+                                   detailed=Pars.txt_detailed,
+                                   flux_chunk=Pars.txt_flux_chunk)
         
         ###########################################################################
         ## Possibly save the CombinedResults object and create analysis plots

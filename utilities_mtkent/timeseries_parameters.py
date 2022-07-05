@@ -90,6 +90,10 @@ class Timeseries_Parameters:
         self.txt_header = ''                                    # Header line
         self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']       # Output format (make sure
                                                                 # this matches the keys!)
+        self.txt_detailed = True                                # If True, write a detailed
+                                                                # output with more metrics
+        self.txt_flux_chunk = [251, 252, 253]                   # Chunk indices for estimate
+                                                                # of median flux
         
         # Save the final results to file?
         self.save_comb_res = True
