@@ -14,14 +14,15 @@ import os
 import sys
 import time
 import numpy as np
+from pathos.multiprocessing import Pool
 import logging
 
 import argparse
 import importlib
 
 
-def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None, 
-                        res_files=None, error_log=None, info_log=None, 
+def model_single_i2flat(utilities, Pars, obs_file, iod=None, plot_dir=None, 
+                        res_names=None, error_log=None, info_log=None, 
                         quiet=False, live=False):
     """Model a flat-field spectrum with I2 cell in the light path
     
@@ -37,22 +38,22 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
         of class as in the template creation here, as it contains all 
         necessary parameters.
     :type Pars: :class:`Template_Parameters`
-    :param obs_files: A pathname to a text-file with pathnames of flat-field + 
-        I2 spectra for the modelling, or, alternatively, a list with the 
-        pathnames.
-    :type obs_files: str or list 
+    :param obs_file: The pathname of the I2+flat observation to model.
+    :type obs_file: str
+    :param iod: The I2 template to use in the modelling. If None, it is loaded 
+        as specified in the parameter input object.
+    :type iod: :class:`IodineTemplate`, or None
     :param plot_dir: The directory name where to save plots and modelling 
         results. If the directory structure does not exist yet, it will be 
         created in the process. If None is given, no results/plots will be 
         saved (default).
     :type plot_dir: str or None
-    :param res_files: A pathname to a text-file with pathnames under which to 
-        save the results file(s), or, alternatively, a list with the 
-        pathname(s). If you want to save results from multiple runs, you should 
-        supply pathnames for each run. If the directory structure does not 
-        exist yet, it will be created in the process. If None is given, no 
-        results will be saved (default).
-    :type res_files: str or list or None
+    :param res_names: The pathname under which to save the results file. If you 
+        want to save results from multiple runs, you should supply a list with 
+        pathnames for each run. If the directory structure does not exist yet, 
+        it will be created in the process. If None is given, no results will be 
+        saved (default).
+    :type res_names: str or list or None
     :param error_log: A pathname of a log-file used for error messages. If 
         None, no errors are logged.
     :type error_log: str, or None
@@ -90,30 +91,14 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
         logging.info('Hash: {}'.format(branch_hash))
         logging.info('---------------------------')
         logging.info('Modelling flat+I2 spectra...')
+        logging.info('Working on: {}'.format(obs_file))
         
         ###########################################################################
         ## Set up the environment, and load all neccessary data and parameters
         ###########################################################################
         
-        # Load the flat-field + I2 spectrum/spectra
-        if isinstance(obs_files, list):
-            obs_names = obs_files
-        elif isinstance(obs_files, str):
-            with open(obs_files, 'r') as f:
-                obs_names = [l.strip() for l in f.readlines()]
-        
-        all_obs = []
-        for filename in obs_names:
-            all_obs.append(utilities.load_pyodine.ObservationWrapper(filename))
-        
-        # Take the sum of the O-star spectra
-        obs = pyodine.components.SummedObservation(*all_obs)
-        
-        # And log the number of hot star observation(s)
-        logging.info('')
-        logging.info('Flat+I2 spectra ({}):'.format(len(obs_names)))
-        for obs_name in obs_names:
-            logging.info(obs_name)
+        # Load observation
+        obs = utilities.load_pyodine.ObservationWrapper(obs_file)
         
         # Load the iodine atlas from file
         iod = utilities.load_pyodine.IodineTemplate(Pars.i2_to_use)
@@ -124,18 +109,16 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
                 os.makedirs(plot_dir)
         
         # Pathnames for the result files
-        if isinstance(res_files, list):
-            res_names = res_files
-        elif isinstance(res_files, str):
-            with open(res_files, 'r') as f:
-                res_names = [l.strip() for l in f.readlines()]
+        if isinstance(res_names, list) and isinstance(res_names[0], str):
+            res_names = res_names
+        elif isinstance(res_names, str):
+            res_names = [res_names]
         else:
             res_names = None
         
         
         ###########################################################################
-        ## Now prepare the modelling: Choose the orders, compute weights,
-        ## maybe tellurics...
+        ## Now prepare the modelling: Choose the orders, compute weights...
         ###########################################################################
         
         # Choose orders for modelling
@@ -149,19 +132,11 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
         # Compute weights array for the combined flat+I2 spectrum
         weight = obs.compute_weight(weight_type=Pars.weight_type)
         
-        # Load the tellurics (if desired)
-        if Pars.telluric_mask is not None:
-            tellurics = pyodine.tellurics.SimpleTellurics(tell_type=Pars.telluric_mask, wave_min=Pars.tell_wave_range[0],
-                                                          wave_max=Pars.tell_wave_range[1], disp=Pars.tell_dispersion)
-        else:
-            tellurics = None
-        
         # If the flat+I2 spectra should be normalized prior to fitting, this is
         # done here
         if Pars.normalize_chunks is True:
             for o in obs.orders:
-                obs._flux[o] = (obs[o].flux / obs[o].cont / len(all_obs))
-                #ostar._flux[o] = (ostar[o].flux / pyodine.template.normalize.top(ostar[o].flux, deg=3))
+                obs._flux[o] = (obs[o].flux / obs[o].cont)
         
         # Now create the chunks, using the algorithm (and corresponding parameters) 
         # as defined in the parameter input file
@@ -322,7 +297,7 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
             
             modelling_return = pipe_lib.model_all_chunks(
                     obs_chunks, chunk_weight, fitter, lmfit_params, 
-                    tellurics, use_chauvenet=use_chauvenet, compute_redchi2=True, 
+                    use_chauvenet=use_chauvenet, compute_redchi2=True, 
                     use_progressbar=Pars.use_progressbar, live=live)
             
             (run_results[run_id]['results'], run_results[run_id]['chunk_w'], 
@@ -431,7 +406,7 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
                 
                 pipe_lib.create_analysis_plots(
                         run_results[run_id]['results'], plot_dir, run_id=run_id, 
-                        tellurics=tellurics, red_chi_sq=run_results[run_id]['red_chi_sq'], 
+                        red_chi_sq=run_results[run_id]['red_chi_sq'], 
                         nr_chunks_order=nr_chunks_order, nr_orders=nr_orders, 
                         chunk_weight=run_results[run_id]['chunk_w'], plot_chunks=plot_chunks, 
                         chunks=obs_chunks, 
@@ -458,6 +433,164 @@ def model_single_i2flat(utilities, Pars, obs_files, plot_dir=None,
         logging.error('Something went wrong!', exc_info=True)
 
 
+def model_multi_i2flat(utilities, Pars, obs_files, plot_dirs=None, 
+                       res_files=None, error_files=None, info_files=None, 
+                       quiet=False, nr_cores=8):
+    """Model multiple flat-field spectra with I2 cell in the light path at the 
+    same time
+    
+    This function can parallelize the modelling of multiple flat+I2 spectra,
+    taking advantage of Python's :class:`pathos.multiprocessing.Pool` capabilities.
+    The number of parallel processes is defined in the parameter input object.
+    
+    :param utilities: The utilities module for the instrument used in this 
+        analysis.
+    :type utilities: library
+    :param Pars: The parameter input object for the used instrument. NOTE: We 
+        use the same type of class as in the template creation here, as it 
+        contains all necessary parameters.
+    :type Pars: :class:`Template_Parameters`
+    :param obs_files: A pathname to a text-file with pathnames of the flat+I2 
+        spectra for the modelling, or, alternatively, a list with the 
+        pathnames.
+    :type obs_files: str or list
+    :param plot_dirs: A pathname to a text-file with directory names for each 
+        spectrum where to save plots, or, alternatively, a list with the 
+        directory names. If the directory structure does not exist yet, it will 
+        be created in the process. If None is given, no results/plots will be 
+        saved (default).
+    :type plot_dirs: str, list, or None
+    :param res_files: A pathname to a text-file with pathnames under which to 
+        save the results file(s), or, alternatively, a list with the 
+        pathname(s). If you want to save results from multiple runs, you should 
+        supply pathnames for each run. If the directory structure does not 
+        exist yet, it will be created in the process. If None is given, no 
+        results will be saved (default).
+    :type res_files: str, list, or None
+    :param error_files: A pathname to a text-file with pathnames to log-files 
+        used for error messages, or, alternatively, a list with the 
+        pathname(s). If None, no errors are logged (default).
+    :type error_files: str, list, or None
+    :param info_files: A pathname to a text-file with pathnames to log-files 
+        used for info messages, or, alternatively, a list with the pathname(s). 
+        If None, no info is logged (default).
+    :type info_files: str, or None
+    :param quiet: Whether or not to print info messages to terminal. Defaults 
+        to False (messages are printed).
+    :type quiet: bool
+    :param nr_cores: The number of cores to use in the parallel modelling. 
+        Defaults to 8.
+    :type nr_cores: int
+    """
+    
+    ###########################################################################
+    ## Some modules and data are loaded here already and then passed to the
+    ## individual parallel modelling sessions, so that they do not need to
+    ## be loaded in each one individually:
+    ## - the I2 template spectrum
+    ## - the plot directories and results files
+    ## - the log files
+    ###########################################################################
+    
+    # Start timer
+    fulltime_start = time.time()
+    
+    # Load the pathnames of the observations
+    if isinstance(obs_files, list):
+        obs_names = obs_files
+    elif isinstance(obs_files, str):
+        with open(obs_files, 'r') as f:
+            obs_names = [l.strip() for l in f.readlines()]
+    
+    # Load the iodine atlas from file
+    iod = utilities.load_pyodine.IodineTemplate(Pars.i2_to_use)
+    
+    # Load the plot directory names for each observation
+    if isinstance(plot_dirs, list) and isinstance(plot_dirs[0], str):
+        plot_dir_names = plot_dirs
+    elif isinstance(plot_dirs, str):
+        with open(plot_dirs, 'r') as f:
+            plot_dir_names = [l.strip() for l in f.readlines()]
+    else:
+        plot_dir_names = [None] * len(obs_names)
+    
+    # Pathnames for the result files
+    # Several result names for each run of each observation can be supplied
+    # either as a list of lists of names, or a file with several pathnames
+    # in each line (for each observation)
+    if isinstance(res_files, list):
+        res_names = res_files
+    elif isinstance(res_files, str):
+        res_names = []
+        with open(res_files, 'r') as f:
+            for l in f.readlines():
+                names = l.split() #.strip()
+                res_names.append(names)
+    else:
+        res_names = [None] * len(obs_names)
+    
+    # Pathnames for the error log files
+    if isinstance(error_files, list):
+        error_logs = error_files
+    elif isinstance(error_files, str):
+        error_logs = []
+        with open(error_files, 'r') as f:
+            for l in f.readlines():
+                error_logs.append(l.strip())
+    else:
+        error_logs = [None] * len(obs_names)
+    
+    # Pathnames for the info log files
+    if isinstance(info_files, list):
+        info_logs = info_files
+    elif isinstance(info_files, str):
+        info_logs = []
+        with open(info_files, 'r') as f:
+            for l in f.readlines():
+                info_logs.append(l.strip())
+    else:
+        info_logs = [None] * len(obs_names)
+    
+    
+    ###########################################################################
+    ## Now parallelize the modelling of the spectra, by initializing the
+    ## Pool workers and distribute the files.
+    ## Changed this (similar to https://www.py4u.net/discuss/237878)
+    ###########################################################################
+    
+    # Prepare the input arguments list for all the jobs (corresponding
+    # to the arguments of the function model_single_i2flat)
+    input_arguments = [
+            (utilities, Pars, obs_name,) for obs_name in obs_names]
+    # Prepare the keyword arguments list for all the jobs (corresponding
+    # to the keywords of the function model_single_i2flat)
+    input_keywords  = [
+            {'iod': iod, 'plot_dir': plot_dir_name, 'res_names': res_name,
+             'error_log': error_log, 'info_log': info_log, 'quiet': quiet
+             } for plot_dir_name, res_name, error_log, info_log in zip(
+             plot_dir_names, res_names, error_logs, info_logs)]
+    
+    # Setup the Pool object, distribute the arguments and start the jobs
+    with Pool(nr_cores) as p:
+        jobs = [
+            p.apply_async(model_single_i2flat,
+                          args=input_arg, kwds=input_kwd
+                          ) for input_arg, input_kwd in zip(input_arguments, input_keywords)]
+        
+        for job in jobs:
+            # Wait for the modelling in all workers to finish
+            job.wait()
+            #job.get()
+            # regularly you'd use `job.get()`, but it would `raise` the exception,
+            # which is not suitable for this example, so we dig in deeper and just use
+            # the `._value` it'd return or raise:
+            #print(params, type(job._value), job._value)
+    
+    # And done
+    
+    full_modelling_time = time.time() - fulltime_start
+    print('\nDone, full working time: ', full_modelling_time)
+
 
 if __name__ == '__main__':
     
@@ -469,26 +602,26 @@ if __name__ == '__main__':
     # utilities_dir, ostar_files, temp_files, temp_outname, (plot_dir=None, par_file=None)
     parser.add_argument('utilities_dir', type=str, help='The pathname to the utilities directory for this instrument.')
     parser.add_argument('obs_files', type=str, help='A pathname to a text-file with pathnames of flat+I2 spectra for the modelling.')
-    parser.add_argument('--plot_dir', type=str, help='The directory name where to save plots.')
+    parser.add_argument('--plot_dir', type=str, help='A pathname to a text-file with directory names where to save plots.')
     parser.add_argument('--res_files', type=str, help='A pathname to a text-file with pathnames under which to save modelling results.')
     parser.add_argument('--par_file', type=str, help='The pathname of the parameter input file to use.')
-    parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
-    parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
+    parser.add_argument('--error_files', type=str, help='The pathname to a text-file with pathnames of error log files.')
+    parser.add_argument('--info_files', type=str, help='The pathname to a text-file with pathnames of info log files.')
+    parser.add_argument('--nr_cores', type=int, help='The number of cores to use in the parallel modelling.')
     parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
-    parser.add_argument('-l', '--live', action='store_true', dest='live', help='Run the code in live mode.')
     
     # Parse the input arguments
     args = parser.parse_args()
     
     utilities_dir = args.utilities_dir
     obs_files     = args.obs_files
-    plot_dir      = args.plot_dir
+    plot_dirs     = args.plot_dirs
     res_files     = args.res_files
     par_file      = args.par_file
-    error_file    = args.error_file
-    info_file     = args.info_file
+    error_files   = args.error_files
+    info_files    = args.info_files
     quiet         = args.quiet
-    live          = args.live
+    nr_cores      = args.nr_cores
     
     # Import and load the reduction parameters
     if par_file == None:
@@ -506,6 +639,6 @@ if __name__ == '__main__':
     utilities = importlib.import_module(utilities_dir)
     
     # And run the modelling routine
-    model_single_i2flat(utilities, Pars, obs_files, plot_dir=plot_dir, 
-                        res_files=res_files, error_log=error_file, 
-                        info_log=info_file, quiet=quiet, live=live)
+    model_multi_i2flat(utilities, Pars, obs_files, plot_dirs=plot_dirs, 
+                        res_files=res_files, error_files=error_files, 
+                        info_files=info_files, quiet=quiet, nr_cores=nr_cores)
