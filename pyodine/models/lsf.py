@@ -558,6 +558,140 @@ class MultiGaussian_Lick(LSFModel, StaticModel):
         return __class__.__name__
 
 
+class HermiteGaussian(LSFModel, StaticModel):
+    """The LSF model of a Single Gaussian perturbed by Hermite polynomials
+    
+    This model has up to 10 free parameters: The FWHM of the Gaussian, which 
+    also regulates the width of the Hermite polynomials, and 9 weights for the
+    9 Hermite polynomials from order 1 to 9. (Order 0 is always 1 so that the
+    product of all does not become 0!)
+    
+    The class cannot be initialized and all its methods are static or class 
+    methods.
+    
+    Contributed by Ayk Jessen (Landessternwarte Heidelberg, 2022).
+    """
+    
+    param_names = [
+        'fwhm',
+        'weight_1', 'weight_2', 'weight_3', 'weight_4', 'weight_5',
+        'weight_6', 'weight_7', 'weight_8', 'weight_9'
+        ]
+ 
+    # Default parameter guess: Only Hermite orders 3 - 8 are used
+    param_guess = np.array([
+            1.07, 
+            0.0, 0.0, 0.000000001, -0.0000000001, -0.00000000001, 
+            0.000000000001, -0.000000000001, -0.000000000001, 0.0
+            ])
+    
+    pars_dict = {}
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')    
+    
+    @staticmethod
+    def adapt_LSF(pars_dict):
+        """A dummy method implemented to ensure acccordance with high-level
+        routines.
+        """
+        pass
+
+    @classmethod
+    def eval(cls, x, params):
+        """Evaluate the LSF
+        
+        :param x: The pixel vector over which to evaluate the LSF.
+        :type x: ndarray
+        :param params: The LSF parameters.
+        :type params: :class:`ParameterSet`
+        
+        :return: The normalized LSF.
+        :rtype: ndarray
+        """
+        # Convert input dict to numpy array
+        params = np.array([params[k] for k in cls.param_names])
+        
+        # Using sigma instead of FWHM
+        params[0] *= 1/(2.355) 
+        
+        # Contains all fitted parameter and the amplitude of the main gauss 
+        #params_complete = np.array([
+        #    params[0], 1.0, 
+        #    params[1], params[2], params[3], 
+        #    params[4], params[5], params[6], 
+        #])       
+
+        # HermiteGauss function
+        def func(x):
+            x_hermitearg = np.divide(x, params[0]) 
+            Hermite_polynomial = np.polynomial.hermite.Hermite(
+                    (1, params[1], params[2], params[3], params[4], 
+                     params[5], params[6], params[7], params[8], params[9])
+                    )
+            # Do I even need to divide by the norm? LSF is normalized by sum
+            # later anyway
+            Norm_hermite =  np.sum(params[1:]) + 1
+            exp = np.exp(-np.power(x, 2) / (2 * np.power(params[0], 2))) / Norm_hermite
+            f = np.multiply(Hermite_polynomial(x_hermitearg), exp)
+            
+            #TODO: Constrain not to become 0?
+            return f
+        
+        try:
+            # Evaluate function and find centroid
+            y = func(x)
+            
+            # Calculate centroid and re-center the LSF
+            offset = np.sum(x * y) / np.sum(y)
+            y = func(x + offset)
+            
+            # Make sure that the sum equals one
+            y_sum = np.sum(y)
+            y_norm = y / y_sum
+            
+            if len(np.where(np.isnan(y))[0]) > 0:
+                logging.debug('NaNs detected in LSF. Parameters:')
+                logging.debug(params)
+                logging.debug('Sum of un-normalized LSF: {}'.format(y_sum))
+                logging.debug('Unnormalized LSF:')
+                logging.debug(y)
+            
+            return y_norm
+        
+        except Exception as e:
+            logging.error('LSF evaluation failed. Parameters:')
+            logging.error(params)
+            logging.error('Sum of un-normalized LSF: {}'.format(y_sum))
+            raise e
+            
+    @classmethod
+    def guess_params(cls, chunk):
+        """Guess the LSF parameters for a given chunk
+        
+        This method returns just fixed values, independent of the chunk.
+        
+        :param chunk: The chunk for which to make the guess.
+        :type: :class:`Chunk`
+        
+        :return: The guessed LSF parameters.
+        :rtype: :class:`ParameterSet`
+        """
+        return ParameterSet(
+                {name: guess for name, guess in zip(cls.param_names, cls.param_guess)})
+    
+    @staticmethod
+    def name():
+        """The name of the LSF as a string
+        
+        :return: The LSF name.
+        :rtype: str
+        """
+        return __class__.__name__  
+
+
 class FixedLSF(LSFModel, StaticModel):
     """The LSF model for a fixed LSF
     
@@ -624,6 +758,7 @@ model_index = {
         'SuperGaussian': SuperGaussian,
         'MultiGaussian': MultiGaussian,
         'MultiGaussian_Lick': MultiGaussian_Lick,
+        'HermiteGaussian': HermiteGaussian,
         'FixedLSF': FixedLSF
         }
 
