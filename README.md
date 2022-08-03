@@ -12,6 +12,12 @@ Please refer to [pyodine.readthedocs.io](http://pyodine.readthedocs.io/).
 
 Paul Heeren, LSW Heidelberg; René Tronsgaard-Rasmussen, DTU Space; Frank Grundahl, SAC Aarhus
 
+## Contributer
+
+People who have actively contributed to the code:
+
+Ayk Jessen, Master student @ LSW Heidelberg
+
 ## Attribution
 
 Tbd - we are in the process of publishing first results from the code.
