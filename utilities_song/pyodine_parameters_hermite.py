@@ -341,15 +341,15 @@ class Parameters:
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
                 lsf_fit_pars = {
-                    'fwhm': 2.355,
+                    'fwhm': 2.5,
                     'weight_1': 0.,
                     'weight_2': 0.,
-                    'weight_3': 1e-3,
-                    'weight_4': 1e-4,
-                    'weight_5': 1e-5,
-                    'weight_6': 1e-6,
-                    'weight_7': 1e-7,
-                    'weight_8': 1e-8,
+                    'weight_3': 3e-10,
+                    'weight_4': 2e-10,
+                    'weight_5': -4e-11,
+                    'weight_6': 1.5e11,
+                    'weight_7': 2e-12,
+                    'weight_8': 9e-13,
                     'weight_9': 0.
                 }
                 for p in lsf_fit_pars.keys():
@@ -358,8 +358,8 @@ class Parameters:
                     else:
                         lmfit_params[i]['lsf_'+p].set(
                             value=lsf_fit_pars[p],
-                            min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.4,
-                            max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.4)
+                            min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*3.,
+                            max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*3.)
         """
         ###########################################################################
         # RUN 2
@@ -736,25 +736,30 @@ class Template_Parameters:
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
                 lsf_fit_pars = {
-                    'fwhm': 2.355,
+                    'fwhm': run_results[0]['results'][i].params['lsf_fwhm'],
                     'weight_1': 0.,
                     'weight_2': 0.,
-                    'weight_3': 1e-3,
-                    'weight_4': 1e-4,
-                    'weight_5': 1e-5,
-                    'weight_6': 1e-6,
-                    'weight_7': 1e-7,
-                    'weight_8': 1e-8,
+                    'weight_3': 0.,#3e-10,
+                    'weight_4': 0.,#2e-10,
+                    'weight_5': 0.,#-4e-11,
+                    'weight_6': 0.,#1.5e11,
+                    'weight_7': 0.,#2e-12,
+                    'weight_8': 0.,#9e-13,
                     'weight_9': 0.
                 }
                 for p in lsf_fit_pars.keys():
-                    if lsf_fit_pars[p] == 0.:
+                    if p in ['weight_1', 'weight_2', 'weight_6', 'weight_7', 'weight_8', 'weight_9']:
                         lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
+                    elif p == 'fwhm':
+                        lmfit_params[i]['lsf_'+p].set(
+                                value=lsf_fit_pars[p],
+                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.4,
+                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.4)
                     else:
                         lmfit_params[i]['lsf_'+p].set(
                             value=lsf_fit_pars[p],
-                            min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.4,
-                            max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.4)
+                            min=lsf_fit_pars[p]-1e-6, #abs(lsf_fit_pars[p])*2.,
+                            max=lsf_fit_pars[p]+1e-6)#abs(lsf_fit_pars[p])*2.)
         """
         ###########################################################################
         # RUN 2
