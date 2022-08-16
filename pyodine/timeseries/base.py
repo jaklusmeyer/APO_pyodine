@@ -184,8 +184,8 @@ class CombinedResults():
         if do_crx:
             wavelengths = self.params['wave_intercept']
         tseries, self.auxiliary, self.weighting_pars = combine_chunk_velocities_dop(
-                velocities, self.redchi2, self.medcnts, wavelengths=wavelengths,
-                bvc=bvc, weighting_pars=weighting_pars, crx_pars=crx_pars)
+                velocities, self.redchi2, self.medcnts, wavelengths=wavelengths, 
+                weighting_pars=weighting_pars, crx_pars=crx_pars)
         
         self.timeseries.update(tseries)
         self.fill_timeseries_attributes()
