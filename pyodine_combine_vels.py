@@ -182,10 +182,10 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         logging.info('Velocity weighting and combination...')
         
         if Pars.weighting_algorithm == 'song':
-            Results.create_timeseries(weighting_pars=Pars.weighting_pars, 
+            Results.create_timeseries(weighting_pars=Pars.weighting_pars_song, 
                                       do_crx=Pars.do_crx, crx_pars=Pars.crx_pars)
         elif Pars.weighting_algorithm == 'lick':
-            Results.create_timeseries_dop(#weighting_pars=Pars.weighting_pars, 
+            Results.create_timeseries_dop(weighting_pars=Pars.weighting_pars_lick, 
                                           do_crx=Pars.do_crx, 
                                           crx_pars=Pars.crx_pars)
         

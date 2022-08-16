@@ -453,6 +453,10 @@ def chromatic_index_observation(velocities, wavelengths, RV, weights=None,
             logging.error('Length of velocities: {}'.format(len(velocities)))
             logging.error('Length of wavelengths: {}'.format(len(wavelengths)))
             logging.error('Length of weights: {}'.format(len(weights)))
+            logging.error('')
+            logging.error(velocities)
+            logging.error(wavelengths)
+            logging.error(weights)
             raise e
         
         if pars['crx_iterative']:
@@ -600,6 +604,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
             print(e)
             raise ValueError('Failed observation: ', i)
         weight[i,bad_ind] = 0.
+        if len(bad_ind) == nr_chunks:
+            print('Observation {}: All res_vel failed chauvenet criterion.'.format(i))
+            print(res_vel[i])
         for k in range(nr_chunks):
             if weight[i,k] == 0.:
                 err[i,k] = 99.
@@ -631,6 +638,13 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     
     cnts_ind = np.where(medcnts < pars['min_counts'])
     weight[cnts_ind] = 0.
+    
+    for i in range(len(weight)):
+        if len(np.where(weight[i] != 0.)[0]) == 0:
+            print('Observation {}: All weights are 0.'.format(i))
+            print(np.where(err[i] <= max_err))
+            print(np.where(redchi2[i] <= max_redchi2))
+            print(np.where(medcnts[i] >= pars['min_counts']))
     
     # What are the chunks that we are left with?
     logging.info('Total number of good chunks: {}'.format(weight[weight!=0.0].size))
@@ -724,6 +738,12 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
         gd = np.intersect1d(gd1, gd2)
         gd = np.sort(gd)
         all_gd[i,gd] = 1
+        
+        if len(gd) == 0:
+            print('Observation {}: 0 good velocities/weights.'.format(i))
+            print(gd1)
+            print(weight[i])
+            print(gd2)
         
         velobs = velocities[i,gd]
         wt = weight[i,gd]
