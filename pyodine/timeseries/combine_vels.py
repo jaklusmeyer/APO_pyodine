@@ -126,7 +126,7 @@ def combine_chunk_velocities(velocities, nr_orders, wavelengths=None,
     ind_nan = np.where(np.isnan(velocities))
     if len(ind_nan[0]) > 0:
         logging.info('')
-        logging.info('Nan velocities (obs,chunk):')
+        logging.info('{} NaN velocities (obs,chunk):'.format(len(ind_nan[0])))
         outstring = ''
         for i in range(len(ind_nan[0])):
             outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
@@ -571,14 +571,14 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     ind_nan = np.where(np.isnan(velocities))
     if len(ind_nan[0]) > 0:
         logging.info('')
-        logging.info('Nan velocities (obs,chunk):')
+        logging.info('{} NaN velocities (obs,chunk):'.format(len(ind_nan[0])))
         outstring = ''
         for i in range(len(ind_nan[0])):
             outstring += '({},{})  '.format(ind_nan[0][i], ind_nan[1][i])
         logging.info(outstring)
     logging.info('')
     
-    # Set up the barycentric corrected velocities and the weights array
+    # Set up the (barycentric corrected velocities and) the weights array
     #vel_bc = np.transpose(np.transpose(velocities) + bvc)
     weight = 1./np.ones(velocities.shape)
     
@@ -661,10 +661,13 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
             logging.info('{}\t{}'.format(
                     ind_sig_above_default[i], sig[ind_sig_above_default[i]]))
     
+    dev = np.zeros((velocities.shape))
+    
     # Now weight each chunk rms to the mean rms
     for i in range(nr_obs):
         # Median deviation of chunks in this obs. in terms of deviations of chunks rms
-        const = np.nanmedian(np.abs(res_vel[i])/sig)
+        dev[i] = np.abs(res_vel[i])/sig
+        const = np.nanmedian(dev[i])
         # Deviation of chunks series scaled by median chunks rms of this obs.
         sig_obs = const * sig
         # Now set weights accordingly: Chunks with a lower sigma are weighted higher
@@ -674,6 +677,8 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     logging.info('')
     logging.info('Final median weights (without rejected ones): {} +- {}'.format(
             np.nanmedian(weight[weight!=0.]), np.nanstd(weight[weight!=0.])))
+    print('NaN weights:')
+    print(np.where(np.isnan(weight)))
     
     # Finally compute weighted observation velocities
     # -> only use best 2 or 3 sigma (95.5 or 99.7 %)
@@ -703,7 +708,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     
     auxiliary_dict = {
             'chunk_sigma': sig,
-            'chunk_weight': np.zeros((nr_obs,nr_chunks))
+            'chunk_dev': dev,
+            'chunk_offsets': np.nanmedian(res_vel, axis=0),
+            'chunk_weights': np.zeros((nr_obs,nr_chunks)),
             }
     
     
@@ -721,7 +728,7 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
         velobs = velocities[i,gd]
         wt = weight[i,gd]
         
-        auxiliary_dict['chunk_weight'][i] = weight[i]
+        auxiliary_dict['chunk_weights'][i] = weight[i]
         
         rv_dict['mdvel'][i] = np.nanmedian(velobs)
         rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
@@ -744,6 +751,18 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
                     crx_pars=crx_pars)
             
             for key, value in crx_dict.items():
-                rv_dict[key][i] = value    
+                rv_dict[key][i] = value
+    
+    # Some metrics of the quality of the RV timeseries
+    rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
+    rv_precision2 = np.sqrt(1./np.nansum(np.nanmedian(weight, axis=0)))
+    
+    logging.info('RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): {:.5f} m/s'.format(
+            rv_precision1))
+    logging.info('RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): {:.5f} m/s'.format(
+            rv_precision2))
+    
+    auxiliary_dict['rv_precision1'] = rv_precision1
+    auxiliary_dict['rv_precision2'] = rv_precision2
     
     return rv_dict, auxiliary_dict, pars
