@@ -604,9 +604,11 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
             print(e)
             raise ValueError('Failed observation: ', i)
         weight[i,bad_ind] = 0.
+        """
         if len(bad_ind) == nr_chunks:
             print('Observation {}: All res_vel failed chauvenet criterion.'.format(i))
             print(res_vel[i])
+        """
         for k in range(nr_chunks):
             if weight[i,k] == 0.:
                 err[i,k] = 99.
@@ -639,12 +641,14 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     cnts_ind = np.where(medcnts < pars['min_counts'])
     weight[cnts_ind] = 0.
     
+    """
     for i in range(len(weight)):
         if len(np.where(weight[i] != 0.)[0]) == 0:
             print('Observation {}: All weights are 0.'.format(i))
             print(np.where(err[i] <= max_err))
             print(np.where(redchi2[i] <= max_redchi2))
             print(np.where(medcnts[i] >= pars['min_counts']))
+    """
     
     # What are the chunks that we are left with?
     logging.info('Total number of good chunks: {}'.format(weight[weight!=0.0].size))
@@ -691,8 +695,6 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     logging.info('')
     logging.info('Final median weights (without rejected ones): {} +- {}'.format(
             np.nanmedian(weight[weight!=0.]), np.nanstd(weight[weight!=0.])))
-    print('NaN weights:')
-    print(np.where(np.isnan(weight)))
     
     # Finally compute weighted observation velocities
     # -> only use best 2 or 3 sigma (95.5 or 99.7 %)
@@ -739,39 +741,51 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
         gd = np.sort(gd)
         all_gd[i,gd] = 1
         
-        if len(gd) == 0:
-            print('Observation {}: 0 good velocities/weights.'.format(i))
-            print(gd1)
-            print(weight[i])
-            print(gd2)
-        
-        velobs = velocities[i,gd]
-        wt = weight[i,gd]
-        
         auxiliary_dict['chunk_weights'][i] = weight[i]
         
-        rv_dict['mdvel'][i] = np.nanmedian(velobs)
-        rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
-        rv_dict['rv_bc'][i] = 0. #rv_dict['rv'][i] + bvc[i]
-        rv_dict['rv_err'][i] = 1./np.sqrt(np.nansum(wt))
-        
-        # The chunk-to-chunk velocity scatter is the robust std of the 
-        # corrected chunk velocities
-        rv_dict['c2c_scatter'][i] = robust_std(velobs)
-        
-        # Compute the chromatic index in the observation, which is the slope
-        # of the chunk velocities over chunk wavelengths
-        # ToDo: Use the corrected chunk velocities or the raw ones?!
-        # ToDo: Use weights?!
-        if isinstance(wavelengths, (list,tuple,np.ndarray)):
-            crx_dict = chromatic_index_observation(
-                    #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
-                    #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
-                    velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=weight[i],
-                    crx_pars=crx_pars)
+        if len(gd) > 0:
+            velobs = velocities[i,gd]
+            wt = weight[i,gd]
             
-            for key, value in crx_dict.items():
-                rv_dict[key][i] = value
+            rv_dict['mdvel'][i] = np.nanmedian(velobs)
+            rv_dict['rv'][i] = np.nansum(velobs*wt)/np.nansum(wt)
+            rv_dict['rv_bc'][i] = 0. #rv_dict['rv'][i] + bvc[i]
+            rv_dict['rv_err'][i] = 1./np.sqrt(np.nansum(wt))
+            
+            # The chunk-to-chunk velocity scatter is the robust std of the 
+            # corrected chunk velocities
+            rv_dict['c2c_scatter'][i] = robust_std(velobs)
+            
+            # Compute the chromatic index in the observation, which is the slope
+            # of the chunk velocities over chunk wavelengths
+            # ToDo: Use the corrected chunk velocities or the raw ones?!
+            # ToDo: Use weights?!
+            if isinstance(wavelengths, (list,tuple,np.ndarray)):
+                crx_dict = chromatic_index_observation(
+                        #vel_offset_corrected[i], wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                        #chunk_vels_corr, wavelengths[i], rv_dict['rv'][i], weights=chunk_weights[i])
+                        velocities[i,:], wavelengths[i], rv_dict['rv'][i], weights=weight[i],
+                        crx_pars=crx_pars)
+                
+                for key, value in crx_dict.items():
+                    rv_dict[key][i] = value
+        else:
+            logging.info('')
+            logging.info('Observation {}: 0 good velocities/weights.'.format(i))
+            logging.info('Setting all output to NaNs.')
+            
+            rv_dict['mdvel'][i] = np.nan
+            rv_dict['rv'][i] = np.nan
+            rv_dict['rv_bc'][i] = np.nan
+            rv_dict['rv_err'][i] = np.nan
+            rv_dict['c2c_scatter'][i] = np.nan
+            
+            if isinstance(wavelengths, (list,tuple,np.ndarray)):
+                rv_dict['crx'][i] = np.nan
+            rv_dict['crx_err'][i] = np.nan
+            rv_dict['RV_wave'][i] = np.nan
+            rv_dict['RV_wave_err'][i] = np.nan
+            rv_dict['crx_redchi'][i] = np.nan
     
     # Some metrics of the quality of the RV timeseries
     rv_precision1 = np.sqrt(1./np.nansum(1./sig**2.))
