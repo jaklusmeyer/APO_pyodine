@@ -701,9 +701,7 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
     percentile2 = pars['useage_percentile'] #955 #997
     
     logging.info('')
-    logging.info('Final velocity rejection percentile limit: {}'.format(percentile2))
-    
-    all_gd = np.zeros((nr_obs, nr_chunks))    
+    logging.info('Final velocity rejection percentile limit: {}'.format(percentile2)) 
     
     # Prepare the output dicts
     rv_dict = {
@@ -739,7 +737,9 @@ def combine_chunk_velocities_dop(velocities, redchi2, medcnts,
         #gd = np.unique(np.concatenate((gd1, gd2)))
         gd = np.intersect1d(gd1, gd2)
         gd = np.sort(gd)
-        all_gd[i,gd] = 1
+        
+        bd = np.where(np.isin(np.arange(nr_chunks), gd, invert=True))[0]
+        weight[i, bd] = 0.
         
         auxiliary_dict['chunk_weights'][i] = weight[i]
         
