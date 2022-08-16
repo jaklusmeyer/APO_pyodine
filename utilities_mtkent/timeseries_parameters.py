@@ -46,7 +46,7 @@ class Timeseries_Parameters:
         self.weighting_algorithm = 'song'
         
         # This dictionary defines the parameters used in the weighting
-        # algorithm: 
+        # algorithm. For song weighting algorithm:
         # - 'good_chunks' and 'good_orders' define which chunks to use in the
         #   computation of observation means (to offset-correct all chunks)
         # - 'sig_limit_low' and 'sig_limit_up' define the lower and upper limit 
@@ -56,16 +56,32 @@ class Timeseries_Parameters:
         #   used in the reweight function to create the chunk weights;
         # - 'weight_correct' is the value that weights of 0 or NaN are 
         #   corrected to.
-        self.weighting_pars = {
+        # For lick weighting algorithm:
+        # - 'percentile': Best percentage of chunks to use in the computation
+        #   of weights.
+        # - 'maxchi', 'min_counts': Max. red. Chi^2 and minimum counts that 
+        #   chunks should have - all others are set to 0 in weights.
+        # - 'default_sigma': Default sigma for chunks with fewer than 4 non-zero
+        #   chunk weights.
+        # - 'useage_percentile': Best percentage of chunks within each observation 
+        #   to use in the velocity combination.
+        self.weighting_pars_song = {
                 'good_chunks': list(range(8,23)), #(150, 350) # chunk indices within orders
                 'good_orders': list(range(8,16)),
-                'sig_limit_low': 4.,
+                'sig_limit_low': 4., 
                 'sig_limit_up': 4000.,
                 'sig_correct': 10000.,
                 'reweight_alpha': 1.8,
                 'reweight_beta': 8.0,
                 'reweight_sigma': 2.0,
                 'weight_correct': 0.0001,
+                }
+        self.weighting_pars_lick = {
+                'percentile': 0.997,
+                'maxchi': 100000000.,
+                'min_counts': 1000.,
+                'default_sigma': 1000.,
+                'useage_percentile': 0.997,
                 }
         
         # Do chromatic index computation?
