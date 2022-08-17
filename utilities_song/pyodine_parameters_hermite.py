@@ -363,10 +363,16 @@ class Parameters:
                 """
                 for p in lsf_fit_pars.keys():
                     if fitter.model.lsf_model.pars_dict[p]:
-                        lmfit_params[i]['lsf_'+p].set(
-                                value=lsf_fit_pars[p],
-                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
-                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        if abs(lsf_fit_pars[p]) >= 1e-13:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                    max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        else:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-2e-13,
+                                    max=lsf_fit_pars[p]+2e-13)
                     else:
                         lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
         """
@@ -760,10 +766,16 @@ class Template_Parameters:
                 """
                 for p in lsf_fit_pars.keys():
                     if fitter.model.lsf_model.pars_dict[p]:
-                        lmfit_params[i]['lsf_'+p].set(
-                                value=lsf_fit_pars[p],
-                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
-                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        if abs(lsf_fit_pars[p]) >= 1e-13:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                    max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        else:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-2e-13,
+                                    max=lsf_fit_pars[p]+2e-13)
                     else:
                         lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
                     
