@@ -27,6 +27,13 @@ _multigauss_setup_dict = {
         'sigmas':    [ 0.9,  0.9,  0.9,  0.9,  0.9, 0.6, 0.9, 0.9, 0.9, 0.9, 0.9]
         }
 
+# For the HermiteGaussian model: Set Hermite degrees 1, 2, and 9 to 0. (This
+# is actually the default case, but here to explain how one can adapt it.)
+_hermitegauss_setup_dict = {
+        'weight_1': 0, 'weight_2': 0, 'weight_3': 1, 'weight_4': 1, 'weight_5': 1, 
+        'weight_6': 1, 'weight_7': 1, 'weight_8': 1, 'weight_9': 0
+        }
+
 
 class Parameters:
     """The control commands for the main routine
@@ -146,7 +153,7 @@ class Parameters:
                 1:
                 {# First define the LSF
                  'lsf_model': models.lsf.HermiteGaussian,   # LSF model to use (this is absolutely neccessary)
-                 #'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_setup_dict': _hermitegauss_setup_dict,  # The instrument-specific LSF setup parameters
                  # Then define the wavelength model
                  'wave_model': models.wave.LinearWaveModel,
                  # And define the continuum model
@@ -292,13 +299,13 @@ class Parameters:
         ###########################################################################
         elif run_id == 1:
             # Dictionary of median lsf parameters from previous run
-            #median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
+            median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
-            #lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
+            lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
             
-            #logging.info('')
-            #logging.info('Fitted LSF parameters:')
-            #logging.info(lsf_fit_pars)
+            logging.info('')
+            logging.info('Fitted LSF parameters:')
+            logging.info(lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
@@ -340,26 +347,28 @@ class Parameters:
                 
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
+                """
                 lsf_fit_pars = {
-                    'fwhm': 2.5,
+                    'fwhm': run_results[0]['results'][i].params['lsf_fwhm'],
                     'weight_1': 0.,
                     'weight_2': 0.,
-                    'weight_3': 3e-10,
-                    'weight_4': 2e-10,
-                    'weight_5': -4e-11,
-                    'weight_6': 1.5e11,
-                    'weight_7': 2e-12,
-                    'weight_8': 9e-13,
+                    'weight_3': 0.,#3e-10,
+                    'weight_4': 0.,#2e-10,
+                    'weight_5': 0.,#-4e-11,
+                    'weight_6': 0.,#1.5e11,
+                    'weight_7': 0.,#2e-12,
+                    'weight_8': 0.,#9e-13,
                     'weight_9': 0.
                 }
+                """
                 for p in lsf_fit_pars.keys():
-                    if lsf_fit_pars[p] == 0.:
-                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
-                    else:
+                    if fitter.model.lsf_model.pars_dict[p]:
                         lmfit_params[i]['lsf_'+p].set(
-                            value=lsf_fit_pars[p],
-                            min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*3.,
-                            max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*3.)
+                                value=lsf_fit_pars[p],
+                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                    else:
+                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
         """
         ###########################################################################
         # RUN 2
@@ -546,7 +555,7 @@ class Template_Parameters:
                 1:
                 {# First define the LSF
                  'lsf_model': models.lsf.HermiteGaussian,   # LSF model to use (this is absolutely neccessary)
-                 #'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_setup_dict': _hermitegauss_setup_dict,  # The instrument-specific LSF setup parameters
                  # Then define the wavelength model
                  'wave_model': models.wave.LinearWaveModel,
                  # And define the continuum model
@@ -690,13 +699,13 @@ class Template_Parameters:
         ###########################################################################
         elif run_id == 1:
             # Dictionary of median lsf parameters from previous run
-            #median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
+            median_lsf_pars = run_results[0]['median_pars'].filter('lsf')  #{p[4:]: run_results[0]['median_pars'][p] for p in run_results[0]['median_pars'] if 'lsf' in p}
             # Fit the lsf from last run to get good starting parameters
-            #lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
+            lsf_fit_pars = fitter.fit_lsfs(self.model_runs[0]['lsf_model'], median_lsf_pars)
             
-            #logging.info('')
-            #logging.info('Fitted LSF parameters:')
-            #logging.info(lsf_fit_pars)
+            logging.info('')
+            logging.info('Fitted LSF parameters:')
+            logging.info(lsf_fit_pars)
             
             # Loop over the chunks
             for i in range(len(lmfit_params)):
@@ -735,6 +744,7 @@ class Template_Parameters:
                 
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
+                """
                 lsf_fit_pars = {
                     'fwhm': run_results[0]['results'][i].params['lsf_fwhm'],
                     'weight_1': 0.,
@@ -747,19 +757,16 @@ class Template_Parameters:
                     'weight_8': 0.,#9e-13,
                     'weight_9': 0.
                 }
+                """
                 for p in lsf_fit_pars.keys():
-                    if p in ['weight_1', 'weight_2', 'weight_6', 'weight_7', 'weight_8', 'weight_9']:
-                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
-                    elif p == 'fwhm':
+                    if fitter.model.lsf_model.pars_dict[p]:
                         lmfit_params[i]['lsf_'+p].set(
                                 value=lsf_fit_pars[p],
-                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.4,
-                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.4)
+                                min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
                     else:
-                        lmfit_params[i]['lsf_'+p].set(
-                            value=lsf_fit_pars[p],
-                            min=lsf_fit_pars[p]-1e-6, #abs(lsf_fit_pars[p])*2.,
-                            max=lsf_fit_pars[p]+1e-6)#abs(lsf_fit_pars[p])*2.)
+                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
+                    
         """
         ###########################################################################
         # RUN 2
