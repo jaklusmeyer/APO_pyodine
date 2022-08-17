@@ -585,19 +585,39 @@ class HermiteGaussian(LSFModel, StaticModel):
             0.000000000001, -0.000000000001, -0.000000000001, 0.0
             ])
     
-    pars_dict = {}
+    # Parameter and whether to use it. If set to 0, that parameter will always
+    # be 0 in the evaluation.
+    pars_dict = {'fwhm': 1, 'weight_1': 0, 'weight_2': 0, 'weight_3': 1, 
+                 'weight_4': 1, 'weight_5': 1, 'weight_6': 1, 'weight_7': 1, 
+                 'weight_8': 1, 'weight_9': 0}
     
     # Setup the logging if not existent yet
     if not logging.getLogger().hasHandlers():
-        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
-                            format='%(message)s')    
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                            format='%(message)s')
     
-    @staticmethod
-    def adapt_LSF(pars_dict):
-        """A dummy method implemented to ensure acccordance with high-level
-        routines.
+    @classmethod
+    def adapt_LSF(cls, pars_dict):
+        """Adapt the LSF setup to different instruments
+        
+        This method allows to specify which parameters (specifically Hermite
+        degrees) actually to use. Those set to 0 through the pars_dict will
+        always be 0 in the evaluation!
+        
+        :param pars_dict: A dictionary with keys as in param_names, and either
+            0 for non-usage of that parameter, or 1.
+        :type pars_dict: dict
         """
-        pass
+        if isinstance(pars_dict, dict):
+            # Update which parameters will actually be used, and which will
+            # be held at 0
+            for key in pars_dict.keys():
+                if key in cls.pars_dict and pars_dict[key] in (0,1):
+                    cls.pars_dict[key] = pars_dict[key]
+        else:
+            logging.error(pars_dict)
+            raise ValueError('Make sure you supply a dictionary with keys as in' + 
+                             ' param_names, and values either 0 or 1!')
 
     @classmethod
     def eval(cls, x, params):
@@ -611,18 +631,12 @@ class HermiteGaussian(LSFModel, StaticModel):
         :return: The normalized LSF.
         :rtype: ndarray
         """
-        # Convert input dict to numpy array
-        params = np.array([params[k] for k in cls.param_names])
+        # Convert input dict to numpy array: Multiply each parameter by the
+        # pars_dict value, non-activated parameters always become 0 then.
+        params = np.array([params[k]*cls.pars_dict[k] for k in cls.param_names])
         
         # Using sigma instead of FWHM
-        params[0] *= 1/(2.355) 
-        
-        # Contains all fitted parameter and the amplitude of the main gauss 
-        #params_complete = np.array([
-        #    params[0], 1.0, 
-        #    params[1], params[2], params[3], 
-        #    params[4], params[5], params[6], 
-        #])       
+        params[0] *= 1/(2.355)
 
         # HermiteGauss function
         def func(x):
