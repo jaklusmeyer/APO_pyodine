@@ -87,7 +87,28 @@ class ObservationWrapper(components.Observation):
         self.dark_current = None    # FIXME: Not in header
 
         # Timing
-        self.time_start = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
+        try:
+            self.date = header['DATE-OBS'].strip()
+            self.time_start = Time(self.date, format='isot', scale='utc')
+
+        except ValueError:  # aka if date is not in isot format (eg. in older fit headers)
+            yy = self.date[6:8]
+            #print(yy)
+            # adding a 20, or 19 to yy, depending on cetury
+            if float(yy) <= 50:
+                yyyy = '20' + yy
+            else:
+                yyyy = '19' + yy
+                #print(yyyy)
+            mm = self.date[3:5]
+            dd = self.date[0:2]
+
+            # reshaping old date to isot format by hand (maybe theres a better solution)
+            if (self.date[2] == '/') and (self.date[5] == '/') and (float(yy) >= 13):
+                self.date = yyyy + '-' + mm + '-' + dd
+                self.time_start = Time(self.date, format='isot', scale='utc')
+
+
         self.time_weighted = None
 
         self.bary_date = or_none(header, 'LICKJD')#'MID-JD')
@@ -158,6 +179,7 @@ def load_file(filename) -> components.Observation:
     except IOError:
         print('Could not open file %s' % filename)
     except TypeError as e:
+        print('TypeError')
         print(e.args[0])
 
 

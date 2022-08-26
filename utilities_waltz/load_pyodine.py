@@ -144,7 +144,7 @@ def load_file(filename) -> components.Observation:
             h = pyfits.open(filename)
             header = h[0].header
             # Prepare data
-            flux = h[0].data[0]
+            flux = h[0].data[1]
             cont = h[0].data[2]
             wave = h[0].data[3]
             #weight = None
