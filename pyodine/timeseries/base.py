@@ -295,7 +295,7 @@ class CombinedResults():
                    fmt=outformat)
     
     
-    def load_individual_results(self, filenames):
+    def load_individual_results(self, filenames, compact=False):
         """Load individual fit results
         
         :param filenames: The pathnames of the files to the individually saved
@@ -327,6 +327,12 @@ class CombinedResults():
         if not isinstance(result, dict):
             result = fitters.results_io.create_results_dict(result)
         
+        # For the compact CombinedResults, only use absolutely necessary model
+        # parameters (wavelength, velocity) and for chunks only their order nr
+        if compact:
+            self.param_names = [k for k in result['params'].keys() if 'wave' in k or
+                                'velocity' in k]
+            self.chunk_names = [k for k in result['chunks'].keys() if 'order' in k]
         self.param_names = [k for k in result['params'].keys()]
         self.chunk_names = [k for k in result['chunks'].keys()]
         
