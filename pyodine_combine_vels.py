@@ -22,8 +22,8 @@ import importlib
 def combine_velocity_results(Pars, res_files=None, comb_res_in=None, 
                              plot_dir=None, comb_res_out=None, vels_out=None, 
                              reject_files=None, bary_dict=None, temp_vel=None,
-                             ref_vel=None, error_log=None, 
-                             info_log=None, quiet=False):
+                             ref_vel=None, error_log=None, info_log=None,
+                             compact=False, quiet=False):
     """Weight and combine chunk velocities from modelling results
     
     :param Pars: The parameters to use in the routine.
@@ -76,6 +76,11 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
     :param info_log: A pathname of a log-file used for info messages. If 
         None, no info is logged.
     :type info_log: str, or None
+    :param compact: If True, use a compact version of the CombinedResults
+        (only when loading individual results), where only the bare minimum of
+        parameters is loaded (to prevent memory crashed for very large time
+        series). Defaults to False.
+    :type compact: bool
     :param quiet: Whether or not to print info messages to terminal. Defaults 
         to False (messages are printed).
     :type quiet: bool
@@ -118,11 +123,11 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
         if isinstance(res_files, str):
             with open(res_files, 'r') as f:
                 res_names = [l.strip() for l in f.readlines()]
-            Results.load_individual_results(res_names)
+            Results.load_individual_results(res_names, compact=compact)
             
         elif isinstance(res_files, (list,tuple)):
             res_names = res_files
-            Results.load_individual_results(res_names, compact=False)
+            Results.load_individual_results(res_names, compact=compact)
             
         elif isinstance(comb_res_in, str):
             Results.load_combined(comb_res_in)
@@ -402,6 +407,7 @@ if __name__ == '__main__':
     parser.add_argument('--ref_vel', type=float, help='Optional reference velocity offset to use in barycentric correction.')
     parser.add_argument('--error_file', type=str, help='The pathname to the error log file.')
     parser.add_argument('--info_file', type=str, help='The pathname to the info log file.')
+    parser.add_argument('-c', '--compact', action='store_true', dest='compact', help='Load compact version of combined results.')
     parser.add_argument('-q', '--quiet', action='store_true', dest='quiet', help='Do not print messages to the console.')
     
     # Parse the input arguments
@@ -418,6 +424,7 @@ if __name__ == '__main__':
     ref_vel      = args.ref_vel
     error_file   = args.error_file
     info_file    = args.info_file
+    compact      = args.compact
     quiet        = args.quiet
     
     # Import and load the timeseries parameters
@@ -431,4 +438,4 @@ if __name__ == '__main__':
                              vels_out=vels_out, reject_files=reject_files, 
                              temp_vel=temp_vel, ref_vel=ref_vel,
                              error_log=error_file, info_log=info_file, 
-                             quiet=quiet)
+                             compact=compact, quiet=quiet)
