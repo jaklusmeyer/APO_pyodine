@@ -301,8 +301,14 @@ class CombinedResults():
         :param filenames: The pathnames of the files to the individually saved
             results to load.
         :type filenames: list or tuple 
+        :param compact: If True, use a compact version of the CombinedResults
+            (only when loading individual results), where only the bare minimum 
+            of parameters is loaded (to prevent memory crashs for very large 
+            time series). Defaults to False.
+        :type compact: bool
         """
-        print('Compact:', compact)
+        if compact:
+            logging.info('Using compact version of CombinedResults.')
         # First of all, sort the input list
         filenames.sort()
         
