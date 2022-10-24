@@ -302,7 +302,7 @@ class CombinedResults():
             results to load.
         :type filenames: list or tuple 
         """
-        
+        print('Compact:', compact)
         # First of all, sort the input list
         filenames.sort()
         
@@ -333,8 +333,9 @@ class CombinedResults():
             self.param_names = [k for k in result['params'].keys() if 'wave' in k or
                                 'velocity' in k]
             self.chunk_names = [k for k in result['chunks'].keys() if 'order' in k]
-        self.param_names = [k for k in result['params'].keys()]
-        self.chunk_names = [k for k in result['chunks'].keys()]
+        else:
+            self.param_names = [k for k in result['params'].keys()]
+            self.chunk_names = [k for k in result['chunks'].keys()]
         
         # General info
         self.info = {

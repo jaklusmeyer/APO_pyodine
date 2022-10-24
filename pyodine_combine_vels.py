@@ -122,7 +122,7 @@ def combine_velocity_results(Pars, res_files=None, comb_res_in=None,
             
         elif isinstance(res_files, (list,tuple)):
             res_names = res_files
-            Results.load_individual_results(res_names)
+            Results.load_individual_results(res_names, compact=False)
             
         elif isinstance(comb_res_in, str):
             Results.load_combined(comb_res_in)
