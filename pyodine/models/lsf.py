@@ -276,27 +276,32 @@ class MultiGaussian(LSFModel, StaticModel):
         """
         if isinstance(pars_dict, dict):
             
-            # Update the positions in the parameter dictionary
-            if 'positions' in pars_dict.keys() and \
+            # Update the positions and sigmas in the parameter dictionary
+            if 'positions' in pars_dict.keys() and 'sigmas' in pars_dict.keys() and \
             isinstance(pars_dict['positions'], (list,tuple,np.ndarray)) and \
-            len(pars_dict['positions']) == 11:
-                if isinstance(pars_dict['positions'], (list,tuple)):
-                    cls.pars_dict['positions'] = np.array(pars_dict['positions'])
+            isinstance(pars_dict['sigmas'], (list,tuple,np.ndarray)):
+                
+                if len(pars_dict['positions']) == 11 and len(pars_dict['sigmas']) == 11:
+                    
+                    if isinstance(pars_dict['positions'], (list,tuple)):
+                        cls.pars_dict['positions'] = np.array(pars_dict['positions'])
+                    else:
+                        cls.pars_dict['positions'] = pars_dict['positions']
+                    
+                    if isinstance(pars_dict['sigmas'], (list,tuple)):
+                        cls.pars_dict['sigmas'] = np.array(pars_dict['sigmas'])
+                    else:
+                        cls.pars_dict['sigmas'] = pars_dict['sigmas']
+                    
                 else:
-                    cls.pars_dict['positions'] = pars_dict['positions']
-            
-            # Update the sigmas in the parameter dictionary
-            if 'sigmas' in pars_dict.keys() and \
-            isinstance(pars_dict['sigmas'], (list,tuple,np.ndarray)) and \
-            len(pars_dict['sigmas']) == 11:
-                if isinstance(pars_dict['sigmas'], (list,tuple)):
-                    cls.pars_dict['sigmas'] = np.array(pars_dict['sigmas'])
-                else:
-                    cls.pars_dict['sigmas'] = pars_dict['sigmas']
+                    logging.error(pars_dict)
+                    raise ValueError('Make sure you supply a dictionary with lists/arrays' +
+                                     ' of 11 positions and sigmas!')
+                    
         else:
             logging.error(pars_dict)
-            raise ValueError('Make sure you supply a dictionary with positions' + 
-                             ' and/or sigmas, in list, tuple or ndarray of length 11!')
+            raise ValueError('Make sure you supply a dictionary with lists/arrays of'
+                             '11 positions and sigmas!')
 
     @classmethod
     def eval(cls, x, params):
@@ -340,8 +345,8 @@ class MultiGaussian(LSFModel, StaticModel):
             y_sum = np.sum(y)
             y_norm = y / y_sum
             
-            if len(np.where(np.isnan(y))[0]) > 0:
-                logging.debug('NaNs detected in LSF. Parameters:')
+            if len(np.where(np.isnan(y_norm))[0]) > 0:
+                logging.debug('NaNs detected in normalized LSF. Parameters:')
                 logging.debug(params)
                 logging.debug('Sum of un-normalized LSF: {}'.format(y_sum))
                 logging.debug('Unnormalized LSF:')
@@ -351,7 +356,165 @@ class MultiGaussian(LSFModel, StaticModel):
         except Exception as e:
             logging.error('LSF evaluation failed. Parameters:')
             logging.error(params)
-            logging.error('Sum of un-normalized LSF: {}'.format(y_sum))
+            raise e
+            
+
+    @classmethod
+    def guess_params(cls, chunk):
+        """Guess the LSF parameters for a given chunk
+        
+        This method returns just fixed values, independent of the chunk.
+        
+        :param chunk: The chunk for which to make the guess.
+        :type: :class:`Chunk`
+        
+        :return: The guessed LSF parameters.
+        :rtype: :class:`ParameterSet`
+        """
+        return ParameterSet(
+                {name: guess for name, guess in zip(cls.param_names, cls.param_guess)})
+    
+    @staticmethod
+    def name():
+        """The name of the LSF as a string
+        
+        :return: The LSF name.
+        :rtype: str
+        """
+        return __class__.__name__
+
+
+class MultiGaussian_8(LSFModel, StaticModel):
+    """The LSF model of a Multi Gaussian (with altogether 8 satellites)
+    
+    The model consists of a central, completely fixed Gaussian, and 4 satellite
+    Gaussian both to the left and right. The positions and sigmas of the 
+    satellites are fixed, but their amplitudes are the 8 free parameters.
+    
+    This class cannot be initialized and all its methods are static or class 
+    methods. The positions and sigmas of all Gaussians are build in as class
+    variables and can be changed through dedicated methods. This allows the 
+    model to be adapted to different instruments.
+    """
+    param_names = [
+        'left_4', 'left_3', 'left_2', 'left_1',
+        'right1', 'right2', 'right3', 'right4'
+    ]
+    
+    param_guess = np.array([
+        0.2, 0.3, 0.5, 0.7,
+        0.7, 0.5, 0.3, 0.2
+    ])
+    
+    pars_dict = {
+            'positions': np.array([
+                    -2.9, -2.5, -1.9, -1.0, 
+                    0.0, 
+                    1.0, 1.9, 2.5, 2.9]),
+            'sigmas': np.array([
+                    0.9, 0.9, 0.9, 0.9, 
+                    0.6, 
+                    0.9, 0.9, 0.9, 0.9])
+            }
+    
+    # Setup the logging if not existent yet
+    if not logging.getLogger().hasHandlers():
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                            format='%(message)s')
+    
+    @classmethod
+    def adapt_LSF(cls, pars_dict):
+        """Adapt the LSF setup to different instruments
+        
+        This method allows to change the positions and sigmas of all Gaussians
+        by handing in a dictionary with desired values.
+        
+        :param pars_dict: A dictionary with keys 'positions' and/or 'sigmas' 
+            (for both: length-11 list, tuple, or ndarray).
+        :type pars_dict: dict
+        """
+        if isinstance(pars_dict, dict):
+            
+            # Update the positions and sigmas in the parameter dictionary
+            if 'positions' in pars_dict.keys() and 'sigmas' in pars_dict.keys() and \
+            isinstance(pars_dict['positions'], (list,tuple,np.ndarray)) and \
+            isinstance(pars_dict['sigmas'], (list,tuple,np.ndarray)):
+                
+                if len(pars_dict['positions']) == 9 and len(pars_dict['sigmas']) == 9:
+                    
+                    if isinstance(pars_dict['positions'], (list,tuple)):
+                        cls.pars_dict['positions'] = np.array(pars_dict['positions'])
+                    else:
+                        cls.pars_dict['positions'] = pars_dict['positions']
+                    
+                    if isinstance(pars_dict['sigmas'], (list,tuple)):
+                        cls.pars_dict['sigmas'] = np.array(pars_dict['sigmas'])
+                    else:
+                        cls.pars_dict['sigmas'] = pars_dict['sigmas']
+                        
+                else:
+                    logging.error(pars_dict)
+                    raise ValueError('Make sure you supply a dictionary with lists/arrays' +
+                                     ' of 9 positions and sigmas!')
+                    
+        else:
+            logging.error(pars_dict)
+            raise ValueError('Make sure you supply a dictionary with lists/arrays of'
+                             ' 9 positions and sigmas!')
+
+    @classmethod
+    def eval(cls, x, params):
+        """Evaluate the LSF
+        
+        :param x: The pixel vector over which to evaluate the LSF.
+        :type x: ndarray
+        :param params: The LSF parameters.
+        :type params: :class:`ParameterSet`
+        
+        :return: The normalized LSF.
+        :rtype: ndarray
+        """
+        # Convert input dict to list
+        params = np.array([params[k] for k in cls.param_names])
+        
+        # Set up parameter vectors, including central gaussian
+        a = np.array([
+            params[0], params[1], params[2], params[3],
+            1.0,
+            params[4], params[5], params[6], params[7]
+        ])
+
+        # Multigauss function
+        def func(x):
+            xarr = np.repeat([x], len(a), axis=0)
+            f = np.sum(a * np.exp(-0.5 * ((np.transpose(xarr) - cls.pars_dict['positions']) 
+                                            / cls.pars_dict['sigmas'])**2.), axis=1)
+            f[np.where(f < 0.0)] = 0.0
+            return f
+        
+        try:
+            # Evaluate function and find centroid
+            y = func(x)
+            
+            # Calculate centroid and re-center the LSF
+            offset = np.sum(x * y) / np.sum(y)
+            y = func(x + offset)
+            
+            # Make sure that the sum equals one
+            y_sum = np.sum(y)
+            y_norm = y / y_sum
+            
+            if len(np.where(np.isnan(y_norm))[0]) > 0:
+                logging.debug('NaNs detected in normalized LSF. Parameters:')
+                logging.debug(params)
+                logging.debug('Sum of un-normalized LSF: {}'.format(y_sum))
+                logging.debug('Unnormalized LSF:')
+                logging.debug(y)
+            
+            return y_norm
+        except Exception as e:
+            logging.error('LSF evaluation failed. Parameters:')
+            logging.error(params)
             raise e
             
 
@@ -771,6 +934,7 @@ model_index = {
         'SingleGaussian': SingleGaussian,
         'SuperGaussian': SuperGaussian,
         'MultiGaussian': MultiGaussian,
+        'MultiGaussian_8': MultiGaussian_8,
         'MultiGaussian_Lick': MultiGaussian_Lick,
         'HermiteGaussian': HermiteGaussian,
         'FixedLSF': FixedLSF

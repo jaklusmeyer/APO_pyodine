@@ -307,6 +307,9 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             lsf_model = run_dict['lsf_model']
             # For the LSF model: Potentially adapt it to the instrument
             if 'lsf_setup_dict' in run_dict.keys() and isinstance(run_dict['lsf_setup_dict'], dict):
+                logging.info('')
+                logging.info('LSF setup dictionary:')
+                logging.info(run_dict['lsf_setup_dict'])
                 lsf_model.adapt_LSF(run_dict['lsf_setup_dict'])
             
             wave_model = run_dict['wave_model'] #pyodine.models.wave.LinearWaveModel

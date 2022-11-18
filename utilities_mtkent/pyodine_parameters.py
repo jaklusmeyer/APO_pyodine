@@ -27,6 +27,7 @@ _multigauss_setup_dict = {
         'sigmas':    [ 0.9,  0.9,  0.9,  0.9, 1.2, 0.9, 0.9, 0.9, 0.9]
         #'sigmas':    [ 0.9,  0.9,  0.9,  0.9,  0.9, 0.6, 0.9, 0.9, 0.9, 0.9, 0.9]
         }
+_multigauss_setup_dict = None
 
 
 class Parameters:
