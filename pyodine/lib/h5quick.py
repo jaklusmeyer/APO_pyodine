@@ -82,7 +82,11 @@ def dict_to_group(my_dict, base_group, new_group_name):
     for k in my_dict:
         # Only add the item if it is not None (otherwise errors are thrown)
         if my_dict[k] is not None:
-            if isinstance(my_dict[k], dict):
-                dict_to_group(my_dict[k], group, k)
-            else:
-                group[k] = my_dict[k]
+            try:
+                if isinstance(my_dict[k], dict):
+                    dict_to_group(my_dict[k], group, k)
+                else:
+                    group[k] = my_dict[k]
+            except Exception as e:
+                print(my_dict)
+                raise e

@@ -55,7 +55,7 @@ class Parameters:
         self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
-        self.use_progressbar = False            # Use a progressbar during chunk modelling?
+        self.use_progressbar = True           # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -71,15 +71,15 @@ class Parameters:
         # different value to delta_v in order to define the shift yourself (e.g. 0 for solar observations).
         self.order_range = (None,None)          # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses automatically the same as in the template
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 6                  # Padding (left and right) of the chunks in pixels
+        self.chunk_width = 60                   # Width of chunks in pixels in observation modeling
+        self.chunk_padding = 20                  # Padding (left and right) of the chunks in pixels
         self.chunks_per_order = None            # Maximum number of chunks per order (optional)
         self.chunk_delta_v = None               # Velocity shift between template and observation 
                                                 # (None: relative barycentric velocity)
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
-        self.velgues_order_range = (4,17)       # Orders used for velocity guess (should be outside I2 region)
+        self.velgues_order_range = (1,40)       # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
         self.maxlag  = 500                      # The number of steps to each side in the cross-correlation
         
@@ -94,7 +94,7 @@ class Parameters:
         self.rel_noise = 0.008                  # Only used if weight_type='inverse': The relative noise within a flatfield spectrum
         
         # I2 atlas:
-        self.i2_to_use = 1                      # Index of I2 FTS to use (see archive/conf.py)
+        self.i2_to_use = 3                      # Index of I2 FTS to use (see archive/conf.py)
         self.wavelength_scale = 'air'           # Which wavelength scale to use ('air' or 'vacuum' - should always be the first)
         
         # If you want to create and save velocity analysis plots, put in the desired
@@ -265,7 +265,7 @@ class Parameters:
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
-                        value=2.0, min=0.5, max=4.0)
+                        value=2.5, min=0.5, max=4.5)
                 
                 # Constrain the iodine to not become negative (just in case)
                 lmfit_params[i]['iod_depth'].set(min=0.1)
@@ -306,13 +306,13 @@ class Parameters:
                 
                 # Wavelength dispersion: use results from before
                 lmfit_params[i]['wave_slope'].set(
-                        value=run_results[0]['results'][i].params['wave_slope']) #run_results[0]['wave_slope_fit'][i])#), #,
+                        value=run_results[0]['wave_slope_fit'][i])#), run_results[0]['results'][i].params['wave_slope']) ##,
                         #min=run_results[0]['wave_slope_fit'][i]*0.99,
                         #max=run_results[0]['wave_slope_fit'][i]*1.01)
                 
                 # Wavelength intercept: use results from before
                 lmfit_params[i]['wave_intercept'].set(
-                        value=run_results[0]['results'][i].params['wave_intercept']) #run_results[0]['wave_intercept_fit'][i])#,
+                        value=run_results[0]['wave_intercept_fit'][i])#,run_results[0]['results'][i].params['wave_intercept']) #
                         #min=run_results[0]['wave_intercept_fit'][i]*0.99,
                         #max=run_results[0]['wave_intercept_fit'][i]*1.01)
                 
@@ -404,7 +404,7 @@ class Template_Parameters:
         self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
-        self.use_progressbar = True             # Use a progressbar during chunk modelling?
+        self.use_progressbar = True           # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -417,12 +417,12 @@ class Template_Parameters:
         self.chunking_algorithm = 'auto_equal_width'
         # If the auto_equal_width chunking algorithm is used, the chunks are defined by the user
         # through their width, padding, number of chunks per order, and pixel offset of the first chunk:
-        self.temp_order_range = (18,41)         # Order range (min,max) to use in observation modeling;
+        self.temp_order_range = (12,33)         # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses all orders
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
-        self.chunks_per_order = 22              # Maximum number of chunks per order (optional)
-        self.pix_offset0 = 30                   # The starting pixel of the first chunk within each order
+        self.chunk_width = 60                   # Width of chunks in pixels in observation modeling
+        self.chunk_padding = 20                 # Padding (left and right) of the chunks in pixels
+        self.chunks_per_order = 33              # Maximum number of chunks per order (optional)
+        self.pix_offset0 = 25                   # The starting pixel of the first chunk within each order
                                                 # (None: the chunks will be centered within orders)
         # Otherwise, if the wavelength_defined chunking algorithm is chosen, make sure you have
         # added a dictionary with start and end wavelengths for each chunk (see below constrain_parameters())
@@ -430,7 +430,7 @@ class Template_Parameters:
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
-        self.velgues_order_range = (10,30)      # Orders used for velocity guess (should be outside I2 region)
+        self.velgues_order_range = (30,40)      # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
         self.maxlag  = 500                      # The number of steps to each side in the cross-correlation
         
@@ -445,7 +445,7 @@ class Template_Parameters:
         self.rel_noise = 0.008                  # Only used if weight_type='inverse': The relative noise within a flatfield spectrum
         
         # I2 atlas:
-        self.i2_to_use = 1                      # Index of I2 FTS to use (see archive/conf.py)
+        self.i2_to_use = 4                      # Index of I2 FTS to use (see archive/conf.py)
         self.wavelength_scale = 'air'           # Which wavelength scale to use ('air' or 'vacuum' - should always be the first)
         
         # The parameters for the Jansson deconvolution algorithm.
@@ -643,7 +643,7 @@ class Template_Parameters:
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
-                        value=2.0, min=0.5, max=4.0)
+                        value=2.5, min=0.5, max=4.5)
                 
                 # Constrain the iodine to not become negative (just in case)
                 lmfit_params[i]['iod_depth'].set(min=0.1)
@@ -686,13 +686,13 @@ class Template_Parameters:
                 
                 # Wavelength dispersion: use results from before
                 lmfit_params[i]['wave_slope'].set(
-                        value=run_results[0]['results'][i].params['wave_slope']) #run_results[0]['wave_slope_fit'][i])#), #,
+                        value=run_results[0]['wave_slope_fit'][i])#run_results[0]['results'][i].params['wave_slope']) #), #,
                         #min=run_results[0]['wave_slope_fit'][i]*0.99,
                         #max=run_results[0]['wave_slope_fit'][i]*1.01)
                 
                 # Wavelength intercept: use results from before
                 lmfit_params[i]['wave_intercept'].set(
-                        value=run_results[0]['results'][i].params['wave_intercept']) #run_results[0]['wave_intercept_fit'][i])#,
+                        value=run_results[0]['wave_intercept_fit'][i])#,run_results[0]['results'][i].params['wave_intercept']) #
                         #min=run_results[0]['wave_intercept_fit'][i]*0.99,
                         #max=run_results[0]['wave_intercept_fit'][i]*1.01)
                 

@@ -55,6 +55,7 @@ class ObservationWrapper(components.Observation):
     _cont = None    # Internal storage of extracted continuum
 
     def __init__(self, filename, instrument=None, star=None):
+        #print(filename)
         flux, wave, cont, header = load_file(filename)
 
         self._flux = flux
@@ -90,7 +91,7 @@ class ObservationWrapper(components.Observation):
         self.time_start = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
         self.time_weighted = None
 
-        self.bary_date = or_none(header, 'OBS-MIDB')#'LICKJD')
+        self.bary_date = or_none(header, 'BJDTDB')#'LICKJD')
         self.bary_vel_corr = or_none(header, 'BVC')#'LICKBVC')#
         #self.topo_bary_factor = or_none(header, 'BVCFACT')
         #self.mjd_corr = or_none(header, 'MID-JD')#'MBJD')
@@ -144,9 +145,9 @@ def load_file(filename) -> components.Observation:
             h = pyfits.open(filename)
             header = h[0].header
             # Prepare data
-            flux = h[0].data[1]
-            cont = h[0].data[2]
-            wave = h[0].data[3]
+            flux = h[0].data[1][:,:2017]
+            cont = h[0].data[2][:,:2017]
+            wave = h[0].data[3][:,:2017]
             #weight = None
 
             h.close()
@@ -284,6 +285,8 @@ def get_exposuretime(header, instrument):
         else:
             return header['EXPOSURE']
     elif 'EXPTIME' in header and 'Lick' in instrument.name:
+        return header['EXPTIME']
+    elif 'EXPTIME' in header and 'Waltz' in instrument.name:
         return header['EXPTIME']
     else:
         return None
