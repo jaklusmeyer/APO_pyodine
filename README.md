@@ -16,7 +16,7 @@ Paul Heeren, LSW Heidelberg; René Tronsgaard-Rasmussen, DTU Space; Frank Grunda
 
 People who have actively contributed to the code:
 
-Ayk Jessen, Master student @ LSW Heidelberg
+Ayk Jessen, former Master student @ LSW Heidelberg
 
 ## Attribution
 
