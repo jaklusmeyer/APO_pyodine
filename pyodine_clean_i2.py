@@ -17,15 +17,23 @@ import h5py
 import logging
 #from pathos.multiprocessing import Pool
 import traceback
+from progressbar import ProgressBar
 
 #import argparse
 #import importlib
 
+# Dictionary for LSF smoothing parameters
+_smooth_dict = {
+        'smooth_pixels': 160,
+        'smooth_orders': 3,
+        'order_separation': 15
+        }
 
 
 def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
                                 plot_dir=None, error_log=None, info_log=None, 
-                                quiet=False):
+                                quiet=False, use_progressbar=False,
+                                smooth_lsf=True, lsf_dict=_smooth_dict):
     """Clean a single observation spectrum from I2 features, following the
     algorithm described in Diaz +2019
     
@@ -58,7 +66,17 @@ def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
     :param quiet: Whether or not to print info messages to terminal. Defaults 
         to False (messages are printed).
     :type quiet: bool
-    
+    :param use_progressbar: Whether to show a progressbar during the algorithm. 
+        Defaults to False.
+    :type use_progressbar: bool
+    :param smooth_lsf: Whether to smooth the LSFs over neighbouring chunks.
+        Defaults to True.
+    :type smooth_lsf: bool
+    :param lsf_dict: A dictionary with parameters for the LSF smoothing. Should
+        contain entries for 'smooth_pixels', 'smooth_orders' and 
+        'order_separation'. If None is given, the default dictionary 
+        _smooth_dict is used.
+    :type lsf_dict: dict
     """
     
     # Check whether a logger is already setup. If no, setup a new one
@@ -95,36 +113,34 @@ def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
         
         
         ###########################################################################
-        ## Now prepare the cleaning: Setup the smoothed LSF and the model
+        ## Now prepare the cleaning: Setup the (smoothed) LSF and the model
         ###########################################################################
         
-        # Smooth the LSFs
-        smooth_dict = {
-            'smooth_pixels': 160,
-            'smooth_orders': 3,
-            'order_separation': 15
-        }
+        # Smooth the LSFs if desired
+        if smooth_lsf:
+            
+            redchi2 = np.array([r.redchi for r in fit_results])
+            
+            lsf_smoothed = pyodine.lib.misc.smooth_lsf(
+                    obs_chunks, lsf_dict['smooth_pixels'], lsf_dict['smooth_orders'], 
+                    lsf_dict['order_separation'], fit_results,
+                    redchi2=redchi2, osample=fit_results[0].model.osample_factor)
+            
+            LSFarr = pyodine.models.lsf.LSF_Array(
+                    lsf_smoothed, np.array([ch.order for ch in obs_chunks]),
+                    np.array([ch.abspix[0] for ch in obs_chunks]))
+            
+            
+            # Build the model and fitter
+            lsf_model = pyodine.models.lsf.model_index['FixedLSF']
+            model = pyodine.models.spectrum.SimpleModel(
+                lsf_model, fit_results[0].model.wave_model, fit_results[0].model.cont_model, 
+                fit_results[0].model.iodine_atlas, stellar_template=fit_results[0].model.stellar_template, 
+                lsf_array=LSFarr, osample_factor=fit_results[0].model.osample_factor, 
+                conv_width=fit_results[0].model.conv_width)
         
-        redchi2 = np.array([r.redchi for r in fit_results])
-        
-        lsf_smoothed = pyodine.lib.misc.smooth_lsf(
-                obs_chunks, smooth_dict['smooth_pixels'], smooth_dict['smooth_orders'], 
-                smooth_dict['order_separation'], fit_results,
-                redchi2=redchi2, osample=Pars.osample_obs)
-        
-        LSFarr = pyodine.models.lsf.LSF_Array(
-                lsf_smoothed, np.array([ch.order for ch in obs_chunks]),
-                np.array([ch.abspix[0] for ch in obs_chunks]))
-        
-        
-        # Build the model and fitter
-        lsf_model = pyodine.models.lsf.model_index['FixedLSF']
-        wave_model = pyodine.models.wave.LinearWaveModel
-        cont_model = pyodine.models.cont.LinearContinuumModel
-        model = pyodine.models.spectrum.SimpleModel(
-            lsf_model, wave_model, cont_model, fit_results[0].model.iodine_atlas, 
-            stellar_template=fit_results[0].model.stellar_template, lsf_array=LSFarr,
-            osample_factor=fit_results[0].model.osample_factor, conv_width=fit_results[0].model.conv_width)
+        else:
+            model = fit_results[0].model
         
         ###########################################################################
         ## Now loop over the chunks and clean them to return the I2-free spectra
@@ -132,23 +148,29 @@ def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
         
         # Now build the I2-free spectrum, following the receipe described in Diaz +2019
         i2_free_specs = []
-        params = []
+        
+        # Use a progressbar?
+        if use_progressbar:
+            bar = ProgressBar(max_value=len(obs_chunks), redirect_stdout=True)
+            bar.update(0)
         
         for i, chunk in enumerate(obs_chunks):
             
-            # Setup the new parameters to use here:
-            # First the LSF parameters
-            pars = pyodine.models.base.ParameterSet(
-                    {'lsf_order': chunk.order, 
-                     'lsf_pixel0': chunk.abspix[0], 
-                     'lsf_amplitude': 1.}
-                    )
-            # Now copy best-fit parameters for non-LSF parameters
-            for key, value in fit_results[i].params.items():
-                if 'lsf' not in key:
-                    pars[key] = value
+            # If LSF smoothing: Setup the new parameters to use here
+            if smooth_lsf:
+                # First the LSF parameters
+                pars = pyodine.models.base.ParameterSet(
+                        {'lsf_order': chunk.order, 
+                         'lsf_pixel0': chunk.abspix[0], 
+                         'lsf_amplitude': 1.}
+                        )
+                # Now copy best-fit parameters for non-LSF parameters
+                for key, value in fit_results[i].params.items():
+                    if 'lsf' not in key:
+                        pars[key] = value
             
-            params.append(pars)
+            else:
+                pars = fit_results[i].params
             
             # And finally compute the I2-cleaned spectrum
             i2_free_flux = model.clean_of_I2(
@@ -161,6 +183,13 @@ def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
             i2_free_spec = pyodine.components.Spectrum(i2_free_flux, wave, cont)
             
             i2_free_specs.append(i2_free_spec)
+            
+            # Update the progressbar
+            if use_progressbar:
+                bar.update(i+1)
+        
+        if use_progressbar:
+            bar.finish()
         
         
         ###########################################################################
@@ -177,11 +206,13 @@ def clean_i2_single_observation(utilities, Pars, res_file, out_file, rv=None,
             h['cont'] = [spec.cont for spec in i2_free_specs]
             
             info_dict = {
-                    'orig_filename': os.path.abspath(obs_chunks[0].obs.orig_filename).encode('utf8', 'replace'),
+                    'orig_filename': os.path.abspath(obs_chunks[0].observation.orig_filename).encode('utf8', 'replace'),
                     'res_name': res_file.encode('utf8', 'replace'),
-                    'orig_header': obs_chunks[0].obs.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
-                    'star_name': obs_chunks[0].obs.star.name.encode('utf8', 'replace'),
-                    'instrument_name': obs_chunks[0].obs.instrument.name.encode('utf8', 'replace'),
+                    'orig_header': obs_chunks[0].observation.orig_header.tostring(sep='\n').encode('utf8', 'replace'),
+                    'star_name': obs_chunks[0].observation.star.name.encode('utf8', 'replace'),
+                    'instrument_name': obs_chunks[0].observation.instrument.name.encode('utf8', 'replace'),
+                    'smooth_lsf': smooth_lsf,
+                    'smooth_dict': lsf_dict,
                     }
             
             pyodine.lib.h5quick.dict_to_group(info_dict, h, 'info')
