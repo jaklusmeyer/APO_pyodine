@@ -14,13 +14,13 @@ Paul Heeren, LSW Heidelberg; René Tronsgaard-Rasmussen, DTU Space; Frank Grunda
 
 ## Contributer
 
-People who have actively contributed to the code:
+Other people who have actively contributed to the code:
 
 Ayk Jessen, former Master student @ LSW Heidelberg
 
 ## Attribution
 
-Tbd - we are in the process of publishing first results from the code.
+If you use this software, please cite [Heeren et al. (2023)](https://ui.adsabs.harvard.edu/abs/2023A%26A...674A.164H/abstract).
 
 ## Acknowledgements
 
