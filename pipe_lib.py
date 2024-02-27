@@ -131,10 +131,13 @@ def model_all_chunks(chunks, chunk_weight, fitter, lmfit_params,
             logging.info(result.report)
             if i==0:
                 live_fig, live_ax = None, None
+                live_fig_lsf, live_ax_lsf = None, None
             try:
                 live_fig, live_ax = pyodine.plot_lib.live_chunkmodel(
                         result, chunks, i, tellurics=tellurics, weight=ch_w, 
                         fig=live_fig, ax=live_ax)
+                live_fig_lsf, live_ax_lsf = pyodine.plot_lib.live_lsf(
+                        result, chunks, i, fig=live_fig_lsf, ax=live_ax_lsf)
             except Exception as e:
                 logging.warning(e)
         
