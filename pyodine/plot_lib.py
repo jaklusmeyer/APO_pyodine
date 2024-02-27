@@ -314,6 +314,82 @@ def live_chunkmodel(fit_result, chunk_array, chunk_nr, tellurics=None,
         logging.error('Live chunk could not be plotted', exc_info=True)
 
 
+def live_lsf(fit_result, chunk_array, chunk_nr, fig=None, ax=None):
+    """In live-mode plot the evaluated LSF of the current chunk 
+    (it replots new chunks into the same display).
+    
+    :param fit_result: A single fit result for the chunk to be plotted.
+    :type fit_result: :class:`LmfitResult`
+    :param chunk_array: The chunks of the observation.
+    :type chunk_array: :class:`ChunkArray`
+    :param chunk_nr: The index of the chunk to plot.
+    :type chunk_nr: int
+    :param fig: If a figure already exists, it can be passed here so that new
+        data is plotted into the same one. Else, a new one is created.
+    :type fig: :class:`matplotlib.pyplot.figure`, or None
+    :param ax: If a list of axes already exist, it can be passed here so that 
+        new data is plotted into the same ones. Else, new axes are created.
+    :type ax: list, or None
+    
+    :return: The created figure.
+    :rtype: :class:`matplotlib.pyplot.figure`
+    :return: The created axes list.
+    :rtype: list
+    """
+    
+    # Evaluate model
+    try:
+        # The LSF model, oversampling and convolution width used
+        lsf_model      = fit_result.model.lsf_model
+        osample_factor = fit_result.model.osample_factor
+        conv_width     = fit_result.model.conv_width
+        
+        # Generate the pixel vector to evaluate the LSF over
+        lsf_x = lsf_model.generate_x(osample_factor=osample_factor, conv_width=conv_width)
+        
+        # Evaluate the LSF
+        lsf_pars = fit_result.params.filter('lsf')
+        lsf_y = lsf_model.eval(lsf_x, lsf_pars)
+        
+        # If a figure is supplied, then a qt plot already exists and just
+        # needs to be updated
+        if fig:
+            already_live = True
+            # Clear the old axes data
+            for a in ax:
+                a.clear()
+                #a.set_xlim((sp.wave[0], sp.wave[-1]))
+            
+        # If a figure is not supplied, the qt plot needs to be build from scratch
+        else:
+            already_live = False
+            plt.ion()
+            
+            # Set up the figure and gridspec
+            fig = plt.figure(figsize=(6,4))
+            gs = fig.add_gridspec(1, 1)
+            ax = [fig.add_subplot(gs[0])]
+        
+        title = 'Chunk: {}, Order: {}, Pixels: {} - {}'.format(
+                chunk_nr, chunk_array[chunk_nr].order,
+                chunk_array[chunk_nr].abspix[0], chunk_array[chunk_nr].abspix[-1])
+        ax[0].set_title(title)
+        
+        ax[0].set_xlabel('Pixel')
+        ax[0].plot(lsf_x, lsf_y, '-o', alpha=0.7)
+        
+        if already_live:
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+        else:
+            plt.show()
+        
+        return fig, ax
+        
+    except Exception as e:
+        logging.error('Live LSF could not be plotted', exc_info=True)
+        
+
 
 def plot_residual_hist(fit_results, residual_arr=None, tellurics=None, robust=True, 
                        title='', savename=None, dpi=300, show_plot=False):
