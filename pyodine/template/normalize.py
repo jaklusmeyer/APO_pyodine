@@ -324,6 +324,9 @@ def get_velocity_offset(spectrum, reference, normalize=True, delta_v=1000.,
 
     # Pick the 5 points around the maximum of the cross-correlation
     ii = np.argmax(cc) + np.arange(-2, 3)
+    
+    # trying to prevent errors 
+    #ii = np.clip(ii, 0, lagscale.size - 1) 
     # Fit a 2nd degree polynomial  # TODO: Use Gaussian instead?
     # (Offset subtracted in order to avoid high x-values)
     offset = np.mean(lagscale[ii])
