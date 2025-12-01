@@ -29,13 +29,18 @@ my_instruments = {
             latitude=49.398611,
             longitude=8.720833,
             altitude=560.
-    )
+    ),
+    'song_3': Instrument(
+    'SONG USA spectrograph (Apache Point Observatory)',
+    latitude=32.7803,
+    longitude=-105.8203,  # West longitude as negative
+    altitude=2788  # Approximate elevation in meters
+)
 }
-
+print("I am using path for iodine atlas:", i2_dir_path)
 # List of iodine atlas locations
 my_iodine_atlases = {
     1: os.path.join(i2_dir_path, 'song_iodine_cell_01_65C.h5'),
     2: os.path.join(i2_dir_path, 'ftslick05_norm_new.h5'),
-    3: os.path.join(i2_dir_path, 'Fischer_Cell_May2022_downsampled3.h5'),
-    4: os.path.join(i2_dir_path, 'Butler_Cell1.h5')
+    3: os.path.join(i2_dir_path,'Paul_iodine_spectrum_APOSONGTEST.h5')
 }

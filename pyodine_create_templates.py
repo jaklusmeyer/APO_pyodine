@@ -7,6 +7,8 @@ Created on Mon Dec 21 17:21:06 2020
 """
 
 # Import packages
+import matplotlib.pyplot as plt
+
 import pyodine
 import pipe_lib
 
@@ -88,7 +90,6 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
             error_log=error_log, info_log=info_log, quiet=quiet)
     
     try:
-        
         # Start timer
         start_t = time.time()
         
@@ -107,11 +108,19 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         ###########################################################################
         
         # Load the hot star observation(s)
+        """if isinstance(ostar_files, list):
+            ostar_names = ostar_files
+        elif isinstance(ostar_files, str):
+            with open(ostar_files, 'r') as f:
+                ostar_names = [l.strip() for l in f.readlines()]"""
         if isinstance(ostar_files, list):
             ostar_names = ostar_files
         elif isinstance(ostar_files, str):
             with open(ostar_files, 'r') as f:
                 ostar_names = [l.strip() for l in f.readlines()]
+        else:
+            raise TypeError("ostar_files must be a list or path to a .txt file")
+
         
         all_ostar_obs = []
         for filename in ostar_names:
@@ -119,7 +128,20 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Take the sum of the O-star spectra
         ostar = pyodine.components.SummedObservation(*all_ostar_obs)
-        
+        #make a plot to see if this is working --jessica
+        plt.figure(figsize=(10, 6))
+
+        for order in ostar.orders:
+            wave = ostar[order].wave
+            flux = ostar[order].flux
+            plt.plot(wave, flux, label=f'Order {order}')
+
+        plt.xlabel("Wavelength [Å]")
+        plt.ylabel("Flux")
+        plt.title("{} (All Orders)".format(os.path.basename(ostar_names[0])))
+        plt.legend(ncol=3, fontsize='small', loc='upper right')
+        plt.tight_layout()
+        plt.show()
         # And log the number of hot star observation(s)
         logging.info('')
         logging.info('Hot star observations ({}):'.format(len(ostar_names)))
@@ -139,6 +161,19 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Take the sum of the stellar template spectra
         temp_obs = pyodine.components.SummedObservation(*all_temp_obs)
+        plt.figure(figsize=(10, 6))
+
+        for order in temp_obs.orders:
+            wave = temp_obs[order].wave
+            flux = temp_obs[order].flux
+            plt.plot(wave, flux, label=f'Order {order}')
+
+        plt.xlabel("Wavelength [Å]")
+        plt.ylabel("Flux")
+        plt.title("{} (All Orders)".format(os.path.basename(temp_names[0])))
+        plt.legend(ncol=3, fontsize='small', loc='upper right')
+        plt.tight_layout()
+        plt.show()
         
         # And log the number of stellar template observation(s)
         logging.info('')
@@ -153,6 +188,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Load the iodine atlas from file
         iod = utilities.load_pyodine.IodineTemplate(Pars.i2_to_use)
+        #print(iod, '!!!!!!!!!!!!!!!!!!iodine template!!!!!!!!!!!!!!!!')
         
         # Final template output name (setup the directory structure if non-existent)
         temp_outname_dir = os.path.dirname(temp_outname)
@@ -189,6 +225,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
         
         # Compute weights array for the combined hot star observation
         weight = ostar.compute_weight(weight_type=Pars.weight_type, rel_noise=Pars.rel_noise)
+        print(weight, 'weight')
         
         # Potentially compute a bad pixel mask, using the stellar template observation
         if Pars.bad_pixel_mask is True:
@@ -444,6 +481,7 @@ def create_template(utilities, Pars, ostar_files, temp_files, temp_outname,
                     pyodine.fitters.results_io.save_results(
                             res_save_name, run_results[run_id]['results'], filetype='dill')
                 else:
+                    print('I MADE IT TO THE SAVE RESULTS')
                     pyodine.fitters.results_io.save_results(
                             res_save_name, run_results[run_id]['results'], filetype='h5py')
             
