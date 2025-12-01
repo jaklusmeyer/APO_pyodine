@@ -1,9 +1,12 @@
 # Ignore everything
 *
 
-# But keep these folders
+# But include these folders and all their contents
 !utilities_song_apo/
-!iodine_atlas/
+!utilities_song_apo/**
 
-# Also keep the .gitignore file itself
+!iodine_atlas/
+!iodine_atlas/**
+
+# Keep this ignore file too
 !.gitignore
