@@ -1,2 +1,3 @@
 # APO_pyodine
-APO version of pyodine
+APO module for pyodine
+--needs updating once extraction format is finalized
