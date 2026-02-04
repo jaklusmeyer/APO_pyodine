@@ -1,5 +1,5 @@
 from os.path import splitext, abspath
-import astropy.io.fits
+
 import numpy as np
 from astropy import units as u
 from astropy.coordinates import SkyCoord
@@ -7,55 +7,18 @@ from astropy.io import fits as pyfits
 from astropy.time import Time, TimeDelta
 import h5py
 from pyodine import components
-from astropy.coordinates import EarthLocation, SkyCoord
-from scipy.signal import savgol_filter
-from scipy.ndimage import median_filter
-from astropy.modeling import models, fitting
-from scipy.interpolate import UnivariateSpline
-
 
 from utilities_song_apo import conf
-# code taken from PyAstronomy to convert vacuum to air wavelengths
-import numpy as np
 
-"""def vac_to_air(wvl_angstrom):
-    Used in testing APO SONG iodine data
-    Convert vacuum wavelength to air wavelength using the Ciddor (1996) formula.
-    
-    Parameters
-    ----------
-    wvl_angstrom : float or array
-        Wavelength in vacuum [Angstrom]
-    
-    Returns
-    -------
-    wvl_air : float or array
-        Wavelength in air [Angstrom]
-    
-    wvl = np.array(wvl_angstrom, dtype=float)
-    
-    # Ciddor constants (from Applied Optics 35, 1566–1573, 1996)
-    k0 = 238.0185
-    k1 = 5792105.0
-    k2 = 57.362
-    k3 = 167917.0
-
-    s2 = (1e4 / wvl) ** 2  # wavenumber squared in um^-2
-
-    # Ciddor refractive index for standard air (CO2 = 450 ppm)
-    n = (k1 / (k0 - s2) + k3 / (k2 - s2)) / 1e8 + 1.0
-
-    return wvl / n"""
+__all__ = ["IodineTemplate", "ObservationWrapper"]
 
 
 class IodineTemplate(components.IodineAtlas):
     """The iodine template class to be used in the modelling
-
     :param iodine_cell_id: The iodine cell ID to identify the I2 template
-        spectrum by in the :module:`conf`, or the direct pathname to the I2
+        spectrum by in the :ref:`overview_utilities_conf`, or the direct pathname to the I2
         template spectrum.
     :type iodine_cell_id: int or str
-    I think apo iodine is 20:50
     """
     def __init__(self, iodine_cell):
         if not isinstance(iodine_cell, (int,str)):
@@ -67,40 +30,32 @@ class IodineTemplate(components.IodineAtlas):
                 raise ValueError('Unknown iodine_cell ID!')
         elif isinstance(iodine_cell, str):
             self.orig_filename = iodine_cell
-
+        
         with h5py.File(self.orig_filename, 'r') as h:
-            if 'flux_norm' in h:
-                flux = h['flux_norm'][()]
-            elif 'flux_normalized' in h:
-                flux = h['flux_normalized'][()]
-            else:
-                raise KeyError("Neither 'flux_norm' nor 'flux_normalized' found in HDF5 file.")
+            flux = h['flux_normalized'][()]
             wave = h['wavelength_air'][()]    # originally: wavelength_air
-            #check if this is APO data
-            if 'APO_I2_cleaned_normalized.h5' in self.orig_filename or 'aposong' in self.orig_filename.lower():
+        # Ensure increasing wavelength
+        if 'APO_I2_cleaned_normalized.h5' in self.orig_filename or 'aposong' in self.orig_filename.lower():
                 print('This is APO SONG iodine data ')
-            #if 'APO_I2_from_FITS_cleaned.h5' in self.orig_filename or 'aposong' in self.orig_filename.lower(): no longer needed fixed from frank? 2024-10-15
-                #flux = flux / np.max(flux)  # normalize
-                #print('This is APO SONG iodine data and its been normalized and converted to air wavelengths')
-                
-            # Ensure increasing wavelength
-            if wave[0] > wave[-1]:
-                wave = wave[::-1]
-                flux = flux[::-1]
+        if wave[0] > wave[-1]:
+            print('Reversing iodine template wavelength array to ensure increasing order.')
+            wave = wave[::-1]
+            flux = flux[::-1]
         super().__init__(flux, wave)
 
 
 class ObservationWrapper(components.Observation):
-    """A wrapper for the representation of APO_SONG observation spectra
-
+    """A wrapper for the representation of SONG observation spectra, based
+    on the parent class :class:`pyodine.components.Observation`
+    
     :param filename: The filename of the observation to load.
     :type filename: str
     :param instrument: The instrument used to obtain the observation. If None,
         the information is drawn from the Fits-header (default).
-    :type instrument: :class:`Instrument`
-    :param star: The star of the observation. If None, the information is
+    :type instrument: :class:`components.Instrument`
+    :param star: The star of the observation. If None, the information is 
         drawn from the Fits-header (default).
-    :type star: :class:`Star`
+    :type star: :class:`components.Star`
     """
 
     # Custom properties
@@ -114,10 +69,10 @@ class ObservationWrapper(components.Observation):
         self._flux = flux
         self._wave = wave
         self._cont = cont
-
-         #Weights added. Using this formula from dop code for now
-            #(the value of 0.008 is the flatfield noise - should be changed)
-        """if weight is None:# or len(weight) is not len(self.flux):
+        
+        """ Weights added. Using this formula from dop code for now
+            (the value of 0.008 is the flatfield noise - should be changed)
+        if weight is None:# or len(weight) is not len(self.flux):
             #self._weight = (1./self._flux) / (1. + self._flux * 0.008**2)
             self._weight = np.ones(self._flux.shape)
         else:
@@ -131,7 +86,7 @@ class ObservationWrapper(components.Observation):
 
         self.instrument = instrument or get_instrument(header)
         self.star = star or get_star(header)
-        self.iodine_in_spectrum, self.iodine_cell_id = True, 1 #check_iodine_cell(header)
+        self.iodine_in_spectrum, self.iodine_cell_id = check_iodine_cell(header)
 
         # Camera details
         self.exp_time = get_exposuretime(header, self.instrument)  # or_none(header, 'EXPOSURE')
@@ -141,67 +96,27 @@ class ObservationWrapper(components.Observation):
         self.dark_current = None    # FIXME: Not in header
 
         # Timing
-        try:
-            self.date = header['DATE-OBS'].strip()
-            self.time_start = Time(self.date, format='isot', scale='utc')
-            print(self.time_start, 'time_start')
-
-        except ValueError:  # aka if date is not in isot format (eg. in older fit headers)
-            yy = self.date[6:8]
-            #print(yy)
-            # adding a 20, or 19 to yy, depending on cetury
-            if float(yy) <= 50:
-                yyyy = '20' + yy
-            else:
-                yyyy = '19' + yy
-                #print(yyyy)
-            mm = self.date[3:5]
-            dd = self.date[0:2]
-
-            # reshaping old date to isot format by hand (maybe theres a better solution)
-            if (self.date[2] == '/') and (self.date[5] == '/') and (float(yy) >= 13):
-                self.date = yyyy + '-' + mm + '-' + dd
-                self.time_start = Time(self.date, format='isot', scale='utc')
-
-
+        self.time_start = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
         self.time_weighted = None
 
-        self.bary_date = or_none(header, 'LICKJD')#'MID-JD')
-        self.bary_vel_corr = or_none(header, 'LICKBVC')#'BVC')#
-        self.bary_date = or_none(header, 'BJD-MID')
-        self.bary_vel_corr = or_none(header, 'BVC')
-        if self.bary_vel_corr is None:
-            try:
-                print('Computing barycentric correction--THIS IS APO DATA')
-                ra = float(header['RA'])
-                dec = float(header['DEC'])
-                coord = SkyCoord(ra=ra*u.deg, dec=dec*u.deg)
+        self.bary_date = get_barytime(header, self.instrument)
 
-                if self.time_start is not None:
-                    location = EarthLocation(lat=32.7804*u.deg, lon=-105.8203*u.deg, height=2788*u.m)
-                    bary_corr = coord.radial_velocity_correction(obstime=self.time_start, location=location)
-                    self.bary_vel_corr = bary_corr.to(u.km/u.s).value
-                else:
-                    print("DATE-OBS is missing or invalid. Can't compute barycentric correction.")
-                    self.bary_vel_corr = None
-
-            except Exception as e:
-                print(f" Error computing barycentric correction: {e}")
-                self.bary_vel_corr = None
-        
-        
+        self.bary_vel_corr = or_none(header, 'BVC') * 1000.     # km/s in SONG header
         #self.topo_bary_factor = or_none(header, 'BVCFACT')
         #self.mjd_corr = or_none(header, 'MID-JD')#'MBJD')
         #self.moon_vel = or_none(header, 'MOONVEL') * 1000.  # convert to m/s
+        if self.bary_date is None:
+            print(f"\033[91mWarning: bary_date is still None for {filename}\033[0m")
+
         # TODO: Implement flux check
         # TODO: Re-calculate BVC
 
     def __getitem__(self, order) -> components.Spectrum:
         """Return one or more spectral orders
-
+        
         :param order: The order(s) of the spectrum to return.
         :type order: int, list, ndarray, slice
-
+        
         :return: The desired order(s).
         :rtype: :class:`Spectrum` or list[:class:`Spectrum`]
         """
@@ -218,93 +133,6 @@ class ObservationWrapper(components.Observation):
             return self.__getitem__([int(i) for i in np.arange(self.nord)[order]])
         else:
             raise IndexError(type(order))
-
-def compute_barycentric_velocity(header, apo=True):
-    try:
-        ra = float(header['RA'])
-        dec = float(header['DEC'])
-        date_obs = header['DATE-OBS']
-
-        time_obs = Time(date_obs, format='isot', scale='utc')
-        coord = SkyCoord(ra=ra*u.deg, dec=dec*u.deg)
-
-        # APO location from webpage converted to degree Latitude 32° 46' 49" N, Longitude 105° 49' 13" W Elevation 2788 meters
-        location = EarthLocation(lat=32.7804*u.deg, lon=-105.8203*u.deg, height=2788*u.m)
-        barycorr = coord.radial_velocity_correction(obstime=time_obs, location=location)
-
-        return barycorr.to(u.km/u.s).value  # returns value in m/s
-
-    except Exception as e:
-        print(f" Could not compute barycentric velocity: {e}")
-        return None
-    
-
-
-
-from scipy.interpolate import UnivariateSpline
-
-"""def normalize_orders(flux, wave, max_iter=5, sigma_clip_thresh=3.0, spline_s=0.01):
-
-    Robust normalization to provide usable continuum for pyodine.
-
-    Parameters:
-    - flux: 2D array (orders x pixels)
-    - wave: 2D array (orders x pixels)
-    - max_iter: sigma clip iterations
-    - sigma_clip_thresh: threshold for sigma clipping
-    - spline_s: smoothing factor for UnivariateSpline
-
-    Returns:
-    - norm_flux: normalized flux
-    - continuum: continuum used for normalization
- 
-    n_orders, n_pixels = flux.shape
-    norm_flux = np.zeros_like(flux)
-    continuum = np.ones_like(flux)
-
-    for i in range(n_orders):
-        f = np.nan_to_num(flux[i], nan=0.0, posinf=0.0, neginf=0.0)
-        w = wave[i]
-
-        # Flip if needed
-        if w[0] > w[-1]:
-            w = w[::-1]
-            f = f[::-1]
-
-        # Masking: finite + increasing wavelength + basic signal threshold
-        mask = (f > 0) & np.isfinite(f) & np.isfinite(w) & (np.diff(w, prepend=w[0] - 1e-5) > 0)
-
-        if np.sum(mask) < 10:
-            print(f"[Order {i}] Too few valid points, defaulting to flat continuum.")
-            cont = np.ones_like(f)
-        else:
-            try:
-                # Sigma clipping
-                f_clipped = sigma_clip(f[mask], sigma=sigma_clip_thresh, maxiters=max_iter)
-                good = ~f_clipped.mask
-
-                w_fit = w[mask][good]
-                f_fit = f[mask][good]
-
-                # Remove duplicates
-                w_fit, idx = np.unique(w_fit, return_index=True)
-                f_fit = f_fit[idx]
-
-                if len(w_fit) < 10:
-                    raise ValueError("Too few points after clipping")
-
-                spline = UnivariateSpline(w_fit, f_fit, s=spline_s * len(f_fit))
-                cont = spline(w)
-            except Exception as e:
-                print(f"[Order {i}] Spline fit failed: {e}. Using flat continuum.")
-                cont = np.ones_like(f)
-
-        # Normalize and assign
-        cont[cont <= 0] = 1.0  # Avoid divide-by-zero or negative continuum
-        norm_flux[i] = f / cont
-        continuum[i] = cont
-
-    return norm_flux, continuum"""
 
 def load_file(filename) -> components.Observation:
     """
@@ -327,12 +155,12 @@ def load_file(filename) -> components.Observation:
         h = pyfits.open(filename)
         header = h[0].header
 
-        # Case 1: PyODINE output format (single HDU, 3D cube)
+        # check structure of apo fits file apo song has uncertainities from jons pyvista routine
         if h[0].data is not None and h[0].data.ndim == 3:
-            print("Detected PyODINE single-HDU format")
             data = h[0].data
             if data.shape[0] < 3:
                 raise ValueError("Expected 3 layers (flux, wave, cont) in data cube.")
+            # we are removing odd edge columns in APO data
             flux = data[0][:, 12:]
             wave = data[1][:, 12:]
             cont = data[2][:, 12:]
@@ -340,8 +168,14 @@ def load_file(filename) -> components.Observation:
             print('min, median, max flux', np.min(flux), np.median(flux), np.max(flux))
             print('range wave', np.ptp(wave))
             print('median cont', np.median(cont))
+            
+            #chceck for nans in wavelength
+            nan_mask = np.isnan(wave)
+            print(nan_mask, 'nan mask in wave array!!!')
 
-        # Case 2: Original format with named HDUs remove first 12 columns in APO data for weird edge
+
+
+        # another check if the header has different keywords
         elif 'FLUX' in h and 'WAVE' in h and 'RESPONSE' in h:
             print("Detected multi-extension FITS format")
             flux = h['FLUX'].data[:, 12:]
@@ -364,7 +198,7 @@ def load_file(filename) -> components.Observation:
             flux = flux[..., ::-1]
             cont = cont[..., ::-1]
 
-        # Compute BVC if missing
+        # Compute BVC if missing= should be added now in reduction pipeline
         if 'BVC' not in header:
             print('BVC not in header, computing it now')
             bvc = compute_barycentric_velocity(header)
@@ -372,6 +206,26 @@ def load_file(filename) -> components.Observation:
             print(f"\033[92mComputed BVC: {bvc:.2f} km/s\033[0m")
         else:
             print(f"\033[94mBVC from header: {header['BVC']:.2f} km/s\033[0m")
+            
+        jd_mid = or_none(header, 'JD-MID')
+        bjd_mid = or_none(header, 'BJD-MID')
+
+        def is_valid_jd(jd_val):
+            try:
+                jd_val = float(jd_val)
+                return np.isfinite(jd_val)
+            except:
+                return False
+
+        # If neither valid JD-MID nor BJD-MID is present, fall back to DATE-OBS
+        if not is_valid_jd(jd_mid) and not is_valid_jd(bjd_mid):
+            print("No valid JD-MID or BJD-MID found, falling back to DATE-OBS")
+            try:
+                t_obs = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
+                header['JD-MID'] = t_obs.jd
+                print(f"\033[93mFallback JD-MID set to {t_obs.jd:.5f} from DATE-OBS\033[0m")
+            except Exception as e:
+                print(f"\033[91mFailed to compute fallback JD-MID: {e}\033[0m")
 
         return flux, wave, cont, header
 
@@ -381,144 +235,33 @@ def load_file(filename) -> components.Observation:
     finally:
         h.close()
 
-   
-    
-    
-    
-    
-def load_file3(filename) -> components.Observation:
-    """A convenience function to load observation data from file
-
-    :param filename: The filename of the observation to load.
-    :type filename: str
-
-    :return: The flux of the observation spectrum.
-    :rtype: ndarray
-    :return: The wavelengths of the observation spectrum.
-    :rtype: ndarray
-    :return: The continuum flux of the observation spectrum.
-    :rtype: ndarray
-    :return: The Fits-header.
-    :rtype: :class:`fits.Header`
-    """
-    try:
-        print(f"Trying to load file: {filename}")
-
-        ext = splitext(filename)[1]
-        if ext == '.fits':
-            # Load the file
-        
-            h = astropy.io.fits.open(filename)
-            print(h, 'h')
-            header = h[0].header
-            print(header, 'header'  )
-            #print(h[1].data)
-            compute_barycentric_velocity(header)
-
-            #flux = h[0].data[0]
-            flux = h['FLUX'].data[:,12:]#[0].data
-            cont = h['RESPONSE'].data[:,12:]#[:,12:]#[0].data
-            wave = h['WAVE'].data[:,12:]#[:,12:]#h[0].data[3]
-            # make negative flux values zero
-            flux[flux < 0] = 0
-            
-            
-            # attempting to just get flat orders from 0-1 for cross correlation
-            #flux, cont = normalize_orders(flux, wave)
-            """for i in [10, 20, 30]:
-                plt.figure()
-                plt.plot(wave[i], flux[i], label='Original')
-                plt.plot(wave[i], cont[i], label='Continuum', color='orange')
-                plt.plot(wave[i], flux[i]/cont[i], label='Normalized', color='green')
-                plt.axhline(1, color='gray', linestyle='--')
-                plt.title(f"Order {i}")
-                plt.legend()
-                plt.show()"""
-            #cont_est = median_filter(flux, size=(1, 201))  # per order, 201-pixel smoothing
-            #flux = flux/cont_est # attempt to normalize here
-            print(header, 'header')
-            #check and see since its not in old data
-            if 'BVC' not in header:
-                print('BVC not in header, computing it now')
-                bary_vel_corr_apo = compute_barycentric_velocity(header)
-                header['BVC'] = bary_vel_corr_apo
-            else:
-                print('BVC found in header')
-                bvc = header.get('BVC')
-                #print this in green
-                print(f"\033[92m{bvc}\033[0m", 'bvc!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-
-            bary_vel_corr_apo = compute_barycentric_velocity(header)
-            #print this in red
-            print(f"\033[91m{bary_vel_corr_apo}\033[0m", 'bary_vel_corr_apo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            #header['BVC'] = bary_vel_corr_apo
-            #check if the computed BVC makes sense
-            #if bvc - bary_vel_corr_apo > 0.1 or bvc - bary_vel_corr_apo < -0.1:
-                #print(f" Warning: Header BVC={bvc:.2f} km/s differs from computed BVC={bary_vel_corr_apo:.2f} km/s")
-                # check that BVC is somewhere in the plus minus 10 km/s range
-            if bary_vel_corr_apo is not None:
-                if -10. < bary_vel_corr_apo < 10.:
-                    print(f" Barycentric velocity correction computed: {bary_vel_corr_apo:.2f} km/s")
-                else:
-                    print(f" Computed BVC={bary_vel_corr_apo:.2f} km/s seems off, please check!")
-            else:
-                print(" Problem with barycentric velocity correction computation.")
-    
-
-        
-            
-            
-            #cont = np.ones_like(flux)
-            if wave[0, 0] > wave[0, -1]:  # Check first order
-                print('Reversing wavelength and flux arrays to be ascending')
-                wave = wave[..., ::-1]
-                flux = flux[..., ::-1]
-                cont = cont[..., ::-1]  # already replaced with ones anyway
-            print(f"Loaded FITS file with shape {flux.shape}")
-            #print(flux, 'flux')
-            print(wave, 'wave')
-            #print(cont, 'cont')
-            #weight = None
-            # making sure teh continuum is just 1s in shape of flux for rightnow
-            #cont = np.ones(flux.shape)
-            h.close()
-            # TODO: Check for `songwriter` signature
-            return flux, wave, cont, header
-        else:
-            # Unsupported file format
-            raise TypeError('Unsupported file format (%s)' % ext)
-    except IOError:
-        print('Could not open file %s' % filename)
-    except TypeError as e:
-        print('TypeError')
-        print(e.args[0])
 
 
 def get_star(header) -> components.Star:
-    """Create a star object based on header data
-
-    :param header: The Fits-header.
-    :type header: :class:`fits.Header`
-
-    :return: The star object.
-    :rtype: :class:`Star`
-    """
-    # TODO: Load stars from some kind of catalog based on name instead?
-
     name = or_none(header, 'OBJECT')
+
+    ra_raw = or_none(header, 'OBJ-RA')
+    dec_raw = or_none(header, 'OBJ-DEC')
+
+    coordinates = None
+    if ra_raw and dec_raw:
+        try:
+            # Try as HH:MM:SS format
+            coordinates = SkyCoord(ra_raw + ' ' + dec_raw, unit=(u.hourangle, u.deg))
+        except ValueError:
+            try:
+                # Try as decimal degrees
+                ra_deg = float(ra_raw)
+                dec_deg = float(dec_raw)
+                coordinates = SkyCoord(ra_deg, dec_deg, unit="deg")
+            except Exception as e:
+                print(f"Warning: Could not parse coordinates for {name}: {e}")
+                coordinates = None
+
+    # Get proper motion
     try:
-        coordinates = SkyCoord(
-            header['RA'].strip() + ' ' + header['OBJ-DEC'].strip(),
-            unit=(u.hourangle, u.deg)
-        )
-    except:# KeyError:
-        # TODO: Log this event
-        coordinates = None
-    # Get the proper motion vector
-    try:
-        proper_motion = (header['RA_PM'], header['DEC_PM'])
-    except:# KeyError:
-        # TODO: Log this event
+        proper_motion = (header['S-PM-RA'], header['S-PM-DEC'])
+    except Exception:
         proper_motion = (None, None)
 
     return components.Star(name, coordinates=coordinates, proper_motion=proper_motion)
@@ -559,13 +302,12 @@ def get_instrument(header) -> components.Instrument:
     raise TypeError('Could not determine instrument')
 
 
-
 def check_iodine_cell(header):
     """Check the position and state of the I2 cell during the observation
-
+    
     :param header: The Fits-header.
     :type header: :class:`fits.Header`
-
+    
     :return: Whether or not the I2 cell was in the light path.
     :rtype: bool
     :return: The ID of the used I2 cell.
@@ -595,7 +337,7 @@ def check_iodine_cell(header):
 def or_none(header, key, fallback_value=None):
     """A convenience function to prevent non-existent Fits-header cards from
     throwing up errors
-
+    
     :param header: The Fits-header.
     :type header: :class:`fits.Header`
     :param key: The keyword of the header card of interest.
@@ -603,7 +345,7 @@ def or_none(header, key, fallback_value=None):
     :param fallback_value: What to return if the header card does not exist
         (default: None).
     :type fallback_value: str, int, float, or None
-
+    
     :return: The header card or the 'fallback_value'.
     :rtype: str, int, float, or None
     """
@@ -615,44 +357,63 @@ def or_none(header, key, fallback_value=None):
 
 
 def get_exposuretime(header, instrument):
-    """Get the exposure time from the fits header (this extra function is
-    necessary to make old Lick spectra work smoothly)
+    """Get the exposure time from the fits header (this extra function is 
+    neccessary to make old Lick spectra work smoothly)
+    
     """
     if 'SONG' in instrument.name:
-        return or_none(header, 'EXPOSURE') or or_none(header, 'EXPTIME')
-
-    elif 'EXPOSURE' not in header and 'EXPTIME' in header:
-        header['EXPOSURE'] = header['EXPTIME']
-
+        return or_none(header, 'EXPTIME')
     elif 'EXPOSURE' in header and 'Lick' in instrument.name:
-        # sometimes it's in milliseconds - let's try and catch most of these times
+        # sometimes it's in millisecs - let's try and catch most of these times
         if header['EXPOSURE'] > 3600.:
             return header['EXPOSURE'] / 1000.
         else:
             return header['EXPOSURE']
-
     elif 'EXPTIME' in header and 'Lick' in instrument.name:
         return header['EXPTIME']
-
-    return None
-
+    else:
+        return None
 
 def get_barytime(header, instrument):
-    """Get the date and time of the weighted midpoint from the fits header
-    (this extra function is neccessary to make old Lick spectra work smoothly)\
+    """Get the barycentric timestamp (JD or BJD) from the header"""
 
-    """
-    if 'SONG' in instrument.name:
-        return or_none(header, 'BJD-MID')
+    def is_valid_jd(value):
+        try:
+            value = float(value)
+            return np.isfinite(value)
+        except Exception:
+            return False
+
+    if 'SONG' in instrument.name or 'APO SONG' in instrument.name:
+        print('Instrument is SONG/APO SONG!!!')
+        # Prefer BJD-MID
+        if 'BJD-MID' in header and is_valid_jd(header['BJD-MID']):
+            return float(header['BJD-MID'])
+        elif 'JD-MID' in header and is_valid_jd(header['JD-MID']):
+            return float(header['JD-MID'])
+        else:
+            print("Missing or invalid BJD-MID / JD-MID in header. Falling back to DATE-OBS.")
+            try:
+                t_obs = Time(header['DATE-OBS'].strip(), format='isot', scale='utc')
+                return t_obs.jd
+            except Exception as e:
+                print(f"Failed to parse DATE-OBS: {e}")
+                return None
+
     elif 'Lick' in instrument.name:
-        # in Lick the MID-time is only given in hrs, mins, secs
-        # so we create the MID-JD manually here
-        date  = header['DATE-OBS'].strip()[:10]
-        stime = header['MP-START'].strip()
-        mtime = header['MP-MID'].strip()
-        time_start = Time(date+'T'+stime, format='isot', scale='utc')
-        bary_date  = Time(date+'T'+mtime, format='isot', scale='utc')
-        # check whether time_weighted is on the next full day
-        if time_start > bary_date:
-            bary_date += TimeDelta(1., format='jd')
-        return bary_date.jd
+        try:
+            date = header['DATE-OBS'].strip()[:10]
+            stime = header['MP-START'].strip()
+            mtime = header['MP-MID'].strip()
+            time_start = Time(date + 'T' + stime, format='isot', scale='utc')
+            bary_date = Time(date + 'T' + mtime, format='isot', scale='utc')
+            if time_start > bary_date:
+                bary_date += TimeDelta(1., format='jd')
+            return bary_date.jd
+        except Exception as e:
+            print(f"Failed to parse Lick MID-TIME: {e}")
+            return None
+
+    print("Instrument not recognized. Could not determine bary time.")
+    return None
+

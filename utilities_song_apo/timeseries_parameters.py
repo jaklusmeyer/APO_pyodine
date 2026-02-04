@@ -8,12 +8,19 @@
 import logging
 import os
 
+
 utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
 class Timeseries_Parameters:
+    """The control parameters for the chunk velocity combination
     
-    def __init__(self):       
+    In this class you can define details for the chunk velocity combination: 
+    Should barycentric velocities be computed, and if so how? Which weighting
+    algorithm should be used, with which parameters, and what outputs should be
+    generated?
+    """
+    
+    def __init__(self):    
         
         # Logging options
         self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
@@ -59,8 +66,8 @@ class Timeseries_Parameters:
         # - 'useage_percentile': Best percentage of chunks within each observation 
         #   to use in the velocity combination.
         self.weighting_pars_song = {
-                'good_chunks': None, #list(range(3,15)), #(150, 350)
-                'good_orders': None, #list(range(6,14)),
+                'good_chunks': list(range(3,15)), #(150, 350) # chunk indices within orders
+                'good_orders': list(range(6,14)),
                 'sig_limit_low': 4., 
                 'sig_limit_up': 1000.,
                 'sig_correct': 1000.,
@@ -99,7 +106,7 @@ class Timeseries_Parameters:
         self.txt_header = ''                                    # Header line
         self.txt_outformat = ['%10.5f', '%6.4f', '%3.4f']       # Output format (make sure
                                                                 # this matches the keys!)
-        self.txt_detailed = False                               # If True, write a detailed
+        self.txt_detailed = True                                # If True, write a detailed
                                                                 # output with more metrics
         self.txt_flux_chunk = [251, 252, 253]                   # Chunk indices for estimate
                                                                 # of median flux

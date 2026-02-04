@@ -22,10 +22,17 @@ utilities_dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # For the MultiGaussian model: 11 positions & sigmas for the central Gauss and
 # the satellites
-_multigauss_setup_dict ={
-    'positions': [-4.35, -3.75, -2.85, -2.1, -1.5, 0.0, 1.5, 2.1, 2.85, 3.75, 4.35],
-    'sigmas':    [ 1.35,  1.35,  1.35,  1.35,  1.35, 0.9, 1.35, 1.35, 1.35, 1.35, 1.35]
-}
+_multigauss_setup_dict = {
+        'positions': [-2.9, -2.5, -1.9, -1.4, -1.0, 0.0, 1.0, 1.4, 1.9, 2.5, 2.9],
+        'sigmas':    [ 0.9,  0.9,  0.9,  0.9,  0.9, 0.6, 0.9, 0.9, 0.9, 0.9, 0.9]
+        }
+
+# For the HermiteGaussian model: Set Hermite degrees 1, 2, and 9 to 0. (This
+# is actually the default case, but here to explain how one can adapt it.)
+_hermitegauss_setup_dict = {
+        'weight_1': 0, 'weight_2': 0, 'weight_3': 1, 'weight_4': 1, 'weight_5': 1, 
+        'weight_6': 1, 'weight_7': 1, 'weight_8': 1, 'weight_9': 0
+        }
 
 
 class Parameters:
@@ -56,7 +63,7 @@ class Parameters:
         self.log_config_file = os.path.join(utilities_dir_path, 'logging.json')   # The logging config file
         self.log_level = logging.INFO           # The logging level used for console and info file
         
-        self.use_progressbar = True          # Use a progressbar during chunk modelling?
+        self.use_progressbar = False            # Use a progressbar during chunk modelling?
         
         # Tellurics:
         self.telluric_mask = None               # Telluric mask to use (carmenes, uves or hitran); 
@@ -74,19 +81,10 @@ class Parameters:
                                                 # (None,None) uses automatically the same as in the template
         # The chunk width is now determined by the template chunks
         #self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
-        #self.chunks_per_order = None            # Maximum number of chunks per order (optional)
+        self.chunk_padding = 6                  # Padding (left and right) of the chunks in pixels
+        self.chunks_per_order = None            # Maximum number of chunks per order (optional)
         self.chunk_delta_v = None               # Velocity shift between template and observation 
                                                 # (None: relative barycentric velocity)
-        
-        #Jessica move 01Dec2025
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
-        self.chunks_per_order = 22              # Maximum number of chunks per order (optional)
-        self.pix_offset0 = 30                   # The starting pixel of the first chunk within each order
-        
-        
-        
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
@@ -105,7 +103,7 @@ class Parameters:
         self.rel_noise = 0.008                  # Only used if weight_type='inverse': The relative noise within a flatfield spectrum
         
         # I2 atlas:
-        self.i2_to_use = 3                     # Index of I2 FTS to use (see archive/conf.py)
+        self.i2_to_use = 1                      # Index of I2 FTS to use (see archive/conf.py)
         self.wavelength_scale = 'air'           # Which wavelength scale to use ('air' or 'vacuum' - should always be the first)
         
         # If you want to create and save velocity analysis plots, put in the desired
@@ -154,8 +152,8 @@ class Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
-                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_model': models.lsf.HermiteGaussian,   # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _hermitegauss_setup_dict,  # The instrument-specific LSF setup parameters
                  # Then define the wavelength model
                  'wave_model': models.wave.LinearWaveModel,
                  # And define the continuum model
@@ -188,7 +186,56 @@ class Parameters:
                  # Median parameter results
                  'save_median_pars': True,                  # Save median results to text file (None: False)
                  }}
-
+#        ,
+#                
+#                2:
+#                {# First define the LSF
+#                 'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
+#                 # For fixed lsf consisting of smoothed lsf results from previous runs,
+#                 # define the smoothing parameters here:
+#                 'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
+#                 'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
+#                 'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
+#                 'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
+#                 'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
+#                                                            # (otherwise: the lmfit redchi2)
+#                 'smooth_osample': 0,                       # Oversampling to use in smoothing 
+#                                                            # (None or 0: use the oversampling from the model)
+#                
+#                 # Then define the wavelength model
+#                 'wave_model': models.wave.LinearWaveModel,
+#                 # And define the continuum model
+#                 'cont_model': models.cont.LinearContinuumModel,
+#                 
+#                 # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
+#                 # over the orders with polynomials (in order to use the smoothed values as input for the run)
+#                 # (probably only makes sense before first run, later use smoothed results from previous runs):
+#                 'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
+#                 'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
+#                 # Fitting keywords
+#                 'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
+#                 
+#                 # Save the fit results from this run?
+#                 # You can also define the filetype:
+#                 #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
+#                 #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
+#                 'save_result': True,                       # Save the result of this run (None: True)
+#                 'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
+#                 # After the chunks have been modeled, you can model the wavelength results for the chunks
+#                 # over the orders with polynomials (in order to use the smoothed values as input for next run):
+#                 'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
+#                 'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
+#                 # Plotting keywords
+#                 'plot_success': True,                      # Create plot of fitting success (None: False)
+#                 'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
+#                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+#                 'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
+#                 
+#                 # Median parameter results
+#                 'save_median_pars': True,                  # Save median results to text file (None: False)
+#                 }
+#                
+#        }
         
 
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
@@ -232,7 +279,7 @@ class Parameters:
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
-                        value=2.0, min=0.5, max=8.0)
+                        value=2.0, min=0.5, max=4.0)
                 
                 # Constrain the iodine to not become negative (just in case)
                 lmfit_params[i]['iod_depth'].set(min=0.1)
@@ -300,12 +347,80 @@ class Parameters:
                 
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
+                """
+                lsf_fit_pars = {
+                    'fwhm': run_results[0]['results'][i].params['lsf_fwhm'],
+                    'weight_1': 0.,
+                    'weight_2': 0.,
+                    'weight_3': 0.,#3e-10,
+                    'weight_4': 0.,#2e-10,
+                    'weight_5': 0.,#-4e-11,
+                    'weight_6': 0.,#1.5e11,
+                    'weight_7': 0.,#2e-12,
+                    'weight_8': 0.,#9e-13,
+                    'weight_9': 0.
+                }
+                """
                 for p in lsf_fit_pars.keys():
-                    lmfit_params[i]['lsf_'+p].set(
-                        value=lsf_fit_pars[p],
-                        min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.8,
-                        max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.8)
-
+                    if fitter.model.lsf_model.pars_dict[p]:
+                        if abs(lsf_fit_pars[p]) >= 1e-13:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                    max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        else:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-2e-13,
+                                    max=lsf_fit_pars[p]+2e-13)
+                    else:
+                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
+        """
+        ###########################################################################
+        # RUN 2
+        # Final run. Use smoothed LSF results from run 1 and keep them fixed.
+        # Only vary other parameters (use results from run 1 as starting values).
+        ###########################################################################
+        elif run_id == 2:
+            # Loop over the chunks
+            for i in range(len(lmfit_params)):
+                # Set velocity to median velocity from last run
+                lmfit_params[i]['velocity'].set(
+                        value=run_results[1]['median_pars']['velocity']) #run_results[run_id]['velocity_guess'])
+                # Set iodine and template depth to median results from last run
+                lmfit_params[i]['iod_depth'].set(
+                        value=run_results[1]['median_pars']['iod_depth'])
+                lmfit_params[i]['tem_depth'].set(
+                        value=run_results[1]['median_pars']['tem_depth'])
+                
+                # Wavelength dispersion: use results from before
+                lmfit_params[i]['wave_slope'].set(
+                        value=run_results[1]['wave_slope_fit'][i]),
+                        #min=run_results[1]['wave_slope_fit'][i]*0.99,
+                        #max=run_results[1]['wave_slope_fit'][i]*1.01)
+                
+                # Wavelength intercept: use results from before
+                lmfit_params[i]['wave_intercept'].set(
+                        value=run_results[1]['wave_intercept_fit'][i])
+                        #min=run_results[1]['wave_intercept_fit'][i]*0.96,
+                        #max=run_results[1]['wave_intercept_fit'][i]*1.04)
+                        
+                # Continuum parameters: use results from before
+                lmfit_params[i]['cont_intercept'].set(
+                        value=run_results[1]['results'][i].params['cont_intercept'])
+                lmfit_params[i]['cont_slope'].set(
+                        value=run_results[1]['results'][i].params['cont_slope'])
+                # If the chunks were normalized beforehand:
+                # Fix the continuum slope to 0
+                #lmfit_params[i]['cont_slope'].set(
+                #        value=0., vary=False)
+                
+                # For fixed, smoothed LSF: Don't vary order and pixel0 values!
+                # (and better also not the amplitude)
+                lmfit_params[i]['lsf_order'].vary = False
+                lmfit_params[i]['lsf_pixel0'].vary = False
+                lmfit_params[i]['lsf_amplitude'].vary = False
+        """
         return lmfit_params
     
     
@@ -344,7 +459,7 @@ class Template_Parameters:
         self.chunking_algorithm = 'auto_equal_width'
         # If the auto_equal_width chunking algorithm is used, the chunks are defined by the user
         # through their width, padding, number of chunks per order, and pixel offset of the first chunk:
-        self.temp_order_range = (22, 45)         # Order range (min,max) to use in observation modeling;
+        self.temp_order_range = (18,41)         # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses all orders
         self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
         self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
@@ -357,7 +472,7 @@ class Template_Parameters:
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
-        self.velgues_order_range = (8,20)      # Orders used for velocity guess (should be outside I2 region)
+        self.velgues_order_range = (10,30)      # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
         self.maxlag  = 500                      # The number of steps to each side in the cross-correlation
         
@@ -372,7 +487,7 @@ class Template_Parameters:
         self.rel_noise = 0.008                  # Only used if weight_type='inverse': The relative noise within a flatfield spectrum
         
         # I2 atlas:
-        self.i2_to_use = 3                      # Index of I2 FTS to use (see archive/conf.py)
+        self.i2_to_use = 1                      # Index of I2 FTS to use (see archive/conf.py)
         self.wavelength_scale = 'air'           # Which wavelength scale to use ('air' or 'vacuum' - should always be the first)
         
         # The parameters for the Jansson deconvolution algorithm.
@@ -381,7 +496,7 @@ class Template_Parameters:
         # Deconvolution parameters
         self.deconvolution_pars = {
                 'osample_temp': 10,             # Oversampling of template
-                'jansson_niter': 1800,          # Max. number of iterations in Jansson deconvolution
+                'jansson_niter': 1200,          # Max. number of iterations in Jansson deconvolution
                 'jansson_zerolevel': 0.00,      # Spectrum zero-level in Jansson deconvolution
                 'jansson_contlevel': 1.02,      # Spectrum continuum-level in Jansson deconvolution
                 'jansson_conver': 0.2,          # Convergence parameter in Jansson deconvolution (careful with that!)
@@ -445,8 +560,8 @@ class Template_Parameters:
                 
                 1:
                 {# First define the LSF
-                 'lsf_model': models.lsf.MultiGaussian,     # LSF model to use (this is absolutely neccessary)
-                 'lsf_setup_dict': _multigauss_setup_dict,  # The instrument-specific LSF setup parameters
+                 'lsf_model': models.lsf.HermiteGaussian,   # LSF model to use (this is absolutely neccessary)
+                 'lsf_setup_dict': _hermitegauss_setup_dict,  # The instrument-specific LSF setup parameters
                  # Then define the wavelength model
                  'wave_model': models.wave.LinearWaveModel,
                  # And define the continuum model
@@ -479,7 +594,56 @@ class Template_Parameters:
                  # Median parameter results
                  'save_median_pars': True,                  # Save median results to text file (None: False)
                  }}
-
+        #,
+        #        
+        #        2:
+        #        {# First define the LSF
+        #         'lsf_model': models.lsf.FixedLSF,          # LSF model to use (this is absolutely neccessary)
+        #         # For fixed lsf consisting of smoothed lsf results from previous runs,
+        #         # define the smoothing parameters here:
+        #         'smooth_lsf_run': 1,                       # Smooth lsfs from this run (None: last run)
+        #         'smooth_pixels': 160,                      # Pixels (in dispersion direction) to smooth over
+        #         'smooth_orders': 3,                        # Orders (in cross-disp direction) to smooth over
+        #         'order_separation': 15,                    # Avg. pixels between orders in raw spectrum
+        #         'smooth_manual_redchi': False,             # If true, calculate smooth weights from manual redchi2
+        #                                                    # (otherwise: the lmfit redchi2)
+        #         'smooth_osample': 0,                       # Oversampling to use in smoothing 
+        #                                                    # (None or 0: use the oversampling from the model)
+        #        
+        #         # Then define the wavelength model
+        #         'wave_model': models.wave.LinearWaveModel,
+        #         # And define the continuum model
+        #         'cont_model': models.cont.LinearContinuumModel,
+        #         
+        #         # Before the chunks are modeled, you can smooth the wavelength guesses for the chunks
+        #         # over the orders with polynomials (in order to use the smoothed values as input for the run)
+        #         # (probably only makes sense before first run, later use smoothed results from previous runs):
+        #         'pre_wave_slope_deg': 0,                   # Polynomial degree of dispersion fitting (None: 0, no fitting)
+        #         'pre_wave_intercept_deg': 0,               # Same as above, for wavelength intercept (None: 0, no fitting)
+        #         # Fitting keywords
+        #         'use_chauvenet_pixels': True,              # Chauvenet criterion for pixel outliers? (None: False)
+        #         
+        #         # Save the fit results from this run?
+        #         # You can also define the filetype:
+        #         #    - 'h5py': Saves the most important results to hdf5 (small filesize, harder to recover)
+        #         #    - 'dill': Saves the whole object structure to pickle (large filesize, easy to recover)
+        #         'save_result': True,                       # Save the result of this run (None: True)
+        #         'save_filetype': 'dill',                   # Filetype to save in (None: 'h5py')
+        #         # After the chunks have been modeled, you can model the wavelength results for the chunks
+        #         # over the orders with polynomials (in order to use the smoothed values as input for next run):
+        #         'wave_slope_deg': 3,                       # Polynomial degree of dispersion fitting (None or 0: no fitting)
+        #         'wave_intercept_deg': 3,                   # Same as above, for wavelength intercept (None or 0: no fitting)
+        #         # Plotting keywords
+        #         'plot_success': True,                      # Create plot of fitting success (None: False)
+        #         'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
+        #         'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+        #         'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
+        #         
+        #         # Median parameter results
+        #         'save_median_pars': True,                  # Save median results to text file (None: False)
+        #         }
+        #        
+        #}
         
 
     def constrain_parameters(self, lmfit_params, run_id, run_results, fitter):
@@ -521,7 +685,7 @@ class Template_Parameters:
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
-                        value=2.0, min=0.5, max=8.0)
+                        value=2.0, min=0.5, max=4.0)
                 
                 # Constrain the iodine to not become negative (just in case)
                 lmfit_params[i]['iod_depth'].set(min=0.1)
@@ -586,12 +750,83 @@ class Template_Parameters:
                 
                 # Set the LSF parameters to the fitted values,
                 # and constrain them (otherwise crazy things can happen)
+                """
+                lsf_fit_pars = {
+                    'fwhm': run_results[0]['results'][i].params['lsf_fwhm'],
+                    'weight_1': 0.,
+                    'weight_2': 0.,
+                    'weight_3': 0.,#3e-10,
+                    'weight_4': 0.,#2e-10,
+                    'weight_5': 0.,#-4e-11,
+                    'weight_6': 0.,#1.5e11,
+                    'weight_7': 0.,#2e-12,
+                    'weight_8': 0.,#9e-13,
+                    'weight_9': 0.
+                }
+                """
                 for p in lsf_fit_pars.keys():
-                    lmfit_params[i]['lsf_'+p].set(
-                        value=lsf_fit_pars[p],
-                        min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*0.8,
-                        max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*0.8)
-       
+                    if fitter.model.lsf_model.pars_dict[p]:
+                        if abs(lsf_fit_pars[p]) >= 1e-13:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-abs(lsf_fit_pars[p])*2.,
+                                    max=lsf_fit_pars[p]+abs(lsf_fit_pars[p])*2.)
+                        else:
+                            lmfit_params[i]['lsf_'+p].set(
+                                    value=lsf_fit_pars[p],
+                                    min=lsf_fit_pars[p]-2e-13,
+                                    max=lsf_fit_pars[p]+2e-13)
+                    else:
+                        lmfit_params[i]['lsf_'+p].set(value=0., vary=False)
+                    
+        """
+        ###########################################################################
+        # RUN 2
+        # Final run. Use smoothed LSF results from run 1 and keep them fixed.
+        # Only vary other parameters (use results from run 1 as starting values).
+        ###########################################################################
+        elif run_id == 2:
+            # Loop over the chunks
+            for i in range(len(lmfit_params)):
+                # Fix velocity and template depth in template creation
+                # (these are put to constant 0. and 1. then)
+                lmfit_params[i]['velocity'].set(
+                        vary=False)
+                lmfit_params[i]['tem_depth'].set(
+                        vary=False)
+                
+                # Set iodine depth to median results from last run
+                lmfit_params[i]['iod_depth'].set(
+                        value=run_results[1]['median_pars']['iod_depth'])
+                
+                # Wavelength dispersion: use results from before
+                lmfit_params[i]['wave_slope'].set(
+                        value=run_results[1]['wave_slope_fit'][i]),
+                        #min=run_results[1]['wave_slope_fit'][i]*0.99,
+                        #max=run_results[1]['wave_slope_fit'][i]*1.01)
+                
+                # Wavelength intercept: use results from before
+                lmfit_params[i]['wave_intercept'].set(
+                        value=run_results[1]['wave_intercept_fit'][i])
+                        #min=run_results[1]['wave_intercept_fit'][i]*0.96,
+                        #max=run_results[1]['wave_intercept_fit'][i]*1.04)
+                        
+                # Continuum parameters: use results from before
+                lmfit_params[i]['cont_intercept'].set(
+                        value=run_results[1]['results'][i].params['cont_intercept'])
+                lmfit_params[i]['cont_slope'].set(
+                        value=run_results[1]['results'][i].params['cont_slope'])
+                # If the chunks were normalized beforehand:
+                # Fix the continuum slope to 0
+                #lmfit_params[i]['cont_slope'].set(
+                #        value=0., vary=False)
+                
+                # For fixed, smoothed LSF: Don't vary order and pixel0 values!
+                # (and better also not the amplitude)
+                lmfit_params[i]['lsf_order'].vary = False
+                lmfit_params[i]['lsf_pixel0'].vary = False
+                lmfit_params[i]['lsf_amplitude'].vary = False
+        """
         return lmfit_params
 
     # Start and end wavelengths of chunks if wave_defined chunking algorithm is used
