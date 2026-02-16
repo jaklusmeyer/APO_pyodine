@@ -1,5 +1,11 @@
-# Ignore all UT nightly reduction folders
+# Ignore nightly directories
 UT*/
 
-# Ignore the git metadata file from macOS if present
+# Ignore OS / Python junk
 .DS_Store
+__pycache__/
+*.pyc
+
+# Optional: ignore logs and large binary products (uncomment if desired)
+# *.log
+# *.h5

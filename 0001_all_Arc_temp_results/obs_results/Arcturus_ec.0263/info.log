@@ -1,0 +1,1930 @@
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260216/sciencestar/Arcturus_ec.0263.fits
+INFO - 
+INFO - Median flux of the observation: 24182
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/pyodine/atlas/Pepsi_Arcturus_atlas_260216_v005.h5
+INFO - 
+INFO - Order correction: 0
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -28.601 km/s
+INFO - Template velocity: 0.083 km/s
+INFO - Velocity guess: -28.684 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 23.652 km/s)
+INFO - (Barycentric velocity of template: 0.000 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -23652.216353901655, z = -7.889530147520141e-05
+
+INFO - Startpixel (order 15, chunk 29): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 16, chunk 68): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 17, chunk 107): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 18, chunk 146): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 19, chunk 185): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 20, chunk 224): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 21, chunk 263): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 302): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 23, chunk 341): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 24, chunk 380): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 25, chunk 419): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 26, chunk 458): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 27, chunk 497): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 28, chunk 536): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 29, chunk 575): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 30, chunk 614): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 31, chunk 653): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 32, chunk 692): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 33, chunk 731): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 770): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 35, chunk 809): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 36, chunk 848): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 887): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 38, chunk 926): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 965): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 1004): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 41, chunk 1043): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 42, chunk 1082): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 43, chunk 1121): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 44, chunk 1160): -12
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 1199): -11
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 46, chunk 1238): -11
+INFO - -> Correcting to 0.
+INFO - 
+INFO - Total number of chunks: 1254
+INFO - Nr. chunks in order 0: 29
+INFO - First and last covered pixel of chunks in order 0: 1186, 4656
+INFO - Orders: 14 - 46 (33 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+ERROR - Chunk 0: No Data! Returning LmfitResult with None.
+ERROR - Chunk 1: No Data! Returning LmfitResult with None.
+ERROR - Chunk 2: No Data! Returning LmfitResult with None.
+ERROR - Chunk 3: No Data! Returning LmfitResult with None.
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - Chunk 5: No Data! Returning LmfitResult with None.
+ERROR - Chunk 6: No Data! Returning LmfitResult with None.
+ERROR - Chunk 7: No Data! Returning LmfitResult with None.
+ERROR - Chunk 8: No Data! Returning LmfitResult with None.
+ERROR - Chunk 9: No Data! Returning LmfitResult with None.
+ERROR - Chunk 10: No Data! Returning LmfitResult with None.
+ERROR - Chunk 11: No Data! Returning LmfitResult with None.
+ERROR - Chunk 12: No Data! Returning LmfitResult with None.
+ERROR - Chunk 13: No Data! Returning LmfitResult with None.
+ERROR - Chunk 14: No Data! Returning LmfitResult with None.
+ERROR - Chunk 15: No Data! Returning LmfitResult with None.
+ERROR - Chunk 16: No Data! Returning LmfitResult with None.
+ERROR - Chunk 17: No Data! Returning LmfitResult with None.
+ERROR - Chunk 18: No Data! Returning LmfitResult with None.
+ERROR - Chunk 19: No Data! Returning LmfitResult with None.
+ERROR - Chunk 20: No Data! Returning LmfitResult with None.
+ERROR - Chunk 21: No Data! Returning LmfitResult with None.
+ERROR - Chunk 22: No Data! Returning LmfitResult with None.
+ERROR - Chunk 23: No Data! Returning LmfitResult with None.
+ERROR - Chunk 24: No Data! Returning LmfitResult with None.
+ERROR - Chunk 25: No Data! Returning LmfitResult with None.
+ERROR - Chunk 26: No Data! Returning LmfitResult with None.
+ERROR - Chunk 27: No Data! Returning LmfitResult with None.
+ERROR - Chunk 28: No Data! Returning LmfitResult with None.
+ERROR - Chunk 29: No Data! Returning LmfitResult with None.
+ERROR - Chunk 30: No Data! Returning LmfitResult with None.
+ERROR - Chunk 31: No Data! Returning LmfitResult with None.
+ERROR - Chunk 32: No Data! Returning LmfitResult with None.
+ERROR - Chunk 33: No Data! Returning LmfitResult with None.
+ERROR - Chunk 34: No Data! Returning LmfitResult with None.
+ERROR - Chunk 35: No Data! Returning LmfitResult with None.
+ERROR - Chunk 36: No Data! Returning LmfitResult with None.
+ERROR - Chunk 37: No Data! Returning LmfitResult with None.
+ERROR - Chunk 38: No Data! Returning LmfitResult with None.
+ERROR - Chunk 39: No Data! Returning LmfitResult with None.
+ERROR - Chunk 40: No Data! Returning LmfitResult with None.
+ERROR - Chunk 41: No Data! Returning LmfitResult with None.
+ERROR - Chunk 42: No Data! Returning LmfitResult with None.
+ERROR - Chunk 43: No Data! Returning LmfitResult with None.
+ERROR - Chunk 44: No Data! Returning LmfitResult with None.
+ERROR - Chunk 45: No Data! Returning LmfitResult with None.
+ERROR - Chunk 46: No Data! Returning LmfitResult with None.
+ERROR - Chunk 47: No Data! Returning LmfitResult with None.
+ERROR - Chunk 48: No Data! Returning LmfitResult with None.
+ERROR - Chunk 49: No Data! Returning LmfitResult with None.
+ERROR - Chunk 50: No Data! Returning LmfitResult with None.
+ERROR - Chunk 51: No Data! Returning LmfitResult with None.
+ERROR - Chunk 52: No Data! Returning LmfitResult with None.
+ERROR - Chunk 53: No Data! Returning LmfitResult with None.
+ERROR - Chunk 54: No Data! Returning LmfitResult with None.
+ERROR - Chunk 55: No Data! Returning LmfitResult with None.
+ERROR - Chunk 56: No Data! Returning LmfitResult with None.
+ERROR - Chunk 57: No Data! Returning LmfitResult with None.
+ERROR - Chunk 58: No Data! Returning LmfitResult with None.
+ERROR - Chunk 59: No Data! Returning LmfitResult with None.
+ERROR - Chunk 60: No Data! Returning LmfitResult with None.
+ERROR - Chunk 61: No Data! Returning LmfitResult with None.
+ERROR - Chunk 62: No Data! Returning LmfitResult with None.
+ERROR - Chunk 63: No Data! Returning LmfitResult with None.
+ERROR - Chunk 64: No Data! Returning LmfitResult with None.
+ERROR - Chunk 65: No Data! Returning LmfitResult with None.
+ERROR - Chunk 66: No Data! Returning LmfitResult with None.
+ERROR - Chunk 67: No Data! Returning LmfitResult with None.
+ERROR - Chunk 68: No Data! Returning LmfitResult with None.
+ERROR - Chunk 69: No Data! Returning LmfitResult with None.
+ERROR - Chunk 70: No Data! Returning LmfitResult with None.
+ERROR - Chunk 71: No Data! Returning LmfitResult with None.
+ERROR - Chunk 72: No Data! Returning LmfitResult with None.
+ERROR - Chunk 73: No Data! Returning LmfitResult with None.
+ERROR - Chunk 74: No Data! Returning LmfitResult with None.
+ERROR - Chunk 75: No Data! Returning LmfitResult with None.
+ERROR - Chunk 76: No Data! Returning LmfitResult with None.
+ERROR - Chunk 77: No Data! Returning LmfitResult with None.
+ERROR - Chunk 78: No Data! Returning LmfitResult with None.
+ERROR - Chunk 79: No Data! Returning LmfitResult with None.
+ERROR - Chunk 80: No Data! Returning LmfitResult with None.
+ERROR - Chunk 81: No Data! Returning LmfitResult with None.
+ERROR - Chunk 82: No Data! Returning LmfitResult with None.
+ERROR - Chunk 83: No Data! Returning LmfitResult with None.
+ERROR - Chunk 84: No Data! Returning LmfitResult with None.
+ERROR - Chunk 85: No Data! Returning LmfitResult with None.
+ERROR - Chunk 86: No Data! Returning LmfitResult with None.
+ERROR - Chunk 87: No Data! Returning LmfitResult with None.
+ERROR - Chunk 88: No Data! Returning LmfitResult with None.
+ERROR - Chunk 89: No Data! Returning LmfitResult with None.
+ERROR - Chunk 90: No Data! Returning LmfitResult with None.
+ERROR - Chunk 91: No Data! Returning LmfitResult with None.
+ERROR - Chunk 92: No Data! Returning LmfitResult with None.
+ERROR - Chunk 93: No Data! Returning LmfitResult with None.
+ERROR - Chunk 94: No Data! Returning LmfitResult with None.
+ERROR - Chunk 95: No Data! Returning LmfitResult with None.
+ERROR - Chunk 96: No Data! Returning LmfitResult with None.
+ERROR - Chunk 97: No Data! Returning LmfitResult with None.
+ERROR - Chunk 98: No Data! Returning LmfitResult with None.
+ERROR - Chunk 99: No Data! Returning LmfitResult with None.
+ERROR - Chunk 100: No Data! Returning LmfitResult with None.
+ERROR - Chunk 101: No Data! Returning LmfitResult with None.
+ERROR - Chunk 102: No Data! Returning LmfitResult with None.
+ERROR - Chunk 103: No Data! Returning LmfitResult with None.
+ERROR - Chunk 104: No Data! Returning LmfitResult with None.
+ERROR - Chunk 105: No Data! Returning LmfitResult with None.
+ERROR - Chunk 106: No Data! Returning LmfitResult with None.
+ERROR - Chunk 107: No Data! Returning LmfitResult with None.
+ERROR - Chunk 108: No Data! Returning LmfitResult with None.
+ERROR - Chunk 109: No Data! Returning LmfitResult with None.
+ERROR - Chunk 110: No Data! Returning LmfitResult with None.
+ERROR - Chunk 111: No Data! Returning LmfitResult with None.
+ERROR - Chunk 112: No Data! Returning LmfitResult with None.
+ERROR - Chunk 113: No Data! Returning LmfitResult with None.
+ERROR - Chunk 114: No Data! Returning LmfitResult with None.
+ERROR - Chunk 115: No Data! Returning LmfitResult with None.
+ERROR - Chunk 116: No Data! Returning LmfitResult with None.
+ERROR - Chunk 117: No Data! Returning LmfitResult with None.
+ERROR - Chunk 118: No Data! Returning LmfitResult with None.
+ERROR - Chunk 119: No Data! Returning LmfitResult with None.
+ERROR - Chunk 120: No Data! Returning LmfitResult with None.
+ERROR - Chunk 121: No Data! Returning LmfitResult with None.
+ERROR - Chunk 122: No Data! Returning LmfitResult with None.
+ERROR - Chunk 123: No Data! Returning LmfitResult with None.
+ERROR - Chunk 124: No Data! Returning LmfitResult with None.
+ERROR - Chunk 125: No Data! Returning LmfitResult with None.
+ERROR - Chunk 126: No Data! Returning LmfitResult with None.
+ERROR - Chunk 127: No Data! Returning LmfitResult with None.
+ERROR - Chunk 128: No Data! Returning LmfitResult with None.
+ERROR - Chunk 129: No Data! Returning LmfitResult with None.
+ERROR - Chunk 130: No Data! Returning LmfitResult with None.
+ERROR - Chunk 131: No Data! Returning LmfitResult with None.
+ERROR - Chunk 132: No Data! Returning LmfitResult with None.
+ERROR - Chunk 133: No Data! Returning LmfitResult with None.
+ERROR - Chunk 134: No Data! Returning LmfitResult with None.
+ERROR - Chunk 135: No Data! Returning LmfitResult with None.
+ERROR - Chunk 136: No Data! Returning LmfitResult with None.
+ERROR - Chunk 137: No Data! Returning LmfitResult with None.
+ERROR - Chunk 138: No Data! Returning LmfitResult with None.
+ERROR - Chunk 139: No Data! Returning LmfitResult with None.
+ERROR - Chunk 140: No Data! Returning LmfitResult with None.
+ERROR - Chunk 141: No Data! Returning LmfitResult with None.
+ERROR - Chunk 142: No Data! Returning LmfitResult with None.
+ERROR - Chunk 143: No Data! Returning LmfitResult with None.
+ERROR - Chunk 144: No Data! Returning LmfitResult with None.
+ERROR - Chunk 145: No Data! Returning LmfitResult with None.
+ERROR - Chunk 146: No Data! Returning LmfitResult with None.
+ERROR - Chunk 147: No Data! Returning LmfitResult with None.
+ERROR - Chunk 148: No Data! Returning LmfitResult with None.
+ERROR - Chunk 149: No Data! Returning LmfitResult with None.
+ERROR - Chunk 150: No Data! Returning LmfitResult with None.
+ERROR - Chunk 151: No Data! Returning LmfitResult with None.
+ERROR - Chunk 152: No Data! Returning LmfitResult with None.
+ERROR - Chunk 153: No Data! Returning LmfitResult with None.
+ERROR - Chunk 154: No Data! Returning LmfitResult with None.
+ERROR - Chunk 155: No Data! Returning LmfitResult with None.
+ERROR - Chunk 156: No Data! Returning LmfitResult with None.
+ERROR - Chunk 157: No Data! Returning LmfitResult with None.
+ERROR - Chunk 158: No Data! Returning LmfitResult with None.
+ERROR - Chunk 159: No Data! Returning LmfitResult with None.
+ERROR - Chunk 160: No Data! Returning LmfitResult with None.
+ERROR - Chunk 161: No Data! Returning LmfitResult with None.
+ERROR - Chunk 162: No Data! Returning LmfitResult with None.
+ERROR - Chunk 163: No Data! Returning LmfitResult with None.
+ERROR - Chunk 164: No Data! Returning LmfitResult with None.
+ERROR - Chunk 165: No Data! Returning LmfitResult with None.
+ERROR - Chunk 166: No Data! Returning LmfitResult with None.
+ERROR - Chunk 167: No Data! Returning LmfitResult with None.
+ERROR - Chunk 168: No Data! Returning LmfitResult with None.
+ERROR - Chunk 169: No Data! Returning LmfitResult with None.
+ERROR - Chunk 170: No Data! Returning LmfitResult with None.
+ERROR - Chunk 171: No Data! Returning LmfitResult with None.
+ERROR - Chunk 172: No Data! Returning LmfitResult with None.
+ERROR - Chunk 173: No Data! Returning LmfitResult with None.
+ERROR - Chunk 174: No Data! Returning LmfitResult with None.
+ERROR - Chunk 175: No Data! Returning LmfitResult with None.
+ERROR - Chunk 176: No Data! Returning LmfitResult with None.
+ERROR - Chunk 177: No Data! Returning LmfitResult with None.
+ERROR - Chunk 178: No Data! Returning LmfitResult with None.
+ERROR - Chunk 179: No Data! Returning LmfitResult with None.
+ERROR - Chunk 180: No Data! Returning LmfitResult with None.
+ERROR - Chunk 181: No Data! Returning LmfitResult with None.
+ERROR - Chunk 182: No Data! Returning LmfitResult with None.
+ERROR - Chunk 183: No Data! Returning LmfitResult with None.
+ERROR - Chunk 184: No Data! Returning LmfitResult with None.
+ERROR - Chunk 185: No Data! Returning LmfitResult with None.
+ERROR - Chunk 186: No Data! Returning LmfitResult with None.
+ERROR - Chunk 187: No Data! Returning LmfitResult with None.
+ERROR - Chunk 188: No Data! Returning LmfitResult with None.
+ERROR - Chunk 189: No Data! Returning LmfitResult with None.
+ERROR - Chunk 190: No Data! Returning LmfitResult with None.
+ERROR - Chunk 191: No Data! Returning LmfitResult with None.
+ERROR - Chunk 192: No Data! Returning LmfitResult with None.
+ERROR - Chunk 193: No Data! Returning LmfitResult with None.
+ERROR - Chunk 194: No Data! Returning LmfitResult with None.
+ERROR - Chunk 195: No Data! Returning LmfitResult with None.
+ERROR - Chunk 196: No Data! Returning LmfitResult with None.
+ERROR - Chunk 197: No Data! Returning LmfitResult with None.
+ERROR - Chunk 198: No Data! Returning LmfitResult with None.
+ERROR - Chunk 199: No Data! Returning LmfitResult with None.
+ERROR - Chunk 200: No Data! Returning LmfitResult with None.
+ERROR - Chunk 201: No Data! Returning LmfitResult with None.
+ERROR - Chunk 202: No Data! Returning LmfitResult with None.
+ERROR - Chunk 203: No Data! Returning LmfitResult with None.
+ERROR - Chunk 204: No Data! Returning LmfitResult with None.
+ERROR - Chunk 205: No Data! Returning LmfitResult with None.
+ERROR - Chunk 206: No Data! Returning LmfitResult with None.
+ERROR - Chunk 207: No Data! Returning LmfitResult with None.
+ERROR - Chunk 208: No Data! Returning LmfitResult with None.
+ERROR - Chunk 209: No Data! Returning LmfitResult with None.
+ERROR - Chunk 210: No Data! Returning LmfitResult with None.
+ERROR - Chunk 211: No Data! Returning LmfitResult with None.
+ERROR - Chunk 212: No Data! Returning LmfitResult with None.
+ERROR - Chunk 213: No Data! Returning LmfitResult with None.
+ERROR - Chunk 214: No Data! Returning LmfitResult with None.
+ERROR - Chunk 215: No Data! Returning LmfitResult with None.
+ERROR - Chunk 216: No Data! Returning LmfitResult with None.
+ERROR - Chunk 217: No Data! Returning LmfitResult with None.
+ERROR - Chunk 218: No Data! Returning LmfitResult with None.
+ERROR - Chunk 219: No Data! Returning LmfitResult with None.
+ERROR - Chunk 220: No Data! Returning LmfitResult with None.
+ERROR - Chunk 221: No Data! Returning LmfitResult with None.
+ERROR - Chunk 222: No Data! Returning LmfitResult with None.
+ERROR - Chunk 223: No Data! Returning LmfitResult with None.
+ERROR - Chunk 224: No Data! Returning LmfitResult with None.
+ERROR - Chunk 225: No Data! Returning LmfitResult with None.
+ERROR - Chunk 226: No Data! Returning LmfitResult with None.
+ERROR - Chunk 227: No Data! Returning LmfitResult with None.
+ERROR - Chunk 228: No Data! Returning LmfitResult with None.
+ERROR - Chunk 229: No Data! Returning LmfitResult with None.
+ERROR - Chunk 230: No Data! Returning LmfitResult with None.
+ERROR - Chunk 231: No Data! Returning LmfitResult with None.
+ERROR - Chunk 232: No Data! Returning LmfitResult with None.
+ERROR - Chunk 233: No Data! Returning LmfitResult with None.
+ERROR - Chunk 234: No Data! Returning LmfitResult with None.
+ERROR - Chunk 235: No Data! Returning LmfitResult with None.
+ERROR - Chunk 236: No Data! Returning LmfitResult with None.
+ERROR - Chunk 237: No Data! Returning LmfitResult with None.
+ERROR - Chunk 238: No Data! Returning LmfitResult with None.
+ERROR - Chunk 239: No Data! Returning LmfitResult with None.
+ERROR - Chunk 240: No Data! Returning LmfitResult with None.
+ERROR - Chunk 241: No Data! Returning LmfitResult with None.
+ERROR - Chunk 242: No Data! Returning LmfitResult with None.
+ERROR - Chunk 243: No Data! Returning LmfitResult with None.
+ERROR - Chunk 244: No Data! Returning LmfitResult with None.
+ERROR - Chunk 245: No Data! Returning LmfitResult with None.
+ERROR - Chunk 246: No Data! Returning LmfitResult with None.
+ERROR - Chunk 247: No Data! Returning LmfitResult with None.
+ERROR - Chunk 248: No Data! Returning LmfitResult with None.
+ERROR - Chunk 249: No Data! Returning LmfitResult with None.
+ERROR - Chunk 250: No Data! Returning LmfitResult with None.
+ERROR - Chunk 251: No Data! Returning LmfitResult with None.
+ERROR - Chunk 252: No Data! Returning LmfitResult with None.
+ERROR - Chunk 253: No Data! Returning LmfitResult with None.
+ERROR - Chunk 254: No Data! Returning LmfitResult with None.
+ERROR - Chunk 255: No Data! Returning LmfitResult with None.
+ERROR - Chunk 256: No Data! Returning LmfitResult with None.
+ERROR - Chunk 257: No Data! Returning LmfitResult with None.
+ERROR - Chunk 258: No Data! Returning LmfitResult with None.
+ERROR - Chunk 259: No Data! Returning LmfitResult with None.
+ERROR - Chunk 260: No Data! Returning LmfitResult with None.
+ERROR - Chunk 261: No Data! Returning LmfitResult with None.
+ERROR - Chunk 262: No Data! Returning LmfitResult with None.
+ERROR - Chunk 263: No Data! Returning LmfitResult with None.
+ERROR - Chunk 264: No Data! Returning LmfitResult with None.
+ERROR - Chunk 265: No Data! Returning LmfitResult with None.
+ERROR - Chunk 266: No Data! Returning LmfitResult with None.
+ERROR - Chunk 267: No Data! Returning LmfitResult with None.
+ERROR - Chunk 268: No Data! Returning LmfitResult with None.
+ERROR - Chunk 269: No Data! Returning LmfitResult with None.
+ERROR - Chunk 270: No Data! Returning LmfitResult with None.
+ERROR - Chunk 271: No Data! Returning LmfitResult with None.
+ERROR - Chunk 272: No Data! Returning LmfitResult with None.
+ERROR - Chunk 273: No Data! Returning LmfitResult with None.
+ERROR - Chunk 274: No Data! Returning LmfitResult with None.
+ERROR - Chunk 275: No Data! Returning LmfitResult with None.
+ERROR - Chunk 276: No Data! Returning LmfitResult with None.
+ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+ERROR - Chunk 278: No Data! Returning LmfitResult with None.
+ERROR - Chunk 279: No Data! Returning LmfitResult with None.
+ERROR - Chunk 280: No Data! Returning LmfitResult with None.
+INFO - 
+INFO - Number of chunks with no uncertainties: 1
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 281
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+INFO - 
+INFO - Creating analysis plots...
+ERROR - NaN value detected in iodine function.
+ERROR - Chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 62, in plot_chunkmodel
+    sp = fit_results[chunk_nr].fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+ERROR - NaN value detected in iodine function.
+ERROR - Chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 62, in plot_chunkmodel
+    sp = fit_results[chunk_nr].fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  11.479569321453667
+    left_2  =  -10.446378878224964
+    left_3  =  6.189371926418637
+    left_4  =  -2.176496930538213
+    left_5  =  0.7097254204529727
+    right1  =  11.479568419089034
+    right2  =  -10.446377037950468
+    right3  =  6.189370288658469
+    right4  =  -2.176495899931309
+    right5  =  0.70972502333613
+ERROR - Chunk 0: No Data! Returning LmfitResult with None.
+ERROR - Chunk 1: No Data! Returning LmfitResult with None.
+ERROR - Chunk 2: No Data! Returning LmfitResult with None.
+ERROR - Chunk 3: No Data! Returning LmfitResult with None.
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - Chunk 5: No Data! Returning LmfitResult with None.
+ERROR - Chunk 6: No Data! Returning LmfitResult with None.
+ERROR - Chunk 7: No Data! Returning LmfitResult with None.
+ERROR - Chunk 8: No Data! Returning LmfitResult with None.
+ERROR - Chunk 9: No Data! Returning LmfitResult with None.
+ERROR - Chunk 10: No Data! Returning LmfitResult with None.
+ERROR - Chunk 11: No Data! Returning LmfitResult with None.
+ERROR - Chunk 12: No Data! Returning LmfitResult with None.
+ERROR - Chunk 13: No Data! Returning LmfitResult with None.
+ERROR - Chunk 14: No Data! Returning LmfitResult with None.
+ERROR - Chunk 15: No Data! Returning LmfitResult with None.
+ERROR - Chunk 16: No Data! Returning LmfitResult with None.
+ERROR - Chunk 17: No Data! Returning LmfitResult with None.
+ERROR - Chunk 18: No Data! Returning LmfitResult with None.
+ERROR - Chunk 19: No Data! Returning LmfitResult with None.
+ERROR - Chunk 20: No Data! Returning LmfitResult with None.
+ERROR - Chunk 21: No Data! Returning LmfitResult with None.
+ERROR - Chunk 22: No Data! Returning LmfitResult with None.
+ERROR - Chunk 23: No Data! Returning LmfitResult with None.
+ERROR - Chunk 24: No Data! Returning LmfitResult with None.
+ERROR - Chunk 25: No Data! Returning LmfitResult with None.
+ERROR - Chunk 26: No Data! Returning LmfitResult with None.
+ERROR - Chunk 27: No Data! Returning LmfitResult with None.
+ERROR - Chunk 28: No Data! Returning LmfitResult with None.
+ERROR - Chunk 29: No Data! Returning LmfitResult with None.
+ERROR - Chunk 30: No Data! Returning LmfitResult with None.
+ERROR - Chunk 31: No Data! Returning LmfitResult with None.
+ERROR - Chunk 32: No Data! Returning LmfitResult with None.
+ERROR - Chunk 33: No Data! Returning LmfitResult with None.
+ERROR - Chunk 34: No Data! Returning LmfitResult with None.
+ERROR - Chunk 35: No Data! Returning LmfitResult with None.
+ERROR - Chunk 36: No Data! Returning LmfitResult with None.
+ERROR - Chunk 37: No Data! Returning LmfitResult with None.
+ERROR - Chunk 38: No Data! Returning LmfitResult with None.
+ERROR - Chunk 39: No Data! Returning LmfitResult with None.
+ERROR - Chunk 40: No Data! Returning LmfitResult with None.
+ERROR - Chunk 41: No Data! Returning LmfitResult with None.
+ERROR - Chunk 42: No Data! Returning LmfitResult with None.
+ERROR - Chunk 43: No Data! Returning LmfitResult with None.
+ERROR - Chunk 44: No Data! Returning LmfitResult with None.
+ERROR - Chunk 45: No Data! Returning LmfitResult with None.
+ERROR - Chunk 46: No Data! Returning LmfitResult with None.
+ERROR - Chunk 47: No Data! Returning LmfitResult with None.
+ERROR - Chunk 48: No Data! Returning LmfitResult with None.
+ERROR - Chunk 49: No Data! Returning LmfitResult with None.
+ERROR - Chunk 50: No Data! Returning LmfitResult with None.
+ERROR - Chunk 51: No Data! Returning LmfitResult with None.
+ERROR - Chunk 52: No Data! Returning LmfitResult with None.
+ERROR - Chunk 53: No Data! Returning LmfitResult with None.
+ERROR - Chunk 54: No Data! Returning LmfitResult with None.
+ERROR - Chunk 55: No Data! Returning LmfitResult with None.
+ERROR - Chunk 56: No Data! Returning LmfitResult with None.
+ERROR - Chunk 57: No Data! Returning LmfitResult with None.
+ERROR - Chunk 58: No Data! Returning LmfitResult with None.
+ERROR - Chunk 59: No Data! Returning LmfitResult with None.
+ERROR - Chunk 60: No Data! Returning LmfitResult with None.
+ERROR - Chunk 61: No Data! Returning LmfitResult with None.
+ERROR - Chunk 62: No Data! Returning LmfitResult with None.
+ERROR - Chunk 63: No Data! Returning LmfitResult with None.
+ERROR - Chunk 64: No Data! Returning LmfitResult with None.
+ERROR - Chunk 65: No Data! Returning LmfitResult with None.
+ERROR - Chunk 66: No Data! Returning LmfitResult with None.
+ERROR - Chunk 67: No Data! Returning LmfitResult with None.
+ERROR - Chunk 68: No Data! Returning LmfitResult with None.
+ERROR - Chunk 69: No Data! Returning LmfitResult with None.
+ERROR - Chunk 70: No Data! Returning LmfitResult with None.
+ERROR - Chunk 71: No Data! Returning LmfitResult with None.
+ERROR - Chunk 72: No Data! Returning LmfitResult with None.
+ERROR - Chunk 73: No Data! Returning LmfitResult with None.
+ERROR - Chunk 74: No Data! Returning LmfitResult with None.
+ERROR - Chunk 75: No Data! Returning LmfitResult with None.
+ERROR - Chunk 76: No Data! Returning LmfitResult with None.
+ERROR - Chunk 77: No Data! Returning LmfitResult with None.
+ERROR - Chunk 78: No Data! Returning LmfitResult with None.
+ERROR - Chunk 79: No Data! Returning LmfitResult with None.
+ERROR - Chunk 80: No Data! Returning LmfitResult with None.
+ERROR - Chunk 81: No Data! Returning LmfitResult with None.
+ERROR - Chunk 82: No Data! Returning LmfitResult with None.
+ERROR - Chunk 83: No Data! Returning LmfitResult with None.
+ERROR - Chunk 84: No Data! Returning LmfitResult with None.
+ERROR - Chunk 85: No Data! Returning LmfitResult with None.
+ERROR - Chunk 86: No Data! Returning LmfitResult with None.
+ERROR - Chunk 87: No Data! Returning LmfitResult with None.
+ERROR - Chunk 88: No Data! Returning LmfitResult with None.
+ERROR - Chunk 89: No Data! Returning LmfitResult with None.
+ERROR - Chunk 90: No Data! Returning LmfitResult with None.
+ERROR - Chunk 91: No Data! Returning LmfitResult with None.
+ERROR - Chunk 92: No Data! Returning LmfitResult with None.
+ERROR - Chunk 93: No Data! Returning LmfitResult with None.
+ERROR - Chunk 94: No Data! Returning LmfitResult with None.
+ERROR - Chunk 95: No Data! Returning LmfitResult with None.
+ERROR - Chunk 96: No Data! Returning LmfitResult with None.
+ERROR - Chunk 97: No Data! Returning LmfitResult with None.
+ERROR - Chunk 98: No Data! Returning LmfitResult with None.
+ERROR - Chunk 99: No Data! Returning LmfitResult with None.
+ERROR - Chunk 100: No Data! Returning LmfitResult with None.
+ERROR - Chunk 101: No Data! Returning LmfitResult with None.
+ERROR - Chunk 102: No Data! Returning LmfitResult with None.
+ERROR - Chunk 103: No Data! Returning LmfitResult with None.
+ERROR - Chunk 104: No Data! Returning LmfitResult with None.
+ERROR - Chunk 105: No Data! Returning LmfitResult with None.
+ERROR - Chunk 106: No Data! Returning LmfitResult with None.
+ERROR - Chunk 107: No Data! Returning LmfitResult with None.
+ERROR - Chunk 108: No Data! Returning LmfitResult with None.
+ERROR - Chunk 109: No Data! Returning LmfitResult with None.
+ERROR - Chunk 110: No Data! Returning LmfitResult with None.
+ERROR - Chunk 111: No Data! Returning LmfitResult with None.
+ERROR - Chunk 112: No Data! Returning LmfitResult with None.
+ERROR - Chunk 113: No Data! Returning LmfitResult with None.
+ERROR - Chunk 114: No Data! Returning LmfitResult with None.
+ERROR - Chunk 115: No Data! Returning LmfitResult with None.
+ERROR - Chunk 116: No Data! Returning LmfitResult with None.
+ERROR - Chunk 117: No Data! Returning LmfitResult with None.
+ERROR - Chunk 118: No Data! Returning LmfitResult with None.
+ERROR - Chunk 119: No Data! Returning LmfitResult with None.
+ERROR - Chunk 120: No Data! Returning LmfitResult with None.
+ERROR - Chunk 121: No Data! Returning LmfitResult with None.
+ERROR - Chunk 122: No Data! Returning LmfitResult with None.
+ERROR - Chunk 123: No Data! Returning LmfitResult with None.
+ERROR - Chunk 124: No Data! Returning LmfitResult with None.
+ERROR - Chunk 125: No Data! Returning LmfitResult with None.
+ERROR - Chunk 126: No Data! Returning LmfitResult with None.
+ERROR - Chunk 127: No Data! Returning LmfitResult with None.
+ERROR - Chunk 128: No Data! Returning LmfitResult with None.
+ERROR - Chunk 129: No Data! Returning LmfitResult with None.
+ERROR - Chunk 130: No Data! Returning LmfitResult with None.
+ERROR - Chunk 131: No Data! Returning LmfitResult with None.
+ERROR - Chunk 132: No Data! Returning LmfitResult with None.
+ERROR - Chunk 133: No Data! Returning LmfitResult with None.
+ERROR - Chunk 134: No Data! Returning LmfitResult with None.
+ERROR - Chunk 135: No Data! Returning LmfitResult with None.
+ERROR - Chunk 136: No Data! Returning LmfitResult with None.
+ERROR - Chunk 137: No Data! Returning LmfitResult with None.
+ERROR - Chunk 138: No Data! Returning LmfitResult with None.
+ERROR - Chunk 139: No Data! Returning LmfitResult with None.
+ERROR - Chunk 140: No Data! Returning LmfitResult with None.
+ERROR - Chunk 141: No Data! Returning LmfitResult with None.
+ERROR - Chunk 142: No Data! Returning LmfitResult with None.
+ERROR - Chunk 143: No Data! Returning LmfitResult with None.
+ERROR - Chunk 144: No Data! Returning LmfitResult with None.
+ERROR - Chunk 145: No Data! Returning LmfitResult with None.
+ERROR - Chunk 146: No Data! Returning LmfitResult with None.
+ERROR - Chunk 147: No Data! Returning LmfitResult with None.
+ERROR - Chunk 148: No Data! Returning LmfitResult with None.
+ERROR - Chunk 149: No Data! Returning LmfitResult with None.
+ERROR - Chunk 150: No Data! Returning LmfitResult with None.
+ERROR - Chunk 151: No Data! Returning LmfitResult with None.
+ERROR - Chunk 152: No Data! Returning LmfitResult with None.
+ERROR - Chunk 153: No Data! Returning LmfitResult with None.
+ERROR - Chunk 154: No Data! Returning LmfitResult with None.
+ERROR - Chunk 155: No Data! Returning LmfitResult with None.
+ERROR - Chunk 156: No Data! Returning LmfitResult with None.
+ERROR - Chunk 157: No Data! Returning LmfitResult with None.
+ERROR - Chunk 158: No Data! Returning LmfitResult with None.
+ERROR - Chunk 159: No Data! Returning LmfitResult with None.
+ERROR - Chunk 160: No Data! Returning LmfitResult with None.
+ERROR - Chunk 161: No Data! Returning LmfitResult with None.
+ERROR - Chunk 162: No Data! Returning LmfitResult with None.
+ERROR - Chunk 163: No Data! Returning LmfitResult with None.
+ERROR - Chunk 164: No Data! Returning LmfitResult with None.
+ERROR - Chunk 165: No Data! Returning LmfitResult with None.
+ERROR - Chunk 166: No Data! Returning LmfitResult with None.
+ERROR - Chunk 167: No Data! Returning LmfitResult with None.
+ERROR - Chunk 168: No Data! Returning LmfitResult with None.
+ERROR - Chunk 169: No Data! Returning LmfitResult with None.
+ERROR - Chunk 170: No Data! Returning LmfitResult with None.
+ERROR - Chunk 171: No Data! Returning LmfitResult with None.
+ERROR - Chunk 172: No Data! Returning LmfitResult with None.
+ERROR - Chunk 173: No Data! Returning LmfitResult with None.
+ERROR - Chunk 174: No Data! Returning LmfitResult with None.
+ERROR - Chunk 175: No Data! Returning LmfitResult with None.
+ERROR - Chunk 176: No Data! Returning LmfitResult with None.
+ERROR - Chunk 177: No Data! Returning LmfitResult with None.
+ERROR - Chunk 178: No Data! Returning LmfitResult with None.
+ERROR - Chunk 179: No Data! Returning LmfitResult with None.
+ERROR - Chunk 180: No Data! Returning LmfitResult with None.
+ERROR - Chunk 181: No Data! Returning LmfitResult with None.
+ERROR - Chunk 182: No Data! Returning LmfitResult with None.
+ERROR - Chunk 183: No Data! Returning LmfitResult with None.
+ERROR - Chunk 184: No Data! Returning LmfitResult with None.
+ERROR - Chunk 185: No Data! Returning LmfitResult with None.
+ERROR - Chunk 186: No Data! Returning LmfitResult with None.
+ERROR - Chunk 187: No Data! Returning LmfitResult with None.
+ERROR - Chunk 188: No Data! Returning LmfitResult with None.
+ERROR - Chunk 189: No Data! Returning LmfitResult with None.
+ERROR - Chunk 190: No Data! Returning LmfitResult with None.
+ERROR - Chunk 191: No Data! Returning LmfitResult with None.
+ERROR - Chunk 192: No Data! Returning LmfitResult with None.
+ERROR - Chunk 193: No Data! Returning LmfitResult with None.
+ERROR - Chunk 194: No Data! Returning LmfitResult with None.
+ERROR - Chunk 195: No Data! Returning LmfitResult with None.
+ERROR - Chunk 196: No Data! Returning LmfitResult with None.
+ERROR - Chunk 197: No Data! Returning LmfitResult with None.
+ERROR - Chunk 198: No Data! Returning LmfitResult with None.
+ERROR - Chunk 199: No Data! Returning LmfitResult with None.
+ERROR - Chunk 200: No Data! Returning LmfitResult with None.
+ERROR - Chunk 201: No Data! Returning LmfitResult with None.
+ERROR - Chunk 202: No Data! Returning LmfitResult with None.
+ERROR - Chunk 203: No Data! Returning LmfitResult with None.
+ERROR - Chunk 204: No Data! Returning LmfitResult with None.
+ERROR - Chunk 205: No Data! Returning LmfitResult with None.
+ERROR - Chunk 206: No Data! Returning LmfitResult with None.
+ERROR - Chunk 207: No Data! Returning LmfitResult with None.
+ERROR - Chunk 208: No Data! Returning LmfitResult with None.
+ERROR - Chunk 209: No Data! Returning LmfitResult with None.
+ERROR - Chunk 210: No Data! Returning LmfitResult with None.
+ERROR - Chunk 211: No Data! Returning LmfitResult with None.
+ERROR - Chunk 212: No Data! Returning LmfitResult with None.
+ERROR - Chunk 213: No Data! Returning LmfitResult with None.
+ERROR - Chunk 214: No Data! Returning LmfitResult with None.
+ERROR - Chunk 215: No Data! Returning LmfitResult with None.
+ERROR - Chunk 216: No Data! Returning LmfitResult with None.
+ERROR - Chunk 217: No Data! Returning LmfitResult with None.
+ERROR - Chunk 218: No Data! Returning LmfitResult with None.
+ERROR - Chunk 219: No Data! Returning LmfitResult with None.
+ERROR - Chunk 220: No Data! Returning LmfitResult with None.
+ERROR - Chunk 221: No Data! Returning LmfitResult with None.
+ERROR - Chunk 222: No Data! Returning LmfitResult with None.
+ERROR - Chunk 223: No Data! Returning LmfitResult with None.
+ERROR - Chunk 224: No Data! Returning LmfitResult with None.
+ERROR - Chunk 225: No Data! Returning LmfitResult with None.
+ERROR - Chunk 226: No Data! Returning LmfitResult with None.
+ERROR - Chunk 227: No Data! Returning LmfitResult with None.
+ERROR - Chunk 228: No Data! Returning LmfitResult with None.
+ERROR - Chunk 229: No Data! Returning LmfitResult with None.
+ERROR - Chunk 230: No Data! Returning LmfitResult with None.
+ERROR - Chunk 231: No Data! Returning LmfitResult with None.
+ERROR - Chunk 232: No Data! Returning LmfitResult with None.
+ERROR - Chunk 233: No Data! Returning LmfitResult with None.
+ERROR - Chunk 234: No Data! Returning LmfitResult with None.
+ERROR - Chunk 235: No Data! Returning LmfitResult with None.
+ERROR - Chunk 236: No Data! Returning LmfitResult with None.
+ERROR - Chunk 237: No Data! Returning LmfitResult with None.
+ERROR - Chunk 238: No Data! Returning LmfitResult with None.
+ERROR - Chunk 239: No Data! Returning LmfitResult with None.
+ERROR - Chunk 240: No Data! Returning LmfitResult with None.
+ERROR - Chunk 241: No Data! Returning LmfitResult with None.
+ERROR - Chunk 242: No Data! Returning LmfitResult with None.
+ERROR - Chunk 243: No Data! Returning LmfitResult with None.
+ERROR - Chunk 244: No Data! Returning LmfitResult with None.
+ERROR - Chunk 245: No Data! Returning LmfitResult with None.
+ERROR - Chunk 246: No Data! Returning LmfitResult with None.
+ERROR - Chunk 247: No Data! Returning LmfitResult with None.
+ERROR - Chunk 248: No Data! Returning LmfitResult with None.
+ERROR - Chunk 249: No Data! Returning LmfitResult with None.
+ERROR - Chunk 250: No Data! Returning LmfitResult with None.
+ERROR - Chunk 251: No Data! Returning LmfitResult with None.
+ERROR - Chunk 252: No Data! Returning LmfitResult with None.
+ERROR - Chunk 253: No Data! Returning LmfitResult with None.
+ERROR - Chunk 254: No Data! Returning LmfitResult with None.
+ERROR - Chunk 255: No Data! Returning LmfitResult with None.
+ERROR - Chunk 256: No Data! Returning LmfitResult with None.
+ERROR - Chunk 257: No Data! Returning LmfitResult with None.
+ERROR - Chunk 258: No Data! Returning LmfitResult with None.
+ERROR - Chunk 259: No Data! Returning LmfitResult with None.
+ERROR - Chunk 260: No Data! Returning LmfitResult with None.
+ERROR - Chunk 261: No Data! Returning LmfitResult with None.
+ERROR - Chunk 262: No Data! Returning LmfitResult with None.
+ERROR - Chunk 263: No Data! Returning LmfitResult with None.
+ERROR - Chunk 264: No Data! Returning LmfitResult with None.
+ERROR - Chunk 265: No Data! Returning LmfitResult with None.
+ERROR - Chunk 266: No Data! Returning LmfitResult with None.
+ERROR - Chunk 267: No Data! Returning LmfitResult with None.
+ERROR - Chunk 268: No Data! Returning LmfitResult with None.
+ERROR - Chunk 269: No Data! Returning LmfitResult with None.
+ERROR - Chunk 270: No Data! Returning LmfitResult with None.
+ERROR - Chunk 271: No Data! Returning LmfitResult with None.
+ERROR - Chunk 272: No Data! Returning LmfitResult with None.
+ERROR - Chunk 273: No Data! Returning LmfitResult with None.
+ERROR - Chunk 274: No Data! Returning LmfitResult with None.
+ERROR - Chunk 275: No Data! Returning LmfitResult with None.
+ERROR - Chunk 276: No Data! Returning LmfitResult with None.
+ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+ERROR - Chunk 278: No Data! Returning LmfitResult with None.
+ERROR - Chunk 279: No Data! Returning LmfitResult with None.
+ERROR - Chunk 280: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7392.477551437819
+    cont_slope      =  10.910014390595595
+    iod_depth       =  1.2196330527730008
+    lsf_left_1      =  3.0872357644848742
+    lsf_left_2      =  -13.30936852097684
+    lsf_left_3      =  1.4979299143509859
+    lsf_left_4      =  -3.6264382333132397
+    lsf_left_5      =  0.875923509924622
+    lsf_right1      =  5.027541439356506
+    lsf_right2      =  -18.636873929099032
+    lsf_right3      =  8.751392306156774
+    lsf_right4      =  -3.9122880122292174
+    lsf_right5      =  0.3172825726524493
+    tem_depth       =  0.9633387950601142
+    velocity        =  -29089.66091952792
+    wave_intercept  =  4993.191229749092
+    wave_slope      =  0.015802395419527486
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 303:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11080.78000709396
+    cont_slope      =  12.442452961841623
+    iod_depth       =  0.8869167669775402
+    lsf_left_1      =  8.297104117383608
+    lsf_left_2      =  -12.442567969395398
+    lsf_left_3      =  1.315040729576586
+    lsf_left_4      =  -0.6387450364535292
+    lsf_left_5      =  0.14746327712507157
+    lsf_right1      =  2.3439726801451366
+    lsf_right2      =  -18.17083020606533
+    lsf_right3      =  10.698013281930322
+    lsf_right4      =  -3.891219591831119
+    lsf_right5      =  1.010131433677138
+    tem_depth       =  0.9868839251664513
+    velocity        =  -28699.481518186545
+    wave_intercept  =  4998.801876161435
+    wave_slope      =  0.015394006146005881
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 306:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14271.932408325642
+    cont_slope      =  12.550689475376979
+    iod_depth       =  1.2711300590218486
+    lsf_left_1      =  2.7047697206764036
+    lsf_left_2      =  -17.52130152790037
+    lsf_left_3      =  1.3413073256985093
+    lsf_left_4      =  -3.2383702639426866
+    lsf_left_5      =  1.0618291506360868
+    lsf_right1      =  7.781020132057908
+    lsf_right2      =  -18.193788250570066
+    lsf_right3      =  11.099610517515469
+    lsf_right4      =  -3.7392392492090285
+    lsf_right5      =  0.21431704730193313
+    tem_depth       =  0.9966092235361669
+    velocity        =  -28836.258808547038
+    wave_intercept  =  5002.437960700716
+    wave_slope      =  0.01508495517089902
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 308:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  24728.6194934484
+    cont_slope      =  3.6052505193592626
+    iod_depth       =  1.0667874908486314
+    lsf_left_1      =  2.2964938982399254
+    lsf_left_2      =  -18.803481608835543
+    lsf_left_3      =  1.3054696149439948
+    lsf_left_4      =  -0.4791351657716585
+    lsf_left_5      =  0.19139955907467093
+    lsf_right1      =  2.5268992434896966
+    lsf_right2      =  -8.082746632354095
+    lsf_right3      =  7.7373297879730085
+    lsf_right4      =  -3.591220232516648
+    lsf_right5      =  0.5415634316676989
+    tem_depth       =  1.0007497186744216
+    velocity        =  -28643.146734888527
+    wave_intercept  =  5019.700747930578
+    wave_slope      =  0.013753551848434993
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 318:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7328.522335811562
+    cont_slope      =  15.010209117452787
+    iod_depth       =  0.5636873833926863
+    lsf_left_1      =  6.178460922223591
+    lsf_left_2      =  -11.812685551466185
+    lsf_left_3      =  5.472212633464684
+    lsf_left_4      =  -3.5055062033218243
+    lsf_left_5      =  0.7916165874728804
+    lsf_right1      =  2.6892752356328087
+    lsf_right2      =  -17.743652058778995
+    lsf_right3      =  6.023427287519171
+    lsf_right4      =  -3.75756543485837
+    lsf_right5      =  0.22499963438288578
+    tem_depth       =  0.9161048690930084
+    velocity        =  -27691.60973267161
+    wave_intercept  =  5032.627361473962
+    wave_slope      =  0.01653761288952533
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 341:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  20550.501411818925
+    cont_slope      =  17.86248902508853
+    iod_depth       =  1.0764657317127653
+    lsf_left_1      =  9.111789824083687
+    lsf_left_2      =  -18.16512432581609
+    lsf_left_3      =  6.0516342867124155
+    lsf_left_4      =  -2.4230451989599064
+    lsf_left_5      =  0.19181077937533683
+    lsf_right1      =  2.508766991198512
+    lsf_right2      =  -13.621294529702855
+    lsf_right3      =  3.8558336586626742
+    lsf_right4      =  -1.3264092372914895
+    lsf_right5      =  0.43152915197106023
+    tem_depth       =  1.0084344129640892
+    velocity        =  -28881.458530382904
+    wave_intercept  =  5089.4690481760745
+    wave_slope      =  0.015007830876184985
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 388:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13384.55604012523
+    cont_slope      =  11.105449567340258
+    iod_depth       =  1.0471241653899583
+    lsf_left_1      =  7.9926233002301075
+    lsf_left_2      =  -18.279433507878213
+    lsf_left_3      =  3.971310231554702
+    lsf_left_4      =  -2.885510335107772
+    lsf_left_5      =  0.5734731558388457
+    lsf_right1      =  2.416326314381005
+    lsf_right2      =  -12.931356028379003
+    lsf_right3      =  1.2610916640235248
+    lsf_right4      =  -0.4587555029601411
+    lsf_right5      =  0.40925495537306605
+    tem_depth       =  0.9961588918326771
+    velocity        =  -28717.147605249884
+    wave_intercept  =  5124.827073769012
+    wave_slope      =  0.015789135596384923
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 423:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  22589.18146368602
+    cont_slope      =  9.337110329410905
+    iod_depth       =  1.0978663267832445
+    lsf_left_1      =  2.296683948925436
+    lsf_left_2      =  -8.331103752552991
+    lsf_left_3      =  1.3255564332491336
+    lsf_left_4      =  -0.43593748407486554
+    lsf_left_5      =  0.24104284421188188
+    lsf_right1      =  3.74326951150102
+    lsf_right2      =  -10.684319077541112
+    lsf_right3      =  6.8848590149302975
+    lsf_right4      =  -3.6863973188276007
+    lsf_right5      =  0.4035376138001593
+    tem_depth       =  0.8865322506331987
+    velocity        =  -28282.70592481564
+    wave_intercept  =  5132.238700668724
+    wave_slope      =  0.015166769686261978
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 427:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  25483.59019942556
+    cont_slope      =  -13.69518572291267
+    iod_depth       =  1.0805283354660777
+    lsf_left_1      =  3.6086675265067263
+    lsf_left_2      =  -9.267683125267807
+    lsf_left_3      =  2.9140055234037936
+    lsf_left_4      =  -3.0282162336923304
+    lsf_left_5      =  1.2699364683113137
+    lsf_right1      =  2.4280534673498355
+    lsf_right2      =  -14.304348619597024
+    lsf_right3      =  9.775861520709558
+    lsf_right4      =  -3.6034862823652367
+    lsf_right5      =  0.3197081267104138
+    tem_depth       =  1.0654564681121348
+    velocity        =  -28472.06764893875
+    wave_intercept  =  5159.245460544188
+    wave_slope      =  0.013064670197953779
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 443:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  41827.59390052827
+    cont_slope      =  2.6911784443594113
+    iod_depth       =  0.9100114684612193
+    lsf_left_1      =  7.408182948381433
+    lsf_left_2      =  -18.80085713950737
+    lsf_left_3      =  2.8342908785528924
+    lsf_left_4      =  -2.71185392737718
+    lsf_left_5      =  1.1450594846088908
+    lsf_right1      =  4.109177835378821
+    lsf_right2      =  -16.298805322450047
+    lsf_right3      =  2.0582446998814556
+    lsf_right4      =  -0.7592853139615348
+    lsf_right5      =  0.14546393471517008
+    tem_depth       =  0.9922846835139859
+    velocity        =  -28622.23562942802
+    wave_intercept  =  5230.7509098271585
+    wave_slope      =  0.014602219322101564
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 511:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  32437.772879213495
+    cont_slope      =  4.148746664253682
+    iod_depth       =  1.1667451500516124
+    lsf_left_1      =  7.352028750269587
+    lsf_left_2      =  -17.96132060889417
+    lsf_left_3      =  7.761733732164197
+    lsf_left_4      =  -3.387146823696917
+    lsf_left_5      =  0.9789202456276397
+    lsf_right1      =  4.959591637753904
+    lsf_right2      =  -18.595125407143023
+    lsf_right3      =  3.13731225478571
+    lsf_right4      =  -3.0268255784930784
+    lsf_right5      =  0.22345080005640547
+    tem_depth       =  1.0460771595520146
+    velocity        =  -28743.857709170832
+    wave_intercept  =  5245.827594648548
+    wave_slope      =  0.013418310121174837
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 520:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  32445.648125128664
+    cont_slope      =  -3.823677054763539
+    iod_depth       =  1.0353683994591403
+    lsf_left_1      =  2.3882299498503254
+    lsf_left_2      =  -18.044833422368537
+    lsf_left_3      =  8.252263619976283
+    lsf_left_4      =  -3.896475673384405
+    lsf_left_5      =  0.4206638386035064
+    lsf_right1      =  2.7174428233927452
+    lsf_right2      =  -18.491441538813024
+    lsf_right3      =  10.084045768297596
+    lsf_right4      =  -3.878037794792576
+    lsf_right5      =  0.7384041616651098
+    tem_depth       =  1.016684005842793
+    velocity        =  -28741.556691861217
+    wave_intercept  =  5308.86628002395
+    wave_slope      =  0.015868425907862967
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 582:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  33025.98157429176
+    cont_slope      =  -20.403970574801516
+    iod_depth       =  1.1466089817137335
+    lsf_left_1      =  6.679313419891918
+    lsf_left_2      =  -18.457199279565128
+    lsf_left_3      =  9.64936373045283
+    lsf_left_4      =  -3.6269536550165284
+    lsf_left_5      =  0.6208503625084547
+    lsf_right1      =  2.7117991851269427
+    lsf_right2      =  -18.729664652817892
+    lsf_right3      =  5.381969246633484
+    lsf_right4      =  -3.916212324414332
+    lsf_right5      =  1.2709660286832816
+    tem_depth       =  0.9918817131943366
+    velocity        =  -28801.44577588471
+    wave_intercept  =  5343.469690694521
+    wave_slope      =  0.013153346847893214
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 602:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  34119.503993715516
+    cont_slope      =  -13.193829163108834
+    iod_depth       =  1.0583649373359727
+    lsf_left_1      =  2.425914063157223
+    lsf_left_2      =  -18.044577649793215
+    lsf_left_3      =  6.779989180322002
+    lsf_left_4      =  -3.6627507527117484
+    lsf_left_5      =  1.1479906070683095
+    lsf_right1      =  11.316222026559196
+    lsf_right2      =  -18.231943641144273
+    lsf_right3      =  6.518003888526384
+    lsf_right4      =  -3.8992844658447927
+    lsf_right5      =  0.22510103454061842
+    tem_depth       =  1.0258738138191776
+    velocity        =  -28226.48799678282
+    wave_intercept  =  5433.177416415041
+    wave_slope      =  0.013699212000852308
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 677:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  49706.70150227212
+    cont_slope      =  5.124531231537815
+    iod_depth       =  1.0168674075782567
+    lsf_left_1      =  3.4912997951421767
+    lsf_left_2      =  -16.015186942148045
+    lsf_left_3      =  10.649936641145157
+    lsf_left_4      =  -3.9116551079132207
+    lsf_left_5      =  0.4379348361613654
+    lsf_right1      =  5.173014029320102
+    lsf_right2      =  -17.286655434203233
+    lsf_right3      =  5.434482848539602
+    lsf_right4      =  -2.1907836448873015
+    lsf_right5      =  0.14421013239843578
+    tem_depth       =  1.0488705936373528
+    velocity        =  -28718.67586868274
+    wave_intercept  =  5473.168425497802
+    wave_slope      =  0.014500457096528375
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 711:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  35158.013217390726
+    cont_slope      =  -24.04171836565821
+    iod_depth       =  1.0268802326240056
+    lsf_left_1      =  2.7203882432253095
+    lsf_left_2      =  -16.581289552066163
+    lsf_left_3      =  9.987663179998634
+    lsf_left_4      =  -3.8314892793719992
+    lsf_left_5      =  0.5606341677498645
+    lsf_right1      =  8.901034889761661
+    lsf_right2      =  -18.244682593374517
+    lsf_right3      =  9.899847240593715
+    lsf_right4      =  -3.9021054796224224
+    lsf_right5      =  0.7973632642667433
+    tem_depth       =  0.9859614352059068
+    velocity        =  -28760.577075269135
+    wave_intercept  =  5537.64109401144
+    wave_slope      =  0.013457784092467602
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 759:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  61067.51746644988
+    cont_slope      =  -0.9841483311359803
+    iod_depth       =  1.0094584818570393
+    lsf_left_1      =  2.4771002803347044
+    lsf_left_2      =  -11.124754159465049
+    lsf_left_3      =  1.87544330354714
+    lsf_left_4      =  -2.234953057474313
+    lsf_left_5      =  0.1758042295477037
+    lsf_right1      =  9.96973109237625
+    lsf_right2      =  -17.642390916979096
+    lsf_right3      =  4.281025784201049
+    lsf_right4      =  -3.259390124156174
+    lsf_right5      =  0.9313758254265282
+    tem_depth       =  0.9912433730455034
+    velocity        =  -28624.58884055235
+    wave_intercept  =  5614.654313270727
+    wave_slope      =  0.01566164662746265
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 823:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  44730.744012421375
+    cont_slope      =  -29.31084583632124
+    iod_depth       =  0.9746519595071479
+    lsf_left_1      =  4.349544567489069
+    lsf_left_2      =  -18.53055712588864
+    lsf_left_3      =  1.5924925511490902
+    lsf_left_4      =  -1.847658377136363
+    lsf_left_5      =  1.0081744831141262
+    lsf_right1      =  2.4283891772059047
+    lsf_right2      =  -8.429334402287068
+    lsf_right3      =  6.407571573828544
+    lsf_right4      =  -3.9166241650545164
+    lsf_right5      =  0.5169582839434977
+    tem_depth       =  0.862207339608748
+    velocity        =  -30435.593553079965
+    wave_intercept  =  5802.169471533303
+    wave_slope      =  0.01382519891850748
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 956:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  31947.69802611429
+    cont_slope      =  31.124574342717278
+    iod_depth       =  1.0138324225424358
+    lsf_left_1      =  4.525161382427417
+    lsf_left_2      =  -16.00224614697171
+    lsf_left_3      =  4.989745219247407
+    lsf_left_4      =  -3.171356152090609
+    lsf_left_5      =  0.20659819630547777
+    lsf_right1      =  2.4807072836812214
+    lsf_right2      =  -9.412129524172377
+    lsf_right3      =  1.8494503554260069
+    lsf_right4      =  -1.6548914697506065
+    lsf_right5      =  0.45507268903119297
+    tem_depth       =  1.0286664161742045
+    velocity        =  -29443.725615191895
+    wave_intercept  =  5855.316779033551
+    wave_slope      =  0.018972238314207458
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1004:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  33162.35183404834
+    cont_slope      =  36.00130649227692
+    iod_depth       =  1.041068741782928
+    lsf_left_1      =  4.009289301053757
+    lsf_left_2      =  -18.37389181427658
+    lsf_left_3      =  5.722838169959983
+    lsf_left_4      =  -1.0586100456413647
+    lsf_left_5      =  0.22183690440989082
+    lsf_right1      =  2.625698929734473
+    lsf_right2      =  -16.095376233636223
+    lsf_right3      =  6.353224118120543
+    lsf_right4      =  -2.6331410775179833
+    lsf_right5      =  0.14326841046757002
+    tem_depth       =  1.0088916052087744
+    velocity        =  -28902.697203227304
+    wave_intercept  =  5857.430827788909
+    wave_slope      =  0.018540541806450803
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1005:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  40924.42232307307
+    cont_slope      =  37.69329186823771
+    iod_depth       =  1.024382718712861
+    lsf_left_1      =  4.4163804791494865
+    lsf_left_2      =  -17.803716276962778
+    lsf_left_3      =  7.857356005844931
+    lsf_left_4      =  -3.851001681605327
+    lsf_left_5      =  1.0307065057301337
+    lsf_right1      =  2.866879710811918
+    lsf_right2      =  -6.891188815676243
+    lsf_right3      =  1.822997746580316
+    lsf_right4      =  -1.6929264001631776
+    lsf_right5      =  0.48582358667913145
+    tem_depth       =  1.000685500058774
+    velocity        =  -28576.46836210028
+    wave_intercept  =  5859.651257886299
+    wave_slope      =  0.018362714937820466
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1006:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  43267.94185359495
+    cont_slope      =  42.17492604233041
+    iod_depth       =  0.9459235521199828
+    lsf_left_1      =  3.784374196827705
+    lsf_left_2      =  -9.293103786325355
+    lsf_left_3      =  1.379524194561171
+    lsf_left_4      =  -3.3601481426185895
+    lsf_left_5      =  0.15320868313716346
+    lsf_right1      =  2.4962301530320903
+    lsf_right2      =  -18.35756361449901
+    lsf_right3      =  1.4598163211760784
+    lsf_right4      =  -1.0032225420729466
+    lsf_right5      =  0.5452539377305259
+    tem_depth       =  1.031149899944466
+    velocity        =  -28750.671529226423
+    wave_intercept  =  6031.421252974143
+    wave_slope      =  0.019048942645417916
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1122:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  45281.21234718384
+    cont_slope      =  -35.64051962774759
+    iod_depth       =  0.7464311063473592
+    lsf_left_1      =  4.438343669187679
+    lsf_left_2      =  -10.680705106665416
+    lsf_left_3      =  3.9750217296421892
+    lsf_left_4      =  -1.1520786858188394
+    lsf_left_5      =  0.26689574935199
+    lsf_right1      =  3.448305045162951
+    lsf_right2      =  -16.865829591064283
+    lsf_right3      =  1.7771706416950805
+    lsf_right4      =  -2.277832753617779
+    lsf_right5      =  0.6110181033508024
+    tem_depth       =  0.9761910608084479
+    velocity        =  -28607.39571544748
+    wave_intercept  =  6150.2885296991435
+    wave_slope      =  0.014637193557964822
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1190:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  22671.59084797086
+    cont_slope      =  -19.28770537441019
+    iod_depth       =  0.83365032961855
+    lsf_left_1      =  9.015665403288722
+    lsf_left_2      =  -17.72382950591724
+    lsf_left_3      =  1.9763682771251232
+    lsf_left_4      =  -0.5724568640685561
+    lsf_left_5      =  0.24394219600139394
+    lsf_right1      =  2.7881778798149917
+    lsf_right2      =  -18.71914479353685
+    lsf_right3      =  9.874792107796324
+    lsf_right4      =  -3.790853100693212
+    lsf_right5      =  0.8319724997001743
+    tem_depth       =  0.9695738547877133
+    velocity        =  -28748.74614976588
+    wave_intercept  =  6162.136699863479
+    wave_slope      =  0.013637743594472354
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1197:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  40113.88830371065
+    cont_slope      =  48.25128661563352
+    iod_depth       =  0.22042090589439609
+    lsf_left_1      =  6.417336944667561
+    lsf_left_2      =  -13.83880412932455
+    lsf_left_3      =  4.925029512480225
+    lsf_left_4      =  -2.417386856244481
+    lsf_left_5      =  0.6382068427044567
+    lsf_right1      =  4.645335671798195
+    lsf_right2      =  -14.745469739206602
+    lsf_right3      =  4.223983649184554
+    lsf_right4      =  -2.7813292246804657
+    lsf_right5      =  0.4587229982367167
+    tem_depth       =  0.954226772537735
+    velocity        =  -29011.471501337302
+    wave_intercept  =  6151.039268598529
+    wave_slope      =  0.019492249154100447
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1199:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  58194.004007305906
+    cont_slope      =  44.25568662362175
+    iod_depth       =  0.9072484111915536
+    lsf_left_1      =  6.578267314301298
+    lsf_left_2      =  -18.794916878053158
+    lsf_left_3      =  2.451781722571292
+    lsf_left_4      =  -3.2687787827930137
+    lsf_left_5      =  0.20054769948217224
+    lsf_right1      =  2.935650877168707
+    lsf_right2      =  -16.36228522768866
+    lsf_right3      =  1.3942151213367202
+    lsf_right4      =  -0.46726987120915187
+    lsf_right5      =  0.193505663863609
+    tem_depth       =  0.986656062363405
+    velocity        =  -28600.498524791718
+    wave_intercept  =  6157.889788646794
+    wave_slope      =  0.01905556591895726
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1202:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  98023.66979172116
+    cont_slope      =  14.170112618956708
+    iod_depth       =  0.9067656381560044
+    lsf_left_1      =  3.7445446859170106
+    lsf_left_2      =  -16.294149707298427
+    lsf_left_3      =  2.4528436659808808
+    lsf_left_4      =  -1.926890108269181
+    lsf_left_5      =  1.1600642962993926
+    lsf_right1      =  3.12749665376768
+    lsf_right2      =  -18.299994168404584
+    lsf_right3      =  1.6660996115098823
+    lsf_right4      =  -1.6390993738834365
+    lsf_right5      =  0.649069850142331
+    tem_depth       =  0.996998633708375
+    velocity        =  -28724.397753623653
+    wave_intercept  =  6179.708025061568
+    wave_slope      =  0.017428284668239924
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1212:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  71916.97152725454
+    cont_slope      =  -30.58155381869713
+    iod_depth       =  0.8716655040971399
+    lsf_left_1      =  2.312923144955417
+    lsf_left_2      =  -12.044051899685822
+    lsf_left_3      =  1.2965335582617483
+    lsf_left_4      =  -3.7581994141645523
+    lsf_left_5      =  0.6943517703603124
+    lsf_right1      =  3.005735980681255
+    lsf_right2      =  -18.287912147323247
+    lsf_right3      =  10.249634539458615
+    lsf_right4      =  -2.5702084374204266
+    lsf_right5      =  0.4688528590763832
+    tem_depth       =  0.9916163465196136
+    velocity        =  -28655.899324771905
+    wave_intercept  =  6199.598395208932
+    wave_slope      =  0.015833704199665916
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1222:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  43277.021676551536
+    cont_slope      =  -31.32682531428609
+    iod_depth       =  0.7721952485182422
+    lsf_left_1      =  2.432759901767762
+    lsf_left_2      =  -12.453342188126673
+    lsf_left_3      =  5.379724101739624
+    lsf_left_4      =  -2.4591207911256334
+    lsf_left_5      =  0.15143557925252363
+    lsf_right1      =  5.29898610552207
+    lsf_right2      =  -14.945724678712239
+    lsf_right3      =  6.059082490369931
+    lsf_right4      =  -3.8319269941862624
+    lsf_right5      =  1.2525783934829862
+    tem_depth       =  0.979817658155874
+    velocity        =  -28683.30541658508
+    wave_intercept  =  6214.162130469468
+    wave_slope      =  0.01466281740553024
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1230:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  26052.9619080535
+    cont_slope      =  -18.47195600841493
+    iod_depth       =  0.73805434187456
+    lsf_left_1      =  4.635769036060273
+    lsf_left_2      =  -16.48090244206664
+    lsf_left_3      =  10.902086228848642
+    lsf_left_4      =  -3.674576426334575
+    lsf_left_5      =  0.43942633516808294
+    lsf_right1      =  7.355579355677929
+    lsf_right2      =  -16.813138170945827
+    lsf_right3      =  1.2553018517747392
+    lsf_right4      =  -3.380657249979271
+    lsf_right5      =  0.7808100561129782
+    tem_depth       =  0.9820722706118414
+    velocity        =  -28581.293183106296
+    wave_intercept  =  6226.003921860212
+    wave_slope      =  0.013686244229657113
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 1237:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+INFO - 
+INFO - Number of chunks with no uncertainties: 0
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 311
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+ERROR - Polynomial fitting failed. Falling back to input values
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 529, in fit_polynomial
+    pfit, stats = np.polynomial.Polynomial.fit(
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/_polybase.py", line 1036, in fit
+    xnew = pu.mapdomain(x, domain, window)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 371, in mapdomain
+    off, scl = mapparms(old, new)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/numpy/polynomial/polyutils.py", line 303, in mapparms
+    off = (old[1]*new[0] - old[0]*new[1])/oldlen
+ZeroDivisionError: division by zero
+INFO - 
+INFO - Creating analysis plots...
+ERROR - NaN value detected in iodine function.
+ERROR - Chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 62, in plot_chunkmodel
+    sp = fit_results[chunk_nr].fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+ERROR - NaN value detected in iodine function.
+ERROR - Chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 62, in plot_chunkmodel
+    sp = fit_results[chunk_nr].fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - Velocity robust mean: -28715.17971835508
+INFO - Velocity robust std: 254.81227236107438
+INFO - 
+INFO - Velocity error robust mean: 116.76831338070679
+INFO - Velocity error robust std: 82.76800777642443
+INFO - 
+INFO - Minimum error: 24.772386513506394 in chunk 371
+INFO - Maximum error: 4485.102022038617 in chunk 1082
+INFO - 
+INFO - Chunks with nan velocities: [   0    1    2    3    4    5    6    7    8    9   10   11   12   13
+   14   15   16   17   18   19   20   21   22   23   24   25   26   27
+   28   29   30   31   32   33   34   35   36   37   38   39   40   41
+   42   43   44   45   46   47   48   49   50   51   52   53   54   55
+   56   57   58   59   60   61   62   63   64   65   66   67   68   69
+   70   71   72   73   74   75   76   77   78   79   80   81   82   83
+   84   85   86   87   88   89   90   91   92   93   94   95   96   97
+   98   99  100  101  102  103  104  105  106  107  108  109  110  111
+  112  113  114  115  116  117  118  119  120  121  122  123  124  125
+  126  127  128  129  130  131  132  133  134  135  136  137  138  139
+  140  141  142  143  144  145  146  147  148  149  150  151  152  153
+  154  155  156  157  158  159  160  161  162  163  164  165  166  167
+  168  169  170  171  172  173  174  175  176  177  178  179  180  181
+  182  183  184  185  186  187  188  189  190  191  192  193  194  195
+  196  197  198  199  200  201  202  203  204  205  206  207  208  209
+  210  211  212  213  214  215  216  217  218  219  220  221  222  223
+  224  225  226  227  228  229  230  231  232  233  234  235  236  237
+  238  239  240  241  242  243  244  245  246  247  248  249  250  251
+  252  253  254  255  256  257  258  259  260  261  262  263  264  265
+  266  267  268  269  270  271  272  273  274  275  276  277  278  279
+  280  303  306  308  318  341  388  423  427  443  511  520  582  602
+  677  711  759  823  956 1004 1005 1006 1122 1190 1197 1199 1202 1212
+ 1222 1230 1237]
+INFO - Chunks with nan velocity errors: [   0    1    2    3    4    5    6    7    8    9   10   11   12   13
+   14   15   16   17   18   19   20   21   22   23   24   25   26   27
+   28   29   30   31   32   33   34   35   36   37   38   39   40   41
+   42   43   44   45   46   47   48   49   50   51   52   53   54   55
+   56   57   58   59   60   61   62   63   64   65   66   67   68   69
+   70   71   72   73   74   75   76   77   78   79   80   81   82   83
+   84   85   86   87   88   89   90   91   92   93   94   95   96   97
+   98   99  100  101  102  103  104  105  106  107  108  109  110  111
+  112  113  114  115  116  117  118  119  120  121  122  123  124  125
+  126  127  128  129  130  131  132  133  134  135  136  137  138  139
+  140  141  142  143  144  145  146  147  148  149  150  151  152  153
+  154  155  156  157  158  159  160  161  162  163  164  165  166  167
+  168  169  170  171  172  173  174  175  176  177  178  179  180  181
+  182  183  184  185  186  187  188  189  190  191  192  193  194  195
+  196  197  198  199  200  201  202  203  204  205  206  207  208  209
+  210  211  212  213  214  215  216  217  218  219  220  221  222  223
+  224  225  226  227  228  229  230  231  232  233  234  235  236  237
+  238  239  240  241  242  243  244  245  246  247  248  249  250  251
+  252  253  254  255  256  257  258  259  260  261  262  263  264  265
+  266  267  268  269  270  271  272  273  274  275  276  277  278  279
+  280  303  306  308  318  341  388  423  427  443  511  520  582  602
+  677  711  759  823  956 1004 1005 1006 1122 1190 1197 1199 1202 1212
+ 1222 1230 1237]
+INFO - Velocity error at percentile 80: 204.77638663918515
+INFO - 
+INFO - Time to model this observation: 145.11231994628906
