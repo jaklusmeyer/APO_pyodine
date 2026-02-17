@@ -1,0 +1,1200 @@
+2026-02-02 11:10:23,201 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:23,201 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4137.321952644656
+    cont_slope      =  5.386625563066103
+    iod_depth       =  -1.0997889200670863
+    lsf_left_1      =  2.5514790535418808
+    lsf_left_2      =  -15.932061174339678
+    lsf_left_3      =  4.156597323284702
+    lsf_left_4      =  -1.9867619301540806
+    lsf_left_5      =  0.46039480247229625
+    lsf_right1      =  2.941538886801768
+    lsf_right2      =  -15.744727184770223
+    lsf_right3      =  2.830878225154736
+    lsf_right4      =  -3.782067405109974
+    lsf_right5      =  0.3027881847846763
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  4991.721854343715
+    wave_slope      =  0.016927445142817948
+2026-02-02 11:10:23,202 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:23,202 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:23,469 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:23,470 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:23,470 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:23,470 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:23,471 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:23,480 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 238, in live_chunkmodel
+    ax[-1].set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:10:27,752 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:27,752 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13159.29908843427
+    cont_slope      =  2.483078626147711
+    iod_depth       =  0.8748836832490837
+    lsf_left_1      =  2.878547086252745
+    lsf_left_2      =  -13.79299999636433
+    lsf_left_3      =  5.906934085416376
+    lsf_left_4      =  -2.681368564035416
+    lsf_left_5      =  0.7799418350285888
+    lsf_right1      =  7.699684121922093
+    lsf_right2      =  -18.933161167780987
+    lsf_right3      =  5.251917169191483
+    lsf_right4      =  -1.7024239381834358
+    lsf_right5      =  0.41366594927121303
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5017.492554501374
+    wave_slope      =  0.013977755002698026
+2026-02-02 11:10:27,752 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:27,753 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:28,001 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:28,002 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:28,002 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:28,002 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:28,003 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:28,015 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:10:30,651 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:30,651 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10962.043568778363
+    cont_slope      =  6.770295750819756
+    iod_depth       =  0.9096324921724884
+    lsf_left_1      =  2.11180309729825
+    lsf_left_2      =  -11.130277562926885
+    lsf_left_3      =  7.348916270725647
+    lsf_left_4      =  -3.8255719589299835
+    lsf_left_5      =  0.7826945455529309
+    lsf_right1      =  3.840685202883664
+    lsf_right2      =  -17.738918981377186
+    lsf_right3      =  1.2597279208537981
+    lsf_right4      =  -3.909896544643228
+    lsf_right5      =  0.6043183525103124
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5048.440264648882
+    wave_slope      =  0.01486317891957813
+2026-02-02 11:10:30,651 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:30,652 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:30,918 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:30,919 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:30,919 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:30,920 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:30,920 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:30,932 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:10:32,148 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:32,148 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13488.83414519728
+    cont_slope      =  4.2145234731625685
+    iod_depth       =  0.8793000562956714
+    lsf_left_1      =  2.1185829903745534
+    lsf_left_2      =  -19.399985623913523
+    lsf_left_3      =  4.601191467930191
+    lsf_left_4      =  -3.917289192101274
+    lsf_left_5      =  0.16413743949295695
+    lsf_right1      =  2.977950473122215
+    lsf_right2      =  -19.03818938669636
+    lsf_right3      =  1.2004621104624975
+    lsf_right4      =  -2.0258994988981303
+    lsf_right5      =  0.7395416780866179
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5057.673227722894
+    wave_slope      =  0.01415998977046025
+2026-02-02 11:10:32,149 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:32,149 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:32,399 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:32,400 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:32,400 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:32,401 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:32,401 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:32,413 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:10:35,711 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:35,711 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11480.265322466039
+    cont_slope      =  4.740656379128909
+    iod_depth       =  0.8908191568045811
+    lsf_left_1      =  3.7767830993184672
+    lsf_left_2      =  -17.817944054431013
+    lsf_left_3      =  9.887336672510553
+    lsf_left_4      =  -3.3838429375164623
+    lsf_left_5      =  0.19317676633189795
+    lsf_right1      =  2.1337957892568373
+    lsf_right2      =  -17.604060510444633
+    lsf_right3      =  6.385453285049527
+    lsf_right4      =  -3.1270453382368943
+    lsf_right5      =  0.3505725876477773
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5090.513017676581
+    wave_slope      =  0.014964908019882152
+2026-02-02 11:10:35,712 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:35,712 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:35,959 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:35,960 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:35,961 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:35,961 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:35,961 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:35,975 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:10:39,303 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:39,304 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9396.438242548
+    cont_slope      =  8.653965968699126
+    iod_depth       =  0.8693201621042472
+    lsf_left_1      =  2.085759860868181
+    lsf_left_2      =  -18.51458099068597
+    lsf_left_3      =  8.090694426964754
+    lsf_left_4      =  -2.5056314703662723
+    lsf_left_5      =  0.16877965164717124
+    lsf_right1      =  2.741432182528632
+    lsf_right2      =  -19.390875005929992
+    lsf_right3      =  3.5215264410240303
+    lsf_right4      =  -3.390279859587244
+    lsf_right5      =  0.8704107516707107
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5127.711482072677
+    wave_slope      =  0.015537917421508032
+2026-02-02 11:10:39,304 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:39,305 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:39,552 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:10:39,553 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:10:39,554 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:10:39,554 - root - ERROR - Evaluated LSF:
+2026-02-02 11:10:39,554 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:10:39,567 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:02,168 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:02,169 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  18311.588778148376
+    cont_slope      =  0.421269290389364
+    iod_depth       =  0.8713087734326057
+    lsf_left_1      =  9.576459253121259
+    lsf_left_2      =  -16.853087254048727
+    lsf_left_3      =  4.355968044928907
+    lsf_left_4      =  -3.561923027789457
+    lsf_left_5      =  0.781906087976954
+    lsf_right1      =  2.260113673614402
+    lsf_right2      =  -14.82985077551591
+    lsf_right3      =  6.61959687763629
+    lsf_right4      =  -3.1539896204719953
+    lsf_right5      =  0.5826810184869896
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5372.27845942436
+    wave_slope      =  0.014697609177087451
+2026-02-02 11:11:02,169 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:02,170 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:02,431 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:02,432 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:02,432 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:02,433 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:02,433 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:02,446 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:03,737 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:03,737 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11687.295042070167
+    cont_slope      =  10.189224744986776
+    iod_depth       =  0.9232466984519547
+    lsf_left_1      =  2.1477354664792467
+    lsf_left_2      =  -6.957111898131025
+    lsf_left_3      =  4.201113844503455
+    lsf_left_4      =  -2.9349943108511214
+    lsf_left_5      =  0.8828266926074677
+    lsf_right1      =  3.5620746445931806
+    lsf_right2      =  -12.247719722031526
+    lsf_right3      =  2.946939628299293
+    lsf_right4      =  -2.504206867788591
+    lsf_right5      =  0.1539363367322428
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5399.989166515509
+    wave_slope      =  0.016302342068665807
+2026-02-02 11:11:03,738 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:03,738 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:03,987 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:03,988 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:03,988 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:03,989 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:03,989 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:04,001 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:11,440 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:11,441 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9860.592180169406
+    cont_slope      =  8.272340097432615
+    iod_depth       =  0.9149930154443235
+    lsf_left_1      =  2.243686194952195
+    lsf_left_2      =  -19.384964300078963
+    lsf_left_3      =  1.3295738169363138
+    lsf_left_4      =  -2.3266244593350187
+    lsf_left_5      =  0.7813812602948653
+    lsf_right1      =  10.44979670733058
+    lsf_right2      =  -17.758409645121578
+    lsf_right3      =  1.799727831391091
+    lsf_right4      =  -2.28114526548429
+    lsf_right5      =  1.1250749785001302
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5492.695942455128
+    wave_slope      =  0.016987977935100446
+2026-02-02 11:11:11,441 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:11,442 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:11,689 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:11,690 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:11,690 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:11,691 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:11,691 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:11,704 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:14,328 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:14,329 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  18122.973489509124
+    cont_slope      =  4.197721485561237
+    iod_depth       =  0.9041794672130353
+    lsf_left_1      =  2.084592076700492
+    lsf_left_2      =  -11.051188505343868
+    lsf_left_3      =  7.691137443445753
+    lsf_left_4      =  -3.9239090922443634
+    lsf_left_5      =  1.1937927814949052
+    lsf_right1      =  7.374121493667403
+    lsf_right2      =  -17.906671833465133
+    lsf_right3      =  2.5804684688552872
+    lsf_right4      =  -1.8265688594328977
+    lsf_right5      =  1.0548575910421887
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5513.314791898873
+    wave_slope      =  0.01540853541048583
+2026-02-02 11:11:14,329 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:14,329 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:14,577 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:14,578 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:14,578 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:14,578 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:14,579 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:14,591 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:16,623 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:16,624 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11668.886062917745
+    cont_slope      =  9.89776837508675
+    iod_depth       =  0.8726399732556728
+    lsf_left_1      =  7.155377530559685
+    lsf_left_2      =  -19.096507279913048
+    lsf_left_3      =  9.903398639619326
+    lsf_left_4      =  -3.9581738775834423
+    lsf_left_5      =  1.0581150159011465
+    lsf_right1      =  2.1285662078827423
+    lsf_right2      =  -19.23862920598429
+    lsf_right3      =  1.5482360077515283
+    lsf_right4      =  -1.9973703928252045
+    lsf_right5      =  1.010935107619837
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5547.263946824776
+    wave_slope      =  0.016820925243723733
+2026-02-02 11:11:16,624 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:16,625 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:16,887 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:16,887 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:16,888 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:16,888 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:16,889 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:16,902 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:17,765 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:17,766 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  16285.01976476976
+    cont_slope      =  9.124067297429361
+    iod_depth       =  0.9909523756540566
+    lsf_left_1      =  3.6441469077290316
+    lsf_left_2      =  -10.520817267378419
+    lsf_left_3      =  7.413500641262188
+    lsf_left_4      =  -3.9587893150921922
+    lsf_left_5      =  0.44578220349571235
+    lsf_right1      =  5.759792850781591
+    lsf_right2      =  -17.288628981562837
+    lsf_right3      =  1.2490862710244166
+    lsf_right4      =  -2.7358742711422233
+    lsf_right5      =  1.0908464077291322
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5554.772294479369
+    wave_slope      =  0.016202049073507797
+2026-02-02 11:11:17,766 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:17,767 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:18,015 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:18,016 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:18,017 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:18,017 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:18,017 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:18,030 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:22,435 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:22,435 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14860.416434052308
+    cont_slope      =  5.846352684958098
+    iod_depth       =  0.9044576806064621
+    lsf_left_1      =  3.6680468625083105
+    lsf_left_2      =  -17.114081518891776
+    lsf_left_3      =  9.526929780041742
+    lsf_left_4      =  -3.411184391010153
+    lsf_left_5      =  0.20174312472068973
+    lsf_right1      =  8.616294739804369
+    lsf_right2      =  -18.733181741388407
+    lsf_right3      =  4.687518765170376
+    lsf_right4      =  -3.3123305187455716
+    lsf_right5      =  0.40901427669109464
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5602.732694102457
+    wave_slope      =  0.016606112643680247
+2026-02-02 11:11:22,436 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:22,436 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:22,748 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:22,749 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:22,749 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:22,750 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:22,751 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:22,774 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:40,668 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:40,668 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  19274.253699514935
+    cont_slope      =  1.4559305246402763
+    iod_depth       =  0.9019854645786828
+    lsf_left_1      =  2.4105081535502757
+    lsf_left_2      =  -10.558082375971308
+    lsf_left_3      =  1.2003136816073185
+    lsf_left_4      =  -3.8597949588223464
+    lsf_left_5      =  0.13278704620917456
+    lsf_right1      =  7.936615750812012
+    lsf_right2      =  -17.278226550894523
+    lsf_right3      =  7.776944689221227
+    lsf_right4      =  -3.829125324010149
+    lsf_right5      =  0.5317261210604218
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5774.832395864688
+    wave_slope      =  0.016022261414951854
+2026-02-02 11:11:40,671 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:40,671 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:41,097 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:41,100 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:41,102 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:41,103 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:41,103 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:41,123 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:52,143 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:52,146 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10677.765150255304
+    cont_slope      =  4.277249351845537
+    iod_depth       =  0.7322105062359698
+    lsf_left_1      =  4.207970488640404
+    lsf_left_2      =  -9.991947147767284
+    lsf_left_3      =  4.785057564531751
+    lsf_left_4      =  -3.6068366791608075
+    lsf_left_5      =  0.2112341476328365
+    lsf_right1      =  4.415575966865295
+    lsf_right2      =  -16.46787524241056
+    lsf_right3      =  4.876125180158564
+    lsf_right4      =  -2.647055106802659
+    lsf_right5      =  0.4685111988157748
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5917.64411606294
+    wave_slope      =  0.018361105246079656
+2026-02-02 11:11:52,148 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:52,149 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:52,513 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:52,514 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:52,515 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:52,515 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:52,516 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:52,534 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:56,848 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:56,849 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9155.245169298914
+    cont_slope      =  9.253297323984757
+    iod_depth       =  0.8724504174213191
+    lsf_left_1      =  2.2871802927612648
+    lsf_left_2      =  -7.913258410895901
+    lsf_left_3      =  5.392336870776703
+    lsf_left_4      =  -2.5006733584093155
+    lsf_left_5      =  0.46488335812906784
+    lsf_right1      =  2.19481554608101
+    lsf_right2      =  -8.210984055834533
+    lsf_right3      =  4.28590096040326
+    lsf_right4      =  -1.1431134036400685
+    lsf_right5      =  0.17488354716512175
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5972.258096323076
+    wave_slope      =  0.018812408641917255
+2026-02-02 11:11:56,849 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:56,850 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:57,122 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:57,123 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:57,123 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:57,124 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:57,124 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:57,138 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:57,855 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:57,855 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13527.30174259197
+    cont_slope      =  7.524928689413652
+    iod_depth       =  0.8982316541262557
+    lsf_left_1      =  5.5546411945816185
+    lsf_left_2      =  -11.440992664910137
+    lsf_left_3      =  2.503172562397169
+    lsf_left_4      =  -3.799744507699987
+    lsf_left_5      =  0.40894472809645
+    lsf_right1      =  4.355799599416426
+    lsf_right2      =  -12.908143065597038
+    lsf_right3      =  3.3191183278888308
+    lsf_right4      =  -3.8399820300499243
+    lsf_right5      =  0.13525939066496723
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5980.699728610233
+    wave_slope      =  0.0183129249794599
+2026-02-02 11:11:57,856 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:57,856 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:58,105 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:11:58,105 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:58,106 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:11:58,106 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:58,107 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:11:58,120 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:11:59,735 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:11:59,735 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  17337.84086605544
+    cont_slope      =  4.1832168888149655
+    iod_depth       =  0.9320537662243292
+    lsf_left_1      =  4.395686116301176
+    lsf_left_2      =  -12.907815982776537
+    lsf_left_3      =  8.681761953375535
+    lsf_left_4      =  -3.9211197113723224
+    lsf_left_5      =  1.1084868504409884
+    lsf_right1      =  2.0950163969149087
+    lsf_right2      =  -6.778444864983992
+    lsf_right3      =  1.1392864851677351
+    lsf_right4      =  -2.5531445816578393
+    lsf_right5      =  0.13797009864897966
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  5993.601599447136
+    wave_slope      =  0.01715818722839319
+2026-02-02 11:11:59,736 - root - ERROR - Evaluated LSF:
+2026-02-02 11:11:59,736 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:00,003 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:12:00,004 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:12:00,004 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:12:00,005 - root - ERROR - Evaluated LSF:
+2026-02-02 11:12:00,006 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:00,022 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:12:09,190 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:12:09,192 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12851.694114604721
+    cont_slope      =  9.344419441484355
+    iod_depth       =  0.7857789770177243
+    lsf_left_1      =  8.832995689598363
+    lsf_left_2      =  -17.034781176322277
+    lsf_left_3      =  1.2650256241530888
+    lsf_left_4      =  -3.6803170015570816
+    lsf_left_5      =  0.8876186705828043
+    lsf_right1      =  4.021412220859839
+    lsf_right2      =  -15.171947629805105
+    lsf_right3      =  2.8744706642327547
+    lsf_right4      =  -0.4812175100192171
+    lsf_right5      =  0.13310057285116278
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  6098.611485720172
+    wave_slope      =  0.018781718982240292
+2026-02-02 11:12:09,192 - root - ERROR - Evaluated LSF:
+2026-02-02 11:12:09,193 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:09,443 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:12:09,444 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:12:09,444 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:12:09,445 - root - ERROR - Evaluated LSF:
+2026-02-02 11:12:09,445 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:09,458 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf
+2026-02-02 11:12:16,018 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:12:16,019 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  17498.676091494788
+    cont_slope      =  2.053044487735253
+    iod_depth       =  0.9184386258152261
+    lsf_left_1      =  3.086825544164538
+    lsf_left_2      =  -19.37348806226586
+    lsf_left_3      =  9.476358036328088
+    lsf_left_4      =  -3.3154956642246263
+    lsf_left_5      =  0.8613378515456129
+    lsf_right1      =  5.8581194948377
+    lsf_right2      =  -19.342561999380756
+    lsf_right3      =  10.150030431838793
+    lsf_right4      =  -3.8549124151720746
+    lsf_right5      =  0.41631319094914204
+    tem_depth       =  1.0
+    velocity        =  0.0
+    wave_intercept  =  6173.599951322095
+    wave_slope      =  0.017832195950331916
+2026-02-02 11:12:16,019 - root - ERROR - Evaluated LSF:
+2026-02-02 11:12:16,020 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:16,368 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 11:12:16,369 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 11:12:16,369 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  nan
+    cont_slope      =  nan
+    iod_depth       =  nan
+    lsf_left_1      =  nan
+    lsf_left_2      =  nan
+    lsf_left_3      =  nan
+    lsf_left_4      =  nan
+    lsf_left_5      =  nan
+    lsf_right1      =  nan
+    lsf_right2      =  nan
+    lsf_right3      =  nan
+    lsf_right4      =  nan
+    lsf_right5      =  nan
+    tem_depth       =  nan
+    velocity        =  nan
+    wave_intercept  =  nan
+    wave_slope      =  nan
+2026-02-02 11:12:16,370 - root - ERROR - Evaluated LSF:
+2026-02-02 11:12:16,371 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 11:12:16,388 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 215, in live_chunkmodel
+    a.set_xlim((sp.wave[0], sp.wave[-1]))
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3294, in set_xlim
+    left = self._validate_converted_limits(left, self.convert_xunits)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 3211, in _validate_converted_limits
+    raise ValueError("Axis limits cannot be NaN or Inf")
+ValueError: Axis limits cannot be NaN or Inf

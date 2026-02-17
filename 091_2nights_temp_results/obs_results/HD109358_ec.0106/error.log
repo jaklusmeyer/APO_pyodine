@@ -1,0 +1,2070 @@
+2026-02-02 13:45:07,426 - root - ERROR - Could not find wavelength range nan-5020.0048082322655 Å
+2026-02-02 13:45:26,292 - root - ERROR - Could not find wavelength range nan-5020.0048082322655 Å
+2026-02-02 14:50:28,421 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:28,422 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:30,831 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:30,831 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:33,778 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:33,778 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:39,620 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:39,620 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:40,279 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:40,280 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:40,403 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:40,403 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:43,880 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:43,881 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:50:54,725 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:50:54,725 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:01,808 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:01,809 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:02,695 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:02,695 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:18,180 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:18,180 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:19,201 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:19,202 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:20,102 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:20,103 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:28,371 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:28,371 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:31,869 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:31,870 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:33,290 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:33,290 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:38,774 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:38,775 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:42,960 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:42,961 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:45,425 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:45,425 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:47,338 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:47,338 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:51,380 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:51,381 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:51,883 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:51,883 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:54,006 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:54,007 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:51:57,577 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:51:57,578 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:05,025 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:05,025 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:15,354 - root - ERROR - Chunk 3: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:15,473 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:15,473 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:15,489 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:15,490 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3533.0102855063087
+    cont_slope      =  1.9480630866701085
+    iod_depth       =  1.0610660421589149
+    lsf_left_1      =  2.1607679808098315
+    lsf_left_2      =  -5.369602917560515
+    lsf_left_3      =  4.5839246969930825
+    lsf_left_4      =  -3.9526923076897442
+    lsf_left_5      =  0.44163515413784726
+    lsf_right1      =  5.287624629367237
+    lsf_right2      =  -18.408207800165936
+    lsf_right3      =  8.645473160193376
+    lsf_right4      =  -3.6125754399329417
+    lsf_right5      =  0.3359293143674408
+    tem_depth       =  0.8596205628501807
+    velocity        =  363.927008308474
+    wave_intercept  =  4997.4591694656565
+    wave_slope      =  0.015113204948391436
+2026-02-02 14:52:15,490 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:15,491 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:15,795 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:15,796 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:17,113 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:17,113 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4951.66068233128
+    cont_slope      =  3.388262220547421
+    iod_depth       =  0.8558761704005302
+    lsf_left_1      =  4.425538098236167
+    lsf_left_2      =  -11.621035458770924
+    lsf_left_3      =  4.079267263131269
+    lsf_left_4      =  -3.181746072326448
+    lsf_left_5      =  0.5265209557812062
+    lsf_right1      =  2.217167083354963
+    lsf_right2      =  -16.131765549337455
+    lsf_right3      =  3.281295889612008
+    lsf_right4      =  -3.7441081943413197
+    lsf_right5      =  1.10871480825571
+    tem_depth       =  0.818147668338594
+    velocity        =  238.54587966007244
+    wave_intercept  =  5004.333924388802
+    wave_slope      =  0.014972579640050466
+2026-02-02 14:52:17,114 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:17,114 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:17,421 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:17,422 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:18,850 - root - ERROR - Chunk 15: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:18,969 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:18,970 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:21,505 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:21,506 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  2772.1300670514006
+    cont_slope      =  4.377485275743867
+    iod_depth       =  0.7803546968503658
+    lsf_left_1      =  5.736051740321226
+    lsf_left_2      =  -13.337551457705299
+    lsf_left_3      =  9.367221219081404
+    lsf_left_4      =  -3.914785394145305
+    lsf_left_5      =  0.13506987441009785
+    lsf_right1      =  4.902927085380307
+    lsf_right2      =  -18.661135648760695
+    lsf_right3      =  9.759708369835128
+    lsf_right4      =  -3.6358315524842433
+    lsf_right5      =  0.21146575564431325
+    tem_depth       =  0.6553205435795584
+    velocity        =  -1540.669179044295
+    wave_intercept  =  5034.423803383764
+    wave_slope      =  0.01604599669285166
+2026-02-02 14:52:21,506 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:21,507 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:21,821 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:21,822 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:22,276 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:22,276 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3380.001410377881
+    cont_slope      =  3.605641817352466
+    iod_depth       =  0.8341104018205071
+    lsf_left_1      =  5.1432501157071595
+    lsf_left_2      =  -15.407942395448396
+    lsf_left_3      =  8.174328850411737
+    lsf_left_4      =  -3.8448343625116785
+    lsf_left_5      =  0.5912366900420434
+    lsf_right1      =  4.233358486416015
+    lsf_right2      =  -11.45437873280388
+    lsf_right3      =  6.042308505910071
+    lsf_right4      =  -3.786628148645386
+    lsf_right5      =  0.20897347818161816
+    tem_depth       =  0.4961451412372811
+    velocity        =  -1309.0912750790299
+    wave_intercept  =  5037.296319399428
+    wave_slope      =  0.01597874769245781
+2026-02-02 14:52:22,277 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:22,277 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:22,582 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:22,583 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:23,286 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:23,287 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3683.801975243271
+    cont_slope      =  2.9753785725990136
+    iod_depth       =  0.7308424742588574
+    lsf_left_1      =  10.805992748325197
+    lsf_left_2      =  -18.29196845720312
+    lsf_left_3      =  3.2469309443637195
+    lsf_left_4      =  -3.1224521538030032
+    lsf_left_5      =  0.1734556457981013
+    lsf_right1      =  5.052998432463422
+    lsf_right2      =  -19.223126716835417
+    lsf_right3      =  7.0192710047268365
+    lsf_right4      =  -3.682322908005465
+    lsf_right5      =  0.33009050892332564
+    tem_depth       =  0.781687434575082
+    velocity        =  528.7474825096672
+    wave_intercept  =  5041.551971182856
+    wave_slope      =  0.015336337587321442
+2026-02-02 14:52:23,287 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:23,288 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:23,598 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:23,599 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:23,824 - root - ERROR - Chunk 30: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:23,944 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:23,945 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:25,915 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:25,916 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6260.222943221973
+    cont_slope      =  2.098788344747575
+    iod_depth       =  0.8232959449545882
+    lsf_left_1      =  2.1196254398542913
+    lsf_left_2      =  -15.867570758707688
+    lsf_left_3      =  1.6203964696523463
+    lsf_left_4      =  -3.398479975045878
+    lsf_left_5      =  0.21065808470166938
+    lsf_right1      =  10.283831659909978
+    lsf_right2      =  -19.32283252161982
+    lsf_right3      =  1.4654477108494683
+    lsf_right4      =  -1.8785156957921685
+    lsf_right5      =  0.4033829565122385
+    tem_depth       =  0.9242700071380625
+    velocity        =  -334.6750696062131
+    wave_intercept  =  5052.449809996043
+    wave_slope      =  0.014612174644701036
+2026-02-02 14:52:25,917 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:25,917 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:26,227 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:26,228 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:32,800 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:32,800 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5909.599841028688
+    cont_slope      =  1.6907124143259555
+    iod_depth       =  0.9212674223956618
+    lsf_left_1      =  4.172335276924088
+    lsf_left_2      =  -19.3089275477167
+    lsf_left_3      =  5.378226021398474
+    lsf_left_4      =  -3.197271887717376
+    lsf_left_5      =  1.1962111614670103
+    lsf_right1      =  3.5429405211717078
+    lsf_right2      =  -14.247505853176499
+    lsf_right3      =  3.996745457166353
+    lsf_right4      =  -3.4629511191600426
+    lsf_right5      =  1.1849159357654306
+    tem_depth       =  1.0252662072217293
+    velocity        =  -243.19891618596844
+    wave_intercept  =  5089.147005753091
+    wave_slope      =  0.015101300096551662
+2026-02-02 14:52:32,801 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:32,802 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:33,113 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:33,114 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:35,264 - root - ERROR - Chunk 61: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:35,382 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:35,383 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:36,461 - root - ERROR - Chunk 65: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:36,580 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:36,581 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:36,583 - root - ERROR - Chunk 66: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:36,701 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:36,702 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:41,895 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:41,896 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8069.988190405128
+    cont_slope      =  0.6127733002107153
+    iod_depth       =  0.8747123788979477
+    lsf_left_1      =  2.1167617501778437
+    lsf_left_2      =  -7.88324347974044
+    lsf_left_3      =  3.225619292179493
+    lsf_left_4      =  -3.1069815936998513
+    lsf_left_5      =  0.13827016780553086
+    lsf_right1      =  4.059572222343883
+    lsf_right2      =  -17.935266062451518
+    lsf_right3      =  7.075805211585068
+    lsf_right4      =  -3.2872134957547057
+    lsf_right5      =  0.7447184240517978
+    tem_depth       =  0.8868838764665248
+    velocity        =  175.80018135082588
+    wave_intercept  =  5141.367693275174
+    wave_slope      =  0.014450498659642846
+2026-02-02 14:52:41,896 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:41,896 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:42,204 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:42,205 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:42,207 - root - ERROR - Chunk 84: No Data! Returning LmfitResult with None.
+2026-02-02 14:52:42,326 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:42,327 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:52:55,362 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:52:55,364 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7074.139322508009
+    cont_slope      =  3.893215576045846
+    iod_depth       =  0.9219026799657282
+    lsf_left_1      =  5.086092605893366
+    lsf_left_2      =  -17.27506995969534
+    lsf_left_3      =  9.923386803234344
+    lsf_left_4      =  -3.941455552899009
+    lsf_left_5      =  0.16472594924497358
+    lsf_right1      =  2.647506843188639
+    lsf_right2      =  -15.71199443360596
+    lsf_right3      =  9.403187404314174
+    lsf_right4      =  -3.8535913941254782
+    lsf_right5      =  0.977465434913332
+    tem_depth       =  0.8709904479615194
+    velocity        =  -297.68086311450344
+    wave_intercept  =  5219.635483335509
+    wave_slope      =  0.015547447063425514
+2026-02-02 14:52:55,364 - root - ERROR - Evaluated LSF:
+2026-02-02 14:52:55,365 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:52:55,669 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:52:55,669 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:03,199 - root - ERROR - Chunk 143: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:03,336 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:03,337 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:14,519 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:14,520 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3766.666286849862
+    cont_slope      =  4.472885956127479
+    iod_depth       =  0.7662236670872068
+    lsf_left_1      =  3.7997329807840696
+    lsf_left_2      =  -14.558123574689791
+    lsf_left_3      =  4.529375839325263
+    lsf_left_4      =  -3.433404730862251
+    lsf_left_5      =  0.6680617478274289
+    lsf_right1      =  7.229263536484106
+    lsf_right2      =  -19.381890901825482
+    lsf_right3      =  1.1518851944554598
+    lsf_right4      =  -1.4853606034186515
+    lsf_right5      =  0.3843048267930707
+    tem_depth       =  0.5863277230082218
+    velocity        =  -760.1053576419522
+    wave_intercept  =  5342.030551192072
+    wave_slope      =  0.017064437456938364
+2026-02-02 14:53:14,524 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:14,530 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:14,870 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:14,871 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:16,406 - root - ERROR - Chunk 181: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:16,526 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:16,527 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:17,835 - root - ERROR - Chunk 186: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:17,954 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:17,954 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:27,367 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:27,368 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8351.524010896695
+    cont_slope      =  0.42856236469377507
+    iod_depth       =  0.901247543730465
+    lsf_left_1      =  4.409878664300157
+    lsf_left_2      =  -5.8039244931798795
+    lsf_left_3      =  1.19163542616895
+    lsf_left_4      =  -3.289944666388897
+    lsf_left_5      =  1.193834483391126
+    lsf_right1      =  2.1170448814677174
+    lsf_right2      =  -19.007950102028236
+    lsf_right3      =  10.198806578270961
+    lsf_right4      =  -2.881880079676425
+    lsf_right5      =  0.5356256563308758
+    tem_depth       =  0.9889559309087141
+    velocity        =  212.2474784861465
+    wave_intercept  =  5411.562027462584
+    wave_slope      =  0.01545084338117914
+2026-02-02 14:53:27,368 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:27,369 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:27,675 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:27,676 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:28,417 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:28,417 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9480.225818094355
+    cont_slope      =  0.24843824586424731
+    iod_depth       =  0.8601308862824668
+    lsf_left_1      =  2.927485597364403
+    lsf_left_2      =  -17.086355616910655
+    lsf_left_3      =  4.2943461064809085
+    lsf_left_4      =  -1.243638621873056
+    lsf_left_5      =  0.5173116958566663
+    lsf_right1      =  4.994128091414686
+    lsf_right2      =  -12.579747726250556
+    lsf_right3      =  2.2935993906837955
+    lsf_right4      =  -0.4642423391744934
+    lsf_right5      =  0.13406578359337354
+    tem_depth       =  0.8987694654438233
+    velocity        =  293.7117473787379
+    wave_intercept  =  5415.736489401493
+    wave_slope      =  0.015078684597029504
+2026-02-02 14:53:28,418 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:28,418 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:28,724 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:28,724 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:29,064 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:29,065 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10580.857593330637
+    cont_slope      =  1.860245607812726
+    iod_depth       =  0.8351339420427013
+    lsf_left_1      =  3.8313528154941094
+    lsf_left_2      =  -18.26238673352605
+    lsf_left_3      =  3.9710004793089198
+    lsf_left_4      =  -2.247263257343314
+    lsf_left_5      =  1.1181016889052988
+    lsf_right1      =  2.7987284140564066
+    lsf_right2      =  -6.908819846013474
+    lsf_right3      =  1.1707681008658881
+    lsf_right4      =  -3.0208729603571585
+    lsf_right5      =  1.1743274848245528
+    tem_depth       =  0.9203303130644364
+    velocity        =  359.1509760357115
+    wave_intercept  =  5418.469704134134
+    wave_slope      =  0.014910540691275861
+2026-02-02 14:53:29,065 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:29,066 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:29,419 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:29,420 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:33,742 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:33,743 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8213.849094289679
+    cont_slope      =  4.0139394771436425
+    iod_depth       =  0.8000271441864533
+    lsf_left_1      =  3.4954698827625346
+    lsf_left_2      =  -19.330739410062403
+    lsf_left_3      =  2.2442769107888556
+    lsf_left_4      =  -0.8973478073247869
+    lsf_left_5      =  0.24076353743104473
+    lsf_right1      =  4.610278635880798
+    lsf_right2      =  -11.868986481625136
+    lsf_right3      =  2.7601678466812567
+    lsf_right4      =  -3.82510957498811
+    lsf_right5      =  1.1933283423440328
+    tem_depth       =  0.49114565733831833
+    velocity        =  -458.65901664251186
+    wave_intercept  =  5452.656424392079
+    wave_slope      =  0.016079338762730395
+2026-02-02 14:53:33,743 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:33,744 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:34,052 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:34,052 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:39,321 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:39,322 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5962.9669030117975
+    cont_slope      =  4.131605826272809
+    iod_depth       =  0.8278566136849022
+    lsf_left_1      =  8.756098791152713
+    lsf_left_2      =  -16.13969157696411
+    lsf_left_3      =  2.0457925781961315
+    lsf_left_4      =  -1.543337430793291
+    lsf_left_5      =  0.8909282288850684
+    lsf_right1      =  2.1097062431889384
+    lsf_right2      =  -19.319170515984915
+    lsf_right3      =  1.176647947997628
+    lsf_right4      =  -0.8230428702287016
+    lsf_right5      =  0.5631529086894262
+    tem_depth       =  0.8584103699121001
+    velocity        =  733.4746892832198
+    wave_intercept  =  5492.696543426748
+    wave_slope      =  0.01701419186289359
+2026-02-02 14:53:39,323 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:39,324 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:39,634 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:39,634 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:46,905 - root - ERROR - Chunk 267: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:47,025 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:47,026 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:48,449 - root - ERROR - Chunk 273: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:48,567 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:48,568 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:49,668 - root - ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+2026-02-02 14:53:49,786 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:49,787 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:52,210 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:52,211 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10751.015632101773
+    cont_slope      =  0.5541309129648296
+    iod_depth       =  0.8094469349782721
+    lsf_left_1      =  2.1187991678877767
+    lsf_left_2      =  -11.423203239855166
+    lsf_left_3      =  9.37336600888105
+    lsf_left_4      =  -3.665018650547467
+    lsf_left_5      =  0.42712958651732935
+    lsf_right1      =  2.577523106160368
+    lsf_right2      =  -12.53982725562361
+    lsf_right3      =  1.1439125829792653
+    lsf_right4      =  -1.7906364587226755
+    lsf_right5      =  0.7297500419826473
+    tem_depth       =  0.9108402027307695
+    velocity        =  336.15744842558297
+    wave_intercept  =  5566.24122225015
+    wave_slope      =  0.015342150054804571
+2026-02-02 14:53:52,211 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:52,212 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:52,553 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:52,554 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:53:55,943 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:53:55,943 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7770.301281824453
+    cont_slope      =  3.9744889226005533
+    iod_depth       =  0.8428330301407134
+    lsf_left_1      =  2.6989583830277444
+    lsf_left_2      =  -15.72707914620337
+    lsf_left_3      =  2.38673801542457
+    lsf_left_4      =  -3.271295024422406
+    lsf_left_5      =  1.188029785586438
+    lsf_right1      =  8.169846836918634
+    lsf_right2      =  -18.51421641465816
+    lsf_right3      =  10.176636337969
+    lsf_right4      =  -2.401208593859603
+    lsf_right5      =  0.23262743271134573
+    tem_depth       =  0.8083301060079512
+    velocity        =  87.02133221798047
+    wave_intercept  =  5599.692957998074
+    wave_slope      =  0.016852312703898774
+2026-02-02 14:53:55,944 - root - ERROR - Evaluated LSF:
+2026-02-02 14:53:55,945 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:53:56,289 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:53:56,291 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:04,696 - root - ERROR - Chunk 320: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:04,815 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:04,816 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:05,484 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:05,485 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10406.204545515662
+    cont_slope      =  2.273563138877686
+    iod_depth       =  0.8644916130197677
+    lsf_left_1      =  7.5968354958138455
+    lsf_left_2      =  -16.84392851635749
+    lsf_left_3      =  7.987593564989244
+    lsf_left_4      =  -2.9753827505491226
+    lsf_left_5      =  0.32854858761501465
+    lsf_right1      =  4.5459781711650615
+    lsf_right2      =  -18.928376039468514
+    lsf_right3      =  4.049798590571756
+    lsf_right4      =  -1.4263123391797277
+    lsf_right5      =  0.2744265468263904
+    tem_depth       =  0.9757820743525328
+    velocity        =  48.544735516950254
+    wave_intercept  =  5662.093127632889
+    wave_slope      =  0.016123355648157176
+2026-02-02 14:54:05,485 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:05,486 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:05,791 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:05,792 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:07,575 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:07,576 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12331.309167801679
+    cont_slope      =  -1.9173671342590337
+    iod_depth       =  0.9504293840796997
+    lsf_left_1      =  2.475959895923904
+    lsf_left_2      =  -18.501317527573296
+    lsf_left_3      =  1.4792148296697556
+    lsf_left_4      =  -0.5023181576180886
+    lsf_left_5      =  0.2708343789434846
+    lsf_right1      =  4.1842850527505915
+    lsf_right2      =  -11.51150592082089
+    lsf_right3      =  3.2816573115066037
+    lsf_right4      =  -0.818692610659427
+    lsf_right5      =  0.24748089379702498
+    tem_depth       =  0.864945418969576
+    velocity        =  156.97445206977255
+    wave_intercept  =  5670.7341442572115
+    wave_slope      =  0.01544773885778336
+2026-02-02 14:54:07,577 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:07,577 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:07,883 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:07,884 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:12,335 - root - ERROR - Chunk 339: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:12,454 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:12,455 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:13,062 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:13,062 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9632.63266028026
+    cont_slope      =  5.301730944980019
+    iod_depth       =  0.8874511075654515
+    lsf_left_1      =  2.215092468057269
+    lsf_left_2      =  -19.053615596799325
+    lsf_left_3      =  10.140157112226277
+    lsf_left_4      =  -3.923217922117325
+    lsf_left_5      =  0.8962367107349308
+    lsf_right1      =  2.1131275202921627
+    lsf_right2      =  -16.832223980537606
+    lsf_right3      =  1.1608129071971398
+    lsf_right4      =  -3.8897035764700276
+    lsf_right5      =  1.0797157204526715
+    tem_depth       =  0.9531978275999333
+    velocity        =  183.3008801588369
+    wave_intercept  =  5710.512917539157
+    wave_slope      =  0.01663009931987967
+2026-02-02 14:54:13,063 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:13,064 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:13,374 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:13,375 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:14,651 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:14,652 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10715.289466278715
+    cont_slope      =  2.4091553544224755
+    iod_depth       =  0.8393321033107752
+    lsf_left_1      =  2.66397626476347
+    lsf_left_2      =  -19.250914956442703
+    lsf_left_3      =  3.5082995312193264
+    lsf_left_4      =  -2.059469289367808
+    lsf_left_5      =  1.1230120346402133
+    lsf_right1      =  2.1130102952873195
+    lsf_right2      =  -7.6429164600765045
+    lsf_right3      =  1.2137645847054976
+    lsf_right4      =  -0.6524064532533909
+    lsf_right5      =  0.34291146494738933
+    tem_depth       =  0.47256113903916447
+    velocity        =  -1190.8630009513981
+    wave_intercept  =  5716.493608007905
+    wave_slope      =  0.016250683277003068
+2026-02-02 14:54:14,652 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:14,653 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:14,963 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:14,964 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:14,966 - root - ERROR - Chunk 347: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:15,087 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:15,087 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:24,333 - root - ERROR - Chunk 373: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:24,453 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:24,454 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:31,994 - root - ERROR - Chunk 395: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:32,113 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:32,114 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:32,672 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:32,673 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5455.609659354028
+    cont_slope      =  5.227641459309909
+    iod_depth       =  0.9018068835335328
+    lsf_left_1      =  2.4547742093604574
+    lsf_left_2      =  -16.061125291673296
+    lsf_left_3      =  4.517016929715695
+    lsf_left_4      =  -2.2707467285712464
+    lsf_left_5      =  0.7426683302994651
+    lsf_right1      =  7.779788420497822
+    lsf_right2      =  -18.225107428387272
+    lsf_right3      =  2.6279686377060325
+    lsf_right4      =  -3.9363168484787665
+    lsf_right5      =  0.1420734508195643
+    tem_depth       =  0.9722575050076341
+    velocity        =  742.0712752626929
+    wave_intercept  =  5857.412075842976
+    wave_slope      =  0.01857409060058979
+2026-02-02 14:54:32,674 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:32,674 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:33,025 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:33,027 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:36,827 - root - ERROR - Chunk 409: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:36,947 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:36,948 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:40,298 - root - ERROR - Chunk 419: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:40,418 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:40,419 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:43,811 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:43,812 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10028.940980545121
+    cont_slope      =  3.5835640517429295
+    iod_depth       =  0.9106544850792879
+    lsf_left_1      =  2.1846280643703713
+    lsf_left_2      =  -14.512143458232863
+    lsf_left_3      =  1.6299322378167809
+    lsf_left_4      =  -2.05599189849049
+    lsf_left_5      =  0.9482206714687692
+    lsf_right1      =  7.188323041490159
+    lsf_right2      =  -16.75882679400649
+    lsf_right3      =  2.3851615043014114
+    lsf_right4      =  -1.6268683612844623
+    lsf_right5      =  0.15343276195093744
+    tem_depth       =  0.9571418377139429
+    velocity        =  178.49996747409745
+    wave_intercept  =  5929.109567272317
+    wave_slope      =  0.01749402760874304
+2026-02-02 14:54:43,812 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:43,813 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:44,287 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:44,288 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:47,164 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:47,165 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13208.970512845248
+    cont_slope      =  2.8830770656339895
+    iod_depth       =  0.9028656342719645
+    lsf_left_1      =  3.3570783351541653
+    lsf_left_2      =  -18.85318023636568
+    lsf_left_3      =  9.647964160133398
+    lsf_left_4      =  -2.3223739912453762
+    lsf_left_5      =  0.33384175128219196
+    lsf_right1      =  8.12305854486009
+    lsf_right2      =  -19.294049041450425
+    lsf_right3      =  5.590442039446098
+    lsf_right4      =  -3.4013392318805358
+    lsf_right5      =  0.1765512832440334
+    tem_depth       =  0.5283035150950954
+    velocity        =  628.3813934492682
+    wave_intercept  =  5943.030661630599
+    wave_slope      =  0.01625883086764628
+2026-02-02 14:54:47,165 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:47,166 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:47,475 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:47,476 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:48,734 - root - ERROR - Chunk 441: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:48,856 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:48,857 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:49,722 - root - ERROR - Chunk 444: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:49,846 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:49,847 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:53,870 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:53,871 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11601.563358348132
+    cont_slope      =  2.2543289076372144
+    iod_depth       =  0.8965322331778376
+    lsf_left_1      =  7.075511478280764
+    lsf_left_2      =  -14.226155756528188
+    lsf_left_3      =  2.5639762743328296
+    lsf_left_4      =  -2.047389487306735
+    lsf_left_5      =  0.16230918940676284
+    lsf_right1      =  4.5017972612737065
+    lsf_right2      =  -19.285796667060925
+    lsf_right3      =  5.110588894748936
+    lsf_right4      =  -0.5282624936513765
+    lsf_right5      =  0.14040958653397875
+    tem_depth       =  0.24409432578916124
+    velocity        =  -5350.264864568575
+    wave_intercept  =  5993.589043298067
+    wave_slope      =  0.01711030742963373
+2026-02-02 14:54:53,872 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:53,872 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:54,180 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:54,181 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:54,183 - root - ERROR - Chunk 455: No Data! Returning LmfitResult with None.
+2026-02-02 14:54:54,303 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:54,304 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:54:55,204 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:54:55,204 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12354.507321531319
+    cont_slope      =  0.8424328805931969
+    iod_depth       =  0.7968297518096243
+    lsf_left_1      =  2.1110720841524975
+    lsf_left_2      =  -16.59700765690873
+    lsf_left_3      =  1.3121667763154443
+    lsf_left_4      =  -2.93519640337428
+    lsf_left_5      =  1.1337086607471263
+    lsf_right1      =  3.0653320148677645
+    lsf_right2      =  -17.63799995478505
+    lsf_right3      =  9.96956246216963
+    lsf_right4      =  -3.85797224635972
+    lsf_right5      =  0.2420682956769331
+    tem_depth       =  0.41064642865719375
+    velocity        =  149.6880749173785
+    wave_intercept  =  5999.78122533134
+    wave_slope      =  0.016671065978768183
+2026-02-02 14:54:55,205 - root - ERROR - Evaluated LSF:
+2026-02-02 14:54:55,206 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:54:55,513 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:54:55,514 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:01,130 - root - ERROR - Chunk 474: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:01,255 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:55:01,256 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:05,631 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:55:05,632 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7018.975322004966
+    cont_slope      =  5.437362062298021
+    iod_depth       =  1.0787921632187347
+    lsf_left_1      =  7.127895508251245
+    lsf_left_2      =  -16.037145535110138
+    lsf_left_3      =  6.699265371085992
+    lsf_left_4      =  -3.128830532941618
+    lsf_left_5      =  0.4968622149779578
+    lsf_right1      =  2.2434723425462098
+    lsf_right2      =  -19.34368765246882
+    lsf_right3      =  9.381096352265054
+    lsf_right4      =  -3.054609232964971
+    lsf_right5      =  0.689593805490929
+    tem_depth       =  0.6442486940537961
+    velocity        =  -436.88500327429006
+    wave_intercept  =  6093.465682245233
+    wave_slope      =  0.01888960282416929
+2026-02-02 14:55:05,632 - root - ERROR - Evaluated LSF:
+2026-02-02 14:55:05,633 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:55:05,941 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:55:05,942 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:06,540 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:55:06,541 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8135.485307925159
+    cont_slope      =  6.468877732705215
+    iod_depth       =  0.9469021803697466
+    lsf_left_1      =  5.9931739672672375
+    lsf_left_2      =  -15.447177101470153
+    lsf_left_3      =  1.8185489460713118
+    lsf_left_4      =  -2.4291217895763975
+    lsf_left_5      =  0.22651394222938842
+    lsf_right1      =  7.017783099077836
+    lsf_right2      =  -16.469907850425866
+    lsf_right3      =  8.669876198963879
+    lsf_right4      =  -3.652059137860084
+    lsf_right5      =  1.1962374436403778
+    tem_depth       =  1.0465133125312862
+    velocity        =  2146.289241040538
+    wave_intercept  =  6096.930487636543
+    wave_slope      =  0.018363070983954316
+2026-02-02 14:55:06,542 - root - ERROR - Evaluated LSF:
+2026-02-02 14:55:06,542 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:55:06,850 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:55:06,851 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:08,413 - root - ERROR - NaN value detected in oversampled model function.
+2026-02-02 14:55:08,413 - root - ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10849.49747693357
+    cont_slope      =  5.3875911499582285
+    iod_depth       =  1.0600800034162636
+    lsf_left_1      =  2.2428463828075422
+    lsf_left_2      =  -13.617159270110172
+    lsf_left_3      =  8.360054725581694
+    lsf_left_4      =  -3.9458067779481114
+    lsf_left_5      =  0.5330934703139687
+    lsf_right1      =  4.301037839176802
+    lsf_right2      =  -14.818154489419088
+    lsf_right3      =  1.4153738780854712
+    lsf_right4      =  -2.8375951642558954
+    lsf_right5      =  1.0377791015713937
+    tem_depth       =  0.4838746365326643
+    velocity        =  -853.9206846313932
+    wave_intercept  =  6105.331551361724
+    wave_slope      =  0.018320815037663425
+2026-02-02 14:55:08,414 - root - ERROR - Evaluated LSF:
+2026-02-02 14:55:08,415 - root - ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+2026-02-02 14:55:08,720 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:55:08,720 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:16,941 - root - ERROR - Chunk 514: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:17,061 - root - ERROR - NaN value detected in iodine function.
+2026-02-02 14:55:17,062 - root - ERROR - Live chunk could not be plotted
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/plot_lib.py", line 198, in live_chunkmodel
+    sp = fit_result.fitted_spectrum
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/fitters/base.py", line 45, in fitted_spectrum
+    return self.model.eval_spectrum(self.chunk, self.params, chunk_ind=self.chunk_ind)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/base.py", line 79, in eval_spectrum
+    flux = self.eval(chunk, params, chunk_ind=chunk_ind, **kwargs)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/models/spectrum.py", line 138, in eval
+    tck = splrep(tem.wave * doppler, flux_tem, s=0)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_py.py", line 295, in splrep
+    res = _impl.splrep(x, y, w, xb, xe, k, task, s, t, full_output, per, quiet)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/scipy/interpolate/_fitpack_impl.py", line 276, in splrep
+    n, c, fp, ier = dfitpack.curfit(task, x, y, w, t, wrk, iwrk,
+dfitpack.error: (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+2026-02-02 14:55:34,112 - root - ERROR - Chunk 3: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,114 - root - ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,136 - root - ERROR - Chunk 9: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,162 - root - ERROR - Chunk 15: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,198 - root - ERROR - Chunk 23: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,204 - root - ERROR - Chunk 25: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,215 - root - ERROR - Chunk 28: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,222 - root - ERROR - Chunk 30: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,248 - root - ERROR - Chunk 36: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,331 - root - ERROR - Chunk 54: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,360 - root - ERROR - Chunk 61: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,377 - root - ERROR - Chunk 65: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,378 - root - ERROR - Chunk 66: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,457 - root - ERROR - Chunk 83: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,459 - root - ERROR - Chunk 84: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,626 - root - ERROR - Chunk 120: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,730 - root - ERROR - Chunk 143: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,881 - root - ERROR - Chunk 176: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,901 - root - ERROR - Chunk 181: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:34,922 - root - ERROR - Chunk 186: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,047 - root - ERROR - Chunk 213: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,059 - root - ERROR - Chunk 216: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,065 - root - ERROR - Chunk 218: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,119 - root - ERROR - Chunk 230: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,192 - root - ERROR - Chunk 246: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,289 - root - ERROR - Chunk 267: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,314 - root - ERROR - Chunk 273: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,331 - root - ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,361 - root - ERROR - Chunk 284: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,405 - root - ERROR - Chunk 294: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,522 - root - ERROR - Chunk 320: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,534 - root - ERROR - Chunk 323: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,560 - root - ERROR - Chunk 329: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,605 - root - ERROR - Chunk 339: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,616 - root - ERROR - Chunk 342: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,633 - root - ERROR - Chunk 346: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,635 - root - ERROR - Chunk 347: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,755 - root - ERROR - Chunk 373: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,857 - root - ERROR - Chunk 395: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,864 - root - ERROR - Chunk 397: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,918 - root - ERROR - Chunk 409: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:35,962 - root - ERROR - Chunk 419: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,001 - root - ERROR - Chunk 428: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,040 - root - ERROR - Chunk 437: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,056 - root - ERROR - Chunk 441: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,068 - root - ERROR - Chunk 444: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,113 - root - ERROR - Chunk 454: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,115 - root - ERROR - Chunk 455: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,127 - root - ERROR - Chunk 458: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,199 - root - ERROR - Chunk 474: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,254 - root - ERROR - Chunk 486: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,261 - root - ERROR - Chunk 488: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,281 - root - ERROR - Chunk 493: No Data! Returning LmfitResult with None.
+2026-02-02 14:55:36,379 - root - ERROR - Chunk 514: No Data! Returning LmfitResult with None.

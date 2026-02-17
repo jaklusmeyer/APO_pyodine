@@ -1,0 +1,3849 @@
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0143.fits
+INFO - 
+INFO - Median flux of the observation: 7770
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/obs_temp_highsnr_test.h5
+INFO - 
+INFO - Order correction: 0
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -6.526 km/s
+INFO - Template velocity: -6.638 km/s
+INFO - Velocity guess: 0.112 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 13.298 km/s)
+INFO - (Barycentric velocity of template: 13.293 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -5.04058283690938, z = -1.6813574532650115e-08
+
+INFO - Startpixel (order 22, chunk 1): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 4): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 24, chunk 53): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 26, chunk 108): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 27, chunk 116): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 29, chunk 170): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 33, chunk 263): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 35, chunk 289): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 36, chunk 322): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 374): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 378): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 386): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 394): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 395): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 399): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 42, chunk 461): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 43, chunk 472): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 514): -45
+INFO - -> Correcting to 0.
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 29, 2032
+INFO - Orders: 22 - 45 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+WARNING - Chunk 1:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 4:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 53:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 108:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 116:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 170:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 263:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 289:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 322:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 374:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 378:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 386:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 394:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 395:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 399:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 461:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 472:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 514:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - Number of chunks with no uncertainties: 12
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 18
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  10.634883996978306
+    left_2  =  -10.75526915122734
+    left_3  =  5.7272433570683035
+    left_4  =  -2.2042603758036305
+    left_5  =  0.6653904532467969
+    right1  =  10.63488436798068
+    right2  =  -10.755269076902824
+    right3  =  5.7272432443702295
+    right4  =  -2.204260289538017
+    right5  =  0.6653904252961274
+ERROR - Chunk 1: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3877.7720466444807
+    cont_slope      =  4.176229999438417
+    iod_depth       =  2.1839329682543553
+    lsf_left_1      =  2.690238342581689
+    lsf_left_2      =  -17.078775427926296
+    lsf_left_3      =  7.788858021311892
+    lsf_left_4      =  -3.965198875175702
+    lsf_left_5      =  0.14550998473022408
+    lsf_right1      =  7.354116957718605
+    lsf_right2      =  -17.83199558687891
+    lsf_right3      =  1.2987658491034433
+    lsf_right4      =  -2.3289294780763683
+    lsf_right5      =  1.1007320802920642
+    tem_depth       =  1.0187164767785897
+    velocity        =  1197.2148299568667
+    wave_intercept  =  4996.046519703947
+    wave_slope      =  0.014918510017757023
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 3:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7301.405343368592
+    cont_slope      =  3.2114191197691047
+    iod_depth       =  1.2895449833232207
+    lsf_left_1      =  4.526477702796344
+    lsf_left_2      =  -16.382122273023224
+    lsf_left_3      =  4.348962555304643
+    lsf_left_4      =  -3.949609125679226
+    lsf_left_5      =  0.29614519268140127
+    lsf_right1      =  3.3528393637915963
+    lsf_right2      =  -17.091638771946247
+    lsf_right3      =  10.097456469442443
+    lsf_right4      =  -3.851666666583305
+    lsf_right5      =  0.4716936541025239
+    tem_depth       =  0.3505916061028498
+    velocity        =  -402.0916475765549
+    wave_intercept  =  5008.381171268032
+    wave_slope      =  0.014887591686495363
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 12:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8964.219060387155
+    cont_slope      =  -1.3464680256868273
+    iod_depth       =  1.0040575396025098
+    lsf_left_1      =  5.087491654160995
+    lsf_left_2      =  -14.732787412567662
+    lsf_left_3      =  2.285716809261909
+    lsf_left_4      =  -3.9668339414207376
+    lsf_left_5      =  0.7053545970305496
+    lsf_right1      =  4.422987393320794
+    lsf_right2      =  -15.600596136186008
+    lsf_right3      =  8.565993269259803
+    lsf_right4      =  -3.7968677298232185
+    lsf_right5      =  0.9232690120653231
+    tem_depth       =  0.8082240544626303
+    velocity        =  391.6266506430378
+    wave_intercept  =  5057.679480069857
+    wave_slope      =  0.014021268204078162
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 40:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9634.608290327711
+    cont_slope      =  4.46766206162741
+    iod_depth       =  0.921878940210459
+    lsf_left_1      =  2.727075803114707
+    lsf_left_2      =  -15.522559279951066
+    lsf_left_3      =  5.263358910296522
+    lsf_left_4      =  -1.4574619206944819
+    lsf_left_5      =  0.4060060887508122
+    lsf_right1      =  2.2509922216787044
+    lsf_right2      =  -18.83003983508069
+    lsf_right3      =  3.123346104871405
+    lsf_right4      =  -0.6479844451147279
+    lsf_right5      =  0.3050726948452028
+    tem_depth       =  0.7571785992735369
+    velocity        =  196.55042211455105
+    wave_intercept  =  5060.231037570381
+    wave_slope      =  0.01395667046402227
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 42:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 53: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4249.912413988152
+    cont_slope      =  4.310184724719519
+    iod_depth       =  0.9085351146379532
+    lsf_left_1      =  7.0541599527192975
+    lsf_left_2      =  -10.965976696653147
+    lsf_left_3      =  1.5588499990819098
+    lsf_left_4      =  -3.9278968739748414
+    lsf_left_5      =  0.8805573693177245
+    lsf_right1      =  2.7713255224055624
+    lsf_right2      =  -18.57252083918754
+    lsf_right3      =  1.8530470552724105
+    lsf_right4      =  -1.322511359961113
+    lsf_right5      =  0.13322380189070546
+    tem_depth       =  0.7370779470340576
+    velocity        =  -219.78358612205966
+    wave_intercept  =  5120.50633486967
+    wave_slope      =  0.016102067060340165
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 68:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9281.639731303554
+    cont_slope      =  6.6223864208361976
+    iod_depth       =  0.8605418846630031
+    lsf_left_1      =  2.6310778499917884
+    lsf_left_2      =  -10.662979675867389
+    lsf_left_3      =  1.1456415281821077
+    lsf_left_4      =  -3.6785366736860645
+    lsf_left_5      =  0.5020087286381771
+    lsf_right1      =  2.8331782375345047
+    lsf_right2      =  -10.507229067343854
+    lsf_right3      =  8.348011951274756
+    lsf_right4      =  -3.962816689852325
+    lsf_right5      =  1.1790260226854805
+    tem_depth       =  0.7534927674553985
+    velocity        =  568.80496479718
+    wave_intercept  =  5140.042428367256
+    wave_slope      =  0.014603328011735922
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 82:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5595.066866127727
+    cont_slope      =  6.119515150307553
+    iod_depth       =  0.8911464446857088
+    lsf_left_1      =  2.9294344659725895
+    lsf_left_2      =  -15.73935770119699
+    lsf_left_3      =  1.1465352069692631
+    lsf_left_4      =  -3.722118404342733
+    lsf_left_5      =  1.1848589412366723
+    lsf_right1      =  6.150162009962926
+    lsf_right2      =  -18.32898381360769
+    lsf_right3      =  10.29395644640143
+    lsf_right4      =  -3.3855513066846625
+    lsf_right5      =  0.4562250019310617
+    tem_depth       =  0.6157832471822879
+    velocity        =  368.1365486412085
+    wave_intercept  =  5169.734320475968
+    wave_slope      =  0.015744035583667815
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 94:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6259.093434478286
+    cont_slope      =  2.9632913979916964
+    iod_depth       =  0.7685862100588297
+    lsf_left_1      =  7.670765184357578
+    lsf_left_2      =  -17.078051433671252
+    lsf_left_3      =  1.1494848836282883
+    lsf_left_4      =  -3.6722074633987893
+    lsf_left_5      =  0.29283438255503824
+    lsf_right1      =  3.900934964010104
+    lsf_right2      =  -19.079016898777976
+    lsf_right3      =  3.0021170669956128
+    lsf_right4      =  -2.7126115512642084
+    lsf_right5      =  0.1673575968277381
+    tem_depth       =  0.8738016458695956
+    velocity        =  408.22167912748023
+    wave_intercept  =  5183.607980741814
+    wave_slope      =  0.014710238268368552
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 104:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 108: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4261.121181809294
+    cont_slope      =  2.4345232959479324
+    iod_depth       =  0.6478045632384026
+    lsf_left_1      =  4.300122452318096
+    lsf_left_2      =  -18.97342531449234
+    lsf_left_3      =  9.93616824928602
+    lsf_left_4      =  -3.392906538913711
+    lsf_left_5      =  0.13653549556669703
+    lsf_right1      =  5.3878856396137
+    lsf_right2      =  -16.612225627270256
+    lsf_right3      =  1.4963938788830689
+    lsf_right4      =  -3.9308781926703777
+    lsf_right5      =  1.0980599476602304
+    tem_depth       =  0.8502667014959945
+    velocity        =  -304.2741432994886
+    wave_intercept  =  5206.554238278486
+    wave_slope      =  0.01654759216735993
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 111:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 116: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8971.518402820255
+    cont_slope      =  3.313160672540114
+    iod_depth       =  0.9253097550575695
+    lsf_left_1      =  2.127994566083594
+    lsf_left_2      =  -6.859229471282433
+    lsf_left_3      =  1.2954274145560671
+    lsf_left_4      =  -3.249780591168668
+    lsf_left_5      =  1.1384197572138492
+    lsf_right1      =  2.902578796669455
+    lsf_right2      =  -19.04133523199456
+    lsf_right3      =  2.9538794923198615
+    lsf_right4      =  -2.9077579436599357
+    lsf_right5      =  1.1909294992599762
+    tem_depth       =  0.9083778124997176
+    velocity        =  -125.94868317512737
+    wave_intercept  =  5270.236504270421
+    wave_slope      =  0.01513225401338773
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 146:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11018.123471986339
+    cont_slope      =  9.458337553276014
+    iod_depth       =  1.0482651968672985
+    lsf_left_1      =  3.925557561641286
+    lsf_left_2      =  -11.729949056006575
+    lsf_left_3      =  1.8604500250675988
+    lsf_left_4      =  -2.665537011523634
+    lsf_left_5      =  1.197655127706672
+    lsf_right1      =  2.808427104106849
+    lsf_right2      =  -14.700553807778398
+    lsf_right3      =  2.3990145910138096
+    lsf_right4      =  -0.8676280345247771
+    lsf_right5      =  0.16723271080128302
+    tem_depth       =  0.9940203843408374
+    velocity        =  229.80112695906388
+    wave_intercept  =  5316.062582670657
+    wave_slope      =  0.015314286836148954
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 168:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 170: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13654.218595307932
+    cont_slope      =  1.3919449838610458
+    iod_depth       =  0.9034061469312216
+    lsf_left_1      =  2.4229719721245595
+    lsf_left_2      =  -11.453958689277407
+    lsf_left_3      =  3.7701594015648197
+    lsf_left_4      =  -1.4311584290668544
+    lsf_left_5      =  0.13379668127058147
+    lsf_right1      =  2.2900355256719322
+    lsf_right2      =  -18.530438562078018
+    lsf_right3      =  3.723779967030726
+    lsf_right4      =  -0.8224414789814611
+    lsf_right5      =  0.14719405279981598
+    tem_depth       =  0.8992498954844959
+    velocity        =  -17.703607963226766
+    wave_intercept  =  5325.551910107254
+    wave_slope      =  0.014584221326208386
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 175:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4607.113064772991
+    cont_slope      =  5.3568382889720025
+    iod_depth       =  0.7520001034006887
+    lsf_left_1      =  6.44830422299599
+    lsf_left_2      =  -19.284076736123872
+    lsf_left_3      =  6.10603531656443
+    lsf_left_4      =  -3.9451185880077566
+    lsf_left_5      =  1.180397727679218
+    lsf_right1      =  2.134009429070628
+    lsf_right2      =  -16.225663140569285
+    lsf_right3      =  1.7854341150343795
+    lsf_right4      =  -2.761481387005545
+    lsf_right5      =  0.5064799789477936
+    tem_depth       =  0.7006464501614011
+    velocity        =  -517.4456030002476
+    wave_intercept  =  5342.027086692999
+    wave_slope      =  0.017191300815958935
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 176:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12440.334998804758
+    cont_slope      =  1.572780588998448
+    iod_depth       =  0.8575909853159567
+    lsf_left_1      =  2.158390585001941
+    lsf_left_2      =  -18.08939653256677
+    lsf_left_3      =  1.2496538069914385
+    lsf_left_4      =  -1.5571670963987145
+    lsf_left_5      =  1.0612028104374538
+    lsf_right1      =  2.4884758071424393
+    lsf_right2      =  -12.31382497279743
+    lsf_right3      =  5.851556021623241
+    lsf_right4      =  -3.966562967131301
+    lsf_right5      =  0.2204493847237062
+    tem_depth       =  0.9202121380975705
+    velocity        =  -130.73208439407597
+    wave_intercept  =  5365.484909461257
+    wave_slope      =  0.0152173333163996
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 192:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5048.771968215996
+    cont_slope      =  4.493600517195903
+    iod_depth       =  0.9302375684611155
+    lsf_left_1      =  2.520128233401743
+    lsf_left_2      =  -12.418964675447603
+    lsf_left_3      =  1.1824663211381459
+    lsf_left_4      =  -3.3647974364709943
+    lsf_left_5      =  0.17028101182846367
+    lsf_right1      =  8.0136319818997
+    lsf_right2      =  -17.254707893451624
+    lsf_right3      =  1.1553702256946279
+    lsf_right4      =  -3.394554474793387
+    lsf_right5      =  0.22993228820563943
+    tem_depth       =  0.7784871358428754
+    velocity        =  -422.7886187211926
+    wave_intercept  =  5390.861508084309
+    wave_slope      =  0.017009711615425607
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 199:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11686.377839082703
+    cont_slope      =  5.475767154498901
+    iod_depth       =  0.868471152033447
+    lsf_left_1      =  2.3651445309627954
+    lsf_left_2      =  -5.103758006217058
+    lsf_left_3      =  2.847517404462469
+    lsf_left_4      =  -2.1808533371424215
+    lsf_left_5      =  0.1677846647764229
+    lsf_right1      =  2.2539305735431654
+    lsf_right2      =  -9.190401668830194
+    lsf_right3      =  1.1488123787324673
+    lsf_right4      =  -3.942342914147033
+    lsf_right5      =  1.1936391716857004
+    tem_depth       =  0.8886354573474134
+    velocity        =  726.5138903567037
+    wave_intercept  =  5407.302751953422
+    wave_slope      =  0.015740386191383224
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 210:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7734.85338567872
+    cont_slope      =  6.854988420732893
+    iod_depth       =  0.9435949397022338
+    lsf_left_1      =  3.325939535687014
+    lsf_left_2      =  -10.850439993488743
+    lsf_left_3      =  6.79822045737202
+    lsf_left_4      =  -2.486837316265065
+    lsf_left_5      =  0.1342714066032162
+    lsf_right1      =  2.478514662113326
+    lsf_right2      =  -11.346185995054322
+    lsf_right3      =  6.544857010726968
+    lsf_right4      =  -3.9514483511189002
+    lsf_right5      =  0.9509295506933158
+    tem_depth       =  0.9084486378377341
+    velocity        =  57.82654836772403
+    wave_intercept  =  5445.1806662229155
+    wave_slope      =  0.016727158654872724
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 225:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10496.082571541387
+    cont_slope      =  4.246744120065888
+    iod_depth       =  0.8721162753901158
+    lsf_left_1      =  3.3367345115677587
+    lsf_left_2      =  -8.510274076988619
+    lsf_left_3      =  2.312986210846928
+    lsf_left_4      =  -0.85647003730258
+    lsf_left_5      =  0.13941178981476904
+    lsf_right1      =  2.34851356486946
+    lsf_right2      =  -19.122601376226964
+    lsf_right3      =  2.817179360983279
+    lsf_right4      =  -3.961424285884711
+    lsf_right5      =  0.16154955587224173
+    tem_depth       =  0.5005555517720083
+    velocity        =  307.73702395349505
+    wave_intercept  =  5452.64520842839
+    wave_slope      =  0.016071173598472054
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 230:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13847.624565337415
+    cont_slope      =  3.715345587358052
+    iod_depth       =  0.8892901615168474
+    lsf_left_1      =  5.776932757480065
+    lsf_left_2      =  -19.2368350624812
+    lsf_left_3      =  8.879413797446087
+    lsf_left_4      =  -3.3297581978199196
+    lsf_left_5      =  1.0662595388959242
+    lsf_right1      =  2.38889373934196
+    lsf_right2      =  -9.288730337740601
+    lsf_right3      =  3.563160023684949
+    lsf_right4      =  -3.9277058203167234
+    lsf_right5      =  0.7493138792983876
+    tem_depth       =  0.8375493543260962
+    velocity        =  -267.4231070524021
+    wave_intercept  =  5466.852986816952
+    wave_slope      =  0.015050604247928465
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 240:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11147.021860400897
+    cont_slope      =  4.52182918487685
+    iod_depth       =  0.9712617211466349
+    lsf_left_1      =  2.1272545720521316
+    lsf_left_2      =  -19.277068008181892
+    lsf_left_3      =  4.039341441618889
+    lsf_left_4      =  -3.5809446905877804
+    lsf_left_5      =  0.6207154378764397
+    lsf_right1      =  2.9536118999581706
+    lsf_right2      =  -18.49840275207569
+    lsf_right3      =  2.419784548665535
+    lsf_right4      =  -2.2991723084449243
+    lsf_right5      =  0.151820922010565
+    tem_depth       =  0.9179337212107463
+    velocity        =  -52.539081528768364
+    wave_intercept  =  5506.188611865023
+    wave_slope      =  0.016007879722890677
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 255:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 263: No Data! Returning LmfitResult with None.
+ERROR - Chunk 289: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10551.008325243674
+    cont_slope      =  1.8114593069546863
+    iod_depth       =  0.9715832599497533
+    lsf_left_1      =  4.426274304078383
+    lsf_left_2      =  -12.099972230049687
+    lsf_left_3      =  4.613059231734983
+    lsf_left_4      =  -3.711502957740461
+    lsf_left_5      =  0.9513533993551795
+    lsf_right1      =  2.428273991025891
+    lsf_right2      =  -16.84000131472896
+    lsf_right3      =  3.8610515581879365
+    lsf_right4      =  -3.958560836857282
+    lsf_right5      =  0.5181940234104246
+    tem_depth       =  0.9026461667101178
+    velocity        =  202.00074094487897
+    wave_intercept  =  5601.204690329756
+    wave_slope      =  0.01667762104549373
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 295:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11184.74596013005
+    cont_slope      =  4.470561352705844
+    iod_depth       =  0.7968690719865926
+    lsf_left_1      =  2.576566581830247
+    lsf_left_2      =  -15.667082638909985
+    lsf_left_3      =  6.729600513882483
+    lsf_left_4      =  -2.4231012275332033
+    lsf_left_5      =  0.5755450029865712
+    lsf_right1      =  2.156059769305659
+    lsf_right2      =  -14.753170553881354
+    lsf_right3      =  9.651463654144727
+    lsf_right4      =  -3.932606613189205
+    lsf_right5      =  1.1765426988912462
+    tem_depth       =  0.6339541257456325
+    velocity        =  1863.637394160584
+    wave_intercept  =  5656.135581143263
+    wave_slope      =  0.016558044815260655
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 319:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 322: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12868.587672037118
+    cont_slope      =  3.229407549825109
+    iod_depth       =  0.8925940418128205
+    lsf_left_1      =  4.355669615736258
+    lsf_left_2      =  -10.707447033780568
+    lsf_left_3      =  2.5476775443797024
+    lsf_left_4      =  -2.1776125433133906
+    lsf_left_5      =  0.9194158365249654
+    lsf_right1      =  4.183705836599037
+    lsf_right2      =  -13.351460421202063
+    lsf_right3      =  5.757950969022821
+    lsf_right4      =  -3.2790505895142137
+    lsf_right5      =  0.9604093437373743
+    tem_depth       =  0.8771975649851913
+    velocity        =  -79.74699978926265
+    wave_intercept  =  5762.853497707076
+    wave_slope      =  0.016862091875035
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 363:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 374: No Data! Returning LmfitResult with None.
+ERROR - Chunk 378: No Data! Returning LmfitResult with None.
+ERROR - Chunk 386: No Data! Returning LmfitResult with None.
+ERROR - Chunk 394: No Data! Returning LmfitResult with None.
+ERROR - Chunk 395: No Data! Returning LmfitResult with None.
+ERROR - Chunk 399: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10543.328138517962
+    cont_slope      =  8.519198111545338
+    iod_depth       =  0.89376883595914
+    lsf_left_1      =  4.482049928953665
+    lsf_left_2      =  -19.16195189585935
+    lsf_left_3      =  4.156930818253032
+    lsf_left_4      =  -0.5318394509783517
+    lsf_left_5      =  0.1332047431436717
+    lsf_right1      =  5.514564327163702
+    lsf_right2      =  -13.447237296739395
+    lsf_right3      =  2.7529891601809307
+    lsf_right4      =  -1.189691959518866
+    lsf_right5      =  0.4728114098626124
+    tem_depth       =  0.336623577399012
+    velocity        =  -853.6108583339959
+    wave_intercept  =  5864.056720969793
+    wave_slope      =  0.01797849696038618
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 401:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  16064.366846420633
+    cont_slope      =  5.7019062561992575
+    iod_depth       =  0.8424819195299877
+    lsf_left_1      =  2.4359987944279773
+    lsf_left_2      =  -19.308934635893667
+    lsf_left_3      =  4.153640651133266
+    lsf_left_4      =  -3.004939099698739
+    lsf_left_5      =  1.1728978636689837
+    lsf_right1      =  4.156642616573639
+    lsf_right2      =  -7.576872129410763
+    lsf_right3      =  1.8848760431810172
+    lsf_right4      =  -1.329809222251447
+    lsf_right5      =  0.4960167561975731
+    tem_depth       =  0.44752075780438016
+    velocity        =  134.22984240990462
+    wave_intercept  =  5876.8003699667215
+    wave_slope      =  0.01693620940346051
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 409:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 461: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12392.725316201666
+    cont_slope      =  6.424420378975817
+    iod_depth       =  0.8954522576105889
+    lsf_left_1      =  2.849505137901165
+    lsf_left_2      =  -17.426022152240915
+    lsf_left_3      =  2.266543587542899
+    lsf_left_4      =  -3.1177051138671845
+    lsf_left_5      =  1.197486917532079
+    lsf_right1      =  8.382358879882425
+    lsf_right2      =  -15.62557797019505
+    lsf_right3      =  9.426743563649888
+    lsf_right4      =  -3.876924712081303
+    lsf_right5      =  1.1299080816004035
+    tem_depth       =  0.9005364165479556
+    velocity        =  229.89697821813277
+    wave_intercept  =  6041.584872139413
+    wave_slope      =  0.018321338212863372
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 469:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 472: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15387.13102715675
+    cont_slope      =  4.1359178911592265
+    iod_depth       =  0.9744839956216247
+    lsf_left_1      =  2.6957999382982347
+    lsf_left_2      =  -19.33221084705847
+    lsf_left_3      =  2.9357677467775796
+    lsf_left_4      =  -3.5057586644189027
+    lsf_left_5      =  0.7395955019471253
+    lsf_right1      =  3.2787695375232495
+    lsf_right2      =  -11.189774879363446
+    lsf_right3      =  1.831099675310027
+    lsf_right4      =  -3.6105759197820833
+    lsf_right5      =  0.8494344076874536
+    tem_depth       =  0.7362417104965618
+    velocity        =  120.2903911403923
+    wave_intercept  =  6110.2534586845595
+    wave_slope      =  0.017700482311701172
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 496:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 514: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14030.205290059137
+    cont_slope      =  1.2745475549415204
+    iod_depth       =  0.9687571935631414
+    lsf_left_1      =  2.800612137236882
+    lsf_left_2      =  -6.619042691096302
+    lsf_left_3      =  1.903876661869198
+    lsf_left_4      =  -3.3517952158764306
+    lsf_left_5      =  1.138206328589328
+    lsf_right1      =  2.273841283389803
+    lsf_right2      =  -10.745369725958266
+    lsf_right3      =  1.879616760486506
+    lsf_right4      =  -3.4657816341893293
+    lsf_right5      =  0.22719655302659236
+    tem_depth       =  0.9961637749146179
+    velocity        =  408.26291297303555
+    wave_intercept  =  6168.68184509234
+    wave_slope      =  0.018368205783185793
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 516:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+INFO - 
+INFO - Number of chunks with no uncertainties: 16
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 46
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: 13.44127896642442
+INFO - Velocity robust std: 1000.9602718720175
+INFO - 
+INFO - Velocity error robust mean: 280.7966944066518
+INFO - Velocity error robust std: 249.92024135304735
+INFO - 
+INFO - Minimum error: 81.17150253156471 in chunk 260
+INFO - Maximum error: 12825.768102044543 in chunk 473
+INFO - 
+INFO - Chunks with nan velocities: [  1   3   4  12  40  42  53  68  82  94 104 108 111 116 146 168 170 175
+ 176 192 199 210 225 230 240 255 263 289 295 319 322 363 374 378 386 394
+ 395 399 401 409 461 469 472 496 514 516]
+INFO - Chunks with nan velocity errors: [  1   3   4  12  21  40  42  53  61  68  82  94 102 104 108 111 116 121
+ 132 146 168 170 175 176 183 192 199 204 210 211 225 230 238 240 246 252
+ 255 263 285 289 295 319 322 344 363 374 378 386 388 394 395 399 401 409
+ 447 461 469 472 496 499 514 516]
+INFO - Velocity error at percentile 80: 596.2541973481028
+INFO - 
+INFO - Time to model this observation: 136.6155891418457
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0143.fits
+INFO - 
+INFO - Median flux of the observation: 7770
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/obs_temp_highsnr_test.h5
+INFO - 
+INFO - Order correction: 0
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -6.526 km/s
+INFO - Template velocity: -6.620 km/s
+INFO - Velocity guess: 0.093 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 13.298 km/s)
+INFO - (Barycentric velocity of template: 13.293 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -5.04058283690938, z = -1.6813574532650115e-08
+
+INFO - Startpixel (order 22, chunk 1): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 4): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 24, chunk 53): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 26, chunk 108): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 27, chunk 116): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 29, chunk 170): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 33, chunk 263): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 35, chunk 289): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 36, chunk 322): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 374): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 378): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 386): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 394): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 39, chunk 395): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 399): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 42, chunk 461): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 43, chunk 472): -45
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 514): -45
+INFO - -> Correcting to 0.
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 29, 2032
+INFO - Orders: 22 - 45 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+WARNING - Chunk 1:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 4:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 53:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 108:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 116:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 170:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 263:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 289:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 322:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 374:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 378:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 386:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 394:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 395:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 399:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 461:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 472:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 514:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - Number of chunks with no uncertainties: 11
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 18
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  10.63474989922377
+    left_2  =  -10.755273791543283
+    left_3  =  5.727205679152134
+    left_4  =  -2.2042520613343464
+    left_5  =  0.6653873245639121
+    right1  =  10.634749762158185
+    right2  =  -10.755276791391612
+    right3  =  5.727208748216527
+    right4  =  -2.2042542452449885
+    right5  =  0.6653881999913377
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  2755.5982857970384
+    cont_slope      =  6.680263941846916
+    iod_depth       =  9.933478994789734
+    lsf_left_1      =  11.143912188492399
+    lsf_left_2      =  -18.811016991945
+    lsf_left_3      =  1.8039513782110514
+    lsf_left_4      =  -3.0057854710917438
+    lsf_left_5      =  0.33133539465310213
+    lsf_right1      =  6.10788611841825
+    lsf_right2      =  -19.33691950680984
+    lsf_right3      =  2.090485595163222
+    lsf_right4      =  -1.6815860531665048
+    lsf_right5      =  1.1632565820910208
+    tem_depth       =  0.6230251179014583
+    velocity        =  -3383.90109621006
+    wave_intercept  =  4991.599417086033
+    wave_slope      =  0.016115547544961074
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 0:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 1: No Data! Returning LmfitResult with None.
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5076.31929235704
+    cont_slope      =  4.7604518727751035
+    iod_depth       =  0.8863366932331062
+    lsf_left_1      =  2.5700225785400352
+    lsf_left_2      =  -18.575193893845164
+    lsf_left_3      =  3.7954848898654214
+    lsf_left_4      =  -0.468475533143085
+    lsf_left_5      =  0.15991726939382087
+    lsf_right1      =  8.310523865562455
+    lsf_right2      =  -16.060117283787683
+    lsf_right3      =  7.6440575325786355
+    lsf_right4      =  -2.077373268456787
+    lsf_right5      =  0.1351005086187558
+    tem_depth       =  0.8476615274928826
+    velocity        =  482.4823454150503
+    wave_intercept  =  5001.631185378814
+    wave_slope      =  0.015074870623578214
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 7:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6306.7219039842075
+    cont_slope      =  3.935082710204545
+    iod_depth       =  1.0051957197291428
+    lsf_left_1      =  4.3910515021133225
+    lsf_left_2      =  -19.224201007361913
+    lsf_left_3      =  7.706399012882544
+    lsf_left_4      =  -3.8624785228482468
+    lsf_left_5      =  0.4119201158091639
+    lsf_right1      =  5.353751974358161
+    lsf_right2      =  -14.551377025794553
+    lsf_right3      =  7.707771738644232
+    lsf_right4      =  -3.9126652296014326
+    lsf_right5      =  0.3136118947505495
+    tem_depth       =  0.8721716254142607
+    velocity        =  -323.2019985168829
+    wave_intercept  =  5007.056241986034
+    wave_slope      =  0.014708289093323544
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 11:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3975.098266922595
+    cont_slope      =  2.9238688928175565
+    iod_depth       =  0.6962874983565158
+    lsf_left_1      =  3.450297141018561
+    lsf_left_2      =  -9.91713294859686
+    lsf_left_3      =  1.1962769334976844
+    lsf_left_4      =  -2.2193189054694815
+    lsf_left_5      =  0.4982140053497966
+    lsf_right1      =  2.5561369755264867
+    lsf_right2      =  -17.776493652276912
+    lsf_right3      =  9.973622221023499
+    lsf_right4      =  -3.9610005166633884
+    lsf_right5      =  1.136847602426449
+    tem_depth       =  1.0392561847582946
+    velocity        =  -2398.7467419946943
+    wave_intercept  =  5037.303060815983
+    wave_slope      =  0.016217677808663532
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 25:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8964.216842731197
+    cont_slope      =  -1.3464529817302517
+    iod_depth       =  1.0040616561483766
+    lsf_left_1      =  5.12444148270907
+    lsf_left_2      =  -14.768461729688845
+    lsf_left_3      =  2.3002311727320848
+    lsf_left_4      =  -3.967071843300817
+    lsf_left_5      =  0.7083341637815392
+    lsf_right1      =  4.412873929406248
+    lsf_right2      =  -15.603486491104396
+    lsf_right3      =  8.564618090883773
+    lsf_right4      =  -3.796777778138564
+    lsf_right5      =  0.923053309926301
+    tem_depth       =  0.8082435830347869
+    velocity        =  391.7451162895484
+    wave_intercept  =  5057.679480666
+    wave_slope      =  0.014021265421433764
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 40:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9634.591051743493
+    cont_slope      =  4.467856349834066
+    iod_depth       =  0.9218089626554705
+    lsf_left_1      =  2.504734297408592
+    lsf_left_2      =  -15.532140847850211
+    lsf_left_3      =  5.271494317050642
+    lsf_left_4      =  -1.4854444072065411
+    lsf_left_5      =  0.4145797283536339
+    lsf_right1      =  2.129607389478217
+    lsf_right2      =  -18.96723157235585
+    lsf_right3      =  3.135310318445826
+    lsf_right4      =  -0.7460384982147685
+    lsf_right5      =  0.23797861893214933
+    tem_depth       =  0.7571505485331269
+    velocity        =  195.12914421681398
+    wave_intercept  =  5060.231057264975
+    wave_slope      =  0.013956702272157798
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 42:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 53: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4249.91662273814
+    cont_slope      =  4.310479494882032
+    iod_depth       =  0.9085724174795263
+    lsf_left_1      =  6.97207515106661
+    lsf_left_2      =  -11.016436352410208
+    lsf_left_3      =  1.5697830263617247
+    lsf_left_4      =  -3.926090012297436
+    lsf_left_5      =  0.8787792101860937
+    lsf_right1      =  2.8081802892392025
+    lsf_right2      =  -18.55120602415004
+    lsf_right3      =  1.8658074245097276
+    lsf_right4      =  -1.317925757066241
+    lsf_right5      =  0.13321384631861943
+    tem_depth       =  0.7370581763011423
+    velocity        =  -220.18637730668334
+    wave_intercept  =  5120.506333721183
+    wave_slope      =  0.01610209562113298
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 68:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9281.536681893489
+    cont_slope      =  6.624358084657212
+    iod_depth       =  0.8605622202510407
+    lsf_left_1      =  2.6289242004694753
+    lsf_left_2      =  -10.656294242039458
+    lsf_left_3      =  1.1456713131110356
+    lsf_left_4      =  -3.6792397503598933
+    lsf_left_5      =  0.5020556677324992
+    lsf_right1      =  2.8349301744104562
+    lsf_right2      =  -10.502963111081907
+    lsf_right3      =  8.344765812257823
+    lsf_right4      =  -3.963100408514829
+    lsf_right5      =  1.1784739640672761
+    tem_depth       =  0.7535955583791072
+    velocity        =  567.712959179285
+    wave_intercept  =  5140.04242798304
+    wave_slope      =  0.014603348121486396
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 82:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6259.092519837999
+    cont_slope      =  2.9634827519879994
+    iod_depth       =  0.7685842353392093
+    lsf_left_1      =  7.692138705176441
+    lsf_left_2      =  -17.07216188783043
+    lsf_left_3      =  1.1496300403390225
+    lsf_left_4      =  -3.676603388319936
+    lsf_left_5      =  0.29415695577548484
+    lsf_right1      =  3.9519517596738094
+    lsf_right2      =  -19.07391986864256
+    lsf_right3      =  3.003670923454322
+    lsf_right4      =  -2.7112046850927283
+    lsf_right5      =  0.16580314889975792
+    tem_depth       =  0.873797819102055
+    velocity        =  408.38322564065845
+    wave_intercept  =  5183.607981788569
+    wave_slope      =  0.014710194327279734
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 104:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 108: No Data! Returning LmfitResult with None.
+ERROR - Chunk 116: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8971.53782574318
+    cont_slope      =  3.312541099094451
+    iod_depth       =  0.9253885005511306
+    lsf_left_1      =  2.1279728954238593
+    lsf_left_2      =  -6.859630630570297
+    lsf_left_3      =  1.29550766899036
+    lsf_left_4      =  -3.2504983509922196
+    lsf_left_5      =  1.138215792323117
+    lsf_right1      =  2.899759912526156
+    lsf_right2      =  -19.042143467915555
+    lsf_right3      =  2.954384039964018
+    lsf_right4      =  -2.9057768009449587
+    lsf_right5      =  1.191277129850465
+    tem_depth       =  0.9083892671439826
+    velocity        =  -126.32969212003282
+    wave_intercept  =  5270.23649911303
+    wave_slope      =  0.015132289056570537
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 146:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11018.132012192631
+    cont_slope      =  9.459371144370152
+    iod_depth       =  1.048264207397917
+    lsf_left_1      =  3.9199463520054043
+    lsf_left_2      =  -11.744207551474519
+    lsf_left_3      =  1.8668773068472728
+    lsf_left_4      =  -2.672740309287902
+    lsf_left_5      =  1.1976808125354639
+    lsf_right1      =  2.809881035855686
+    lsf_right2      =  -14.705250067724139
+    lsf_right3      =  2.4026653199568524
+    lsf_right4      =  -0.8655877662819123
+    lsf_right5      =  0.16777102515927128
+    tem_depth       =  0.9940218383727017
+    velocity        =  229.33360196785682
+    wave_intercept  =  5316.0625820107725
+    wave_slope      =  0.015314302047318852
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 168:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 170: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13654.230644269885
+    cont_slope      =  1.3929920576270278
+    iod_depth       =  0.9033891913865266
+    lsf_left_1      =  2.4155366627944748
+    lsf_left_2      =  -11.462556549938082
+    lsf_left_3      =  3.773804182725982
+    lsf_left_4      =  -1.4307199460913291
+    lsf_left_5      =  0.13376079515346095
+    lsf_right1      =  2.2848523361614794
+    lsf_right2      =  -18.527040717320496
+    lsf_right3      =  3.7222092317965947
+    lsf_right4      =  -0.8196192691442863
+    lsf_right5      =  0.14655242705015178
+    tem_depth       =  0.8992526285760623
+    velocity        =  -18.020532582621087
+    wave_intercept  =  5325.551907887457
+    wave_slope      =  0.014584220053690323
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 175:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4607.187274417507
+    cont_slope      =  5.360042894791998
+    iod_depth       =  0.7521762306706763
+    lsf_left_1      =  6.799535804745387
+    lsf_left_2      =  -19.327454540064274
+    lsf_left_3      =  5.842990762929121
+    lsf_left_4      =  -3.9160566795611147
+    lsf_left_5      =  1.1924804428748939
+    lsf_right1      =  2.1276898887243565
+    lsf_right2      =  -15.861059319984339
+    lsf_right3      =  1.985660467802319
+    lsf_right4      =  -2.96680561241107
+    lsf_right5      =  0.42851166483110487
+    tem_depth       =  0.7005303568773511
+    velocity        =  -525.8796956992435
+    wave_intercept  =  5342.027096691556
+    wave_slope      =  0.01719138046335619
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 176:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12440.309451439198
+    cont_slope      =  1.5720481634707346
+    iod_depth       =  0.8576037844210639
+    lsf_left_1      =  2.160052935533966
+    lsf_left_2      =  -18.074445115210874
+    lsf_left_3      =  1.253655357703289
+    lsf_left_4      =  -1.5668864268519123
+    lsf_left_5      =  1.058523633258766
+    lsf_right1      =  2.4771570096982525
+    lsf_right2      =  -12.269768443143487
+    lsf_right3      =  5.880889400037477
+    lsf_right4      =  -3.965997268649635
+    lsf_right5      =  0.21770575149536586
+    tem_depth       =  0.920256667700724
+    velocity        =  -130.34429649578234
+    wave_intercept  =  5365.484908335085
+    wave_slope      =  0.015217345583014612
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 192:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5054.288876764929
+    cont_slope      =  4.495609216064462
+    iod_depth       =  0.9300825794558647
+    lsf_left_1      =  2.165304384298773
+    lsf_left_2      =  -12.593612037128935
+    lsf_left_3      =  1.1791329327101174
+    lsf_left_4      =  -3.4795413369515193
+    lsf_left_5      =  0.14465934752360474
+    lsf_right1      =  3.652240466356859
+    lsf_right2      =  -14.349033041228346
+    lsf_right3      =  1.3412299618937065
+    lsf_right4      =  -3.3093267605165506
+    lsf_right5      =  0.17756163941841277
+    tem_depth       =  0.7778891219090739
+    velocity        =  -423.5099382277184
+    wave_intercept  =  5390.861647116272
+    wave_slope      =  0.017010947293731014
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 199:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7735.065969158314
+    cont_slope      =  6.84991887106269
+    iod_depth       =  0.9430936404852736
+    lsf_left_1      =  2.1786025741940653
+    lsf_left_2      =  -16.13112302556482
+    lsf_left_3      =  9.751780551783952
+    lsf_left_4      =  -3.8315500197635965
+    lsf_left_5      =  0.4032625927941774
+    lsf_right1      =  2.559871276764623
+    lsf_right2      =  -9.706721267193169
+    lsf_right3      =  5.518794506661271
+    lsf_right4      =  -3.776459643763479
+    lsf_right5      =  1.1087707255701718
+    tem_depth       =  0.9078435744678247
+    velocity        =  68.49900802117303
+    wave_intercept  =  5445.180782889512
+    wave_slope      =  0.016726913785233454
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 225:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10494.341694064362
+    cont_slope      =  4.243272275370187
+    iod_depth       =  0.8724187013075481
+    lsf_left_1      =  3.3911620941375955
+    lsf_left_2      =  -8.393904477638007
+    lsf_left_3      =  2.3001035348537093
+    lsf_left_4      =  -0.8821392293367607
+    lsf_left_5      =  0.14442732841372366
+    lsf_right1      =  2.3866080768795017
+    lsf_right2      =  -19.082679484295028
+    lsf_right3      =  2.7156368644102438
+    lsf_right4      =  -3.9477464225445047
+    lsf_right5      =  0.14405623266838438
+    tem_depth       =  0.5096470828794517
+    velocity        =  236.02597269154248
+    wave_intercept  =  5452.64522893618
+    wave_slope      =  0.016070858104113024
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 230:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13847.609252875594
+    cont_slope      =  3.715159045450784
+    iod_depth       =  0.8892911811690508
+    lsf_left_1      =  5.766451852552189
+    lsf_left_2      =  -19.241288081181825
+    lsf_left_3      =  8.89354464145546
+    lsf_left_4      =  -3.337487070850969
+    lsf_left_5      =  1.0686836713799326
+    lsf_right1      =  2.3780527037932475
+    lsf_right2      =  -9.32997943549205
+    lsf_right3      =  3.5433822451025425
+    lsf_right4      =  -3.925973530516125
+    lsf_right5      =  0.7513637687838496
+    tem_depth       =  0.8375660726203636
+    velocity        =  -267.1037311495054
+    wave_intercept  =  5466.852987265751
+    wave_slope      =  0.01505061873301883
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 240:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11147.03729150716
+    cont_slope      =  4.521938483299438
+    iod_depth       =  0.9712519202523607
+    lsf_left_1      =  2.127739102087196
+    lsf_left_2      =  -19.283351122356823
+    lsf_left_3      =  4.068411713402308
+    lsf_left_4      =  -3.58972546618667
+    lsf_left_5      =  0.6250619778658969
+    lsf_right1      =  2.950815062336957
+    lsf_right2      =  -18.510393733397283
+    lsf_right3      =  2.4358632890715173
+    lsf_right4      =  -2.3141518987137197
+    lsf_right5      =  0.15343832235282023
+    tem_depth       =  0.9179275985622211
+    velocity        =  -52.14586278297633
+    wave_intercept  =  5506.188615370161
+    wave_slope      =  0.01600793333430412
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 255:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 263: No Data! Returning LmfitResult with None.
+ERROR - Chunk 289: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10551.169849872733
+    cont_slope      =  1.8115005254487109
+    iod_depth       =  0.9716149162804325
+    lsf_left_1      =  4.413347085323519
+    lsf_left_2      =  -12.080459234926423
+    lsf_left_3      =  4.60330966908443
+    lsf_left_4      =  -3.709911716679973
+    lsf_left_5      =  0.9518244359767519
+    lsf_right1      =  2.4244937836814593
+    lsf_right2      =  -16.824771985756495
+    lsf_right3      =  3.8782426929425506
+    lsf_right4      =  -3.9598093202324947
+    lsf_right5      =  0.5124362662424258
+    tem_depth       =  0.9026661680779843
+    velocity        =  201.86433784044715
+    wave_intercept  =  5601.204687020497
+    wave_slope      =  0.016677642413766697
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 295:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11184.745530821698
+    cont_slope      =  4.47070590917714
+    iod_depth       =  0.7968759404753845
+    lsf_left_1      =  2.575946144675096
+    lsf_left_2      =  -15.70746925319847
+    lsf_left_3      =  6.764202614749845
+    lsf_left_4      =  -2.444025385466441
+    lsf_left_5      =  0.5832985948409337
+    lsf_right1      =  2.168388575083428
+    lsf_right2      =  -14.648728871660499
+    lsf_right3      =  9.613904826771417
+    lsf_right4      =  -3.938301742764005
+    lsf_right5      =  1.1791388447315807
+    tem_depth       =  0.633947250183879
+    velocity        =  1863.5926485327007
+    wave_intercept  =  5656.135582829198
+    wave_slope      =  0.016558046383322512
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 319:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 322: No Data! Returning LmfitResult with None.
+ERROR - Chunk 374: No Data! Returning LmfitResult with None.
+ERROR - Chunk 378: No Data! Returning LmfitResult with None.
+ERROR - Chunk 386: No Data! Returning LmfitResult with None.
+ERROR - Chunk 394: No Data! Returning LmfitResult with None.
+ERROR - Chunk 395: No Data! Returning LmfitResult with None.
+ERROR - Chunk 399: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10543.346880070036
+    cont_slope      =  8.514575661690824
+    iod_depth       =  0.8942542533148907
+    lsf_left_1      =  4.702614362996172
+    lsf_left_2      =  -19.123398444907316
+    lsf_left_3      =  4.110238804860309
+    lsf_left_4      =  -0.513762926570247
+    lsf_left_5      =  0.13453860653706762
+    lsf_right1      =  5.678293054367327
+    lsf_right2      =  -13.48279878041562
+    lsf_right3      =  2.7717665172634236
+    lsf_right4      =  -1.2081720129536127
+    lsf_right5      =  0.4853268797573584
+    tem_depth       =  0.3372754339963987
+    velocity        =  -832.5598257103712
+    wave_intercept  =  5864.056759330533
+    wave_slope      =  0.017977714414310557
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 401:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  16064.368595873917
+    cont_slope      =  5.701986681687835
+    iod_depth       =  0.8424773007970037
+    lsf_left_1      =  2.4366235530151616
+    lsf_left_2      =  -19.30838000891711
+    lsf_left_3      =  4.15519192314962
+    lsf_left_4      =  -3.0039705952459492
+    lsf_left_5      =  1.172757094524014
+    lsf_right1      =  4.154315060590477
+    lsf_right2      =  -7.57594901039616
+    lsf_right3      =  1.8843613402848916
+    lsf_right4      =  -1.3294053566934791
+    lsf_right5      =  0.49613660412955224
+    tem_depth       =  0.44751322029820234
+    velocity        =  137.07607769184423
+    wave_intercept  =  5876.80037117767
+    wave_slope      =  0.016936190571905336
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 409:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14110.144546924632
+    cont_slope      =  9.505281424661117
+    iod_depth       =  0.8380215155416891
+    lsf_left_1      =  3.3052810551374376
+    lsf_left_2      =  -16.655958521931872
+    lsf_left_3      =  9.722496497987485
+    lsf_left_4      =  -3.2484446987836524
+    lsf_left_5      =  0.13874694171645108
+    lsf_right1      =  6.9568920584226515
+    lsf_right2      =  -14.044797228753637
+    lsf_right3      =  3.5672244950283547
+    lsf_right4      =  -3.9198348267209124
+    lsf_right5      =  0.1977685716743401
+    tem_depth       =  0.23480541462557514
+    velocity        =  3793.155044704091
+    wave_intercept  =  5985.623393519435
+    wave_slope      =  0.01783715877585174
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 449:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 461: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12392.748553838108
+    cont_slope      =  6.423939680812801
+    iod_depth       =  0.8956165441309902
+    lsf_left_1      =  2.577132352963529
+    lsf_left_2      =  -17.348588386452757
+    lsf_left_3      =  2.329494197716376
+    lsf_left_4      =  -2.9543174185296386
+    lsf_left_5      =  1.1872049647316214
+    lsf_right1      =  7.879226843007309
+    lsf_right2      =  -15.541826093355365
+    lsf_right3      =  9.31895899830787
+    lsf_right4      =  -3.924548209723299
+    lsf_right5      =  1.0887370861477732
+    tem_depth       =  0.9005349783914387
+    velocity        =  228.90678895592106
+    wave_intercept  =  6041.584897570543
+    wave_slope      =  0.018321266802213333
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 469:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 472: No Data! Returning LmfitResult with None.
+ERROR - Chunk 514: No Data! Returning LmfitResult with None.
+INFO - 
+INFO - Number of chunks with no uncertainties: 20
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 43
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: 5.886508667091049
+INFO - Velocity robust std: 989.7086995903915
+INFO - 
+INFO - Velocity error robust mean: 280.8149037094209
+INFO - Velocity error robust std: 250.93668032524494
+INFO - 
+INFO - Minimum error: 82.40469638566088 in chunk 323
+INFO - Maximum error: 3300.6556430165556 in chunk 447
+INFO - 
+INFO - Chunks with nan velocities: [  0   1   4   7  11  25  40  42  53  68  82 104 108 116 146 168 170 175
+ 176 192 199 225 230 240 255 263 289 295 319 322 374 378 386 394 395 399
+ 401 409 449 461 469 472 514]
+INFO - Chunks with nan velocity errors: [  0   1   4   7   9  11  25  40  42  53  61  68  77  82  89  90  95 101
+ 104 108 116 146 168 170 175 176 192 199 204 208 225 230 238 240 246 252
+ 255 263 289 291 295 319 322 359 360 374 378 386 388 394 395 399 401 409
+ 411 449 457 461 469 472 496 504 514]
+INFO - Velocity error at percentile 80: 585.2728718635989
+INFO - 
+INFO - Time to model this observation: 130.78174710273743
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0143.fits
+INFO - 
+INFO - Median flux of the observation: 7770
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/obs_temp_highsnr_test.h5
+INFO - 
+INFO - Order correction: -1
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -6.526 km/s
+INFO - Template velocity: -6.620 km/s
+INFO - Velocity guess: 0.093 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 13.298 km/s)
+INFO - (Barycentric velocity of template: 13.293 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -5.04058283690938, z = -1.6813574532650115e-08
+
+INFO - Startpixel (order 22, chunk 4): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 5): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 8): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 10): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 22, chunk 16): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 23, chunk 31): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 24, chunk 56): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 24, chunk 57): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 26, chunk 109): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 28, chunk 144): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 30, chunk 177): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 30, chunk 179): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 30, chunk 185): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 31, chunk 217): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 32, chunk 221): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 33, chunk 243): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 283): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 35, chunk 305): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 332): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 338): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 350): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 410): -22
+INFO - -> Correcting to 0.
+INFO - Endpixel (order 41, chunk 439): 4804.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Startpixel (order 42, chunk 443): -22
+INFO - -> Correcting to 0.
+INFO - Endpixel (order 42, chunk 461): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 43, chunk 482): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 43, chunk 483): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Startpixel (order 44, chunk 487): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 44, chunk 501): -22
+INFO - -> Correcting to 0.
+INFO - Endpixel (order 44, chunk 503): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 44, chunk 504): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 44, chunk 505): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Startpixel (order 45, chunk 518): -22
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 523): -22
+INFO - -> Correcting to 0.
+INFO - Endpixel (order 45, chunk 524): 4798.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 45, chunk 525): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 45, chunk 526): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - Endpixel (order 45, chunk 527): 4810.0
+INFO - -> Correcting to maximum pixel in order.
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 2869, 4121
+INFO - Orders: 21 - 44 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - Chunk 5: No Data! Returning LmfitResult with None.
+ERROR - Chunk 8: No Data! Returning LmfitResult with None.
+ERROR - Chunk 10: No Data! Returning LmfitResult with None.
+ERROR - Chunk 16: No Data! Returning LmfitResult with None.
+WARNING - Chunk 31:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 56:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 57:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 109:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 144:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 177:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 179:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 185:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 217:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 221:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 243:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 283:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 305:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 332:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 338:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 350:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 410:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 443:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 487:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 501:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 503:
+WARNING - Bad input! (wave_start >= wave_stop)
+WARNING - Chunk 518:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 523:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - Number of chunks with no uncertainties: 4
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 28
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  11.765614204242677
+    left_2  =  -10.495615432699296
+    left_3  =  6.5227615514768935
+    left_4  =  -2.215147233451001
+    left_5  =  0.7974712040370019
+    right1  =  11.765614736965583
+    right2  =  -10.495616574408732
+    right3  =  6.522762523352287
+    right4  =  -2.215147831904179
+    right5  =  0.7974714215894929
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7011.163669927185
+    cont_slope      =  -5.44336885432472
+    iod_depth       =  2.9823206727782376
+    lsf_left_1      =  2.604231474627363
+    lsf_left_2      =  -14.228595650626463
+    lsf_left_3      =  8.613794690239219
+    lsf_left_4      =  -2.755295767381496
+    lsf_left_5      =  0.17227443653569596
+    lsf_right1      =  9.646296030377975
+    lsf_right2      =  -18.86736878077285
+    lsf_right3      =  1.3082340379289084
+    lsf_right4      =  -3.987265640091333
+    lsf_right5      =  0.38620551042102086
+    tem_depth       =  0.7242825733376388
+    velocity        =  3006.643206225074
+    wave_intercept  =  4993.179354145543
+    wave_slope      =  0.00844212550466927
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 3:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 4: No Data! Returning LmfitResult with None.
+ERROR - Chunk 5: No Data! Returning LmfitResult with None.
+ERROR - Chunk 8: No Data! Returning LmfitResult with None.
+ERROR - Chunk 10: No Data! Returning LmfitResult with None.
+ERROR - Chunk 16: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4148.3624713037125
+    cont_slope      =  5.397208900048125
+    iod_depth       =  0.23939518814538752
+    lsf_left_1      =  2.6490714091027328
+    lsf_left_2      =  -6.0472322052990695
+    lsf_left_3      =  1.3187352336016114
+    lsf_left_4      =  -0.8975695181594951
+    lsf_left_5      =  0.17630337862321876
+    lsf_right1      =  2.5785227281108534
+    lsf_right2      =  -18.89207828152899
+    lsf_right3      =  6.574218546358861
+    lsf_right4      =  -3.3389010807500292
+    lsf_right5      =  0.3709462604389566
+    tem_depth       =  -0.3238888638460291
+    velocity        =  675.008228225495
+    wave_intercept  =  5004.3369400356405
+    wave_slope      =  0.01079430344107365
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 19:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 31: No Data! Returning LmfitResult with None.
+ERROR - Chunk 56: No Data! Returning LmfitResult with None.
+ERROR - Chunk 57: No Data! Returning LmfitResult with None.
+ERROR - Chunk 109: No Data! Returning LmfitResult with None.
+ERROR - Chunk 144: No Data! Returning LmfitResult with None.
+ERROR - Chunk 177: No Data! Returning LmfitResult with None.
+ERROR - Chunk 179: No Data! Returning LmfitResult with None.
+ERROR - Chunk 185: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5127.254805935952
+    cont_slope      =  -3.9281994669143465
+    iod_depth       =  0.7503255421362424
+    lsf_left_1      =  5.276826182178941
+    lsf_left_2      =  -17.18346839475897
+    lsf_left_3      =  3.1406872923248734
+    lsf_left_4      =  -2.6266889570513916
+    lsf_left_5      =  1.3807095949120045
+    lsf_right1      =  2.5933168375078037
+    lsf_right2      =  -11.92362927297226
+    lsf_right3      =  8.865967576704588
+    lsf_right4      =  -3.0731582870466134
+    lsf_right5      =  0.6634710843152168
+    tem_depth       =  -0.9699614761483657
+    velocity        =  1912.0358133791553
+    wave_intercept  =  5355.497194509081
+    wave_slope      =  0.01267261478100488
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 195:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 217: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4401.050433225757
+    cont_slope      =  -9.186672130027373
+    iod_depth       =  0.5410377953109208
+    lsf_left_1      =  5.985161134716046
+    lsf_left_2      =  -18.55417196855288
+    lsf_left_3      =  1.5983117880212045
+    lsf_left_4      =  -3.9571900204254926
+    lsf_left_5      =  1.3927093387244858
+    lsf_right1      =  3.139607105254893
+    lsf_right2      =  -16.807470793704415
+    lsf_right3      =  1.8457669438163122
+    lsf_right4      =  -0.9720411199340733
+    lsf_right5      =  0.46348458267707915
+    tem_depth       =  0.5447835153435544
+    velocity        =  1453.2011751327377
+    wave_intercept  =  5404.373608444924
+    wave_slope      =  0.012207714295173682
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 219:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 221: No Data! Returning LmfitResult with None.
+ERROR - Chunk 243: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8453.858555675763
+    cont_slope      =  -5.407812243475065
+    iod_depth       =  0.6582837410145435
+    lsf_left_1      =  2.6374822409405443
+    lsf_left_2      =  -6.205682658499155
+    lsf_left_3      =  1.3734011488595745
+    lsf_left_4      =  -3.302630122243856
+    lsf_left_5      =  1.376191318999445
+    lsf_right1      =  3.3820281204548435
+    lsf_right2      =  -15.503405164759371
+    lsf_right3      =  11.394230120771546
+    lsf_right4      =  -3.682147051109666
+    lsf_right5      =  0.3719077386693005
+    tem_depth       =  0.5077500337029884
+    velocity        =  1338.9132991542833
+    wave_intercept  =  5489.6577596916795
+    wave_slope      =  0.01297718589675691
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 247:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 283: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5331.733059069489
+    cont_slope      =  -0.9142962056276922
+    iod_depth       =  0.7140489951083634
+    lsf_left_1      =  3.5094640359286906
+    lsf_left_2      =  -18.86236369573282
+    lsf_left_3      =  5.1807855131956835
+    lsf_left_4      =  -0.7694764387779518
+    lsf_left_5      =  0.20360787118055365
+    lsf_right1      =  2.775985082631468
+    lsf_right2      =  -16.402282264624223
+    lsf_right3      =  1.3701588340485138
+    lsf_right4      =  -3.9406301717338468
+    lsf_right5      =  0.1757342587204966
+    tem_depth       =  -0.2573148473009407
+    velocity        =  -2471.2046869837027
+    wave_intercept  =  5600.434159771313
+    wave_slope      =  0.012656708292940421
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 304:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 305: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10195.717949803618
+    cont_slope      =  -4.940438258340547
+    iod_depth       =  0.7971089339802424
+    lsf_left_1      =  2.3951406731670812
+    lsf_left_2      =  -18.870496685048156
+    lsf_left_3      =  3.604521501936383
+    lsf_left_4      =  -3.888335063526645
+    lsf_left_5      =  1.0243297228231225
+    lsf_right1      =  4.139207844705033
+    lsf_right2      =  -8.646926585161388
+    lsf_right3      =  3.3005013965516783
+    lsf_right4      =  -1.8787209894049144
+    lsf_right5      =  0.2941805590160347
+    tem_depth       =  0.0048055470722782045
+    velocity        =  182.7359709926854
+    wave_intercept  =  5638.950435960409
+    wave_slope      =  0.013483267464449724
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 309:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5119.1511855048475
+    cont_slope      =  -3.5644064962561854
+    iod_depth       =  0.6491232801383631
+    lsf_left_1      =  3.2022150422227353
+    lsf_left_2      =  -18.87282336149325
+    lsf_left_3      =  1.5648945438293596
+    lsf_left_4      =  -1.2995230667989093
+    lsf_left_5      =  0.9780732104860684
+    lsf_right1      =  2.6158379390576383
+    lsf_right2      =  -18.606204237833136
+    lsf_right3      =  11.18731852262827
+    lsf_right4      =  -3.792531268086516
+    lsf_right5      =  0.5037069504252605
+    tem_depth       =  0.3381555297434289
+    velocity        =  -224.60022160596384
+    wave_intercept  =  5653.025984155928
+    wave_slope      =  0.012614380982476636
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 327:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 332: No Data! Returning LmfitResult with None.
+ERROR - Chunk 338: No Data! Returning LmfitResult with None.
+ERROR - Chunk 350: No Data! Returning LmfitResult with None.
+ERROR - Chunk 410: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5183.556128609072
+    cont_slope      =  -5.089149050183625
+    iod_depth       =  0.5873349625451809
+    lsf_left_1      =  2.402606713040467
+    lsf_left_2      =  -14.322097874680768
+    lsf_left_3      =  1.9130994282048235
+    lsf_left_4      =  -1.2877161471839438
+    lsf_left_5      =  0.23328943564325139
+    lsf_right1      =  2.9156191986605693
+    lsf_right2      =  -12.10597666221392
+    lsf_right3      =  8.015426562088809
+    lsf_right4      =  -3.9712307697365756
+    lsf_right5      =  0.17796136292035764
+    tem_depth       =  -0.929507677891616
+    velocity        =  147.8594537198943
+    wave_intercept  =  5871.261000336179
+    wave_slope      =  0.014083131423545964
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 416:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6235.5842471703745
+    cont_slope      =  -3.8567567706448354
+    iod_depth       =  0.7868583375135338
+    lsf_left_1      =  2.5202778780921746
+    lsf_left_2      =  -15.03006306324369
+    lsf_left_3      =  2.1928471569235635
+    lsf_left_4      =  -2.554468097152067
+    lsf_left_5      =  0.5416748197831814
+    lsf_right1      =  3.4823831044412445
+    lsf_right2      =  -11.032311070280219
+    lsf_right3      =  2.977689878213895
+    lsf_right4      =  -2.3182154657636556
+    lsf_right5      =  0.8033135360804413
+    tem_depth       =  0.9198271678726021
+    velocity        =  1089.7757719680565
+    wave_intercept  =  5922.661793457156
+    wave_slope      =  0.01318855915674051
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 431:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5573.5793662604065
+    cont_slope      =  -11.672064103035739
+    iod_depth       =  0.5480010929261079
+    lsf_left_1      =  6.212053225863194
+    lsf_left_2      =  -18.6439498450904
+    lsf_left_3      =  1.374517243690075
+    lsf_left_4      =  -1.3841316938953967
+    lsf_left_5      =  0.9272439520826459
+    lsf_right1      =  3.2020740309370823
+    lsf_right2      =  -18.844877957891345
+    lsf_right3      =  10.62061991022917
+    lsf_right4      =  -3.9751335883747556
+    lsf_right5      =  1.0889452932055286
+    tem_depth       =  1.2284744527078217
+    velocity        =  -773.7371992379417
+    wave_intercept  =  5925.088495052173
+    wave_slope      =  0.012682719808207954
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 434:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+WARNING - Chunk 439:
+WARNING - Bad input! (wave_start >= wave_stop)
+ERROR - Chunk 443: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  7006.625318794963
+    cont_slope      =  -3.3990834068155875
+    iod_depth       =  0.6219125588040412
+    lsf_left_1      =  9.716815709307479
+    lsf_left_2      =  -18.144443233097483
+    lsf_left_3      =  1.5765353218925586
+    lsf_left_4      =  -1.6561067622043315
+    lsf_left_5      =  0.15953900346191424
+    lsf_right1      =  5.242703370817181
+    lsf_right2      =  -18.768703327673656
+    lsf_right3      =  10.49057319257626
+    lsf_right4      =  -3.9340074188220866
+    lsf_right5      =  0.7349951028223308
+    tem_depth       =  -0.4603036019127802
+    velocity        =  1281.00532897924
+    wave_intercept  =  5979.08262251439
+    wave_slope      =  0.013216497482892584
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 451:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6416.232547878202
+    cont_slope      =  -0.26182286440576663
+    iod_depth       =  0.4935041053159425
+    lsf_left_1      =  4.535142776210281
+    lsf_left_2      =  -18.14611320666152
+    lsf_left_3      =  4.238062004838035
+    lsf_left_4      =  -3.8343897101747797
+    lsf_left_5      =  0.8958654399412853
+    lsf_right1      =  7.921507070161409
+    lsf_right2      =  -17.29702881126741
+    lsf_right3      =  11.61266863916131
+    lsf_right4      =  -3.9645096337832286
+    lsf_right5      =  0.38469508968849675
+    tem_depth       =  0.08641325698794669
+    velocity        =  -1554.431277822903
+    wave_intercept  =  5980.721654296785
+    wave_slope      =  0.013545001359531081
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 453:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3111.224459720239
+    cont_slope      =  -45.893227669217325
+    iod_depth       =  -0.3782460916191853
+    lsf_left_1      =  9.255492227242858
+    lsf_left_2      =  -18.74081810524172
+    lsf_left_3      =  2.263759529852595
+    lsf_left_4      =  -3.923732088331558
+    lsf_left_5      =  0.5925892824636434
+    lsf_right1      =  3.87199534940786
+    lsf_right2      =  -18.677902542755596
+    lsf_right3      =  1.5421214953128388
+    lsf_right4      =  -3.7079785794559736
+    lsf_right5      =  0.1741497527293733
+    tem_depth       =  3.019546684717383
+    velocity        =  5737.4736521950035
+    wave_intercept  =  5986.564173587673
+    wave_slope      =  0.011822943652241642
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 461:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+WARNING - Chunk 482:
+WARNING - Bad input! (wave_start >= wave_stop)
+ERROR - Chunk 487: No Data! Returning LmfitResult with None.
+ERROR - Chunk 501: No Data! Returning LmfitResult with None.
+ERROR - Chunk 503: No Data! Returning LmfitResult with None.
+ERROR - Chunk 518: No Data! Returning LmfitResult with None.
+ERROR - Chunk 523: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3692.9441503657818
+    cont_slope      =  -94.62295683479323
+    iod_depth       =  0.9219097246488526
+    lsf_left_1      =  6.291016215531198
+    lsf_left_2      =  -18.37778838481956
+    lsf_left_3      =  3.9785860483071374
+    lsf_left_4      =  -3.2320367361347047
+    lsf_left_5      =  1.3170387073441097
+    lsf_right1      =  5.1018738893902835
+    lsf_right2      =  -18.46050309452264
+    lsf_right3      =  7.0493526221519955
+    lsf_right4      =  -3.4470530541114033
+    lsf_right5      =  0.7056377153455939
+    tem_depth       =  -2.5065577983038008
+    velocity        =  10376.603389642603
+    wave_intercept  =  6166.113548828436
+    wave_slope      =  0.03143697327416162
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 525:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+INFO - 
+INFO - Number of chunks with no uncertainties: 7
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 45
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: -97.9147534541885
+INFO - Velocity robust std: 1875.0826280863218
+INFO - 
+INFO - Velocity error robust mean: 655.9516274948489
+INFO - Velocity error robust std: 510.7713250326471
+INFO - 
+INFO - Minimum error: 12.610002784400665 in chunk 505
+INFO - Maximum error: 231142.55753292821 in chunk 504
+INFO - 
+INFO - Chunks with nan velocities: [  3   4   5   8  10  16  19  31  56  57 109 144 177 179 185 195 217 219
+ 221 243 247 283 304 305 309 327 332 338 350 410 416 431 434 439 443 451
+ 453 461 482 487 501 503 518 523 525]
+INFO - Chunks with nan velocity errors: [  3   4   5   8  10  16  19  31  56  57  72  97 109 144 149 177 179 185
+ 195 209 217 219 221 243 247 283 304 305 309 317 327 332 338 350 410 416
+ 431 434 439 443 448 451 453 461 482 487 501 503 512 518 523 525]
+INFO - Velocity error at percentile 80: 1171.0259165432376
+INFO - 
+INFO - Time to model this observation: 81.78521513938904
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0143.fits
+INFO - 
+INFO - Median flux of the observation: 7770
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/obs_temp_highsnr_test.h5
+INFO - 
+INFO - Order correction: 0
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -6.526 km/s
+INFO - Template velocity: -6.620 km/s
+INFO - Velocity guess: 0.093 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 13.298 km/s)
+INFO - (Barycentric velocity of template: 13.293 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -5.04058283690938, z = -1.6813574532650115e-08
+
+INFO - Startpixel (order 25, chunk 71): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 25, chunk 76): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 28, chunk 147): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 271): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 277): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 338): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 38, chunk 360): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 398): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 403): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 42, chunk 454): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 43, chunk 479): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 44, chunk 486): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 522): -60
+INFO - -> Correcting to 0.
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 14, 2655
+INFO - Orders: 22 - 45 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+WARNING - Chunk 71:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 76:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 147:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 271:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 277:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 338:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 360:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 398:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 403:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 454:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 479:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 486:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 522:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - Number of chunks with no uncertainties: 10
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 13
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  10.8572227894561
+    left_2  =  -10.698375653876196
+    left_3  =  5.785088646584449
+    left_4  =  -2.2057257274532707
+    left_5  =  0.6670874806222982
+    right1  =  10.857220757309452
+    right2  =  -10.698374277601886
+    right3  =  5.785087548803328
+    right4  =  -2.205725226810804
+    right5  =  0.6670872955314944
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5614.747155711654
+    cont_slope      =  3.417470203808443
+    iod_depth       =  0.902078217009528
+    lsf_left_1      =  3.083496887594494
+    lsf_left_2      =  -19.110920182629744
+    lsf_left_3      =  7.013669845932561
+    lsf_left_4      =  -3.800028033053066
+    lsf_left_5      =  0.24249142024254877
+    lsf_right1      =  3.7904348223616977
+    lsf_right2      =  -15.569877932153648
+    lsf_right3      =  3.7440169919618174
+    lsf_right4      =  -2.2784759697597954
+    lsf_right5      =  0.3917879523000454
+    tem_depth       =  0.8712100459322575
+    velocity        =  -93.62727478360549
+    wave_intercept  =  5006.461042794419
+    wave_slope      =  0.01480849621127887
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 8:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8591.72916561007
+    cont_slope      =  0.9685415855865487
+    iod_depth       =  0.9418306563578599
+    lsf_left_1      =  6.588865413872842
+    lsf_left_2      =  -18.575561672548353
+    lsf_left_3      =  9.459444107953114
+    lsf_left_4      =  -3.6164981903959372
+    lsf_left_5      =  0.14022513203727333
+    lsf_right1      =  4.788897138740423
+    lsf_right2      =  -18.964598957760767
+    lsf_right3      =  3.150092586514216
+    lsf_right4      =  -2.8365348340874483
+    lsf_right5      =  0.9134581530387075
+    tem_depth       =  0.8668063380041063
+    velocity        =  -6.540071738192573
+    wave_intercept  =  5021.773817857296
+    wave_slope      =  0.013600455953629664
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 17:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3791.4411044301546
+    cont_slope      =  3.3424173122541174
+    iod_depth       =  0.7264370765038763
+    lsf_left_1      =  6.336494856721901
+    lsf_left_2      =  -18.40942789581058
+    lsf_left_3      =  9.128031667588226
+    lsf_left_4      =  -3.969971876778253
+    lsf_left_5      =  1.183784410055057
+    lsf_right1      =  5.298746804854538
+    lsf_right2      =  -17.25429370116425
+    lsf_right3      =  5.482362835333435
+    lsf_right4      =  -1.9810064481470457
+    lsf_right5      =  0.5660379967129121
+    tem_depth       =  0.8622205473665484
+    velocity        =  -371.72074757099625
+    wave_intercept  =  5036.786668934801
+    wave_slope      =  0.01589306919986195
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 24:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3448.2748674553513
+    cont_slope      =  4.880864620930284
+    iod_depth       =  0.7519163738232982
+    lsf_left_1      =  3.018418813247629
+    lsf_left_2      =  -16.220254553547694
+    lsf_left_3      =  3.0824047372476797
+    lsf_left_4      =  -3.4766325690530175
+    lsf_left_5      =  0.1342149055722257
+    lsf_right1      =  2.356222878256678
+    lsf_right2      =  -19.215666755672036
+    lsf_right3      =  1.1571780553720703
+    lsf_right4      =  -3.969445054842213
+    lsf_right5      =  0.7946906087208689
+    tem_depth       =  0.3014506738821351
+    velocity        =  589.7910062837007
+    wave_intercept  =  5117.559327491397
+    wave_slope      =  0.016302002811221395
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 66:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4577.391925434672
+    cont_slope      =  5.344409299879774
+    iod_depth       =  0.86998905695977
+    lsf_left_1      =  2.1914749741015394
+    lsf_left_2      =  -15.352793410752351
+    lsf_left_3      =  10.296729829212525
+    lsf_left_4      =  -3.7935903047063047
+    lsf_left_5      =  1.0080299922880744
+    lsf_right1      =  2.307958662435674
+    lsf_right2      =  -10.226899579954665
+    lsf_right3      =  2.570064118828388
+    lsf_right4      =  -3.145968180117926
+    lsf_right5      =  1.073941645301331
+    tem_depth       =  0.8463501617677908
+    velocity        =  -287.0046190520433
+    wave_intercept  =  5121.427913730716
+    wave_slope      =  0.016070123858366536
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 68:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 71: No Data! Returning LmfitResult with None.
+ERROR - Chunk 76: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9659.909647650202
+    cont_slope      =  1.8316194171287918
+    iod_depth       =  0.9995945761630434
+    lsf_left_1      =  2.871421540382584
+    lsf_left_2      =  -16.308085895882495
+    lsf_left_3      =  2.459719553559988
+    lsf_left_4      =  -2.4224808008557206
+    lsf_left_5      =  0.3472037195902058
+    lsf_right1      =  5.606909309611154
+    lsf_right2      =  -11.644962031152339
+    lsf_right3      =  4.771523893858431
+    lsf_right4      =  -3.7820215489715925
+    lsf_right5      =  0.29344783522606943
+    tem_depth       =  0.9117648626125259
+    velocity        =  257.9255660360694
+    wave_intercept  =  5143.283066307368
+    wave_slope      =  0.014335934913596957
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 80:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4054.866260978009
+    cont_slope      =  4.9580662430173525
+    iod_depth       =  0.7422719497215654
+    lsf_left_1      =  8.860716961323515
+    lsf_left_2      =  -13.264875715336045
+    lsf_left_3      =  2.026799877261904
+    lsf_left_4      =  -3.949865223826279
+    lsf_left_5      =  0.13360334513680147
+    lsf_right1      =  2.1716517557984822
+    lsf_right2      =  -17.927022944946877
+    lsf_right3      =  9.689141521326553
+    lsf_right4      =  -3.942676082675919
+    lsf_right5      =  0.7387901089966199
+    tem_depth       =  0.8478161449224546
+    velocity        =  -236.05130405270262
+    wave_intercept  =  5162.89651615099
+    wave_slope      =  0.01634339459955661
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 89:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5972.451617389756
+    cont_slope      =  3.0436765699064816
+    iod_depth       =  0.7952323224967349
+    lsf_left_1      =  2.2742131424208254
+    lsf_left_2      =  -19.04069184019276
+    lsf_left_3      =  2.686722130396705
+    lsf_left_4      =  -3.6112823354136636
+    lsf_left_5      =  0.7320022907311449
+    lsf_right1      =  13.260852400538285
+    lsf_right2      =  -18.45422050440906
+    lsf_right3      =  2.1766224731917188
+    lsf_right4      =  -3.9695746883267855
+    lsf_right5      =  0.13398835890517483
+    tem_depth       =  0.856289184892451
+    velocity        =  615.3659623499384
+    wave_intercept  =  5183.373735339975
+    wave_slope      =  0.01474172509069811
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 100:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11885.071642583016
+    cont_slope      =  1.3208252581425017
+    iod_depth       =  0.8913420956096118
+    lsf_left_1      =  4.106983754856854
+    lsf_left_2      =  -13.927474579262118
+    lsf_left_3      =  9.634625428314083
+    lsf_left_4      =  -3.9079019359070486
+    lsf_left_5      =  0.38586914004869305
+    lsf_right1      =  2.5089336096240165
+    lsf_right2      =  -14.439061526682607
+    lsf_right3      =  9.06897576735379
+    lsf_right4      =  -3.557236806199099
+    lsf_right5      =  0.16843358421003146
+    tem_depth       =  0.5626246005147442
+    velocity        =  1565.8674209892588
+    wave_intercept  =  5231.199819672103
+    wave_slope      =  0.014564525180357255
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 124:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9866.66039200077
+    cont_slope      =  2.6383583139421427
+    iod_depth       =  0.8956511040294478
+    lsf_left_1      =  5.58576371448785
+    lsf_left_2      =  -18.130220709980744
+    lsf_left_3      =  5.47772426590288
+    lsf_left_4      =  -2.77594013825645
+    lsf_left_5      =  1.2006902494878917
+    lsf_right1      =  8.667522376257933
+    lsf_right2      =  -19.005804718296694
+    lsf_right3      =  1.4477701973001316
+    lsf_right4      =  -3.4104668070984734
+    lsf_right5      =  0.347587585696048
+    tem_depth       =  0.9005284630135745
+    velocity        =  -164.90255112295787
+    wave_intercept  =  5272.734688603228
+    wave_slope      =  0.014954604757758993
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 144:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 147: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6995.705674636329
+    cont_slope      =  7.5007697401538636
+    iod_depth       =  0.8565920020895713
+    lsf_left_1      =  7.423434471232981
+    lsf_left_2      =  -19.257062669263885
+    lsf_left_3      =  9.68324514322811
+    lsf_left_4      =  -2.7746322658226905
+    lsf_left_5      =  0.13480531297855275
+    lsf_right1      =  2.5339857170696094
+    lsf_right2      =  -17.635932413775517
+    lsf_right3      =  1.2428368927275608
+    lsf_right4      =  -2.321072763392422
+    lsf_right5      =  0.13871697324677085
+    tem_depth       =  0.7948409052796124
+    velocity        =  -150.72314181505112
+    wave_intercept  =  5350.067259944417
+    wave_slope      =  0.01646693162259013
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 180:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8878.411549844663
+    cont_slope      =  8.928306370988746
+    iod_depth       =  0.9141233987760572
+    lsf_left_1      =  2.194873308949962
+    lsf_left_2      =  -10.379464482979005
+    lsf_left_3      =  8.085504692016361
+    lsf_left_4      =  -3.401924015806749
+    lsf_left_5      =  0.9505098262969235
+    lsf_right1      =  3.8126638842307523
+    lsf_right2      =  -7.3882121695551035
+    lsf_right3      =  1.9757708574651482
+    lsf_right4      =  -2.52637279675984
+    lsf_right5      =  0.9340853388638949
+    tem_depth       =  0.8969240166377492
+    velocity        =  213.61530711060985
+    wave_intercept  =  5353.964808819684
+    wave_slope      =  0.0160795348227749
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 182:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9575.347225323276
+    cont_slope      =  5.045471356875585
+    iod_depth       =  0.9453720800820601
+    lsf_left_1      =  3.6076547487083355
+    lsf_left_2      =  -8.18941485050095
+    lsf_left_3      =  1.1619257293345906
+    lsf_left_4      =  -0.5763790309926722
+    lsf_left_5      =  0.17520057373876247
+    lsf_right1      =  4.626243522069637
+    lsf_right2      =  -19.251553005103492
+    lsf_right3      =  10.163870652370196
+    lsf_right4      =  -3.2222030721009953
+    lsf_right5      =  0.47113863327555977
+    tem_depth       =  0.8943925053290218
+    velocity        =  -342.271522156547
+    wave_intercept  =  5403.283402349739
+    wave_slope      =  0.01608538615156898
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 205:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 271: No Data! Returning LmfitResult with None.
+ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12626.24795620002
+    cont_slope      =  4.6336723375714755
+    iod_depth       =  0.8672704571469492
+    lsf_left_1      =  7.359847783525602
+    lsf_left_2      =  -18.268147665220706
+    lsf_left_3      =  2.0330941593259872
+    lsf_left_4      =  -3.88770294738117
+    lsf_left_5      =  0.5940069614228363
+    lsf_right1      =  2.651412132575322
+    lsf_right2      =  -15.243387725517936
+    lsf_right3      =  1.6559228550469811
+    lsf_right4      =  -1.0214104032669962
+    lsf_right5      =  0.45290195789409865
+    tem_depth       =  0.1562170302652629
+    velocity        =  1101.110567593399
+    wave_intercept  =  5605.539808835172
+    wave_slope      =  0.016364032346350896
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 295:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15426.335487632723
+    cont_slope      =  4.746034407553071
+    iod_depth       =  0.9377744356743595
+    lsf_left_1      =  3.16330008411144
+    lsf_left_2      =  -16.692894958256026
+    lsf_left_3      =  4.074228202835813
+    lsf_left_4      =  -3.4646861315315256
+    lsf_left_5      =  0.15396514525032742
+    lsf_right1      =  4.468809066588529
+    lsf_right2      =  -14.66146329709758
+    lsf_right3      =  1.1574965312378844
+    lsf_right4      =  -3.9382584948579478
+    lsf_right5      =  1.0911268656323263
+    tem_depth       =  0.6536260178719501
+    velocity        =  124.4851939912279
+    wave_intercept  =  5613.25375902276
+    wave_slope      =  0.01574866292459431
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 299:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10654.266136434795
+    cont_slope      =  3.088538249525781
+    iod_depth       =  0.9366483969462176
+    lsf_left_1      =  2.998385483595999
+    lsf_left_2      =  -15.032170737258316
+    lsf_left_3      =  6.53194556805063
+    lsf_left_4      =  -3.1075713393945765
+    lsf_left_5      =  0.3988331701872109
+    lsf_right1      =  2.195849924185447
+    lsf_right2      =  -19.126300829881682
+    lsf_right3      =  1.4385697706485852
+    lsf_right4      =  -1.4337906467679136
+    lsf_right5      =  0.6944062349592584
+    tem_depth       =  0.8410537887890924
+    velocity        =  -35.015388456858815
+    wave_intercept  =  5655.449809719835
+    wave_slope      =  0.016645352407310195
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 316:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 338: No Data! Returning LmfitResult with None.
+ERROR - Chunk 360: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14151.925158182981
+    cont_slope      =  4.029216656369153
+    iod_depth       =  0.9168170036432127
+    lsf_left_1      =  2.2047480841170586
+    lsf_left_2      =  -7.5324019209702655
+    lsf_left_3      =  1.3526753890514756
+    lsf_left_4      =  -1.0284574755261144
+    lsf_left_5      =  0.5581348811200117
+    lsf_right1      =  4.984403236166763
+    lsf_right2      =  -17.925726121622056
+    lsf_right3      =  9.284390651079622
+    lsf_right4      =  -2.977776894570498
+    lsf_right5      =  0.23697381264039943
+    tem_depth       =  0.3286300878924774
+    velocity        =  2336.7053695743193
+    wave_intercept  =  5821.112946155464
+    wave_slope      =  0.016819881629020827
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 384:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 398: No Data! Returning LmfitResult with None.
+ERROR - Chunk 403: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15451.948557030148
+    cont_slope      =  4.88584928573074
+    iod_depth       =  0.8913281907141145
+    lsf_left_1      =  2.6441780450809493
+    lsf_left_2      =  -18.303522731630455
+    lsf_left_3      =  6.948647375802543
+    lsf_left_4      =  -3.9625695032259025
+    lsf_left_5      =  0.2147690030704588
+    lsf_right1      =  3.7871833314083068
+    lsf_right2      =  -18.720307050488188
+    lsf_right3      =  1.2896140129416396
+    lsf_right4      =  -3.1743518253037823
+    lsf_right5      =  0.8646673055520213
+    tem_depth       =  -0.1495258433704254
+    velocity        =  620.4641877440364
+    wave_intercept  =  5875.036671602792
+    wave_slope      =  0.01718610565061382
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 405:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13095.04379313168
+    cont_slope      =  -2.203909948588692
+    iod_depth       =  0.8969252354653706
+    lsf_left_1      =  2.2053401341805285
+    lsf_left_2      =  -17.868288667869304
+    lsf_left_3      =  3.403711564305997
+    lsf_left_4      =  -0.5116820595070144
+    lsf_left_5      =  0.138497928281079
+    lsf_right1      =  4.431263876251261
+    lsf_right2      =  -17.257369341390902
+    lsf_right3      =  3.729578667051228
+    lsf_right4      =  -3.1719179572589002
+    lsf_right5      =  1.0052773441371214
+    tem_depth       =  0.9435907296964213
+    velocity        =  347.670006246656
+    wave_intercept  =  5888.98414383599
+    wave_slope      =  0.016139625131179256
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 412:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  16927.13699654511
+    cont_slope      =  3.6709050755314028
+    iod_depth       =  0.8586485390376413
+    lsf_left_1      =  2.184564381769811
+    lsf_left_2      =  -17.770375401958923
+    lsf_left_3      =  8.037037051950007
+    lsf_left_4      =  -3.65995034091497
+    lsf_left_5      =  0.19745971014957964
+    lsf_right1      =  3.607276897780975
+    lsf_right2      =  -12.050897198263986
+    lsf_right3      =  1.6723214454443551
+    lsf_right4      =  -0.5809097967765928
+    lsf_right5      =  0.3574408841816863
+    tem_depth       =  0.2914397011257004
+    velocity        =  1313.0782362133325
+    wave_intercept  =  5938.218311610724
+    wave_slope      =  0.01682742544063676
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 430:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 454: No Data! Returning LmfitResult with None.
+ERROR - Chunk 479: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15446.250115577397
+    cont_slope      =  -5.1538285109095945
+    iod_depth       =  0.8662702292391369
+    lsf_left_1      =  4.766687029411667
+    lsf_left_2      =  -13.91285856461758
+    lsf_left_3      =  9.17304641136154
+    lsf_left_4      =  -2.847035313077048
+    lsf_left_5      =  0.2950796368938458
+    lsf_right1      =  3.259344137057722
+    lsf_right2      =  -18.7130882915229
+    lsf_right3      =  3.930472832906106
+    lsf_right4      =  -0.4511088624514392
+    lsf_right5      =  0.1335673331371898
+    tem_depth       =  0.09778407011189406
+    velocity        =  -1085.1081122511812
+    wave_intercept  =  6073.58828450743
+    wave_slope      =  0.015729621253203974
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 483:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 486: No Data! Returning LmfitResult with None.
+ERROR - Chunk 522: No Data! Returning LmfitResult with None.
+INFO - 
+INFO - Number of chunks with no uncertainties: 17
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 34
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: 16.35390377383373
+INFO - Velocity robust std: 632.2919089652213
+INFO - 
+INFO - Velocity error robust mean: 195.41473054630688
+INFO - Velocity error robust std: 147.18053615225273
+INFO - 
+INFO - Minimum error: 55.23567227720367 in chunk 188
+INFO - Maximum error: 2797.2420863994066 in chunk 440
+INFO - 
+INFO - Chunks with nan velocities: [  8  17  24  66  68  71  76  80  89 100 124 144 147 180 182 205 271 277
+ 295 299 316 338 360 384 398 403 405 412 430 454 479 483 486 522]
+INFO - Chunks with nan velocity errors: [  8  14  17  24  62  66  68  70  71  76  80  89  96 100 112 124 143 144
+ 147 180 182 204 205 236 264 271 277 295 299 300 308 316 332 338 360 370
+ 384 398 403 405 407 412 413 430 447 454 479 483 486 512 522]
+INFO - Velocity error at percentile 80: 391.4185835318123
+INFO - 
+INFO - Time to model this observation: 98.73874092102051
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0143.fits
+INFO - 
+INFO - Median flux of the observation: 7770
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/obs_temp_highsnr_test.h5
+INFO - 
+INFO - Order correction: 0
+INFO - 
+INFO - Measured velocity rel. to reference spectrum: -6.526 km/s
+INFO - Template velocity: -6.620 km/s
+INFO - Velocity guess: 0.093 km/s (relative to template)
+
+INFO - (Barycentric velocity of observation: 13.298 km/s)
+INFO - (Barycentric velocity of template: 13.293 km/s)
+
+INFO - 
+INFO - Barycentric redshift between template and observation: 
+INFO - v = -5.04058283690938, z = -1.6813574532650115e-08
+
+INFO - Startpixel (order 25, chunk 71): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 25, chunk 76): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 28, chunk 147): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 271): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 34, chunk 277): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 37, chunk 338): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 38, chunk 360): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 398): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 40, chunk 403): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 42, chunk 454): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 43, chunk 479): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 44, chunk 486): -60
+INFO - -> Correcting to 0.
+INFO - Startpixel (order 45, chunk 522): -60
+INFO - -> Correcting to 0.
+INFO - 
+INFO - Total number of chunks: 528
+INFO - Nr. chunks in order 0: 22
+INFO - First and last covered pixel of chunks in order 0: 14, 2655
+INFO - Orders: 22 - 45 (24 in total)
+INFO - 
+INFO - ----------------------
+INFO - RUN 0
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 0
+WARNING - Chunk 71:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 76:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 147:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 271:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 277:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 338:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 360:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 398:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 403:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 454:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 479:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 486:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+WARNING - Chunk 522:
+WARNING - (xb<=x[0]) failed for 1st keyword xb: curfit:xb=nan
+INFO - 
+INFO - Number of chunks with no uncertainties: 10
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 13
+INFO - 
+INFO - Creating analysis plots...
+INFO - 
+INFO - ----------------------
+INFO - RUN 1
+INFO - ----------------------
+INFO - 
+INFO - Constraining parameters for RUN 1
+INFO - 
+INFO - Fitted LSF parameters:
+INFO - <ParameterSet (values: 10)>
+    left_1  =  10.8572227894561
+    left_2  =  -10.698375653876196
+    left_3  =  5.785088646584449
+    left_4  =  -2.2057257274532707
+    left_5  =  0.6670874806222982
+    right1  =  10.857220757309452
+    right2  =  -10.698374277601886
+    right3  =  5.785087548803328
+    right4  =  -2.205725226810804
+    right5  =  0.6670872955314944
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5614.747155711654
+    cont_slope      =  3.417470203808443
+    iod_depth       =  0.902078217009528
+    lsf_left_1      =  3.083496887594494
+    lsf_left_2      =  -19.110920182629744
+    lsf_left_3      =  7.013669845932561
+    lsf_left_4      =  -3.800028033053066
+    lsf_left_5      =  0.24249142024254877
+    lsf_right1      =  3.7904348223616977
+    lsf_right2      =  -15.569877932153648
+    lsf_right3      =  3.7440169919618174
+    lsf_right4      =  -2.2784759697597954
+    lsf_right5      =  0.3917879523000454
+    tem_depth       =  0.8712100459322575
+    velocity        =  -93.62727478360549
+    wave_intercept  =  5006.461042794419
+    wave_slope      =  0.01480849621127887
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 8:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8591.72916561007
+    cont_slope      =  0.9685415855865487
+    iod_depth       =  0.9418306563578599
+    lsf_left_1      =  6.588865413872842
+    lsf_left_2      =  -18.575561672548353
+    lsf_left_3      =  9.459444107953114
+    lsf_left_4      =  -3.6164981903959372
+    lsf_left_5      =  0.14022513203727333
+    lsf_right1      =  4.788897138740423
+    lsf_right2      =  -18.964598957760767
+    lsf_right3      =  3.150092586514216
+    lsf_right4      =  -2.8365348340874483
+    lsf_right5      =  0.9134581530387075
+    tem_depth       =  0.8668063380041063
+    velocity        =  -6.540071738192573
+    wave_intercept  =  5021.773817857296
+    wave_slope      =  0.013600455953629664
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 17:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3791.4411044301546
+    cont_slope      =  3.3424173122541174
+    iod_depth       =  0.7264370765038763
+    lsf_left_1      =  6.336494856721901
+    lsf_left_2      =  -18.40942789581058
+    lsf_left_3      =  9.128031667588226
+    lsf_left_4      =  -3.969971876778253
+    lsf_left_5      =  1.183784410055057
+    lsf_right1      =  5.298746804854538
+    lsf_right2      =  -17.25429370116425
+    lsf_right3      =  5.482362835333435
+    lsf_right4      =  -1.9810064481470457
+    lsf_right5      =  0.5660379967129121
+    tem_depth       =  0.8622205473665484
+    velocity        =  -371.72074757099625
+    wave_intercept  =  5036.786668934801
+    wave_slope      =  0.01589306919986195
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 24:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  3448.2748674553513
+    cont_slope      =  4.880864620930284
+    iod_depth       =  0.7519163738232982
+    lsf_left_1      =  3.018418813247629
+    lsf_left_2      =  -16.220254553547694
+    lsf_left_3      =  3.0824047372476797
+    lsf_left_4      =  -3.4766325690530175
+    lsf_left_5      =  0.1342149055722257
+    lsf_right1      =  2.356222878256678
+    lsf_right2      =  -19.215666755672036
+    lsf_right3      =  1.1571780553720703
+    lsf_right4      =  -3.969445054842213
+    lsf_right5      =  0.7946906087208689
+    tem_depth       =  0.3014506738821351
+    velocity        =  589.7910062837007
+    wave_intercept  =  5117.559327491397
+    wave_slope      =  0.016302002811221395
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 66:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4577.391925434672
+    cont_slope      =  5.344409299879774
+    iod_depth       =  0.86998905695977
+    lsf_left_1      =  2.1914749741015394
+    lsf_left_2      =  -15.352793410752351
+    lsf_left_3      =  10.296729829212525
+    lsf_left_4      =  -3.7935903047063047
+    lsf_left_5      =  1.0080299922880744
+    lsf_right1      =  2.307958662435674
+    lsf_right2      =  -10.226899579954665
+    lsf_right3      =  2.570064118828388
+    lsf_right4      =  -3.145968180117926
+    lsf_right5      =  1.073941645301331
+    tem_depth       =  0.8463501617677908
+    velocity        =  -287.0046190520433
+    wave_intercept  =  5121.427913730716
+    wave_slope      =  0.016070123858366536
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 68:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 71: No Data! Returning LmfitResult with None.
+ERROR - Chunk 76: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9659.909647650202
+    cont_slope      =  1.8316194171287918
+    iod_depth       =  0.9995945761630434
+    lsf_left_1      =  2.871421540382584
+    lsf_left_2      =  -16.308085895882495
+    lsf_left_3      =  2.459719553559988
+    lsf_left_4      =  -2.4224808008557206
+    lsf_left_5      =  0.3472037195902058
+    lsf_right1      =  5.606909309611154
+    lsf_right2      =  -11.644962031152339
+    lsf_right3      =  4.771523893858431
+    lsf_right4      =  -3.7820215489715925
+    lsf_right5      =  0.29344783522606943
+    tem_depth       =  0.9117648626125259
+    velocity        =  257.9255660360694
+    wave_intercept  =  5143.283066307368
+    wave_slope      =  0.014335934913596957
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 80:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  4054.866260978009
+    cont_slope      =  4.9580662430173525
+    iod_depth       =  0.7422719497215654
+    lsf_left_1      =  8.860716961323515
+    lsf_left_2      =  -13.264875715336045
+    lsf_left_3      =  2.026799877261904
+    lsf_left_4      =  -3.949865223826279
+    lsf_left_5      =  0.13360334513680147
+    lsf_right1      =  2.1716517557984822
+    lsf_right2      =  -17.927022944946877
+    lsf_right3      =  9.689141521326553
+    lsf_right4      =  -3.942676082675919
+    lsf_right5      =  0.7387901089966199
+    tem_depth       =  0.8478161449224546
+    velocity        =  -236.05130405270262
+    wave_intercept  =  5162.89651615099
+    wave_slope      =  0.01634339459955661
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 89:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  5972.451617389756
+    cont_slope      =  3.0436765699064816
+    iod_depth       =  0.7952323224967349
+    lsf_left_1      =  2.2742131424208254
+    lsf_left_2      =  -19.04069184019276
+    lsf_left_3      =  2.686722130396705
+    lsf_left_4      =  -3.6112823354136636
+    lsf_left_5      =  0.7320022907311449
+    lsf_right1      =  13.260852400538285
+    lsf_right2      =  -18.45422050440906
+    lsf_right3      =  2.1766224731917188
+    lsf_right4      =  -3.9695746883267855
+    lsf_right5      =  0.13398835890517483
+    tem_depth       =  0.856289184892451
+    velocity        =  615.3659623499384
+    wave_intercept  =  5183.373735339975
+    wave_slope      =  0.01474172509069811
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 100:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  11885.071642583016
+    cont_slope      =  1.3208252581425017
+    iod_depth       =  0.8913420956096118
+    lsf_left_1      =  4.106983754856854
+    lsf_left_2      =  -13.927474579262118
+    lsf_left_3      =  9.634625428314083
+    lsf_left_4      =  -3.9079019359070486
+    lsf_left_5      =  0.38586914004869305
+    lsf_right1      =  2.5089336096240165
+    lsf_right2      =  -14.439061526682607
+    lsf_right3      =  9.06897576735379
+    lsf_right4      =  -3.557236806199099
+    lsf_right5      =  0.16843358421003146
+    tem_depth       =  0.5626246005147442
+    velocity        =  1565.8674209892588
+    wave_intercept  =  5231.199819672103
+    wave_slope      =  0.014564525180357255
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 124:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9866.66039200077
+    cont_slope      =  2.6383583139421427
+    iod_depth       =  0.8956511040294478
+    lsf_left_1      =  5.58576371448785
+    lsf_left_2      =  -18.130220709980744
+    lsf_left_3      =  5.47772426590288
+    lsf_left_4      =  -2.77594013825645
+    lsf_left_5      =  1.2006902494878917
+    lsf_right1      =  8.667522376257933
+    lsf_right2      =  -19.005804718296694
+    lsf_right3      =  1.4477701973001316
+    lsf_right4      =  -3.4104668070984734
+    lsf_right5      =  0.347587585696048
+    tem_depth       =  0.9005284630135745
+    velocity        =  -164.90255112295787
+    wave_intercept  =  5272.734688603228
+    wave_slope      =  0.014954604757758993
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 144:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 147: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  6995.705674636329
+    cont_slope      =  7.5007697401538636
+    iod_depth       =  0.8565920020895713
+    lsf_left_1      =  7.423434471232981
+    lsf_left_2      =  -19.257062669263885
+    lsf_left_3      =  9.68324514322811
+    lsf_left_4      =  -2.7746322658226905
+    lsf_left_5      =  0.13480531297855275
+    lsf_right1      =  2.5339857170696094
+    lsf_right2      =  -17.635932413775517
+    lsf_right3      =  1.2428368927275608
+    lsf_right4      =  -2.321072763392422
+    lsf_right5      =  0.13871697324677085
+    tem_depth       =  0.7948409052796124
+    velocity        =  -150.72314181505112
+    wave_intercept  =  5350.067259944417
+    wave_slope      =  0.01646693162259013
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 180:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  8878.411549844663
+    cont_slope      =  8.928306370988746
+    iod_depth       =  0.9141233987760572
+    lsf_left_1      =  2.194873308949962
+    lsf_left_2      =  -10.379464482979005
+    lsf_left_3      =  8.085504692016361
+    lsf_left_4      =  -3.401924015806749
+    lsf_left_5      =  0.9505098262969235
+    lsf_right1      =  3.8126638842307523
+    lsf_right2      =  -7.3882121695551035
+    lsf_right3      =  1.9757708574651482
+    lsf_right4      =  -2.52637279675984
+    lsf_right5      =  0.9340853388638949
+    tem_depth       =  0.8969240166377492
+    velocity        =  213.61530711060985
+    wave_intercept  =  5353.964808819684
+    wave_slope      =  0.0160795348227749
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 182:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  9575.347225323276
+    cont_slope      =  5.045471356875585
+    iod_depth       =  0.9453720800820601
+    lsf_left_1      =  3.6076547487083355
+    lsf_left_2      =  -8.18941485050095
+    lsf_left_3      =  1.1619257293345906
+    lsf_left_4      =  -0.5763790309926722
+    lsf_left_5      =  0.17520057373876247
+    lsf_right1      =  4.626243522069637
+    lsf_right2      =  -19.251553005103492
+    lsf_right3      =  10.163870652370196
+    lsf_right4      =  -3.2222030721009953
+    lsf_right5      =  0.47113863327555977
+    tem_depth       =  0.8943925053290218
+    velocity        =  -342.271522156547
+    wave_intercept  =  5403.283402349739
+    wave_slope      =  0.01608538615156898
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 205:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 271: No Data! Returning LmfitResult with None.
+ERROR - Chunk 277: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  12626.24795620002
+    cont_slope      =  4.6336723375714755
+    iod_depth       =  0.8672704571469492
+    lsf_left_1      =  7.359847783525602
+    lsf_left_2      =  -18.268147665220706
+    lsf_left_3      =  2.0330941593259872
+    lsf_left_4      =  -3.88770294738117
+    lsf_left_5      =  0.5940069614228363
+    lsf_right1      =  2.651412132575322
+    lsf_right2      =  -15.243387725517936
+    lsf_right3      =  1.6559228550469811
+    lsf_right4      =  -1.0214104032669962
+    lsf_right5      =  0.45290195789409865
+    tem_depth       =  0.1562170302652629
+    velocity        =  1101.110567593399
+    wave_intercept  =  5605.539808835172
+    wave_slope      =  0.016364032346350896
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 295:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15426.335487632723
+    cont_slope      =  4.746034407553071
+    iod_depth       =  0.9377744356743595
+    lsf_left_1      =  3.16330008411144
+    lsf_left_2      =  -16.692894958256026
+    lsf_left_3      =  4.074228202835813
+    lsf_left_4      =  -3.4646861315315256
+    lsf_left_5      =  0.15396514525032742
+    lsf_right1      =  4.468809066588529
+    lsf_right2      =  -14.66146329709758
+    lsf_right3      =  1.1574965312378844
+    lsf_right4      =  -3.9382584948579478
+    lsf_right5      =  1.0911268656323263
+    tem_depth       =  0.6536260178719501
+    velocity        =  124.4851939912279
+    wave_intercept  =  5613.25375902276
+    wave_slope      =  0.01574866292459431
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 299:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  10654.266136434795
+    cont_slope      =  3.088538249525781
+    iod_depth       =  0.9366483969462176
+    lsf_left_1      =  2.998385483595999
+    lsf_left_2      =  -15.032170737258316
+    lsf_left_3      =  6.53194556805063
+    lsf_left_4      =  -3.1075713393945765
+    lsf_left_5      =  0.3988331701872109
+    lsf_right1      =  2.195849924185447
+    lsf_right2      =  -19.126300829881682
+    lsf_right3      =  1.4385697706485852
+    lsf_right4      =  -1.4337906467679136
+    lsf_right5      =  0.6944062349592584
+    tem_depth       =  0.8410537887890924
+    velocity        =  -35.015388456858815
+    wave_intercept  =  5655.449809719835
+    wave_slope      =  0.016645352407310195
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 316:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 338: No Data! Returning LmfitResult with None.
+ERROR - Chunk 360: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  14151.925158182981
+    cont_slope      =  4.029216656369153
+    iod_depth       =  0.9168170036432127
+    lsf_left_1      =  2.2047480841170586
+    lsf_left_2      =  -7.5324019209702655
+    lsf_left_3      =  1.3526753890514756
+    lsf_left_4      =  -1.0284574755261144
+    lsf_left_5      =  0.5581348811200117
+    lsf_right1      =  4.984403236166763
+    lsf_right2      =  -17.925726121622056
+    lsf_right3      =  9.284390651079622
+    lsf_right4      =  -2.977776894570498
+    lsf_right5      =  0.23697381264039943
+    tem_depth       =  0.3286300878924774
+    velocity        =  2336.7053695743193
+    wave_intercept  =  5821.112946155464
+    wave_slope      =  0.016819881629020827
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 384:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 398: No Data! Returning LmfitResult with None.
+ERROR - Chunk 403: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15451.948557030148
+    cont_slope      =  4.88584928573074
+    iod_depth       =  0.8913281907141145
+    lsf_left_1      =  2.6441780450809493
+    lsf_left_2      =  -18.303522731630455
+    lsf_left_3      =  6.948647375802543
+    lsf_left_4      =  -3.9625695032259025
+    lsf_left_5      =  0.2147690030704588
+    lsf_right1      =  3.7871833314083068
+    lsf_right2      =  -18.720307050488188
+    lsf_right3      =  1.2896140129416396
+    lsf_right4      =  -3.1743518253037823
+    lsf_right5      =  0.8646673055520213
+    tem_depth       =  -0.1495258433704254
+    velocity        =  620.4641877440364
+    wave_intercept  =  5875.036671602792
+    wave_slope      =  0.01718610565061382
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 405:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  13095.04379313168
+    cont_slope      =  -2.203909948588692
+    iod_depth       =  0.8969252354653706
+    lsf_left_1      =  2.2053401341805285
+    lsf_left_2      =  -17.868288667869304
+    lsf_left_3      =  3.403711564305997
+    lsf_left_4      =  -0.5116820595070144
+    lsf_left_5      =  0.138497928281079
+    lsf_right1      =  4.431263876251261
+    lsf_right2      =  -17.257369341390902
+    lsf_right3      =  3.729578667051228
+    lsf_right4      =  -3.1719179572589002
+    lsf_right5      =  1.0052773441371214
+    tem_depth       =  0.9435907296964213
+    velocity        =  347.670006246656
+    wave_intercept  =  5888.98414383599
+    wave_slope      =  0.016139625131179256
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 412:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  16927.13699654511
+    cont_slope      =  3.6709050755314028
+    iod_depth       =  0.8586485390376413
+    lsf_left_1      =  2.184564381769811
+    lsf_left_2      =  -17.770375401958923
+    lsf_left_3      =  8.037037051950007
+    lsf_left_4      =  -3.65995034091497
+    lsf_left_5      =  0.19745971014957964
+    lsf_right1      =  3.607276897780975
+    lsf_right2      =  -12.050897198263986
+    lsf_right3      =  1.6723214454443551
+    lsf_right4      =  -0.5809097967765928
+    lsf_right5      =  0.3574408841816863
+    tem_depth       =  0.2914397011257004
+    velocity        =  1313.0782362133325
+    wave_intercept  =  5938.218311610724
+    wave_slope      =  0.01682742544063676
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 430:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 454: No Data! Returning LmfitResult with None.
+ERROR - Chunk 479: No Data! Returning LmfitResult with None.
+ERROR - NaN value detected in oversampled model function.
+ERROR - <ParameterSet (values: 17)>
+    cont_intercept  =  15446.250115577397
+    cont_slope      =  -5.1538285109095945
+    iod_depth       =  0.8662702292391369
+    lsf_left_1      =  4.766687029411667
+    lsf_left_2      =  -13.91285856461758
+    lsf_left_3      =  9.17304641136154
+    lsf_left_4      =  -2.847035313077048
+    lsf_left_5      =  0.2950796368938458
+    lsf_right1      =  3.259344137057722
+    lsf_right2      =  -18.7130882915229
+    lsf_right3      =  3.930472832906106
+    lsf_right4      =  -0.4511088624514392
+    lsf_right5      =  0.1335673331371898
+    tem_depth       =  0.09778407011189406
+    velocity        =  -1085.1081122511812
+    wave_intercept  =  6073.58828450743
+    wave_slope      =  0.015729621253203974
+ERROR - Evaluated LSF:
+ERROR - [nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+ nan]
+WARNING - Chunk 483:
+WARNING - NaN values detected in your input data or the output of your objective/model function - fitting algorithms cannot handle this! Please read https://lmfit.github.io/lmfit-py/faq.html#i-get-errors-from-nan-in-my-fit-what-can-i-do for more information.
+ERROR - Chunk 486: No Data! Returning LmfitResult with None.
+ERROR - Chunk 522: No Data! Returning LmfitResult with None.
+INFO - 
+INFO - Number of chunks with no uncertainties: 17
+INFO - Number of chunks with outliers: 0
+INFO - Number of chunks with nan fitted red. Chi2: 34
+INFO - 
+INFO - Creating analysis plots...
+INFO - Velocity robust mean: 16.35390377383373
+INFO - Velocity robust std: 632.2919089652213
+INFO - 
+INFO - Velocity error robust mean: 195.41473054630688
+INFO - Velocity error robust std: 147.18053615225273
+INFO - 
+INFO - Minimum error: 55.23567227720367 in chunk 188
+INFO - Maximum error: 2797.2420863994066 in chunk 440
+INFO - 
+INFO - Chunks with nan velocities: [  8  17  24  66  68  71  76  80  89 100 124 144 147 180 182 205 271 277
+ 295 299 316 338 360 384 398 403 405 412 430 454 479 483 486 522]
+INFO - Chunks with nan velocity errors: [  8  14  17  24  62  66  68  70  71  76  80  89  96 100 112 124 143 144
+ 147 180 182 204 205 236 264 271 277 295 299 300 308 316 332 338 360 370
+ 384 398 403 405 407 412 413 430 447 454 479 483 486 512 522]
+INFO - Velocity error at percentile 80: 391.4185835318123
+INFO - 
+INFO - Time to model this observation: 99.4455828666687

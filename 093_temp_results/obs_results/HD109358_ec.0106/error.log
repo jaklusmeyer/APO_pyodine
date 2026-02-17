@@ -1,0 +1,11 @@
+2026-02-02 12:29:54,242 - root - ERROR - Logger could not be configured from config file
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 49, in setup_logging
+    os.makedirs(error_log_dir)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/os.py", line 215, in makedirs
+    makedirs(head, exist_ok=exist_ok)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/os.py", line 225, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 30] Read-only file system: '/modeli2_results'
+2026-02-02 12:53:01,527 - root - ERROR - Could not find wavelength range nan-5020.0048082322655 Å
+2026-02-02 12:56:59,481 - root - ERROR - Could not find wavelength range nan-5020.0048082322655 Å

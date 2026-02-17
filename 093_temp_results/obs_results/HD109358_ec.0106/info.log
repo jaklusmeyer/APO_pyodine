@@ -1,0 +1,74 @@
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+INFO - 
+INFO - Median flux of the observation: 6265
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/093_temp_results/obs_temp_highsnr_test.h5
+INFO - Something went wrong with input file /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine_model_observations.py", line 136, in model_single_observation
+    if isinstance(res_names, list) and isinstance(res_names[0], str):
+IndexError: list index out of range
+ERROR - Logger could not be configured from config file
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/lib/misc.py", line 49, in setup_logging
+    os.makedirs(error_log_dir)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/os.py", line 215, in makedirs
+    makedirs(head, exist_ok=exist_ok)
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/os.py", line 225, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 30] Read-only file system: '/modeli2_results'
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+INFO - 
+INFO - Median flux of the observation: 6265
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/093_temp_results/HD109358_res0.h5
+INFO - Something went wrong with input file /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine_model_observations.py", line 124, in model_single_observation
+    template = pyodine.template.base.StellarTemplate_Chunked(temp_file)
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/template/base.py", line 214, in __init__
+    raise e
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine/template/base.py", line 193, in __init__
+    self.starname = h['/starname'][()]
+  File "h5py/_objects.pyx", line 56, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 57, in h5py._objects.with_phil.wrapper
+  File "/Users/jaklusmeyer/miniconda/envs/pyodine_env/lib/python3.9/site-packages/h5py/_hl/group.py", line 360, in __getitem__
+    oid = h5o.open(self.id, self._e(name), lapl=self._lapl)
+  File "h5py/_objects.pyx", line 56, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 57, in h5py._objects.with_phil.wrapper
+  File "h5py/h5o.pyx", line 257, in h5py.h5o.open
+KeyError: "Unable to synchronously open object (object 'starname' doesn't exist)"
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+INFO - 
+INFO - Median flux of the observation: 6265
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/093_temp_results/obs_temp_highsnr_test.h5
+ERROR - Could not find wavelength range nan-5020.0048082322655 Å
+INFO - Something went wrong with input file /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine_model_observations.py", line 162, in model_single_observation
+    order_correction = obs_order_min - template[template_ind[0]].order
+TypeError: unsupported operand type(s) for -: 'NoneType' and 'int'
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Working on: /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+INFO - 
+INFO - Median flux of the observation: 6265
+INFO - Loading template from file: /Users/jaklusmeyer/SONG/reduce/093_temp_results/obs_temp_highsnr_test.h5
+ERROR - Could not find wavelength range nan-5020.0048082322655 Å
+INFO - Something went wrong with input file /Users/jaklusmeyer/SONG/reduce/UT260202/sciencestar/HD109358_ec.0106.fits
+Traceback (most recent call last):
+  File "/Users/jaklusmeyer/SONG/pyodine/pyodine_model_observations.py", line 162, in model_single_observation
+    order_correction = obs_order_min - template[template_ind[0]].order
+TypeError: unsupported operand type(s) for -: 'NoneType' and 'int'

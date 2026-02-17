@@ -1,0 +1,456 @@
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 165 NaN velocities (obs,chunk):
+INFO - (0,1)  (0,4)  (0,24)  (0,25)  (0,26)  (0,28)  (0,53)  (0,75)  (0,76)  (0,83)  (0,87)  (0,88)  (0,108)  (0,116)  (0,121)  (0,154)  (0,160)  (0,168)  (0,170)  (0,253)  (0,263)  (0,289)  (0,299)  (0,313)  (0,322)  (0,326)  (0,340)  (0,346)  (0,366)  (0,374)  (0,378)  (0,386)  (0,394)  (0,395)  (0,399)  (0,422)  (0,443)  (0,448)  (0,461)  (0,472)  (0,481)  (0,492)  (0,494)  (0,496)  (0,514)  (1,1)  (1,3)  (1,4)  (1,27)  (1,29)  (1,34)  (1,53)  (1,108)  (1,111)  (1,116)  (1,145)  (1,147)  (1,159)  (1,170)  (1,222)  (1,241)  (1,258)  (1,263)  (1,289)  (1,322)  (1,328)  (1,336)  (1,337)  (1,339)  (1,341)  (1,350)  (1,354)  (1,363)  (1,364)  (1,374)  (1,378)  (1,386)  (1,390)  (1,394)  (1,395)  (1,397)  (1,399)  (1,446)  (1,460)  (1,461)  (1,472)  (1,482)  (1,487)  (1,488)  (1,514)  (2,1)  (2,3)  (2,4)  (2,12)  (2,40)  (2,42)  (2,53)  (2,68)  (2,82)  (2,94)  (2,104)  (2,108)  (2,111)  (2,116)  (2,146)  (2,168)  (2,170)  (2,175)  (2,176)  (2,192)  (2,199)  (2,210)  (2,225)  (2,230)  (2,240)  (2,255)  (2,263)  (2,289)  (2,295)  (2,319)  (2,322)  (2,363)  (2,374)  (2,378)  (2,386)  (2,394)  (2,395)  (2,399)  (2,401)  (2,409)  (2,461)  (2,469)  (2,472)  (2,496)  (2,514)  (2,516)  (3,1)  (3,4)  (3,15)  (3,41)  (3,44)  (3,53)  (3,108)  (3,116)  (3,117)  (3,166)  (3,170)  (3,193)  (3,263)  (3,272)  (3,289)  (3,303)  (3,322)  (3,374)  (3,378)  (3,386)  (3,388)  (3,394)  (3,395)  (3,399)  (3,404)  (3,434)  (3,461)  (3,472)  (3,514)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -11.13 +- 704.09
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 540.71 +- 418.96
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 5.79555 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 5.79765 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 4.50146484375
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 169 NaN velocities (obs,chunk):
+INFO - (0,1)  (0,4)  (0,21)  (0,24)  (0,28)  (0,53)  (0,68)  (0,75)  (0,76)  (0,83)  (0,87)  (0,88)  (0,90)  (0,96)  (0,108)  (0,116)  (0,121)  (0,156)  (0,159)  (0,170)  (0,177)  (0,188)  (0,253)  (0,263)  (0,289)  (0,299)  (0,313)  (0,322)  (0,326)  (0,340)  (0,346)  (0,366)  (0,374)  (0,375)  (0,378)  (0,386)  (0,393)  (0,394)  (0,395)  (0,399)  (0,422)  (0,448)  (0,453)  (0,461)  (0,472)  (0,514)  (0,515)  (0,518)  (1,1)  (1,4)  (1,24)  (1,27)  (1,34)  (1,47)  (1,53)  (1,108)  (1,110)  (1,116)  (1,147)  (1,159)  (1,170)  (1,193)  (1,241)  (1,263)  (1,289)  (1,322)  (1,328)  (1,336)  (1,337)  (1,339)  (1,341)  (1,350)  (1,354)  (1,363)  (1,364)  (1,374)  (1,378)  (1,386)  (1,390)  (1,394)  (1,395)  (1,397)  (1,399)  (1,407)  (1,426)  (1,442)  (1,446)  (1,450)  (1,461)  (1,472)  (1,482)  (1,514)  (2,0)  (2,1)  (2,4)  (2,7)  (2,11)  (2,25)  (2,40)  (2,42)  (2,53)  (2,68)  (2,82)  (2,104)  (2,108)  (2,116)  (2,146)  (2,168)  (2,170)  (2,175)  (2,176)  (2,192)  (2,199)  (2,225)  (2,230)  (2,240)  (2,255)  (2,263)  (2,289)  (2,295)  (2,319)  (2,322)  (2,374)  (2,378)  (2,386)  (2,394)  (2,395)  (2,399)  (2,401)  (2,409)  (2,449)  (2,461)  (2,469)  (2,472)  (2,514)  (3,1)  (3,4)  (3,41)  (3,44)  (3,45)  (3,53)  (3,108)  (3,116)  (3,133)  (3,166)  (3,170)  (3,193)  (3,242)  (3,263)  (3,272)  (3,289)  (3,303)  (3,322)  (3,369)  (3,374)  (3,378)  (3,386)  (3,388)  (3,394)  (3,395)  (3,399)  (3,434)  (3,447)  (3,461)  (3,472)  (3,488)  (3,514)  (3,517)  (3,527)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -36.36 +- 687.66
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 545.48 +- 413.60
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 4.90516 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 4.90649 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 4.41175103187561
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 187 NaN velocities (obs,chunk):
+INFO - (0,4)  (0,5)  (0,8)  (0,9)  (0,10)  (0,14)  (0,16)  (0,19)  (0,22)  (0,31)  (0,35)  (0,38)  (0,56)  (0,57)  (0,93)  (0,94)  (0,109)  (0,116)  (0,122)  (0,144)  (0,177)  (0,179)  (0,181)  (0,185)  (0,194)  (0,217)  (0,221)  (0,243)  (0,283)  (0,305)  (0,332)  (0,338)  (0,340)  (0,345)  (0,350)  (0,363)  (0,378)  (0,389)  (0,410)  (0,443)  (0,448)  (0,468)  (0,482)  (0,487)  (0,501)  (0,503)  (0,504)  (0,518)  (0,523)  (1,4)  (1,5)  (1,8)  (1,10)  (1,16)  (1,29)  (1,31)  (1,43)  (1,56)  (1,57)  (1,63)  (1,74)  (1,87)  (1,102)  (1,106)  (1,109)  (1,116)  (1,144)  (1,177)  (1,179)  (1,185)  (1,188)  (1,217)  (1,221)  (1,224)  (1,225)  (1,243)  (1,272)  (1,283)  (1,305)  (1,309)  (1,332)  (1,338)  (1,350)  (1,352)  (1,410)  (1,424)  (1,443)  (1,459)  (1,487)  (1,501)  (1,503)  (1,505)  (1,514)  (1,516)  (1,518)  (1,523)  (1,526)  (1,527)  (2,3)  (2,4)  (2,5)  (2,8)  (2,10)  (2,16)  (2,19)  (2,31)  (2,56)  (2,57)  (2,109)  (2,144)  (2,177)  (2,179)  (2,185)  (2,195)  (2,217)  (2,219)  (2,221)  (2,243)  (2,247)  (2,283)  (2,304)  (2,305)  (2,309)  (2,327)  (2,332)  (2,338)  (2,350)  (2,410)  (2,416)  (2,431)  (2,434)  (2,439)  (2,443)  (2,451)  (2,453)  (2,461)  (2,482)  (2,487)  (2,501)  (2,503)  (2,518)  (2,523)  (2,525)  (3,4)  (3,5)  (3,8)  (3,10)  (3,16)  (3,31)  (3,40)  (3,56)  (3,57)  (3,72)  (3,109)  (3,112)  (3,144)  (3,159)  (3,177)  (3,179)  (3,185)  (3,190)  (3,211)  (3,217)  (3,221)  (3,238)  (3,243)  (3,283)  (3,302)  (3,303)  (3,305)  (3,332)  (3,338)  (3,350)  (3,368)  (3,386)  (3,390)  (3,402)  (3,410)  (3,443)  (3,458)  (3,460)  (3,483)  (3,487)  (3,501)  (3,503)  (3,518)  (3,523)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -21.73 +- 1330.88
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 887.83 +- 379.29
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 12.05898 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 12.07712 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 3.3387527465820312
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 187 NaN velocities (obs,chunk):
+INFO - (0,4)  (0,5)  (0,8)  (0,9)  (0,10)  (0,14)  (0,16)  (0,19)  (0,22)  (0,31)  (0,35)  (0,38)  (0,56)  (0,57)  (0,93)  (0,94)  (0,109)  (0,116)  (0,122)  (0,144)  (0,177)  (0,179)  (0,181)  (0,185)  (0,194)  (0,217)  (0,221)  (0,243)  (0,283)  (0,305)  (0,332)  (0,338)  (0,340)  (0,345)  (0,350)  (0,363)  (0,378)  (0,389)  (0,410)  (0,443)  (0,448)  (0,468)  (0,482)  (0,487)  (0,501)  (0,503)  (0,504)  (0,518)  (0,523)  (1,4)  (1,5)  (1,8)  (1,10)  (1,16)  (1,29)  (1,31)  (1,43)  (1,56)  (1,57)  (1,63)  (1,74)  (1,87)  (1,102)  (1,106)  (1,109)  (1,116)  (1,144)  (1,177)  (1,179)  (1,185)  (1,188)  (1,217)  (1,221)  (1,224)  (1,225)  (1,243)  (1,272)  (1,283)  (1,305)  (1,309)  (1,332)  (1,338)  (1,350)  (1,352)  (1,410)  (1,424)  (1,443)  (1,459)  (1,487)  (1,501)  (1,503)  (1,505)  (1,514)  (1,516)  (1,518)  (1,523)  (1,526)  (1,527)  (2,3)  (2,4)  (2,5)  (2,8)  (2,10)  (2,16)  (2,19)  (2,31)  (2,56)  (2,57)  (2,109)  (2,144)  (2,177)  (2,179)  (2,185)  (2,195)  (2,217)  (2,219)  (2,221)  (2,243)  (2,247)  (2,283)  (2,304)  (2,305)  (2,309)  (2,327)  (2,332)  (2,338)  (2,350)  (2,410)  (2,416)  (2,431)  (2,434)  (2,439)  (2,443)  (2,451)  (2,453)  (2,461)  (2,482)  (2,487)  (2,501)  (2,503)  (2,518)  (2,523)  (2,525)  (3,4)  (3,5)  (3,8)  (3,10)  (3,16)  (3,31)  (3,40)  (3,56)  (3,57)  (3,72)  (3,109)  (3,112)  (3,144)  (3,159)  (3,177)  (3,179)  (3,185)  (3,190)  (3,211)  (3,217)  (3,221)  (3,238)  (3,243)  (3,283)  (3,302)  (3,303)  (3,305)  (3,332)  (3,338)  (3,350)  (3,368)  (3,386)  (3,390)  (3,402)  (3,410)  (3,443)  (3,458)  (3,460)  (3,483)  (3,487)  (3,501)  (3,503)  (3,518)  (3,523)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -21.73 +- 1330.88
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 887.83 +- 379.29
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 12.05898 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 12.07712 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 3.539973258972168
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 146 NaN velocities (obs,chunk):
+INFO - (0,9)  (0,15)  (0,20)  (0,22)  (0,27)  (0,47)  (0,57)  (0,63)  (0,71)  (0,76)  (0,92)  (0,139)  (0,147)  (0,160)  (0,234)  (0,252)  (0,271)  (0,277)  (0,296)  (0,311)  (0,338)  (0,360)  (0,394)  (0,398)  (0,403)  (0,405)  (0,424)  (0,429)  (0,454)  (0,464)  (0,479)  (0,486)  (0,495)  (0,504)  (0,511)  (0,512)  (0,522)  (1,19)  (1,21)  (1,61)  (1,67)  (1,71)  (1,75)  (1,76)  (1,80)  (1,88)  (1,122)  (1,137)  (1,147)  (1,162)  (1,176)  (1,182)  (1,205)  (1,243)  (1,266)  (1,271)  (1,277)  (1,299)  (1,338)  (1,360)  (1,371)  (1,375)  (1,398)  (1,403)  (1,411)  (1,417)  (1,454)  (1,455)  (1,479)  (1,486)  (1,487)  (1,495)  (1,502)  (1,513)  (1,517)  (1,522)  (2,8)  (2,17)  (2,24)  (2,66)  (2,68)  (2,71)  (2,76)  (2,80)  (2,89)  (2,100)  (2,124)  (2,144)  (2,147)  (2,180)  (2,182)  (2,205)  (2,271)  (2,277)  (2,295)  (2,299)  (2,316)  (2,338)  (2,360)  (2,384)  (2,398)  (2,403)  (2,405)  (2,412)  (2,430)  (2,454)  (2,479)  (2,483)  (2,486)  (2,522)  (3,7)  (3,10)  (3,37)  (3,71)  (3,76)  (3,101)  (3,137)  (3,147)  (3,185)  (3,188)  (3,195)  (3,250)  (3,271)  (3,277)  (3,293)  (3,327)  (3,338)  (3,360)  (3,377)  (3,393)  (3,396)  (3,398)  (3,403)  (3,411)  (3,421)  (3,422)  (3,423)  (3,430)  (3,441)  (3,450)  (3,454)  (3,459)  (3,479)  (3,486)  (3,490)  (3,522)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -4.48 +- 561.00
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 434.29 +- 483.51
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 3.46231 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 3.46284 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 3.6589081287384033
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Branch: master
+INFO - Hash: c2a71ac
+INFO - ---------------------------
+INFO - Weighting and combining velocities
+INFO - 
+INFO - Star: HD109358
+INFO - 
+INFO - Velocity weighting and combination...
+INFO - ---------------------------------------------------
+INFO - - Pyodine chunk combination (based on iSONG code) -
+INFO - ---------------------------------------------------
+INFO - 
+INFO - Weighting parameters used:
+INFO - 	good_chunks	3	4	5	6	7	8	9	10	11	12	13	14	
+INFO - 	good_orders	6	7	8	9	10	11	12	13	
+INFO - 	sig_limit_low	4.0
+INFO - 	sig_limit_up	1000.0
+INFO - 	sig_correct	1000.0
+INFO - 	reweight_alpha	1.8
+INFO - 	reweight_beta	8.0
+INFO - 	reweight_sigma	2.0
+INFO - 	weight_correct	0.01
+INFO - 
+INFO - Nr. of obs, chunks per obs: 4, 528
+INFO - 
+INFO - 146 NaN velocities (obs,chunk):
+INFO - (0,9)  (0,15)  (0,20)  (0,22)  (0,27)  (0,47)  (0,57)  (0,63)  (0,71)  (0,76)  (0,92)  (0,139)  (0,147)  (0,160)  (0,234)  (0,252)  (0,271)  (0,277)  (0,296)  (0,311)  (0,338)  (0,360)  (0,394)  (0,398)  (0,403)  (0,405)  (0,424)  (0,429)  (0,454)  (0,464)  (0,479)  (0,486)  (0,495)  (0,504)  (0,511)  (0,512)  (0,522)  (1,19)  (1,21)  (1,61)  (1,67)  (1,71)  (1,75)  (1,76)  (1,80)  (1,88)  (1,122)  (1,137)  (1,147)  (1,162)  (1,176)  (1,182)  (1,205)  (1,243)  (1,266)  (1,271)  (1,277)  (1,299)  (1,338)  (1,360)  (1,371)  (1,375)  (1,398)  (1,403)  (1,411)  (1,417)  (1,454)  (1,455)  (1,479)  (1,486)  (1,487)  (1,495)  (1,502)  (1,513)  (1,517)  (1,522)  (2,8)  (2,17)  (2,24)  (2,66)  (2,68)  (2,71)  (2,76)  (2,80)  (2,89)  (2,100)  (2,124)  (2,144)  (2,147)  (2,180)  (2,182)  (2,205)  (2,271)  (2,277)  (2,295)  (2,299)  (2,316)  (2,338)  (2,360)  (2,384)  (2,398)  (2,403)  (2,405)  (2,412)  (2,430)  (2,454)  (2,479)  (2,483)  (2,486)  (2,522)  (3,7)  (3,10)  (3,37)  (3,71)  (3,76)  (3,101)  (3,137)  (3,147)  (3,185)  (3,188)  (3,195)  (3,250)  (3,271)  (3,277)  (3,293)  (3,327)  (3,338)  (3,360)  (3,377)  (3,393)  (3,396)  (3,398)  (3,403)  (3,411)  (3,421)  (3,422)  (3,423)  (3,430)  (3,441)  (3,450)  (3,454)  (3,459)  (3,479)  (3,486)  (3,490)  (3,522)  
+INFO - 
+INFO - Chunk-to-chunk offsets from observation mean:
+INFO - Median: -4.48 +- 561.00
+INFO - 
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+WARNING - Distribution is too strange to compute standard deviation!
+INFO - Chunk sigmas:
+INFO - Median: 434.29 +- 483.51
+INFO - 
+INFO - RV quality factor 1 ( sqrt(1/sum(1/sig**2)) ): 3.46231 m/s
+INFO - RV quality factor 2 ( sqrt(1/sum(med(wt1))) ): 3.46284 m/s
+INFO - 
+INFO - Doing the precise barycentric velocity correction...
+INFO - Using BVC information from user-supplied dictionary...
+INFO - BVC through HIP number: 61317
+INFO - 
+INFO - Writing results to txt file: /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358.vels
+INFO - 
+INFO - Saving combined results to /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - 
+INFO - Creating and saving analysis plots to:
+INFO - 	/Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results
+INFO - 
+INFO - Observations with outlier RVs:
+INFO - 
+INFO - All done! Full work time: 3.471068859100342
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
+INFO - Loading combined results from /Users/jaklusmeyer/SONG/reduce/0094_temp_results/analysis/vel_results/HD109358_comb.h5
