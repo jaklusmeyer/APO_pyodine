@@ -73,26 +73,27 @@ class Parameters:
         self.order_range = (None,None)          # Order range (min,max) to use in observation modeling;
                                                 # (None,None) uses automatically the same as in the template
         # The chunk width is now determined by the template chunks
-        #self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
+        self.chunk_width = 130                   # Width of chunks in pixels in observation modeling
+        self.chunk_padding = 20                 # Padding (left and right) of the chunks in pixels
         #self.chunks_per_order = None            # Maximum number of chunks per order (optional)
         self.chunk_delta_v = None               # Velocity shift between template and observation 
                                                 # (None: relative barycentric velocity)
         
-        #Jessica move 01Dec2025
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
+
+        """        self.chunk_width = 45                   # Width of chunks in pixels in observation modeling
         self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
         self.chunks_per_order = 22              # Maximum number of chunks per order (optional)
-        self.pix_offset0 = 30                   # The starting pixel of the first chunk within each order
-        
+        self.pix_offset0 = 15  """
         
         
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
-        self.velgues_order_range = (4,17)       # Orders used for velocity guess (should be outside I2 region)
+        self.velgues_order_range = (12,20)       # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
         self.maxlag  = 500                      # The number of steps to each side in the cross-correlation
+        
+        #self.velocity_override = -26400.0 
         
         # Normalize chunks in the beginning?
         self.normalize_chunks = False
@@ -145,7 +146,7 @@ class Parameters:
                  # Plotting keywords
                  'plot_success': True,                      # Create plot of fitting success (None: False)
                  'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
-                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+                 'plot_chunks': [50,100,150, 250, 300, 400, 450, 475, 500, 525],            # A list with indices of chunks that will be plotted and saved
                  'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
                  
                  # Median parameter results
@@ -182,7 +183,7 @@ class Parameters:
                  # Plotting keywords
                  'plot_success': True,                      # Create plot of fitting success (None: False)
                  'plot_analysis': True,                     # Create analysis plots (residuals etc.) (None: False)
-                 'plot_chunks': [150, 250, 400],            # A list with indices of chunks that will be plotted and saved
+                 'plot_chunks': [50,100,150, 250, 300, 400, 450, 475, 500, 525],            # A list with indices of chunks that will be plotted and saved
                  'plot_lsf_pars': True,                     # Plot lsf parameter results (None: False)
                  
                  # Median parameter results
@@ -223,12 +224,24 @@ class Parameters:
             for i in range(len(lmfit_params)):
                 # Set velocity to velocity guess (from the reference spectrum)
                 # (unless smaller 10, then to fixed value in order to avoid non-variation in fit)
-                if abs(run_results[run_id]['velocity_guess']) < 10.:
+                """if abs(run_results[run_id]['velocity_guess']) < 10.:
                     lmfit_params[i]['velocity'].set(
                             value=np.sign(run_results[run_id]['velocity_guess']) * 10.)
                 else:
                     lmfit_params[i]['velocity'].set(
-                            value=run_results[run_id]['velocity_guess'])
+                            value=run_results[run_id]['velocity_guess'])"""
+                            
+                            
+                #hardcoding sigma dra into this test
+                if self.velocity_override is not None:
+                    lmfit_params[i]['velocity'].set(value=self.velocity_override)
+                else:
+                    if abs(run_results[run_id]['velocity_guess']) < 10.:
+                        lmfit_params[i]['velocity'].set(
+                                value=np.sign(run_results[run_id]['velocity_guess']) * 10.)
+                    else:
+                        lmfit_params[i]['velocity'].set(
+                                value=run_results[run_id]['velocity_guess'])           
                 
                 # SingleGaussian model - just constrain the lsf_fwhm
                 lmfit_params[i]['lsf_fwhm'].set(
@@ -344,12 +357,13 @@ class Template_Parameters:
         self.chunking_algorithm = 'auto_equal_width'
         # If the auto_equal_width chunking algorithm is used, the chunks are defined by the user
         # through their width, padding, number of chunks per order, and pixel offset of the first chunk:
-        self.temp_order_range = (22, 45)         # Order range (min,max) to use in observation modeling;
-                                                # (None,None) uses all orders
-        self.chunk_width = 91                   # Width of chunks in pixels in observation modeling
-        self.chunk_padding = 25                 # Padding (left and right) of the chunks in pixels
-        self.chunks_per_order = 22              # Maximum number of chunks per order (optional)
-        self.pix_offset0 = 30                   # The starting pixel of the first chunk within each order
+        #self.temp_order_range = (21, 47)         # Order range (min,max) to use in observation modeling;
+        self.temp_order_range = (22, 47)                                        # (None,None) uses all orders
+        
+        self.chunk_width = 130                   # Width of chunks in pixels in observation modeling
+        self.chunk_padding = 20                # Padding (left and right) of the chunks in pixels #CHANGE TO 40 ON 16FEB WAS 6 OG WAS SOMETHING ELSE, 25? CHECK UTILITIES_SONG 
+        self.chunks_per_order = 25              # Maximum number of chunks per order (optional)
+        self.pix_offset0 = 15                   # The starting pixel of the first chunk within each order
                                                 # (None: the chunks will be centered within orders)
         # Otherwise, if the wavelength_defined chunking algorithm is chosen, make sure you have
         # added a dictionary with start and end wavelengths for each chunk (see below constrain_parameters())
@@ -357,12 +371,21 @@ class Template_Parameters:
         
         # Reference spectrum to use in normalizer and for the first velocity guess
         self.ref_spectrum = 'arcturus'          # Reference spectrum ('arcturus' or 'sun')
-        self.velgues_order_range = (8,20)      # Orders used for velocity guess (should be outside I2 region)
+        self.velgues_order_range = (6,20)      # Orders used for velocity guess (should be outside I2 region)
         self.delta_v = 1000.                    # The velocity step size for the cross-correlation (in m/s)
         self.maxlag  = 500                      # The number of steps to each side in the cross-correlation
         
+        #REMOVE TODO HARDCODE SIG DRA NUMBERS
+        #self.velocity_override = -26400.0      # Override the velocity guess 
+        
+        
+        
         # Normalize chunks in the beginning?
         self.normalize_chunks = False
+        
+        
+        
+        
         
         # Weighting of pixels:
         self.bad_pixel_mask = False             # Whether to run the bad pixel mask

@@ -43,5 +43,6 @@ my_instruments = {
 my_iodine_atlases = {
     1: os.path.join(i2_dir_path, 'song_iodine_cell_01_65C.h5'),
     2: os.path.join(i2_dir_path, 'Fischer_Cell_May2022_downsampled3.h5'),
-    3: os.path.join(i2_dir_path, 'APO_I2_cleaned_normalized_shifted.h5')
+    3: os.path.join(i2_dir_path, 'APO_I2_cleaned_normalized_shifted.h5'),
+    4: os.path.join(i2_dir_path, 'APO_I2_from_FITS_cleaned_newscan_vnorm.h5')
 }
